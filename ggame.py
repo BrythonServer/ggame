@@ -13,8 +13,7 @@ class ImageAsset(object):
         self.url = url
         PIXI_loader.reset()
         PIXI_loader.add(name, url)
-        PIXI_loader.once('complete',self.loadComplete);
-        PIXI_loader.load();
+        PIXI_loader.load(self.loadComplete)
     
     def loadComplete(self):
         print("loaded asset!")
