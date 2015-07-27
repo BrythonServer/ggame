@@ -61,11 +61,11 @@ class Sprite(object):
 class App(object):
     
     def __init__(self, width, height):
-        self.window = window.open("", "")
+        self.w = window.open("", "")
         self.stage = JSConstructor(PIXI.Container)
         self.renderer = PIXI.autoDetectRenderer(width, height, 
             {'transparent':True})
-        self.window.document.body.appendChild(self.renderer.view)
+        self.w.document.body.appendChild(self.renderer.view)
         
     def add(self, obj):
         self.stage.addChild(obj.PIXI)
@@ -76,14 +76,14 @@ class App(object):
         else:
             self.step()
         self.renderer.render(self.stage)
-        self.window.requestAnimationFrame(self._animate)
+        self.w.requestAnimationFrame(self._animate)
         
     def step(self):
         pass
     
     def run(self, userfunc = None):
         self.userfunc = userfunc
-        self.window.requestAnimationFrame(self._animate)
+        self.w.requestAnimationFrame(self._animate)
 
 if __name__ == '__main__':
     def animate(fake):
