@@ -91,20 +91,16 @@ if __name__ == '__main__':
     bunnyurl = "bunny.png"
     print("ggame test.")
     bunny = ImageAsset(bunnyurl)
-    Stage = JSConstructor(PIXI.Container)
-    STAGE = Stage()
-    RENDERER = PIXI.autoDetectRenderer(1000,650, {'transparent':True})
-
-    #s1 = PIXI_Sprite(PIXI_Texture(bunny.texture, frame))
 
     frame = Frame(0,0,30,30)
     s = Sprite(bunny, (0,0), frame)
+    app = App(1000, 500)
+    
     
     for x in range(50,500,10):
         for y in range(50,500,10):
-            STAGE.addChild(Sprite(bunny, (x,y)).PIXI)
+            app.add(Sprite(bunny, (x,y)))
     
     
-    w.document.body.appendChild(RENDERER.view)
-    w.requestAnimationFrame(animate)
+    app.run()
 
