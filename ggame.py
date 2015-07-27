@@ -32,6 +32,6 @@ if __name__ == '__main__':
     Stage = JSConstructor(PIXI.Container)
     STAGE = Stage()
     RENDERER = PIXI.autoDetectRenderer(1000,650, {'transparent':True})
-    STAGE.addChild(Sprite(bunny.texture))
+    STAGE.addChild(Sprite(PIXI.Texture(bunny.texture)))
     w.document.body.appendChild(RENDERER.view)
     w.requestAnimationFrame(animate)
