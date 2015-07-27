@@ -10,12 +10,12 @@ PIXI = JSObject(window.PIXI)
 PIXI_loader = JSObject(PIXI.loader)
 PIXI_loader.reset()
 
-PIXI_Sprite = JSConstructor(PIXI.Sprite)
+
 PIXI_Texture = JSConstructor(PIXI.Texture)
 PIXI_Rectangle = JSConstructor(PIXI.Rectangle)
 
 
-class Rectangle(object):
+class Frame(object):
     def __init__(self, x, y, w, h):
         self.x = x
         self.y = y
@@ -39,11 +39,14 @@ class ImageAsset(object):
         self.PIXI = PIXI.Texture.fromImage(url, False)
 
 class Sprite(object):
-    def __init__(self, texture, position = (0,0), frame = False):
+    
+    PIXI_Sprite = JSConstructor(PIXI.Sprite)
+    
+    def __init__(self, asset, position = (0,0), frame = False):
         if (frame):
-            self.PIXI = PIXI_Sprite(PIXI_Texture(texture.PIXI, frame.PIXI))
+            self.PIXI = Sprite.PIXI_Sprite(PIXI_Texture(asset.PIXI, frame.PIXI))
         else:
-            self.PIXI = PIXI_Sprite(texture.PIXI)
+            self.PIXI = Sprite.PIXI_Sprite(asset.PIXI)
         self.position = position
         
     @property
@@ -54,7 +57,10 @@ class Sprite(object):
     def position(self, value):
         self.PIXI.position.x = value[0]
         self.PIXI.position.y = value[1]
-        
+
+class App(object):
+    
+    def __init__(self, size, 
 
 if __name__ == '__main__':
     def animate(fake):
@@ -70,7 +76,7 @@ if __name__ == '__main__':
 
     #s1 = PIXI_Sprite(PIXI_Texture(bunny.texture, frame))
 
-    frame = Rectangle(0,0,30,30)
+    frame = Frame(0,0,30,30)
     s = Sprite(bunny, (0,0), frame)
     
     for x in range(50,500,10):
