@@ -16,11 +16,12 @@ PIXI_Rectangle = JSConstructor(PIXI.Rectangle)
 
 class ImageAsset(object):
     def __init__(self, url):
-        w.loaded = self.imageLoaded
+        window.brython_loaded = self.imageLoaded
+        self.isloaded = False
         self.texture = None
         self.url = url
         PIXI_loader.add(url)
-        PIXI_loader.once('complete',w.loaded);
+        PIXI_loader.once('complete',window.brython_loaded);
         PIXI_loader.load();
 
     def imageLoaded(self):
@@ -43,14 +44,13 @@ if __name__ == '__main__':
     bunnyurl = "bunny.png"
     print("ggame test.")
     bunny = ImageAsset(bunnyurl)
-    print(dir(bunny.texture))
     Stage = JSConstructor(PIXI.Container)
     STAGE = Stage()
     RENDERER = PIXI.autoDetectRenderer(1000,650, {'transparent':True})
     s = Sprite(bunny.texture)
     frame = PIXI_Rectangle(0,0,30,30)
 
-
+    # bunny.imageLoaded()
     s1 = Sprite(PIXI_Texture(bunny.texture, frame))
     STAGE.addChild(s1)
     w.document.body.appendChild(RENDERER.view)
