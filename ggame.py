@@ -9,14 +9,15 @@ PIXI_loader = JSObject(PIXI.loader)
 
 class ImageAsset(object):
     def __init__(self, name, url):
-        #self.name = name
+        self.name = name
         self.url = url
+        PIXI_loader.reset()
         PIXI_loader.add(name, url)
-        #PIXI_loader.once('complete',self.loadComplete);
-        #PIXI_loader.load();
+        PIXI_loader.once('complete',self.loadComplete);
+        PIXI_loader.load();
     
-#    def loadComplete(self):
-#        print("loaded asset!")
+    def loadComplete(self):
+        print("loaded asset!")
 
 if __name__ == '__main__':
     bunnyurl = "https://github.com/tiggerntatie/brython-\
