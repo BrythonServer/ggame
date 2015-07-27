@@ -67,11 +67,19 @@ class App(object):
         self.stage.addChild(obj.PIXI)
         
     def _animate(self, dummy):
-        self.window.requestAnimationFrame(self._animate)
+        if self.userfunc:
+            self.userfunc()
+        else:
+            self.step()
         self.renderer.render(self.stage)
+        self.window.requestAnimationFrame(self._animate)
         
+    def step(self):
+        pass
+    
     def run(self, userfunc = None):
-        
+        self.userfunc = userfunc
+        self.window.requestAnimationFrame(self._animate)
 
 if __name__ == '__main__':
     def animate(fake):
