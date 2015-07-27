@@ -34,7 +34,7 @@ class ImageAsset(object):
 
     def __init__(self, url):
         self.url = url
-        self.PIXI = ImageAsset.PIXI.Texture.fromImage(url, False)
+        self.PIXI = ImageAsset.PIXI_Texture.fromImage(url, False)
 
 class Sprite(object):
     
