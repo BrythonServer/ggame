@@ -62,7 +62,7 @@ class App(object):
     
     def __init__(self, width, height):
         self.w = window.open("", "")
-        self.stage = JSConstructor(PIXI.Container)
+        self.stage = JSConstructor(PIXI.Container)()
         self.renderer = PIXI.autoDetectRenderer(width, height, 
             {'transparent':True})
         self.w.document.body.appendChild(self.renderer.view)
