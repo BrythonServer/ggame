@@ -39,11 +39,22 @@ class ImageAsset(object):
         self.PIXI = PIXI.Texture.fromImage(url, False)
 
 class Sprite(object):
-    def __init__(self, texture, position = (0,0), frame = None):
+    def __init__(self, texture, position = (0,0), frame = False):
         if (frame):
             self.PIXI = PIXI_Sprite(PIXI_Texture(texture.PIXI, frame.PIXI))
+            print("sub-frame {}".format(frame))
         else:
             self.PIXI = PIXI_Sprite(texture.PIXI)
+        self.pos = position
+        
+    @property
+    def pos(self):
+        return (self.PIXI.position.x, self.PIXI.position.y)
+        
+    @pos.setter
+    def pos(self, value):
+        self.PIXI.position.x = value[0]
+        self.PIXI.position.y = value[1]
         
 
 if __name__ == '__main__':
@@ -61,7 +72,8 @@ if __name__ == '__main__':
     #s1 = PIXI_Sprite(PIXI_Texture(bunny.texture, frame))
 
     frame = Rectangle(0,0,30,30)
-    s = Sprite(bunny, frame)
+    s = Sprite(bunny, (0,0), frame)
+    
     STAGE.addChild(s.PIXI)
     w.document.body.appendChild(RENDERER.view)
     w.requestAnimationFrame(animate)
