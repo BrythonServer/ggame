@@ -87,23 +87,18 @@ class App(object):
         self.w.requestAnimationFrame(self._animate)
 
 if __name__ == '__main__':
-    def animate(fake):
-      w.requestAnimationFrame(animate)
-      RENDERER.render(STAGE)
-    
+
     bunnyurl = "bunny.png"
-    print("ggame test.")
     bunny = ImageAsset(bunnyurl)
 
-    frame = Frame(0,0,30,30)
-    s = Sprite(bunny, (0,0), frame)
-    app = App(1000, 500)
+    #frame = Frame(0,0,30,30)
+    #s = Sprite(bunny, (0,0), frame)
     
+    app = App(1000, 1000)
     
-    for x in range(50,500,10):
-        for y in range(50,500,10):
+    for x in range(50,1000,50):
+        for y in range(50,1000,50):
             app.add(Sprite(bunny, (x,y)))
-    
     
     app.run()
 
