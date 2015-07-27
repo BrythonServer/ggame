@@ -61,7 +61,7 @@ if __name__ == '__main__':
     #s1 = PIXI_Sprite(PIXI_Texture(bunny.texture, frame))
 
     frame = Rectangle(0,0,30,30)
-    s = Sprite(bunny)
+    s = Sprite(bunny, frame)
     STAGE.addChild(s.PIXI)
     w.document.body.appendChild(RENDERER.view)
     w.requestAnimationFrame(animate)
