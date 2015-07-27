@@ -27,14 +27,16 @@ class Frame(object):
         c = self.center
         self.x += value[0] - c[0]
         self.y += value[1] - c[1]
+
+PIXI_Texture = JSConstructor(PIXI.Texture)
         
 class ImageAsset(object):
 
-    PIXI_Texture = JSConstructor(PIXI.Texture)
+    
 
     def __init__(self, url):
         self.url = url
-        self.PIXI = ImageAsset.PIXI_Texture.fromImage(url, False)
+        self.PIXI = PIXI_Texture.fromImage(url, False)
 
 class Sprite(object):
     
