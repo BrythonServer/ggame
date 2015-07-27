@@ -30,12 +30,18 @@ if __name__ == '__main__':
     print("ggame test.")
     bunny = ImageAsset('bunny', bunnyurl)
     print(dir(bunny.texture))
-    print(bunny.texture.baseTexture)
     Stage = JSConstructor(PIXI.Container)
     STAGE = Stage()
     RENDERER = PIXI.autoDetectRenderer(1000,650, {'transparent':True})
     s = Sprite(bunny.texture)
-    s1 = Sprite(bunny.texture)
+    crop = bunny.texture.crop
+    frame = bunny.texture.frame
+  
+
+    s1 = Sprite(PIXI.Texture(bunny.texture, frame, crop))
     STAGE.addChild(s1)
     w.document.body.appendChild(RENDERER.view)
     w.requestAnimationFrame(animate)
+
+    print(crop.x, crop.y, crop.width, crop.height)
+    print(frame.x, frame.y, frame.width, frame.height)
