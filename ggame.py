@@ -14,12 +14,24 @@ Sprite = JSConstructor(PIXI.Sprite)
 PIXI_Texture = JSConstructor(PIXI.Texture)
 PIXI_Rectangle = JSConstructor(PIXI.Rectangle)
 
-
 class ImageAsset(object):
-    def __init__(self, name, url):
-        self.name = name
+    def __init__(self, url):
+        w.loaded = self.imageLoaded
+        self.texture = None
         self.url = url
-        self.texture = PIXI.Texture.fromImage(url, False)
+        PIXI_loader.add(url)
+        PIXI_loader.once('complete',w.loaded);
+        PIXI_loader.load();
+
+    def imageLoaded(self):
+        self.texture = PIXI.Texture.fromImage(self.url, False)
+        print("loaded..")
+
+
+#class ImageAsset(object):
+#    def __init__(self, url):
+#        self.url = url
+#        self.texture = PIXI.Texture.fromImage(url, False)
 
 
 
@@ -30,7 +42,7 @@ if __name__ == '__main__':
     
     bunnyurl = "bunny.png"
     print("ggame test.")
-    bunny = ImageAsset('bunny', bunnyurl)
+    bunny = ImageAsset(bunnyurl)
     print(dir(bunny.texture))
     Stage = JSConstructor(PIXI.Container)
     STAGE = Stage()
@@ -44,5 +56,3 @@ if __name__ == '__main__':
     w.document.body.appendChild(RENDERER.view)
     w.requestAnimationFrame(animate)
 
-    print(crop.x, crop.y, crop.width, crop.height)
-    print(frame.x, frame.y, frame.width, frame.height)
