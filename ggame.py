@@ -7,17 +7,16 @@ from javascript import JSObject, JSConstructor
 PIXI = JSObject(window.PIXI)
 
 
-PIXI_Texture = JSConstructor(PIXI.Texture)
-PIXI_Rectangle = JSConstructor(PIXI.Rectangle)
-
-
 class Frame(object):
+
+    PIXI_Rectangle = JSConstructor(PIXI.Rectangle)
+
     def __init__(self, x, y, w, h):
         self.x = x
         self.y = y
         self.w = w
         self.h = h
-        self.PIXI = PIXI_Rectangle(x,y,w,h)
+        self.PIXI = Frame.PIXI_Rectangle(x,y,w,h)
     
     @property
     def center(self):
@@ -30,9 +29,12 @@ class Frame(object):
         self.y += value[1] - c[1]
         
 class ImageAsset(object):
+
+    PIXI_Texture = JSConstructor(PIXI.Texture)
+
     def __init__(self, url):
         self.url = url
-        self.PIXI = PIXI.Texture.fromImage(url, False)
+        self.PIXI = ImageAsset.PIXI.Texture.fromImage(url, False)
 
 class Sprite(object):
     
