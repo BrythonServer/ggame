@@ -38,7 +38,7 @@ if __name__ == '__main__':
     
     bunnyurl = "bunny.png"
     print("ggame test.")
-    #asset = ImageAsset('bunny', bunnyurl)
+    asset = ImageAsset('bunny', bunnyurl)
     Stage = JSConstructor(PIXI.Container)
     STAGE = Stage()
     RENDERER = PIXI.autoDetectRenderer(1000,650, {'transparent':True})
