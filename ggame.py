@@ -36,10 +36,14 @@ class Rectangle(object):
 class ImageAsset(object):
     def __init__(self, url):
         self.url = url
-        self.texture = PIXI.Texture.fromImage(url, False)
+        self.PIXI = PIXI.Texture.fromImage(url, False)
 
 class Sprite(object):
-    def __init__(self, texture, frame):
+    def __init__(self, texture, position = (0,0), frame = None):
+        if (frame):
+            self.PIXI = PIXI_Sprite(PIXI_Texture(texture.PIXI, frame.PIXI))
+        else:
+            self.PIXI = PIXI_Sprite(texture.PIXI)
         
 
 if __name__ == '__main__':
@@ -53,10 +57,12 @@ if __name__ == '__main__':
     Stage = JSConstructor(PIXI.Container)
     STAGE = Stage()
     RENDERER = PIXI.autoDetectRenderer(1000,650, {'transparent':True})
-    frame = PIXI_Rectangle(0,0,30,30)
 
-    s1 = PIXI_Sprite(PIXI_Texture(bunny.texture, frame))
-    STAGE.addChild(s1)
+    #s1 = PIXI_Sprite(PIXI_Texture(bunny.texture, frame))
+
+    frame = Rectangle(0,0,30,30)
+    s = Sprite(bunny)
+    STAGE.addChild(s.PIXI)
     w.document.body.appendChild(RENDERER.view)
     w.requestAnimationFrame(animate)
 
