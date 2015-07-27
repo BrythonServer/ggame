@@ -44,7 +44,7 @@ class Sprite(object):
     
     def __init__(self, asset, position = (0,0), frame = False):
         if (frame):
-            self.PIXI = Sprite.PIXI_Sprite(PIXI_Texture(asset.PIXI, frame.PIXI))
+            self.PIXI = Sprite.PIXI_Sprite(ImageAsset.PIXI_Texture(asset.PIXI, frame.PIXI))
         else:
             self.PIXI = Sprite.PIXI_Sprite(asset.PIXI)
         self.position = position
