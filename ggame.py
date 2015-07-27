@@ -42,7 +42,6 @@ class Sprite(object):
     def __init__(self, texture, position = (0,0), frame = False):
         if (frame):
             self.PIXI = PIXI_Sprite(PIXI_Texture(texture.PIXI, frame.PIXI))
-            print("sub-frame {}".format(frame))
         else:
             self.PIXI = PIXI_Sprite(texture.PIXI)
         self.pos = position
@@ -74,7 +73,11 @@ if __name__ == '__main__':
     frame = Rectangle(0,0,30,30)
     s = Sprite(bunny, (0,0), frame)
     
-    STAGE.addChild(s.PIXI)
+    for x in range(50,500,10):
+        for y in range(50,500,10):
+            STAGE.addChild(Sprite(bunny, (x,y)).PIXI)
+    
+    
     w.document.body.appendChild(RENDERER.view)
     w.requestAnimationFrame(animate)
 
