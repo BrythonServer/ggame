@@ -34,6 +34,6 @@ if __name__ == '__main__':
     asset = ImageAsset('bunny', bunnyurl)
     STAGE = Stage()
     RENDERER = PIXI.autoDetectRenderer(1000,650, {'transparent':True})
-    stage.addChild(Sprite.fromImage(bunnyurl)
+    stage.addChild(Sprite.fromImage(bunnyurl))
     w.document.body.appendChild(RENDERER.view)
     RENDERER.render(STAGE)    
