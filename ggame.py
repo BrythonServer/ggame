@@ -12,7 +12,11 @@ class ImageAsset(object):
         self.name = name
         self.url = url
         PIXI_loader.add(name, url)
-
+        PIXI_loader.once('complete',self.loadComplete);
+        PIXI_loader.load();
+    
+    def loadComplete(self):
+        print("loaded asset!")
 
 if __name__ == '__main__':
     bunnyurl = "https://github.com/tiggerntatie/brython-\
