@@ -44,14 +44,14 @@ class Sprite(object):
             self.PIXI = PIXI_Sprite(PIXI_Texture(texture.PIXI, frame.PIXI))
         else:
             self.PIXI = PIXI_Sprite(texture.PIXI)
-        self.pos = position
+        self.position = position
         
     @property
-    def pos(self):
+    def position(self):
         return (self.PIXI.position.x, self.PIXI.position.y)
         
-    @pos.setter
-    def pos(self, value):
+    @position.setter
+    def position(self, value):
         self.PIXI.position.x = value[0]
         self.PIXI.position.y = value[1]
         
