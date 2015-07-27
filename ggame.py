@@ -15,13 +15,13 @@ class ImageAsset(object):
         self.name = name
         self.url = url
         PIXI_loader.add(name, url)
-        PIXI_loader.load(loadComplete)
+        PIXI_loader.load(self.loadComplete)
     
     def loadComplete(self):
         print("loaded asset!")
 
 if __name__ == '__main__':
-    bunnyurl = "https://github.com/tiggerntatie/brython-server-testing/blob/master/bunny.png?raw=true"
+    bunnyurl = "bunny.png"
     print("ggame test.")
     asset = ImageAsset('bunny', bunnyurl)
     
