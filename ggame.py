@@ -11,6 +11,8 @@ PIXI_loader = JSObject(PIXI.loader)
 PIXI_loader.reset()
 
 Sprite = JSConstructor(PIXI.Sprite)
+PIXI_Texture = JSConstructor(PIXI.Texture)
+PIXI_Rectangle = JSConstructor(PIXI.Rectangle)
 
 
 class ImageAsset(object):
@@ -34,11 +36,10 @@ if __name__ == '__main__':
     STAGE = Stage()
     RENDERER = PIXI.autoDetectRenderer(1000,650, {'transparent':True})
     s = Sprite(bunny.texture)
-    crop = bunny.texture.crop
-    frame = bunny.texture.frame
-  
+    frame = PIXI_Rectangle(0,0,30,30)
 
-    s1 = Sprite(PIXI.Texture(bunny.texture, frame, crop))
+
+    s1 = Sprite(PIXI_Texture(bunny.texture, frame))
     STAGE.addChild(s1)
     w.document.body.appendChild(RENDERER.view)
     w.requestAnimationFrame(animate)
