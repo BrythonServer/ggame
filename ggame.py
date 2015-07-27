@@ -2,13 +2,9 @@ from browser import window, document
 from random import randint
 from javascript import JSObject, JSConstructor
 
-w = window.open("", "")
-
 
 # depends on pixi.js 
 PIXI = JSObject(window.PIXI)
-PIXI_loader = JSObject(PIXI.loader)
-PIXI_loader.reset()
 
 
 PIXI_Texture = JSConstructor(PIXI.Texture)
@@ -60,7 +56,22 @@ class Sprite(object):
 
 class App(object):
     
-    def __init__(self, size, 
+    def __init__(self, width, height):
+        self.window = window.open("", "")
+        self.stage = JSConstructor(PIXI.Container)
+        self.renderer = PIXI.autoDetectRenderer(width, height, 
+            {'transparent':True})
+        self.window.document.body.appendChild(self.renderer.view)
+        
+    def add(self, obj):
+        self.stage.addChild(obj.PIXI)
+        
+    def _animate(self, dummy):
+        self.window.requestAnimationFrame(self._animate)
+        self.renderer.render(self.stage)
+        
+    def run(self, userfunc = None):
+        
 
 if __name__ == '__main__':
     def animate(fake):
