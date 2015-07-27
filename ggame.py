@@ -12,22 +12,12 @@ PIXI_loader.reset()
 
 Sprite = JSConstructor(PIXI.Sprite)
 
-def loadComplete(ev):
-    print("loaded asset!")
 
 class ImageAsset(object):
     def __init__(self, name, url):
         self.name = name
         self.url = url
-        PIXI_loader.add(name, url)
-        PIXI_loader.on('complete', self.loadComplete)
-        PIXI_loader.load()
-
-    def loadComplete(self, ev):
-        print("loaded asset!")
-
-
-
+        self.texture = PIXI.Texture.fromImage(url, False)
 
 
 
@@ -38,10 +28,10 @@ if __name__ == '__main__':
     
     bunnyurl = "bunny.png"
     print("ggame test.")
-    asset = ImageAsset('bunny', bunnyurl)
+    bunny = ImageAsset('bunny', bunnyurl)
     Stage = JSConstructor(PIXI.Container)
     STAGE = Stage()
     RENDERER = PIXI.autoDetectRenderer(1000,650, {'transparent':True})
-    STAGE.addChild(Sprite(PIXI.Texture.fromImage("bunny.png", False)))
+    STAGE.addChild(Sprite(bunny.texture))
     w.document.body.appendChild(RENDERER.view)
     w.requestAnimationFrame(animate)
