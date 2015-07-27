@@ -28,7 +28,14 @@ class ImageAsset(object):
 
 
 
+
+
+
 if __name__ == '__main__':
+    def animate(fake):
+      w.requestAnimationFrame(animate)
+      RENDERER.render(STAGE)
+    
     bunnyurl = "bunny.png"
     print("ggame test.")
     #asset = ImageAsset('bunny', bunnyurl)
@@ -37,4 +44,4 @@ if __name__ == '__main__':
     RENDERER = PIXI.autoDetectRenderer(1000,650, {'transparent':True})
     STAGE.addChild(Sprite(PIXI.Texture.fromImage("bunny.png", False)))
     w.document.body.appendChild(RENDERER.view)
-    RENDERER.render(STAGE)    
+    w.requestAnimationFrame(animate)
