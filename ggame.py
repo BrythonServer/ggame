@@ -233,6 +233,7 @@ class App(object):
         self.w.document.body.bind(MouseEvent.mouseup, self._mouseEvent)
         self.w.document.body.bind(MouseEvent.click, self._mouseEvent)
         self.w.document.body.bind(MouseEvent.dblclick, self._mouseEvent)
+        self.w.document.body.bind(MouseEvent.mousewheel, self._mouseEvent)
         self.spritelist = []
         self.eventdict = {}
         
@@ -249,6 +250,7 @@ class App(object):
             self._routeEvent(evt, evtlist)
 
     def _mouseEvent(self, hwevent):
+        print(hwevent.type)
         evtlist = self.eventdict.get(hwevent.type, [])
         if len(evtlist) > 0:
             evt = MouseEvent(hwevent)
