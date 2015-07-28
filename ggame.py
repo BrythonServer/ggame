@@ -300,6 +300,18 @@ if __name__ == '__main__':
             self.app.listenKeyEvent(KeyEvent.keypress, "up arrow", self.upKey)
             self.app.listenKeyEvent(KeyEvent.keypress, "down arrow", self.downKey)
         
+        def leftKey(self, event):
+            self.x -= 1
+            
+        def rightKey(self, event):
+            self.x += 1
+            
+        def upKey(self, event):
+            self.y -= 1
+        
+        def downKey(self, event):
+            self.y += 1
+        
         def spaceKey(self, event):
             pass
 
