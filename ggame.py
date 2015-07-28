@@ -241,6 +241,7 @@ class App(object):
                 callback(event)
         
     def _keyEvent(self, hwevent):
+        print(hwevent.keyCode)
         evtlist = self.eventdict.get(
             (hwevent.type, KeyEvent.keys.get(hwevent.keyCode,0), hwevent.keyLocation), [])
         if len(evtlist) > 0:
@@ -314,7 +315,7 @@ if __name__ == '__main__':
             self.y += 1
         
         def spaceKey(self, event):
-            print("space")
+            pass
 
     class myApp(App):
         def __init__(self, width, height):
