@@ -244,14 +244,10 @@ class App(object):
                 callback(event)
         
     def _keyEvent(self, hwevent):
-        print("in _keyEvent")
         evtlist = self.eventdict.get(
             (hwevent.type, KeyEvent.keys.get(hwevent.keyCode,0), hwevent.keyLocation), [])
-        print("length of evtlist: ", len(evtlist))
         if len(evtlist) > 0:
-            print("making event..")
             evt = KeyEvent(hwevent)
-            print("routing..")
             self._routeEvent(evt, evtlist)
 
     def _mouseEvent(self, hwevent):
