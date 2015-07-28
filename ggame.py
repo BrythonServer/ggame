@@ -288,6 +288,14 @@ class App(object):
 
 if __name__ == '__main__':
 
+    class bunnySprite(Sprite):
+        def __init__(self, app, asset, position = (0,0), frame = False):
+            super().__init__(app, asset, position, frame)
+            self.app.listenKeyEvent(KeyEvent.keypress, "space", self.spaceKey)
+        
+        def spaceKey(self, event):
+            print ("space pressed!")
+
     class myApp(App):
         def __init__(self, width, height):
             super().__init__(width, height)
@@ -300,7 +308,7 @@ if __name__ == '__main__':
             bunny = ImageAsset(bunnyurl)
             for x in range(50,1000,150):
                 for y in range(50,1000,150):
-                    self.bunnies.append(Sprite(self, bunny, (x,y)))
+                    self.bunnies.append(bunnySprite(self, bunny, (x,y)))
             self.direction = 5
         
         def step(self):
