@@ -236,7 +236,7 @@ class App(object):
         
     def _routeEvent(self, event, evtlist):
         for callback in evtlist:
-            if !event.consumed:
+            if not event.consumed:
                 callback(event)
         
         
@@ -291,7 +291,7 @@ if __name__ == '__main__':
     class bunnySprite(Sprite):
         def __init__(self, app, asset, position = (0,0), frame = False):
             super().__init__(app, asset, position, frame)
-            #self.app.listenKeyEvent(KeyEvent.keypress, "space", self.spaceKey)
+            self.app.listenKeyEvent(KeyEvent.keypress, "space", self.spaceKey)
         
         def spaceKey(self, event):
             print ("space pressed!")
