@@ -236,7 +236,10 @@ class App(object):
         self.eventdict = {}
         
     def _routeEvent(self, event, evtlist):
+        print("in routeEvent, ", len(evtlist), " handlers found.")
         for callback in evtlist:
+            print("callback: ", int(callback))
+            print("event.consumed: ", event.consumed)
             if not event.consumed:
                 callback(event)
         
