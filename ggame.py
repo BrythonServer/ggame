@@ -308,8 +308,12 @@ if __name__ == '__main__':
             self.app.listenKeyEvent(KeyEvent.keyup, "right arrow", self.horizUp)
             self.app.listenKeyEvent(KeyEvent.keyup, "up arrow", self.vertUp)
             self.app.listenKeyEvent(KeyEvent.keyup, "down arrow", self.vertUp)
+            self.app.listenMouseEvent("mousewheel", self.mouse)
             self.vx = 0
             self.vy = 0
+            
+        def mouse(self, event):
+            pass
         
         def leftKey(self, event):
             self.vx = -1
