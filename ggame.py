@@ -53,6 +53,22 @@ class Sprite(object):
         self.app._add(self)
         
     @property
+    def x(self):
+        return self.PIXI.position.x
+        
+    @x.setter
+    def x(self, value):
+        self.PIXI.position.x = value
+        
+    @property
+    def y(self):
+        return self.PIXI.position.y
+        
+    @y.setter
+    def y(self, value):
+        self.PIXI.position.y = value
+        
+    @property
     def position(self):
         return (self.PIXI.position.x, self.PIXI.position.y)
         
