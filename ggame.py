@@ -82,7 +82,108 @@ class Sprite(object):
 
 class Event(object):
     
-    
+    keys = {8: 'backspace',
+        9: 'tab',
+        13: 'enter',
+        16: 'shift',
+        17: 'ctrl',
+        18: 'alt',
+        19: 'pause/break',
+        20: 'caps lock',
+        27: 'escape',
+        33: 'page up',
+        34: 'page down',
+        35: 'end',
+        36: 'home',
+        37: 'left arrow',
+        38: 'up arrow',
+        39: 'right arrow',
+        40: 'down arrow',
+        45: 'insert',
+        46: 'delete',
+        48: '0',
+        49: '1',
+        50: '2',
+        51: '3',
+        52: '4',
+        53: '5',
+        54: '6',
+        55: '7',
+        56: '8',
+        57: '9',
+        a	65
+b	66
+c	67
+d	68
+ 	
+Key	Code
+e	69
+f	70
+g	71
+h	72
+i	73
+j	74
+k	75
+l	76
+m	77
+n	78
+o	79
+p	80
+q	81
+r	82
+s	83
+t	84
+u	85
+v	86
+w	87
+x	88
+y	89
+z	90
+left window key	91
+right window key	92
+select key	93
+numpad 0	96
+numpad 1	97
+numpad 2	98
+numpad 3	99
+numpad 4	100
+numpad 5	101
+numpad 6	102
+numpad 7	103
+ 	
+Key	Code
+numpad 8	104
+numpad 9	105
+multiply	106
+add	107
+subtract	109
+decimal point	110
+divide	111
+f1	112
+f2	113
+f3	114
+f4	115
+f5	116
+f6	117
+f7	118
+f8	119
+f9	120
+f10	121
+f11	122
+f12	123
+num lock	144
+scroll lock	145
+semi-colon	186
+equal sign	187
+comma	188
+dash	189
+period	190
+forward slash	191
+grave accent	192
+open bracket	219
+back slash	220
+close braket	221
+single quote	222
     
     def __init__(self, hwevent):
         self.hwevent = hwevent
