@@ -207,10 +207,10 @@ class App(object):
         self.eventdict = {}
         
     def _keyDown(self, hwevent):
-        print("keyDown: ", hwevent.keyCode, hwevent.keyIdentifier, hwevent.keyLocation, dir(hwevent))
+        print("keyDown: ", hwevent.type, hwevent.keyCode, hwevent.keyIdentifier, hwevent.keyLocation, dir(hwevent))
         
     def _mouseDown(self, hwevent):
-        print("mouseDown: ", hwevent.x, hwevent.y)
+        print("mouseDown: ", hwevent.type, hwevent.x, hwevent.y)
         
     def _add(self, obj):
         self.stage.addChild(obj.PIXI)
