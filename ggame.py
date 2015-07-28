@@ -104,12 +104,12 @@ if __name__ == '__main__':
             super().__init__(width, height)
             bunnyurl = "bunny.png"
             bunny = ImageAsset(bunnyurl)
-            for x in range(50,1000,50):
-                for y in range(50,1000,50):
+            for x in range(50,1000,150):
+                for y in range(50,1000,150):
                     Sprite(self, bunny, (x,y))
             
 
-    app = myApp(1000, 1000)
+    app = myApp(1000, 700)
     
     
     app.run()
