@@ -295,9 +295,13 @@ if __name__ == '__main__':
         def __init__(self, app, asset, position = (0,0), frame = False):
             super().__init__(app, asset, position, frame)
             self.app.listenKeyEvent(KeyEvent.keypress, "space", self.spaceKey)
+            self.app.listenKeyEvent(KeyEvent.keypress, "left arrow", self.leftKey)
+            self.app.listenKeyEvent(KeyEvent.keypress, "right arrow", self.rightKey)
+            self.app.listenKeyEvent(KeyEvent.keypress, "up arrow", self.upKey)
+            self.app.listenKeyEvent(KeyEvent.keypress, "down arrow", self.downKey)
         
         def spaceKey(self, event):
-            print ("space pressed!")
+            pass
 
     class myApp(App):
         def __init__(self, width, height):
@@ -315,9 +319,10 @@ if __name__ == '__main__':
             self.direction = 5
         
         def step(self):
-            for s in self.bunnies:
-                s.x += self.direction
-            self.direction *= -1
+            pass
+            #for s in self.bunnies:
+            #    s.x += self.direction
+            #self.direction *= -1
 
     app = myApp(1000, 700)
     
