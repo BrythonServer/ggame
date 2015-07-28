@@ -137,51 +137,49 @@ class Event(object):
         88: 'x',
         89: 'y',
         90: 'z',
-left window key	91
-right window key	92
-select key	93
-numpad 0	96
-numpad 1	97
-numpad 2	98
-numpad 3	99
-numpad 4	100
-numpad 5	101
-numpad 6	102
-numpad 7	103
- 	
-Key	Code
-numpad 8	104
-numpad 9	105
-multiply	106
-add	107
-subtract	109
-decimal point	110
-divide	111
-f1	112
-f2	113
-f3	114
-f4	115
-f5	116
-f6	117
-f7	118
-f8	119
-f9	120
-f10	121
-f11	122
-f12	123
-num lock	144
-scroll lock	145
-semi-colon	186
-equal sign	187
-comma	188
-dash	189
-period	190
-forward slash	191
-grave accent	192
-open bracket	219
-back slash	220
-close braket	221
-single quote	222
+        91: 'left window key',
+        92: 'right window key',
+        93: 'select key',
+        96: 'numpad 0',
+        97: 'numpad 1',
+        98: 'numpad 2',
+        99: 'numpad 3',
+        100: 'numpad 4',
+        101: 'numpad 5',
+        102: 'numpad 6',
+        103: 'numpad 7',
+        104: 'numpad 8',
+        105: 'numpad 9',
+        106: 'multiply',
+        107: 'add',
+        109: 'subtract',
+        110: 'decimal point',
+        111: 'divide',
+        112: 'f1',
+        113: 'f2',
+        114: 'f3',
+        115: 'f4',
+        116: 'f5',
+        117: 'f6',
+        118: 'f7',
+        119: 'f8',
+        120: 'f9',
+        121: 'f10',
+        122: 'f11',
+        123: 'f12',
+        144: 'num lock',
+        145: 'scroll lock',
+        186: 'semicolon',
+        187: 'equal sign',
+        188: 'comma',
+        189: 'dash',
+        190: 'period',
+        191: 'forward slash',
+        192: 'grave accent',
+        219: 'open bracket',
+        220: 'back slash',
+        221: 'close bracket',
+        222: 'single quote'}
     
     def __init__(self, hwevent):
         self.hwevent = hwevent
