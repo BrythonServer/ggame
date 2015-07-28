@@ -241,7 +241,6 @@ class App(object):
                 callback(event)
         
     def _keyEvent(self, hwevent):
-        print(hwevent.keyCode)
         evtlist = self.eventdict.get(
             (hwevent.type, KeyEvent.keys.get(hwevent.keyCode,0), hwevent.keyLocation), [])
         if len(evtlist) > 0:
@@ -295,16 +294,15 @@ if __name__ == '__main__':
     class bunnySprite(Sprite):
         def __init__(self, app, asset, position = (0,0), frame = False):
             super().__init__(app, asset, position, frame)
-            self.app.listenKeyEvent(KeyEvent.keypress, "space", self.spaceKey)
-            self.app.listenKeyEvent(KeyEvent.keypress, "left arrow", self.leftKey)
-            self.app.listenKeyEvent(KeyEvent.keypress, "right arrow", self.rightKey)
-            self.app.listenKeyEvent(KeyEvent.keypress, "up arrow", self.upKey)
-            self.app.listenKeyEvent(KeyEvent.keypress, "down arrow", self.downKey)
+            self.app.listenKeyEvent(KeyEvent.keydown, "space", self.spaceKey)
+            self.app.listenKeyEvent(KeyEvent.keydown, "left arrow", self.leftKey)
+            self.app.listenKeyEvent(KeyEvent.keydown, "right arrow", self.rightKey)
+            self.app.listenKeyEvent(KeyEvent.keydown, "up arrow", self.upKey)
+            self.app.listenKeyEvent(KeyEvent.keydown, "down arrow", self.downKey)
         
         def leftKey(self, event):
             self.x -= 1
-            print("left")
-            
+
         def rightKey(self, event):
             self.x += 1
             
