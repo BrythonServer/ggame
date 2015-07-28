@@ -201,16 +201,22 @@ class App(object):
         self.renderer = PIXI.autoDetectRenderer(width, height, 
             {'transparent':True})
         self.w.document.body.appendChild(self.renderer.view)
-        self.w.document.body.bind('keydown', self._keyDown)
-        self.w.document.body.bind('mousedown', self._mouseDown)
+        self.w.document.body.bind('keydown', self._keyEvent)
+        self.w.document.body.bind('keyup', self._keyEvent)
+        self.w.document.body.bind('keypress', self._keyEvent)
+        self.w.document.body.bind('mousemove', self._mouseEvent)
+        self.w.document.body.bind('mousedown', self._mouseEvent)
+        self.w.document.body.bind('mouseup', self._mouseEvent)
+        self.w.document.body.bind('click', self._mouseEvent)
+        self.w.document.body.bind('dblclick', self._mouseEvent)
         self.spritelist = []
         self.eventdict = {}
         
-    def _keyDown(self, hwevent):
-        print("keyDown: ", hwevent.type, hwevent.keyCode, hwevent.keyIdentifier, hwevent.keyLocation, dir(hwevent))
+    def _keyEvent(self, hwevent):
+        print(hwevent.type, hwevent.keyCode, hwevent.keyIdentifier, hwevent.keyLocation, dir(hwevent))
         
-    def _mouseDown(self, hwevent):
-        print("mouseDown: ", hwevent.type, hwevent.x, hwevent.y)
+    def _mouseEvent(self, hwevent):
+        print(hwevent.type, hwevent.x, hwevent.y)
         
     def _add(self, obj):
         self.stage.addChild(obj.PIXI)
