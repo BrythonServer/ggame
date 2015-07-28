@@ -236,8 +236,8 @@ class App(object):
         
     def _routeEvent(self, event, evtlist):
         for callback in evtlist:
-            if !evt.consumed:
-                callback(evt)
+            if !event.consumed:
+                callback(event)
         
         
     def _keyEvent(self, hwevent):
