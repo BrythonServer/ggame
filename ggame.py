@@ -365,8 +365,8 @@ if __name__ == '__main__':
             self.bunnies = []
             bunnyurl = "bunny.png"
             bunny = ImageAsset(bunnyurl)
-            for x in range(50,1500,150):
-                for y in range(50,1500,150):
+            for x in range(50,500,150):
+                for y in range(50,500,150):
                     self.bunnies.append(bunnySprite(self, bunny, (x,y)))
             self.direction = 5
         
