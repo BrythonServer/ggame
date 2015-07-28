@@ -271,6 +271,7 @@ class App(object):
         
     def listenKeyEvent(self, eventtype, key, callback, location = KeyEvent.no_location):
         evtlist = self.eventdict.get((eventtype, key, location), [])
+        print("len(evtlist)", len(evtlist))
         evtlist.append(callback)
         self.eventdict[(eventtype, key, location)] = evtlist
 
