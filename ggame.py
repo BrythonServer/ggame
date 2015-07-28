@@ -100,7 +100,9 @@ class MouseEvent(Event):
 class KeyEvent(Event):
     
     
-    location = {0: 'none', 1: 'left', 2: 'right'}
+    no_location = 0
+    right_location = 2
+    left_location = 1
     keydown = "keydown"
     keyup = "keyup"
     keypress = "keypress"
@@ -249,16 +251,16 @@ class App(object):
         self.renderer.render(self.stage)
         self.w.requestAnimationFrame(self._animate)
         
-    def listenKeyEvent(self, eventtype, key, callback):
-        evtlist = self.eventdict.get((eventtype,key), [])
+    def listenKeyEvent(self, eventtype, key, callback, location = KeyEvent.no_location):
+        evtlist = self.eventdict.get((eventtype, key, location), [])
         evtlist.append(callback)
         
     def listenMouseEvent(self, eventtype, callback):
         evtlist = self.eventdict.get(eventtype, [])
         evtlist.append(callback)
         
-    def unlistenKeyEvent(self, eventtype, key, callback):
-        self.eventdict[(eventtype,key)].remove(callback)
+    def unlistenKeyEvent(self, eventtype, key, callback, location = KeyEvent.no_location):
+        self.eventdict[(eventtype,key, location)].remove(callback)
 
     def unlistenMouseEvent(self, eventtype, callback):
         self.eventdict[eventtype].remove(callback)
