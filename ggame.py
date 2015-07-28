@@ -82,6 +82,13 @@ class Sprite(object):
 
 class Event(object):
     
+    def __init__(self, hwevent):
+        self.hwevent = hwevent
+
+class KeyEvent(Event):
+    
+    
+    location = {0: 'none', 1: 'left', 2: 'right'}    
     keys = {8: 'backspace',
         9: 'tab',
         13: 'enter',
@@ -179,10 +186,11 @@ class Event(object):
         219: 'open bracket',
         220: 'back slash',
         221: 'close bracket',
-        222: 'single quote'}
+        222: 'single quote'}    
     
     def __init__(self, hwevent):
-        self.hwevent = hwevent
+        super().__init__(hwevent)
+        
 
 
 class App(object):
@@ -196,6 +204,7 @@ class App(object):
         self.w.document.body.bind('keydown', self._keyDown)
         self.w.document.body.bind('mousedown', self._mouseDown)
         self.spritelist = []
+        self.eventdict = {}
         
     def _keyDown(self, hwevent):
         print("keyDown: ", hwevent.keyCode, hwevent.keyIdentifier, hwevent.keyLocation, dir(hwevent))
@@ -218,6 +227,20 @@ class App(object):
             self.step()
         self.renderer.render(self.stage)
         self.w.requestAnimationFrame(self._animate)
+        
+    def listenKeyEvent(self, eventtype, key, callback):
+        evtlist = self.eventdict.get((eventtype,key), [])
+        evtlist.append(callback)
+        
+    def listenMouseEvent(self, eventtype, callback):
+        evtlist = self.eventdict.get(eventtype, [])
+        evtlist.append(callback)
+        
+    def unlistenKeyEvent(self, eventtype, key, callback):
+        self.eventdict[(eventtype,key)].remove(callback)
+
+    def unlistenMouseEvent(self, eventtype, callback):
+        self.eventdict[eventtype].remove(callback)
         
     def step(self):
         pass
