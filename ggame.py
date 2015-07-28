@@ -299,21 +299,27 @@ if __name__ == '__main__':
             self.app.listenKeyEvent(KeyEvent.keydown, "right arrow", self.rightKey)
             self.app.listenKeyEvent(KeyEvent.keydown, "up arrow", self.upKey)
             self.app.listenKeyEvent(KeyEvent.keydown, "down arrow", self.downKey)
+            self.vx = 0
+            self.vy = 0
         
         def leftKey(self, event):
-            self.x -= 1
+            self.vx -= 1
 
         def rightKey(self, event):
-            self.x += 1
+            self.vx += 1
             
         def upKey(self, event):
-            self.y -= 1
+            self.vy -= 1
         
         def downKey(self, event):
-            self.y += 1
+            self.vy += 1
         
         def spaceKey(self, event):
             pass
+        
+        def step(self):
+            self.x += self.vx
+            self.y += self.vy
 
     class myApp(App):
         def __init__(self, width, height):
@@ -325,13 +331,14 @@ if __name__ == '__main__':
             self.bunnies = []
             bunnyurl = "bunny.png"
             bunny = ImageAsset(bunnyurl)
-            for x in range(50,1000,150):
-                for y in range(50,1000,150):
+            for x in range(50,1500,150):
+                for y in range(50,1500,150):
                     self.bunnies.append(bunnySprite(self, bunny, (x,y)))
             self.direction = 5
         
         def step(self):
-            pass
+            for s in self.bunnies:
+                s.step()
             #for s in self.bunnies:
             #    s.x += self.direction
             #self.direction *= -1
