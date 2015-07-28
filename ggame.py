@@ -94,6 +94,7 @@ class MouseEvent(Event):
     mouseup = "mouseup"
     click = "click"
     dblclick = "dblclick"
+    mousewheel = "mousewheel"
     
     def __init__(self, hwevent):
         super().__init__(hwevent)
@@ -248,8 +249,10 @@ class App(object):
             self._routeEvent(evt, evtlist)
 
     def _mouseEvent(self, hwevent):
-        pass
-        #print(hwevent.type, hwevent.x, hwevent.y)
+        evtlist = self.eventdict.get(hwevent.type, [])
+        if len(evtlist) > 0:
+            evt = MouseEvent(hwevent)
+            self._routeEvent(evt, evtlist)
         
     def _add(self, obj):
         self.stage.addChild(obj.PIXI)
@@ -328,8 +331,8 @@ if __name__ == '__main__':
             pass
         
         def step(self):
-            self.x += self.vx
-            self.y += self.vy
+            self.x += self.vx*2
+            self.y += self.vy*2
 
     class myApp(App):
         def __init__(self, width, height):
