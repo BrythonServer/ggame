@@ -302,6 +302,7 @@ if __name__ == '__main__':
         
         def leftKey(self, event):
             self.x -= 1
+            print("left")
             
         def rightKey(self, event):
             self.x += 1
@@ -313,7 +314,7 @@ if __name__ == '__main__':
             self.y += 1
         
         def spaceKey(self, event):
-            pass
+            print("space")
 
     class myApp(App):
         def __init__(self, width, height):
