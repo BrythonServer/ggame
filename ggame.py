@@ -243,7 +243,7 @@ class App(object):
         self.eventdict = {}
         
     def _routeEvent(self, event, evtlist):
-        for callback in evtlist:
+        for callback in reversed(evtlist):
             if not event.consumed:
                 callback(event)
         
