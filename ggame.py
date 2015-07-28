@@ -104,7 +104,7 @@ class KeyEvent(Event):
     no_location = 0
     right_location = 2
     left_location = 1
-    location = {0: 'none', 1: 'left', 2: 'right'}
+    locations = {0: 'none', 1: 'left', 2: 'right'}
     keydown = "keydown"
     keyup = "keyup"
     keypress = "keypress"
@@ -214,7 +214,8 @@ class KeyEvent(Event):
         print("super is done..")
         self.keynum = hwevent.keyCode
         self.key = self.keys[hwevent.keyCode]
-        self.location = self.location[hwevent.location]
+        self.location = self.locations[hwevent.location]
+        print("finishing with new KeyEvent")
         
 
 
