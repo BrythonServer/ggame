@@ -247,7 +247,8 @@ class App(object):
         self._routeEvent(evt, evtlist)
 
     def _mouseEvent(self, hwevent):
-        print(hwevent.type, hwevent.x, hwevent.y)
+        pass
+        #print(hwevent.type, hwevent.x, hwevent.y)
         
     def _add(self, obj):
         self.stage.addChild(obj.PIXI)
@@ -268,7 +269,8 @@ class App(object):
     def listenKeyEvent(self, eventtype, key, callback, location = KeyEvent.no_location):
         evtlist = self.eventdict.get((eventtype, key, location), [])
         evtlist.append(callback)
-        
+        self.eventdict[(eventtype, key, location)] = evtlist
+
     def listenMouseEvent(self, eventtype, callback):
         evtlist = self.eventdict.get(eventtype, [])
         evtlist.append(callback)
