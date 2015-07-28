@@ -326,21 +326,27 @@ if __name__ == '__main__':
         
         def leftKey(self, event):
             self.vx = -1
+            event.consumed = True
 
         def rightKey(self, event):
             self.vx = 1
+            event.consumed = True
             
         def upKey(self, event):
             self.vy = -1
+            event.consumed = True
         
         def downKey(self, event):
             self.vy = 1
+            event.consumed = True
             
         def horizUp(self, event):
             self.vx = 0
+            event.consumed = True
             
         def vertUp(self, event):
             self.vy = 0
+            event.consumed = True
         
         def spaceKey(self, event):
             pass
