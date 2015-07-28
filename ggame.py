@@ -98,6 +98,10 @@ class MouseEvent(Event):
     
     def __init__(self, hwevent):
         super().__init__(hwevent)
+        if self.type == self.mousewheel:
+            self.wheelDelta = hwevent.wheelDelta
+        else:
+            self.wheelDelta = 0
 
 
 class KeyEvent(Event):
@@ -250,7 +254,6 @@ class App(object):
             self._routeEvent(evt, evtlist)
 
     def _mouseEvent(self, hwevent):
-        print(hwevent.type, hwevent.wheelDelta)
         evtlist = self.eventdict.get(hwevent.type, [])
         if len(evtlist) > 0:
             evt = MouseEvent(hwevent)
@@ -280,6 +283,7 @@ class App(object):
     def listenMouseEvent(self, eventtype, callback):
         evtlist = self.eventdict.get(eventtype, [])
         evtlist.append(callback)
+        self.eventdict[eventtype] = evtlist
         
     def unlistenKeyEvent(self, eventtype, key, callback, location = KeyEvent.no_location):
         self.eventdict[(eventtype,key, location)].remove(callback)
@@ -313,7 +317,10 @@ if __name__ == '__main__':
             self.vy = 0
             
         def mouse(self, event):
-            pass
+            if event.wheelDelta > 0:
+                print("UP")
+            elif event.wheelDelta < 0:
+                print("DOWN")
         
         def leftKey(self, event):
             self.vx = -1
