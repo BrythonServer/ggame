@@ -209,7 +209,9 @@ class KeyEvent(Event):
         222: 'single quote'}    
     
     def __init__(self, hwevent):
+        print("inside new KeyEvent")
         super().__init__(hwevent)
+        print("super is done..")
         self.keynum = hwevent.keyCode
         self.key = self.keys[hwevent.keyCode]
         self.location = self.location[hwevent.location]
@@ -244,10 +246,14 @@ class App(object):
                 callback(event)
         
     def _keyEvent(self, hwevent):
+        print("in _keyEvent")
         evtlist = self.eventdict.get(
             (hwevent.type, KeyEvent.keys.get(hwevent.keyCode,0), hwevent.keyLocation), [])
+        print("length of evtlist: ", len(evtlist))
         if len(evtlist) > 0:
+            print("making event..")
             evt = KeyEvent(hwevent)
+            print("routing..")
             self._routeEvent(evt, evtlist)
 
     def _mouseEvent(self, hwevent):
