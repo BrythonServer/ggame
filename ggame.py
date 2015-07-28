@@ -209,14 +209,11 @@ class KeyEvent(Event):
         222: 'single quote'}    
     
     def __init__(self, hwevent):
-        print("inside new KeyEvent")
         super().__init__(hwevent)
-        print("super is done..")
-        self.keynum = hwevent.keyCode
-        self.key = self.keys[hwevent.keyCode]
-        self.location = self.locations[hwevent.location]
-        print("finishing with new KeyEvent")
-        
+        #self.keynum = hwevent.keyCode
+        #self.key = self.keys[hwevent.keyCode]
+        #self.location = self.locations[hwevent.location]
+
 
 
 class App(object):
