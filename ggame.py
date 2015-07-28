@@ -80,6 +80,12 @@ class Sprite(object):
     def destroy(self):
         self.app._remove(self)
 
+class Event(object):
+    
+    def __init__(self, hwevent):
+        self.hwevent = hwevent
+
+
 class App(object):
     
     def __init__(self, width, height):
@@ -88,7 +94,15 @@ class App(object):
         self.renderer = PIXI.autoDetectRenderer(width, height, 
             {'transparent':True})
         self.w.document.body.appendChild(self.renderer.view)
+        self.w.document.body.bind('keydown', self._keyDown)
+        self.w.document.body.bind('mousedown', self._mouseDown)
         self.spritelist = []
+        
+    def _keyDown(self, hwevent):
+        print("keyDown: ", dir(hwevent))
+        
+    def _mouseDown(self, hwevent):
+        print("mouseDown: ", dir(hwevent))
         
     def _add(self, obj):
         self.stage.addChild(obj.PIXI)
