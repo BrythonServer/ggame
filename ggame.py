@@ -234,11 +234,17 @@ class App(object):
         self.spritelist = []
         self.eventdict = {}
         
+    def _routeEvent(self, event, evtlist):
+        for callback in evtlist:
+            if !evt.consumed:
+                callback(evt)
+        
+        
     def _keyEvent(self, hwevent):
         evtlist = self.eventdict.get(
             (hwevent.type, hwevent.keyCode, hwevent.keyLocation), [])
-        for callback in evtlist:
-            callback(KeyEvent(hwevent))
+        evt = KeyEvent(hwevent)
+        self._routeEvent(evt, evtlist)
 
     def _mouseEvent(self, hwevent):
         print(hwevent.type, hwevent.x, hwevent.y)
