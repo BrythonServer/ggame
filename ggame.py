@@ -61,6 +61,9 @@ class Sprite(object):
         self.PIXI.position.x = value[0]
         self.PIXI.position.y = value[1]
 
+    def destroy(self):
+        self.app._remove(self)
+
 class App(object):
     
     def __init__(self, width, height):
@@ -69,9 +72,15 @@ class App(object):
         self.renderer = PIXI.autoDetectRenderer(width, height, 
             {'transparent':True})
         self.w.document.body.appendChild(self.renderer.view)
+        self.spritelist = []
         
     def _add(self, obj):
         self.stage.addChild(obj.PIXI)
+        self.spritelist.append(obj)
+        
+    def _remove(self, obj):
+        self.stage.removeChild(obj.PIXI)
+        self.spritelist.remove(obj)
         
     def _animate(self, dummy):
         if self.userfunc:
@@ -90,17 +99,18 @@ class App(object):
 
 if __name__ == '__main__':
 
-    bunnyurl = "bunny.png"
-    bunny = ImageAsset(bunnyurl)
+    class myApp(App):
+        def __init__(self, width, height):
+            super().__init__(width, height)
+            bunnyurl = "bunny.png"
+            bunny = ImageAsset(bunnyurl)
+            for x in range(50,1000,50):
+                for y in range(50,1000,50):
+                    Sprite(self, bunny, (x,y))
+            
 
-    #frame = Frame(0,0,30,30)
-    #s = Sprite(bunny, (0,0), frame)
+    app = myApp(1000, 1000)
     
-    app = App(1000, 1000)
-    
-    for x in range(50,1000,50):
-        for y in range(50,1000,50):
-            app.add(Sprite(bunny, (x,y)))
     
     app.run()
 
