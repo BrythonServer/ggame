@@ -1,5 +1,4 @@
 from browser import window, document
-from random import randint
 from javascript import JSObject, JSConstructor
 
 
