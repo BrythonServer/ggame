@@ -84,11 +84,26 @@ class Event(object):
     
     def __init__(self, hwevent):
         self.hwevent = hwevent
+        
+class MouseEvent(Event):
+    
+    mousemove = "mousemove"
+    mousedown = "mousedown"
+    mouseup = "mouseup"
+    click = "click"
+    dblclick = "dblclick"
+    
+    def __init__(self, hwevent):
+        super().__init__(hwevent)
+
 
 class KeyEvent(Event):
     
     
-    location = {0: 'none', 1: 'left', 2: 'right'}    
+    location = {0: 'none', 1: 'left', 2: 'right'}
+    keydown = "keydown"
+    keyup = "keyup"
+    keypress = "keypress"
     keys = {8: 'backspace',
         9: 'tab',
         13: 'enter',
@@ -201,14 +216,14 @@ class App(object):
         self.renderer = PIXI.autoDetectRenderer(width, height, 
             {'transparent':True})
         self.w.document.body.appendChild(self.renderer.view)
-        self.w.document.body.bind('keydown', self._keyEvent)
-        self.w.document.body.bind('keyup', self._keyEvent)
-        self.w.document.body.bind('keypress', self._keyEvent)
-        self.w.document.body.bind('mousemove', self._mouseEvent)
-        self.w.document.body.bind('mousedown', self._mouseEvent)
-        self.w.document.body.bind('mouseup', self._mouseEvent)
-        self.w.document.body.bind('click', self._mouseEvent)
-        self.w.document.body.bind('dblclick', self._mouseEvent)
+        self.w.document.body.bind(KeyEvent.keydown, self._keyEvent)
+        self.w.document.body.bind(KeyEvent.keyup, self._keyEvent)
+        self.w.document.body.bind(KeyEvent.keypress, self._keyEvent)
+        self.w.document.body.bind(MouseEvent.mousemove, self._mouseEvent)
+        self.w.document.body.bind(MouseEvent.mousedown, self._mouseEvent)
+        self.w.document.body.bind(MouseEvent.mouseup, self._mouseEvent)
+        self.w.document.body.bind(MouseEvent.click, self._mouseEvent)
+        self.w.document.body.bind(MouseEvent.dblclick, self._mouseEvent)
         self.spritelist = []
         self.eventdict = {}
         
