@@ -102,6 +102,8 @@ class MouseEvent(Event):
             self.wheelDelta = hwevent.wheelDelta
         else:
             self.wheelDelta = 0
+        self.x = hwevent.x
+        self.y = hwevent.y
 
 
 class KeyEvent(Event):
