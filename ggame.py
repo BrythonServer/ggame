@@ -42,13 +42,15 @@ class Sprite(object):
     
     PIXI_Sprite = JSConstructor(PIXI.Sprite)
     
-    def __init__(self, asset, position = (0,0), frame = False):
+    def __init__(self, app, asset, position = (0,0), frame = False):
         if (frame):
             self.PIXI = Sprite.PIXI_Sprite(
                 ImageAsset.PIXI_Texture(asset.PIXI, frame.PIXI))
         else:
             self.PIXI = Sprite.PIXI_Sprite(asset.PIXI)
         self.position = position
+        self.app = app
+        self.app._add(self)
         
     @property
     def position(self):
@@ -68,7 +70,7 @@ class App(object):
             {'transparent':True})
         self.w.document.body.appendChild(self.renderer.view)
         
-    def add(self, obj):
+    def _add(self, obj):
         self.stage.addChild(obj.PIXI)
         
     def _animate(self, dummy):
