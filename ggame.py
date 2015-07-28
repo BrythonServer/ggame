@@ -102,6 +102,10 @@ if __name__ == '__main__':
     class myApp(App):
         def __init__(self, width, height):
             super().__init__(width, height)
+            grassurl = "grass_texture239.jpg"
+            grass = ImageAsset(grassurl)
+            Sprite(self, grass, (0,0))
+            
             bunnyurl = "bunny.png"
             bunny = ImageAsset(bunnyurl)
             for x in range(50,1000,150):
