@@ -82,6 +82,8 @@ class Sprite(object):
 
 class Event(object):
     
+    
+    
     def __init__(self, hwevent):
         self.hwevent = hwevent
 
@@ -99,7 +101,7 @@ class App(object):
         self.spritelist = []
         
     def _keyDown(self, hwevent):
-        print("keyDown: ", hwevent.keyCode, hwevent.keyIdentifier)
+        print("keyDown: ", hwevent.keyCode, hwevent.keyIdentifier, hwevent.keyLocation, dir(hwevent))
         
     def _mouseDown(self, hwevent):
         print("mouseDown: ", hwevent.x, hwevent.y)
