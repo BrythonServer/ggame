@@ -213,7 +213,7 @@ class App(object):
         self.eventdict = {}
         
     def _keyEvent(self, hwevent):
-        print(hwevent.type, hwevent.keyCode, hwevent.keyIdentifier, hwevent.keyLocation, dir(hwevent))
+        print(hwevent.type, hwevent.keyCode, hwevent.keyIdentifier, hwevent.keyLocation)
         
     def _mouseEvent(self, hwevent):
         print(hwevent.type, hwevent.x, hwevent.y)
