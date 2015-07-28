@@ -322,6 +322,7 @@ if __name__ == '__main__':
                 print("UP")
             elif event.wheelDelta < 0:
                 print("DOWN")
+            event.consumed = True
         
         def leftKey(self, event):
             self.vx = -1
