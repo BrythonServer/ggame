@@ -112,7 +112,6 @@ class KeyEvent(Event):
         9: 'tab',
         13: 'enter',
         16: 'shift',
-        17: 'ctrl',
         18: 'alt',
         19: 'pause/break',
         20: 'caps lock',
