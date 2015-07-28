@@ -84,6 +84,8 @@ class Event(object):
     
     def __init__(self, hwevent):
         self.hwevent = hwevent
+        self.type = hwevent.type
+        self.consumed = False
         
 class MouseEvent(Event):
     
@@ -98,11 +100,11 @@ class MouseEvent(Event):
 
 
 class KeyEvent(Event):
-    
-    
+
     no_location = 0
     right_location = 2
     left_location = 1
+    location = {0: 'none, 1: 'left', 2: 'right'}
     keydown = "keydown"
     keyup = "keyup"
     keypress = "keypress"
@@ -207,6 +209,9 @@ class KeyEvent(Event):
     
     def __init__(self, hwevent):
         super().__init__(hwevent)
+        self.keynum = hwevent.keyCode
+        self.key = self.keys[hwevent.keyCode]
+        self.location = self.location[hwevent.location]
         
 
 
@@ -230,8 +235,11 @@ class App(object):
         self.eventdict = {}
         
     def _keyEvent(self, hwevent):
-        print(hwevent.type, hwevent.keyCode, hwevent.keyIdentifier, hwevent.keyLocation)
-        
+        evtlist = self.eventdict.get(
+            (hwevent.type, hwevent.keyCode, hwevent.keyLocation), [])
+        for callback in evtlist:
+            callback(KeyEvent(hwevent))
+
     def _mouseEvent(self, hwevent):
         print(hwevent.type, hwevent.x, hwevent.y)
         
