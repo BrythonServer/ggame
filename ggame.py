@@ -377,7 +377,7 @@ if __name__ == '__main__':
             #    s.x += self.direction
             #self.direction *= -1
 
-    app = myApp(1000, 700)
+    app = myApp(500, 400)
     
     
     app.run()
