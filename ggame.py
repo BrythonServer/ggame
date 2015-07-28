@@ -299,20 +299,30 @@ if __name__ == '__main__':
             self.app.listenKeyEvent(KeyEvent.keydown, "right arrow", self.rightKey)
             self.app.listenKeyEvent(KeyEvent.keydown, "up arrow", self.upKey)
             self.app.listenKeyEvent(KeyEvent.keydown, "down arrow", self.downKey)
+            self.app.listenKeyEvent(KeyEvent.keyup, "left arrow", self.horizUp)
+            self.app.listenKeyEvent(KeyEvent.keyup, "right arrow", self.horizUp)
+            self.app.listenKeyEvent(KeyEvent.keyup, "up arrow", self.vertUp)
+            self.app.listenKeyEvent(KeyEvent.keyup, "down arrow", self.vertUp)
             self.vx = 0
             self.vy = 0
         
         def leftKey(self, event):
-            self.vx -= 1
+            self.vx = -1
 
         def rightKey(self, event):
-            self.vx += 1
+            self.vx = 1
             
         def upKey(self, event):
-            self.vy -= 1
+            self.vy = -1
         
         def downKey(self, event):
-            self.vy += 1
+            self.vy = 1
+            
+        def horizUp(self, event):
+            self.vx = 0
+            
+        def vertUp(self, event):
+            self.vy = 0
         
         def spaceKey(self, event):
             pass
