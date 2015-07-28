@@ -99,10 +99,10 @@ class App(object):
         self.spritelist = []
         
     def _keyDown(self, hwevent):
-        print("keyDown: ", keyCode, keyIdentifier)
+        print("keyDown: ", hwevent.keyCode, hwevent.keyIdentifier)
         
     def _mouseDown(self, hwevent):
-        print("mouseDown: ", x, y)
+        print("mouseDown: ", hwevent.x, hwevent.y)
         
     def _add(self, obj):
         self.stage.addChild(obj.PIXI)
