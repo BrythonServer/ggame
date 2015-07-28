@@ -210,9 +210,9 @@ class KeyEvent(Event):
     
     def __init__(self, hwevent):
         super().__init__(hwevent)
-        #self.keynum = hwevent.keyCode
-        #self.key = self.keys[hwevent.keyCode]
-        #self.location = self.locations[hwevent.location]
+        self.keynum = hwevent.keyCode
+        self.key = self.keys[hwevent.keyCode]
+        self.location = self.locations[hwevent.keyLocation]
 
 
 
