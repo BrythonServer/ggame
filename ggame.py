@@ -243,9 +243,11 @@ class App(object):
         
     def _keyEvent(self, hwevent):
         evtlist = self.eventdict.get(
-            (hwevent.type, hwevent.keyCode, hwevent.keyLocation), [])
-        evt = KeyEvent(hwevent)
-        self._routeEvent(evt, evtlist)
+            (hwevent.type, KeyEvent.keys.get(hwevent.keyCode,0), hwevent.keyLocation), [])
+        print(hwevent.type, hwevent.keyCode, hwevent.keyLocation, len(evtlist))
+        if len(evtlist):
+            evt = KeyEvent(hwevent)
+            self._routeEvent(evt, evtlist)
 
     def _mouseEvent(self, hwevent):
         pass
