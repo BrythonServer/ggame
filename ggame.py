@@ -111,7 +111,12 @@ if __name__ == '__main__':
             for x in range(50,1000,150):
                 for y in range(50,1000,150):
                     Sprite(self, bunny, (x,y))
-            
+            self.direction = 5
+        
+        def step(self):
+            for s in self.spritelist:
+                s.x += self.direction
+            self.direction *= -1
 
     app = myApp(1000, 700)
     
