@@ -240,12 +240,10 @@ class App(object):
             if not event.consumed:
                 callback(event)
         
-        
     def _keyEvent(self, hwevent):
         evtlist = self.eventdict.get(
             (hwevent.type, KeyEvent.keys.get(hwevent.keyCode,0), hwevent.keyLocation), [])
-        print(hwevent.type, hwevent.keyCode, hwevent.keyLocation, len(evtlist))
-        if len(evtlist):
+        if len(evtlist) > 0:
             evt = KeyEvent(hwevent)
             self._routeEvent(evt, evtlist)
 
@@ -271,7 +269,6 @@ class App(object):
         
     def listenKeyEvent(self, eventtype, key, callback, location = KeyEvent.no_location):
         evtlist = self.eventdict.get((eventtype, key, location), [])
-        print("len(evtlist)", len(evtlist))
         evtlist.append(callback)
         self.eventdict[(eventtype, key, location)] = evtlist
 
