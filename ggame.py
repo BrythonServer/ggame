@@ -122,15 +122,16 @@ if __name__ == '__main__':
             grass = ImageAsset(grassurl)
             Sprite(self, grass, (0,0))
             
+            self.bunnies = []
             bunnyurl = "bunny.png"
             bunny = ImageAsset(bunnyurl)
             for x in range(50,1000,150):
                 for y in range(50,1000,150):
-                    Sprite(self, bunny, (x,y))
+                    self.bunnies.append(Sprite(self, bunny, (x,y)))
             self.direction = 5
         
         def step(self):
-            for s in self.spritelist:
+            for s in self.bunnies:
                 s.x += self.direction
             self.direction *= -1
 
