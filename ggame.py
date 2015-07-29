@@ -149,26 +149,39 @@ class TextAsset(object):
                 })
         self.PIXI.alpha = self.fill.alpha
         self.PIXI.visible = False
+        
+    def clone(self):
+        return __class__(self.app,
+            self.text,
+            style = self.style,
+            width = self.width,
+            fill = self.fill,
+            align = self.align)
 
 class Sprite(object):
     
     
     def __init__(self, asset, position = (0,0), frame = False):
-        self.asset = asset
         self.app = self.asset.app
         if type(asset) == ImageAsset:
+            self.asset = asset
             if (frame):
                 self.PIXI = self.app.PIXI_Sprite(
                     self.app.PIXI_Texture(asset.PIXI, frame.PIXI))
             else:
                 self.PIXI = self.app.PIXI_Sprite(asset.PIXI)
-        if type(asset) in [RectangleAsset, 
+        elif type(asset) in [RectangleAsset, 
             CircleAsset, 
             EllipseAsset, 
             PolygonAsset,
             LineAsset,
             ]:
+            self.asset = asset
             self.PIXI = asset.PIXI.clone()
+            self.PIXI.visible = True
+        elif type(asset) in [TextAsset]:
+            self.asset = asset.clone()
+            self.PIXI = self.asset.PIXI
             self.PIXI.visible = True
         self.position = position
         self.app._add(self)
