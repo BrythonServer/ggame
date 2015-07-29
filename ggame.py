@@ -176,6 +176,14 @@ class Sprite(object):
     def position(self, value):
         self.PIXI.position.x = value[0]
         self.PIXI.position.y = value[1]
+        
+    @property
+    def visible(self):
+        return self.PIXI.visible
+    
+    @visible.setter
+    def visible(self, value):
+        self.PIXI.visible = value
 
     def destroy(self):
         self.app._remove(self)
