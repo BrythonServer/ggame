@@ -319,6 +319,7 @@ class App(object):
 
     def cleanup(self, dummy):
         self.BUZZ.all().stop()
+        self.stage.destroy()
 
     def listenKeyEvent(self, eventtype, key, callback):
         evtlist = self.eventdict.get((eventtype, key), [])
@@ -429,10 +430,15 @@ if __name__ == '__main__':
             self.spring = SoundAsset(self, "spring.wav")
             self.springsound =Sound(self.spring)
             self.springsound.loop()
+            self.graphics = JSConstructor(self.PIXI.Graphics)()
+            print(dir(self.stage))
 
         def step(self):
             for s in self.bunnies:
                 s.step()
+            self.graphics.beginFill(0xffffff, 1)
+            rect = self.graphics.drawRect(100,100,200,200)
+
             #for s in self.bunnies:
             #    s.x += self.direction
             #self.direction *= -1
