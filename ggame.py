@@ -266,7 +266,7 @@ class App(object):
         self.PIXI_Sprite = JSConstructor(self.PIXI.Sprite)
         self.BUZZ = JSObject(window.buzz)
         self.w = window.open("", "")
-        self.w.onbeforeunload = self.cleanup
+        self.w.onunload = self.cleanup
         self.stage = JSConstructor(self.PIXI.Container)()
         self.renderer = self.PIXI.autoDetectRenderer(width, height, 
             {'transparent':True})
