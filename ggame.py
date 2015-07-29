@@ -59,8 +59,12 @@ class LineStyle(object):
         self.width = width
         self.color = color
 
+class GraphicsAsset(object):
+    
+    def cleanup(self):
+        self.PIXI.destroy()
 
-class CurveAsset(object):
+class CurveAsset(GraphicsAsset):
 
     def __init__(self, app, line):
         self.app = app
@@ -157,6 +161,10 @@ class TextAsset(object):
             width = self.width,
             fill = self.fill,
             align = self.align)
+
+    def cleanup(self):
+        self.PIXI.destroy(True)
+
 
 class Sprite(object):
     
