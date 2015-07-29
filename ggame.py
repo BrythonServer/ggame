@@ -75,11 +75,14 @@ class Sprite(object):
     def __init__(self, asset, position = (0,0), frame = False):
         self.asset = asset
         self.app = self.asset.app
-        if (frame):
-            self.PIXI = self.app.PIXI_Sprite(
-                self.app.PIXI_Texture(asset.PIXI, frame.PIXI))
-        else:
-            self.PIXI = self.app.PIXI_Sprite(asset.PIXI)
+        if type(asset) == ImageAsset:
+            if (frame):
+                self.PIXI = self.app.PIXI_Sprite(
+                    self.app.PIXI_Texture(asset.PIXI, frame.PIXI))
+            else:
+                self.PIXI = self.app.PIXI_Sprite(asset.PIXI)
+        if type(asset) in [RectangleAsset]:
+            self.PIXI = asset.PIXI
         self.position = position
         self.app._add(self)
         
@@ -462,13 +465,13 @@ if __name__ == '__main__':
             fcolor = Color(0x5050ff, 0.8)
             lcolor = Color(0, 1)
             line = LineStyle(3, lcolor)
-            #rect = RectangleAsset(self, 100, 150, line, fcolor)
+            rect = RectangleAsset(self, 100, 150, line, fcolor)
             
             
             
             for x in range(50,500,150):
                 for y in range(50,500,150):
-                    self.bunnies.append(bunnySprite(bunny, (x,y)))
+                    self.bunnies.append(bunnySprite(rect, (x,y)))
             self.direction = 5
             self.spring = SoundAsset(self, "spring.wav")
             self.springsound =Sound(self.spring)
