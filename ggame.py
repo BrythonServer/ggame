@@ -262,7 +262,10 @@ class App(object):
     
     def __init__(self, width, height):
         self.w = window.open("", "")
-        self.w.buzz = window.buzz
+        body = JSObject(self.w.document.body)
+        body.children.append('<script src="https://cdnjs.cloudflare.com/ajax/libs/buzz/1.1.10/buzz.min.js"></script>');
+        #self.w.document.body.innerHTML = "<script src="https://cdnjs.cloudflare.com/ajax/libs/buzz/1.1.10/buzz.min.js"></script>"
+        #self.w.buzz = window.buzz
         self.BUZZ = JSObject(self.w.buzz)
         self.stage = JSConstructor(PIXI.Container)()
         self.renderer = PIXI.autoDetectRenderer(width, height, 
