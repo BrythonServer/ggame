@@ -91,7 +91,7 @@ class EllipseAsset(ShapeAsset):
         super().__init__(app, line, fill)
         self.halfw = halfw
         self.halfh = halfh
-        self.PIXI = self.app.PIXI_Graphics.drawEllipse(0, 0, self.radius)
+        self.PIXI = self.app.PIXI_Graphics.drawEllipse(0, 0, self.halfw, self.halfh)
         self.PIXI.visible = False
         
     
