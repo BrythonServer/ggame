@@ -94,6 +94,14 @@ class EllipseAsset(ShapeAsset):
         self.PIXI = self.app.PIXI_Graphics.drawEllipse(0, 0, self.halfw, self.halfh)
         self.PIXI.visible = False
         
+class PolygonAsset(ShapeAsset):
+
+    def __init__(self, app, path, line, fill):
+        super().__init__(app, line, fill)
+        self.path = path
+        self.PIXI = self.app.PIXI_Graphics.drawEllipse(self.path)
+        self.PIXI.visible = False
+        
     
     
 
@@ -112,8 +120,7 @@ class Sprite(object):
         if type(asset) in [RectangleAsset, 
             CircleAsset, 
             EllipseAsset, 
-#            ArcAsset, 
-#            PolygonAsset,
+            PolygonAsset,
             ]:
             self.PIXI = asset.PIXI.clone()
             self.PIXI.visible = True
@@ -501,12 +508,12 @@ if __name__ == '__main__':
             line = LineStyle(3, lcolor)
             #rect = RectangleAsset(self, 100, 150, line, fcolor)
             #circ = CircleAsset(self, 50, line, fcolor)
-            ell = EllipseAsset(self, 50, 75, line, fcolor)
-            
+            #ell = EllipseAsset(self, 50, 75, line, fcolor)
+            poly = PolygonAsset(self, [(0,0), (50,50), (50,100), (0,0)], line, fcolor)
             
             for x in range(50,500,150):
                 for y in range(50,500,150):
-                    self.bunnies.append(bunnySprite(circ, (x,y)))
+                    self.bunnies.append(bunnySprite(poly, (x,y)))
             self.direction = 5
             self.spring = SoundAsset(self, "spring.wav")
             self.springsound =Sound(self.spring)
