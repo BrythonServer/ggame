@@ -446,6 +446,7 @@ class App(object):
     def _keyEvent(self, hwevent):
         evtlist = self.eventdict.get(
             (hwevent.type, KeyEvent.keys.get(hwevent.keyCode,0)), [])
+        evtlist.extend(self.eventdict.get((hwevent.type, '*'), []))
         if len(evtlist) > 0:
             evt = KeyEvent(hwevent)
             self._routeEvent(evt, evtlist)
@@ -477,6 +478,12 @@ class App(object):
         self.stage.destroy()
 
     def listenKeyEvent(self, eventtype, key, callback):
+        """
+        eventtype : "keydown", "keyup", "keypress"
+        key : e.g. "space", "a" or "*" for ALL!
+        callback : function name to receive events
+        
+        """
         evtlist = self.eventdict.get((eventtype, key), [])
         evtlist.append(callback)
         self.eventdict[(eventtype, key)] = evtlist
@@ -587,7 +594,7 @@ if __name__ == '__main__':
             #ell = EllipseAsset(self, 50, 75, line, fcolor)
             #poly = PolygonAsset(self, [(0,0), (50,50), (50,100), (0,0)], line, fcolor)
             #line = LineAsset(self, -50, 75, line)
-            text = TextAsset(self, "what up?")
+            text = TextAsset(self, "what up? big long text string!")
             
             
             for x in range(50,500,150):
