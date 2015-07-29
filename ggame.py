@@ -114,7 +114,7 @@ class PolygonAsset(ShapeAsset):
 
 class LineAsset(CurveAsset):
     
-    def __init__(self, app, x, y, line)
+    def __init__(self, app, x, y, line):
         super().__init__(app, line)
         self.deltaX = x
         self.deltaY = y
