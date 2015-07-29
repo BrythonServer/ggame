@@ -99,7 +99,7 @@ class PolygonAsset(ShapeAsset):
     def __init__(self, app, path, line, fill):
         super().__init__(app, line, fill)
         self.path = path
-        self.PIXI = self.app.PIXI_Graphics.drawEllipse(self.path)
+        self.PIXI = self.app.PIXI_Graphics.drawPolygon(self.path)
         self.PIXI.visible = False
         
     
