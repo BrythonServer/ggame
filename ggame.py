@@ -93,16 +93,18 @@ class MouseEvent(Event):
     mouseup = "mouseup"
     click = "click"
     dblclick = "dblclick"
-    mousewheel = "mousewheel"
+    mousewheel = "wheel"
     
     def __init__(self, hwevent):
         super().__init__(hwevent)
         if self.type == self.mousewheel:
-            self.wheelDelta = hwevent.wheelDelta
+            self.wheelDelta = hwevent.deltaY
         else:
             self.wheelDelta = 0
-        self.x = hwevent.x
-        self.y = hwevent.y
+        self.x = hwevent.clientX
+        self.y = hwevent.clientY
+        #self.xDelta = hwevent.movementX
+        #self.yDelta = hwevent.movementY
 
 
 class KeyEvent(Event):
@@ -311,7 +313,10 @@ if __name__ == '__main__':
             self.app.listenKeyEvent(KeyEvent.keyup, "right arrow", self.horizUp)
             self.app.listenKeyEvent(KeyEvent.keyup, "up arrow", self.vertUp)
             self.app.listenKeyEvent(KeyEvent.keyup, "down arrow", self.vertUp)
-            self.app.listenMouseEvent("mousewheel", self.mouse)
+            self.app.listenMouseEvent(MouseEvent.mousewheel, self.mouse)
+            self.app.listenMouseEvent(MouseEvent.click, self.mouseclick)
+            self.app.listenMouseEvent(MouseEvent.dblclick, self.doubleclick)
+            self.app.listemMouseEvent(MouseEvent.mousemove, self.mousemove)
             self.vx = 0
             self.vy = 0
             
@@ -320,6 +325,18 @@ if __name__ == '__main__':
                 print("UP")
             elif event.wheelDelta < 0:
                 print("DOWN")
+            event.consumed = True
+            
+        def mouseclick(self, event):
+            print("CLICK")
+            event.consumed = True
+            
+        def doubleclick(self, event):
+            print("DOUBLE CLICK")
+            event.consumed = True
+            
+        def mousemove(self, event):
+            print("MOVE, ", event.x, event.y)
             event.consumed = True
         
         def leftKey(self, event):
