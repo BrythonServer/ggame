@@ -86,7 +86,7 @@ class SoundAsset(object):
     
     def __init__(self, url):
         self.url = url
-        self.BUZZ = BUZZ_Sound(url)
+        self.BUZZ = self.BUZZ_Sound(url)
         
     def play(self):
         self.BUZZ.play()
