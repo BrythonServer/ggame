@@ -35,6 +35,40 @@ class ImageAsset(object):
         self.url = url
         self.PIXI = self.app.PIXI_Texture_fromImage(url, False)
 
+class Color(object):
+
+    def __init__(self, color, alpha):
+        """
+        color : integer e.g. 0xffff00
+        alpha : float 0-1
+        
+        """
+        self.color = color
+        self.alpha = alpha
+        
+
+class LineStyle(object):
+    
+    def __init__(self, width, color)
+        """
+        width : line width pixels
+        color : integer e.g. 0xffff00
+        alpha : float 0-1
+        
+        """
+        self.width = width
+        self.color = color
+
+class RectangleAsset(object)
+
+    def __init__(self, app, width, height, line, fill):
+        self.app = app
+        self.width = width
+        self.height = height
+        self.app.graphics.lineStyle(line.width, line.color, line.alpha)
+        self.app.graphics.beginFill(fill.color, fill.alpha)
+        self.PIXI = self.app.graphics.drawRect(0, 0, width, height)
+
 class Sprite(object):
     
     
@@ -264,6 +298,7 @@ class App(object):
         self.PIXI_Texture = JSObject(self.PIXI.Texture)
         self.PIXI_Texture_fromImage = JSConstructor(self.PIXI_Texture.fromImage)
         self.PIXI_Sprite = JSConstructor(self.PIXI.Sprite)
+        self.PIXI_Graphics = JSConstructor(self.PIXI.Graphics)()
         self.BUZZ = JSObject(window.buzz)
         self.w = window.open("", "")
         self.w.onunload = self.cleanup
@@ -423,21 +458,29 @@ if __name__ == '__main__':
             self.bunnies = []
             bunnyurl = "bunny.png"
             bunny = ImageAsset(self, bunnyurl)
+            
+            fcolor = Color(0x5050ff, 0.8)
+            lcolor = Color(0, 1)
+            line = LineStyle(3, lcolor)
+            rect = RectangleAsset(self, 100, 150, line, fcolor)
+            
+            
+            
             for x in range(50,500,150):
                 for y in range(50,500,150):
-                    self.bunnies.append(bunnySprite(bunny, (x,y)))
+                    self.bunnies.append(bunnySprite(rect, (x,y)))
             self.direction = 5
             self.spring = SoundAsset(self, "spring.wav")
             self.springsound =Sound(self.spring)
             self.springsound.loop()
-            self.graphics = JSConstructor(self.PIXI.Graphics)()
-            print(dir(self.stage))
+            self.graphics.beginFill(0xffffff, 0.5)
+            rect = self.graphics.drawRect(100,100,200,200)
+            rect.x = 200
+            self.stage.addChild(rect)
 
         def step(self):
             for s in self.bunnies:
                 s.step()
-            self.graphics.beginFill(0xffffff, 1)
-            rect = self.graphics.drawRect(100,100,200,200)
 
             #for s in self.bunnies:
             #    s.x += self.direction
