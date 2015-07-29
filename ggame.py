@@ -4,7 +4,7 @@ from javascript import JSObject, JSConstructor
 
 # depends on pixi.js, buzz.js
 PIXI = JSObject(window.PIXI)
-BUZZ = JSObject(window.buzz)
+
 
 
 class Frame(object):
@@ -89,9 +89,9 @@ class SoundAsset(object):
         
 class Sound(object):
 
-    BUZZ_Sound = JSConstructor(BUZZ.sound)
-
-    def __init__(self, asset):
+    def __init__(self, app, asset):
+        self.app = app
+        self.BUZZ_Sound = JSConstructor(app.BUZZ.sound)
         self.asset = asset
         self.BUZZ = self.BUZZ_Sound(self.asset.url)
         self.BUZZ.load()
@@ -262,6 +262,8 @@ class App(object):
     
     def __init__(self, width, height):
         self.w = window.open("", "")
+        self.w.buzz = window.buzz
+        self.BUZZ = JSObject(self.w.buzz)
         self.stage = JSConstructor(PIXI.Container)()
         self.renderer = PIXI.autoDetectRenderer(width, height, 
             {'transparent':True})
@@ -339,8 +341,7 @@ if __name__ == '__main__':
 
     class bunnySprite(Sprite):
         
-        spring1 = Sound(SoundAsset("spring.wav"))
-        spring2 = Sound(SoundAsset("spring.wav"))
+        spring = SoundAsset("spring.wav")
 
         def __init__(self, app, asset, position = (0,0), frame = False):
             super().__init__(app, asset, position, frame)
@@ -359,6 +360,8 @@ if __name__ == '__main__':
             self.app.listenMouseEvent(MouseEvent.mousemove, self.mousemove)
             self.vx = 0
             self.vy = 0
+            self.spring1 = Spring(self, self.spring)
+            self.spring2 = Spring(self, self.spring)
             self.spring1.volume = 10
             #self.spring1.loop()
             self.spring2.volume = 90
