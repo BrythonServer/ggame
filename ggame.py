@@ -338,7 +338,8 @@ class App(object):
     
     def run(self, userfunc = None):
         self.userfunc = userfunc
-        self.w.requestAnimationFrame(self._animate)
+        if not self.w.closed:
+            self.w.requestAnimationFrame(self._animate)
 
 if __name__ == '__main__':
 
@@ -434,7 +435,7 @@ if __name__ == '__main__':
                 for y in range(50,500,150):
                     self.bunnies.append(bunnySprite(bunny, (x,y)))
             self.direction = 5
-        
+
         def step(self):
             for s in self.bunnies:
                 s.step()
@@ -446,4 +447,5 @@ if __name__ == '__main__':
     
     
     app.run()
+    print("done")
 
