@@ -82,14 +82,37 @@ class Sprite(object):
 
 
 class SoundAsset(object):
-    BUZZ_Sound = JSConstructor(BUZZ.sound)
     
     def __init__(self, url):
         self.url = url
-        self.BUZZ = self.BUZZ_Sound(url)
+
+        
+class Sound(object):
+
+    BUZZ_Sound = JSConstructor(BUZZ.sound)
+
+    def __init__(self, asset):
+        self.asset = asset
+        self.BUZZ = self.BUZZ_Sound(self.asset.url)
+        self.BUZZ.load()
         
     def play(self):
+        self.stop()
         self.BUZZ.play()
+
+    def loop(self):
+        self.stop()
+        self.BUZZ.loop()
+        
+    def stop(self):
+        self.BUZZ.stop()
+        
+    @property
+    def volume(self):
+        return self.BUZZ.getVolume()
+        
+    @setter.volume(self, value):
+        self.BUZZ.setVolume(value)
     
 
 class Event(object):
@@ -315,6 +338,10 @@ if __name__ == '__main__':
     class bunnySprite(Sprite):
         
         spring = SoundAsset("spring.wav")
+        spring1 = Sound(spring)
+        spring1.volume(20)
+        spring2 = Sound(spring)
+        spring2.volume(80)
         
         def __init__(self, app, asset, position = (0,0), frame = False):
             super().__init__(app, asset, position, frame)
@@ -336,14 +363,15 @@ if __name__ == '__main__':
             
         def mouse(self, event):
             if event.wheelDelta > 0:
+                self.spring1.play()
                 print("UP")
             elif event.wheelDelta < 0:
+                self.spring2.play()
                 print("DOWN")
             event.consumed = True
             
         def mouseclick(self, event):
             print("CLICK")
-            self.spring.play()
             event.consumed = True
             
         def doubleclick(self, event):
