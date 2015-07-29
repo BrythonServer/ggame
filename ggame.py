@@ -31,8 +31,9 @@ class Frame(object):
 class ImageAsset(object):
 
     def __init__(self, app, url):
+        self.app = app
         self.url = url
-        self.PIXI = app.PIXI_Texture_fromImage(url, False)
+        self.PIXI = self.app.PIXI_Texture_fromImage(url, False)
 
 class Sprite(object):
     
