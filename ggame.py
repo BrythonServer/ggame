@@ -151,7 +151,7 @@ class TextAsset(object):
         self.PIXI.visible = False
         
     def clone(self):
-        return __class__(self.app,
+        return type(self)(self.app,
             self.text,
             style = self.style,
             width = self.width,
