@@ -265,9 +265,8 @@ class App(object):
         self.PIXI_Texture_fromImage = JSConstructor(self.PIXI_Texture.fromImage)
         self.PIXI_Sprite = JSConstructor(self.PIXI.Sprite)
         self.BUZZ = JSObject(window.buzz)
-    
         self.w = window.open("", "")
-        self.w.onclose = self.cleanup
+        self.w.onbeforeunload = self.cleanup
         self.stage = JSConstructor(self.PIXI.Container)()
         self.renderer = self.PIXI.autoDetectRenderer(width, height, 
             {'transparent':True})
@@ -318,11 +317,9 @@ class App(object):
         self.renderer.render(self.stage)
         self.w.requestAnimationFrame(self._animate)
 
-    def cleanup(self):
-        print("stopping buzz")
+    def cleanup(self, dummy):
         self.BUZZ.all().stop()
-        print("buzz stopped")
-        
+
     def listenKeyEvent(self, eventtype, key, callback):
         evtlist = self.eventdict.get((eventtype, key), [])
         evtlist.append(callback)
@@ -367,12 +364,6 @@ if __name__ == '__main__':
             self.app.listenMouseEvent(MouseEvent.mousemove, self.mousemove)
             self.vx = 0
             self.vy = 0
-            self.spring = SoundAsset(self.app, "spring.wav")
-            self.spring1 = Sound(self.spring)
-            self.spring2 = Sound(self.spring)
-            self.spring1.volume = 10
-            #self.spring1.loop()
-            self.spring2.volume = 90
             
         def mouse(self, event):
             if event.wheelDelta > 0:
@@ -440,6 +431,9 @@ if __name__ == '__main__':
                 for y in range(50,500,150):
                     self.bunnies.append(bunnySprite(bunny, (x,y)))
             self.direction = 5
+            self.spring = SoundAsset(self, "spring.wav")
+            self.springsound =Sound(self.spring)
+            self.springsound.loop()
 
         def step(self):
             for s in self.bunnies:
