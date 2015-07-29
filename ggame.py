@@ -68,6 +68,7 @@ class RectangleAsset(object):
         self.app.PIXI_Graphics.lineStyle(line.width, line.color.color, line.color.alpha)
         self.app.PIXI_Graphics.beginFill(fill.color, fill.alpha)
         self.PIXI = self.app.PIXI_Graphics.drawRect(0, 0, width, height)
+        self.PIXI.visible = False
 
 class Sprite(object):
     
@@ -82,7 +83,8 @@ class Sprite(object):
             else:
                 self.PIXI = self.app.PIXI_Sprite(asset.PIXI)
         if type(asset) in [RectangleAsset]:
-            self.PIXI = asset.PIXI
+            self.PIXI = asset.PIXI.clone()
+            self.PIXI.visible = True
         self.position = position
         self.app._add(self)
         
