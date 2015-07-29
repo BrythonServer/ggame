@@ -49,7 +49,7 @@ class Color(object):
 
 class LineStyle(object):
     
-    def __init__(self, width, color)
+    def __init__(self, width, color):
         """
         width : line width pixels
         color : integer e.g. 0xffff00
