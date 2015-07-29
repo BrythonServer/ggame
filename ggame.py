@@ -339,10 +339,10 @@ if __name__ == '__main__':
     class bunnySprite(Sprite):
         
         spring = SoundAsset("spring.wav")
-        spring1 = Sound(spring)
-        spring1.volume(20)
-        spring2 = Sound(spring)
-        spring2.volume(80)
+        spring1 = Sound(bunnySprite.spring)
+        #spring1.volume(20)
+        spring2 = Sound(bunnySprite.spring)
+        #spring2.volume(80)
         
         def __init__(self, app, asset, position = (0,0), frame = False):
             super().__init__(app, asset, position, frame)
