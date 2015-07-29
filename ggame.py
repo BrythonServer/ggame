@@ -59,7 +59,7 @@ class LineStyle(object):
         self.width = width
         self.color = color
 
-class RectangleAsset(object)
+class RectangleAsset(object):
 
     def __init__(self, app, width, height, line, fill):
         self.app = app
