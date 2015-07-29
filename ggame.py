@@ -59,11 +59,17 @@ class LineStyle(object):
         self.width = width
         self.color = color
 
-class ShapeAsset(object):
 
-    def __init__(self, app, line, fill):
+class CurveAsset(object):
+
+    def __init__(self, app, line):
         self.app = app
         self.app.PIXI_Graphics.lineStyle(line.width, line.color.color, line.color.alpha)
+
+class ShapeAsset(CurveAsset):
+
+    def __init__(self, app, line, fill):
+        super().__init__(app, line)
         self.app.PIXI_Graphics.beginFill(fill.color, fill.alpha)
     
 
@@ -99,11 +105,21 @@ class PolygonAsset(ShapeAsset):
     def __init__(self, app, path, line, fill):
         super().__init__(app, line, fill)
         self.path = path
-        self.PIXI = self.app.PIXI_Graphics.drawPolygon(self.path)
+        jpath = []
+        for point in self.path:
+            jpath.extend(point)
+        self.PIXI = self.app.PIXI_Graphics.drawPolygon(jpath)
         self.PIXI.visible = False
-        
     
+
+class LineAsset(CurveAsset):
     
+    def __init__(self, app, x, y, line)
+        super().__init__(app, line)
+        self.deltaX = x
+        self.deltaY = y
+        self.app.PIXI_Graphics.moveTo(0, 0)
+        self.PIXI = self.app.PIXI_Graphics.lineTo(self.deltaX, self.deltaY)
 
 class Sprite(object):
     
@@ -121,6 +137,7 @@ class Sprite(object):
             CircleAsset, 
             EllipseAsset, 
             PolygonAsset,
+            LineAsset,
             ]:
             self.PIXI = asset.PIXI.clone()
             self.PIXI.visible = True
@@ -509,11 +526,13 @@ if __name__ == '__main__':
             #rect = RectangleAsset(self, 100, 150, line, fcolor)
             #circ = CircleAsset(self, 50, line, fcolor)
             #ell = EllipseAsset(self, 50, 75, line, fcolor)
-            poly = PolygonAsset(self, [(0,0), (50,50), (50,100), (0,0)], line, fcolor)
+            #poly = PolygonAsset(self, [(0,0), (50,50), (50,100), (0,0)], line, fcolor)
+            line = LineAsset(self, 50, 75, line)
+            
             
             for x in range(50,500,150):
                 for y in range(50,500,150):
-                    self.bunnies.append(bunnySprite(poly, (x,y)))
+                    self.bunnies.append(bunnySprite(line, (x,y)))
             self.direction = 5
             self.spring = SoundAsset(self, "spring.wav")
             self.springsound =Sound(self.spring)
