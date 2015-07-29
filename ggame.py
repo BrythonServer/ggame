@@ -59,16 +59,33 @@ class LineStyle(object):
         self.width = width
         self.color = color
 
-class RectangleAsset(object):
+class ShapeAsset(object):
 
-    def __init__(self, app, width, height, line, fill):
+    def __init__(self, app, line, fill):
         self.app = app
-        self.width = width
-        self.height = height
         self.app.PIXI_Graphics.lineStyle(line.width, line.color.color, line.color.alpha)
         self.app.PIXI_Graphics.beginFill(fill.color, fill.alpha)
-        self.PIXI = self.app.PIXI_Graphics.drawRect(0, 0, width, height)
+    
+
+class RectangleAsset(ShapeAsset):
+
+    def __init__(self, app, width, height, line, fill):
+        super().__init__(app, line, fill)
+        self.width = width
+        self.height = height
+        self.PIXI = self.app.PIXI_Graphics.drawRect(0, 0, self.width, self.height)
         self.PIXI.visible = False
+        
+
+class CircleAsset(ShapeAsset):
+
+    def __init__(self, app, radius, line, fill):
+        super().__init__(app, line, fill)
+        self.radius = radius
+        self.PIXI = self.app.PIXI_Graphics.drawCircle(0, 0, self.radius)
+        self.PIXI.visible = False
+        
+    
 
 class Sprite(object):
     
@@ -467,13 +484,13 @@ if __name__ == '__main__':
             fcolor = Color(0x5050ff, 0.8)
             lcolor = Color(0, 1)
             line = LineStyle(3, lcolor)
-            rect = RectangleAsset(self, 100, 150, line, fcolor)
-            
+            #rect = RectangleAsset(self, 100, 150, line, fcolor)
+            circ = CircleAsset(self, 50, line, fcolor)
             
             
             for x in range(50,500,150):
                 for y in range(50,500,150):
-                    self.bunnies.append(bunnySprite(rect, (x,y)))
+                    self.bunnies.append(bunnySprite(circ, (x,y)))
             self.direction = 5
             self.spring = SoundAsset(self, "spring.wav")
             self.springsound =Sound(self.spring)
