@@ -111,7 +111,8 @@ class Sound(object):
     def volume(self):
         return self.BUZZ.getVolume()
         
-    @setter.volume(self, value):
+    @volume.setter
+    def volume(self, value):
         self.BUZZ.setVolume(value)
     
 
