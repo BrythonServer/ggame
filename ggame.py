@@ -3,20 +3,19 @@ from javascript import JSObject, JSConstructor
 
 
 # depends on pixi.js, buzz.js
-PIXI = JSObject(window.PIXI)
 
 
 
 class Frame(object):
 
-    PIXI_Rectangle = JSConstructor(PIXI.Rectangle)
 
-    def __init__(self, x, y, w, h):
+    def __init__(self, app, x, y, w, h):
+        self.app = app
         self.x = x
         self.y = y
         self.w = w
         self.h = h
-        self.PIXI = Frame.PIXI_Rectangle(x,y,w,h)
+        self.PIXI = app.PIXI_Rectangle(x,y,w,h)
     
     @property
     def center(self):
@@ -31,26 +30,22 @@ class Frame(object):
         
 class ImageAsset(object):
 
-    PIXI_Texture = JSObject(PIXI.Texture)
-    PIXI_Texture_fromImage = JSConstructor(PIXI_Texture.fromImage)
-    
-    def __init__(self, url):
+    def __init__(self, app, url):
         self.url = url
-        self.PIXI = ImageAsset.PIXI_Texture_fromImage(url, False)
+        self.PIXI = app.PIXI_Texture_fromImage(url, False)
 
 class Sprite(object):
     
-    PIXI_Sprite = JSConstructor(PIXI.Sprite)
     
-    def __init__(self, app, asset, position = (0,0), frame = False):
+    def __init__(self, asset, position = (0,0), frame = False):
+        self.asset = asset
         if (frame):
-            self.PIXI = Sprite.PIXI_Sprite(
-                ImageAsset.PIXI_Texture(asset.PIXI, frame.PIXI))
+            self.PIXI = self.asset.app.PIXI_Sprite(
+                self.asset.app.PIXI_Texture(asset.PIXI, frame.PIXI))
         else:
-            self.PIXI = Sprite.PIXI_Sprite(asset.PIXI)
+            self.PIXI = self.asset.app.PIXI_Sprite(asset.PIXI)
         self.position = position
-        self.app = app
-        self.app._add(self)
+        self.asset.app._add(self)
         
     @property
     def x(self):
@@ -83,16 +78,17 @@ class Sprite(object):
 
 class SoundAsset(object):
     
-    def __init__(self, url):
+    def __init__(self, app, url):
+        self.app = app
         self.url = url
 
         
 class Sound(object):
 
-    def __init__(self, app, asset):
-        self.app = app
-        self.BUZZ_Sound = JSConstructor(app.BUZZ.sound)
+    def __init__(self, asset):
         self.asset = asset
+        self.app = self.asset.app
+        self.BUZZ_Sound = JSConstructor(self.app.BUZZ.sound)
         self.BUZZ = self.BUZZ_Sound(self.asset.url)
         self.BUZZ.load()
         
@@ -261,14 +257,16 @@ class KeyEvent(Event):
 class App(object):
     
     def __init__(self, width, height):
+        self.PIXI = JSObject(window.PIXI)
+        self.PIXI_Rectangle = JSConstructor(self.PIXI.Rectangle)
+        self.PIXI_Texture = JSObject(self.PIXI.Texture)
+        self.PIXI_Texture_fromImage = JSConstructor(self.PIXI_Texture.fromImage)
+        self.PIXI_Sprite = JSConstructor(self.PIXI.Sprite)
+        self.BUZZ = JSObject(window.buzz)
+    
         self.w = window.open("", "")
-        body = JSObject(self.w.document.body)
-        body.children.append('<script src="https://cdnjs.cloudflare.com/ajax/libs/buzz/1.1.10/buzz.min.js"></script>');
-        #self.w.document.body.innerHTML = "<script src="https://cdnjs.cloudflare.com/ajax/libs/buzz/1.1.10/buzz.min.js"></script>"
-        #self.w.buzz = window.buzz
-        self.BUZZ = JSObject(self.w.buzz)
-        self.stage = JSConstructor(PIXI.Container)()
-        self.renderer = PIXI.autoDetectRenderer(width, height, 
+        self.stage = JSConstructor(self.PIXI.Container)()
+        self.renderer = self.PIXI.autoDetectRenderer(width, height, 
             {'transparent':True})
         self.w.document.body.appendChild(self.renderer.view)
         self.w.document.body.bind(KeyEvent.keydown, self._keyEvent)
@@ -343,8 +341,6 @@ class App(object):
 if __name__ == '__main__':
 
     class bunnySprite(Sprite):
-        
-        spring = SoundAsset("spring.wav")
 
         def __init__(self, app, asset, position = (0,0), frame = False):
             super().__init__(app, asset, position, frame)
@@ -363,8 +359,9 @@ if __name__ == '__main__':
             self.app.listenMouseEvent(MouseEvent.mousemove, self.mousemove)
             self.vx = 0
             self.vy = 0
-            self.spring1 = Sound(self.app, self.__class__.spring)
-            self.spring2 = Sound(self.app, self.__class__.spring)
+            self.spring = SoundAsset(self.app, "spring.wav")
+            self.spring1 = Sound(self.spring)
+            self.spring2 = Sound(self.spring)
             self.spring1.volume = 10
             #self.spring1.loop()
             self.spring2.volume = 90
@@ -425,15 +422,15 @@ if __name__ == '__main__':
         def __init__(self, width, height):
             super().__init__(width, height)
             grassurl = "grass_texture239.jpg"
-            grass = ImageAsset(grassurl)
-            Sprite(self, grass, (0,0))
+            grass = ImageAsset(self, grassurl)
+            Sprite(grass, (0,0))
             
             self.bunnies = []
             bunnyurl = "bunny.png"
-            bunny = ImageAsset(bunnyurl)
+            bunny = ImageAsset(self, bunnyurl)
             for x in range(50,500,150):
                 for y in range(50,500,150):
-                    self.bunnies.append(bunnySprite(self, bunny, (x,y)))
+                    self.bunnies.append(bunnySprite(bunny, (x,y)))
             self.direction = 5
         
         def step(self):
