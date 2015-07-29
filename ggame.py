@@ -103,6 +103,7 @@ class Sound(object):
     def loop(self):
         self.stop()
         self.BUZZ.loop()
+        self.BUZZ.play()
         
     def stop(self):
         self.BUZZ.stop()
