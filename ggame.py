@@ -338,12 +338,9 @@ if __name__ == '__main__':
 
     class bunnySprite(Sprite):
         
-        spring = SoundAsset("spring.wav")
-        spring1 = Sound(bunnySprite.spring)
-        #spring1.volume(20)
-        spring2 = Sound(bunnySprite.spring)
-        #spring2.volume(80)
-        
+        spring1 = Sound(SoundAsset("spring.wav"))
+        spring2 = Sound(SoundAsset("spring.wav"))
+
         def __init__(self, app, asset, position = (0,0), frame = False):
             super().__init__(app, asset, position, frame)
             self.app.listenKeyEvent(KeyEvent.keydown, "space", self.spaceKey)
@@ -361,6 +358,9 @@ if __name__ == '__main__':
             self.app.listenMouseEvent(MouseEvent.mousemove, self.mousemove)
             self.vx = 0
             self.vy = 0
+            self.spring1.volume = 10
+            self.spring1.loop()
+            self.spring2.volume = 90
             
         def mouse(self, event):
             if event.wheelDelta > 0:
