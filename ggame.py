@@ -99,7 +99,12 @@ class Sprite(object):
                     self.app.PIXI_Texture(asset.PIXI, frame.PIXI))
             else:
                 self.PIXI = self.app.PIXI_Sprite(asset.PIXI)
-        if type(asset) in [RectangleAsset]:
+        if type(asset) in [RectangleAsset, 
+            CircleAsset, 
+            EllipseAsset, 
+            ArcAsset, 
+            PolygonAsset,
+            ]:
             self.PIXI = asset.PIXI.clone()
             self.PIXI.visible = True
         self.position = position
