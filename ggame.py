@@ -499,8 +499,8 @@ class App(object):
         evtlist.append(callback)
         self.eventdict[eventtype] = evtlist
         
-    def unlistenKeyEvent(self, eventtype, key, callback, location = KeyEvent.no_location):
-        self.eventdict[(eventtype,key, location)].remove(callback)
+    def unlistenKeyEvent(self, eventtype, key, callback):
+        self.eventdict[(eventtype,key)].remove(callback)
 
     def unlistenMouseEvent(self, eventtype, callback):
         self.eventdict[eventtype].remove(callback)
