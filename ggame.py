@@ -462,21 +462,17 @@ if __name__ == '__main__':
             fcolor = Color(0x5050ff, 0.8)
             lcolor = Color(0, 1)
             line = LineStyle(3, lcolor)
-            rect = RectangleAsset(self, 100, 150, line, fcolor)
+            #rect = RectangleAsset(self, 100, 150, line, fcolor)
             
             
             
             for x in range(50,500,150):
                 for y in range(50,500,150):
-                    self.bunnies.append(bunnySprite(rect, (x,y)))
+                    self.bunnies.append(bunnySprite(bunny, (x,y)))
             self.direction = 5
             self.spring = SoundAsset(self, "spring.wav")
             self.springsound =Sound(self.spring)
             self.springsound.loop()
-            self.graphics.beginFill(0xffffff, 0.5)
-            rect = self.graphics.drawRect(100,100,200,200)
-            rect.x = 200
-            self.stage.addChild(rect)
 
         def step(self):
             for s in self.bunnies:
