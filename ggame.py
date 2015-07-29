@@ -2,8 +2,9 @@ from browser import window, document
 from javascript import JSObject, JSConstructor
 
 
-# depends on pixi.js 
+# depends on pixi.js, buzz.js
 PIXI = JSObject(window.PIXI)
+BUZZ = JSObject(window.buzz)
 
 
 class Frame(object):
@@ -78,6 +79,18 @@ class Sprite(object):
 
     def destroy(self):
         self.app._remove(self)
+
+
+class SoundAsset(object):
+    BUZZ_Sound = JSConstructor(BUZZ.sound)
+    
+    def __init__(self, url):
+        self.url = url
+        self.BUZZ = BUZZ_Sound(url)
+        
+    def play(self):
+        self.BUZZ.play()
+    
 
 class Event(object):
     
@@ -300,6 +313,9 @@ class App(object):
 if __name__ == '__main__':
 
     class bunnySprite(Sprite):
+        
+        spring = SoundAsset("spring.wav")
+        
         def __init__(self, app, asset, position = (0,0), frame = False):
             super().__init__(app, asset, position, frame)
             self.app.listenKeyEvent(KeyEvent.keydown, "space", self.spaceKey)
@@ -327,6 +343,7 @@ if __name__ == '__main__':
             
         def mouseclick(self, event):
             print("CLICK")
+            self.spring.play()
             event.consumed = True
             
         def doubleclick(self, event):
