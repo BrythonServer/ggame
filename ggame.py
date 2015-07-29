@@ -316,7 +316,7 @@ if __name__ == '__main__':
             self.app.listenMouseEvent(MouseEvent.mousewheel, self.mouse)
             self.app.listenMouseEvent(MouseEvent.click, self.mouseclick)
             self.app.listenMouseEvent(MouseEvent.dblclick, self.doubleclick)
-            self.app.listemMouseEvent(MouseEvent.mousemove, self.mousemove)
+            self.app.listenMouseEvent(MouseEvent.mousemove, self.mousemove)
             self.vx = 0
             self.vy = 0
             
