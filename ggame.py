@@ -125,7 +125,7 @@ class LineAsset(CurveAsset):
         self.app.PIXI_Graphics.moveTo(0, 0)
         self.PIXI = self.app.PIXI_Graphics.lineTo(self.deltaX, self.deltaY)
 
-class TextAsset(object):
+class TextAsset(GraphicsAsset):
     
     def __init__(self, app, text, **kwargs):
         """
@@ -161,9 +161,6 @@ class TextAsset(object):
             width = self.width,
             fill = self.fill,
             align = self.align)
-
-    def cleanup(self):
-        self.PIXI.destroy(True)
 
 
 class Sprite(object):
@@ -235,8 +232,9 @@ class Sprite(object):
     def visible(self, value):
         self.PIXI.visible = value
 
-    def destroy(self):
+    def cleanup(self):
         self.app._remove(self)
+        self.asset.cleanup()
 
 
 class SoundAsset(object):
