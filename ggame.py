@@ -162,7 +162,7 @@ class Sprite(object):
     
     
     def __init__(self, asset, position = (0,0), frame = False):
-        self.app = self.asset.app
+        self.app = asset.app
         if type(asset) == ImageAsset:
             self.asset = asset
             if (frame):
