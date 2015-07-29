@@ -85,6 +85,16 @@ class CircleAsset(ShapeAsset):
         self.PIXI = self.app.PIXI_Graphics.drawCircle(0, 0, self.radius)
         self.PIXI.visible = False
         
+class EllipseAsset(ShapeAsset):
+
+    def __init__(self, app, halfw, halfh, line, fill):
+        super().__init__(app, line, fill)
+        self.halfw = halfw
+        self.halfh = halfh
+        self.PIXI = self.app.PIXI_Graphics.drawEllipse(0, 0, self.radius)
+        self.PIXI.visible = False
+        
+    
     
 
 class Sprite(object):
@@ -102,8 +112,8 @@ class Sprite(object):
         if type(asset) in [RectangleAsset, 
             CircleAsset, 
             EllipseAsset, 
-            ArcAsset, 
-            PolygonAsset,
+#            ArcAsset, 
+#            PolygonAsset,
             ]:
             self.PIXI = asset.PIXI.clone()
             self.PIXI.visible = True
@@ -490,7 +500,8 @@ if __name__ == '__main__':
             lcolor = Color(0, 1)
             line = LineStyle(3, lcolor)
             #rect = RectangleAsset(self, 100, 150, line, fcolor)
-            circ = CircleAsset(self, 50, line, fcolor)
+            #circ = CircleAsset(self, 50, line, fcolor)
+            ell = EllipseAsset(self, 50, 75, line, fcolor)
             
             
             for x in range(50,500,150):
