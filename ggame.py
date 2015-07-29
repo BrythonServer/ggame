@@ -360,8 +360,8 @@ if __name__ == '__main__':
             self.app.listenMouseEvent(MouseEvent.mousemove, self.mousemove)
             self.vx = 0
             self.vy = 0
-            self.spring1 = Sound(self, self.__class__.spring)
-            self.spring2 = Sound(self, self.__class__.spring)
+            self.spring1 = Sound(self.app, self.__class__.spring)
+            self.spring2 = Sound(self.app, self.__class__.spring)
             self.spring1.volume = 10
             #self.spring1.loop()
             self.spring2.volume = 90
