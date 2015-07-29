@@ -360,7 +360,7 @@ if __name__ == '__main__':
             self.vx = 0
             self.vy = 0
             self.spring1.volume = 10
-            self.spring1.loop()
+            #self.spring1.loop()
             self.spring2.volume = 90
             
         def mouse(self, event):
