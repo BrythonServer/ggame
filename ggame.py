@@ -267,6 +267,7 @@ class App(object):
         self.BUZZ = JSObject(window.buzz)
     
         self.w = window.open("", "")
+        self.w.onclose = self.cleanup
         self.stage = JSConstructor(self.PIXI.Container)()
         self.renderer = self.PIXI.autoDetectRenderer(width, height, 
             {'transparent':True})
@@ -315,13 +316,12 @@ class App(object):
         else:
             self.step()
         self.renderer.render(self.stage)
-        if not self.w.closed:
-            self.w.requestAnimationFrame(self._animate)
-        else:
-            self.cleanup()
-        
+        self.w.requestAnimationFrame(self._animate)
+
     def cleanup(self):
+        print("stopping buzz")
         self.BUZZ.all().stop()
+        print("buzz stopped")
         
     def listenKeyEvent(self, eventtype, key, callback):
         evtlist = self.eventdict.get((eventtype, key), [])
@@ -371,7 +371,7 @@ if __name__ == '__main__':
             self.spring1 = Sound(self.spring)
             self.spring2 = Sound(self.spring)
             self.spring1.volume = 10
-            self.spring1.loop()
+            #self.spring1.loop()
             self.spring2.volume = 90
             
         def mouse(self, event):
