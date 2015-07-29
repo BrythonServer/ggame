@@ -315,7 +315,13 @@ class App(object):
         else:
             self.step()
         self.renderer.render(self.stage)
-        self.w.requestAnimationFrame(self._animate)
+        if not self.w.closed:
+            self.w.requestAnimationFrame(self._animate)
+        else:
+            self.cleanup()
+        
+    def cleanup(self):
+        self.BUZZ.all().stop()
         
     def listenKeyEvent(self, eventtype, key, callback):
         evtlist = self.eventdict.get((eventtype, key), [])
@@ -338,8 +344,7 @@ class App(object):
     
     def run(self, userfunc = None):
         self.userfunc = userfunc
-        if not self.w.closed:
-            self.w.requestAnimationFrame(self._animate)
+        self.w.requestAnimationFrame(self._animate)
 
 if __name__ == '__main__':
 
@@ -447,5 +452,4 @@ if __name__ == '__main__':
     
     
     app.run()
-    print("done")
 
