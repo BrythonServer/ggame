@@ -371,7 +371,7 @@ if __name__ == '__main__':
             self.spring1 = Sound(self.spring)
             self.spring2 = Sound(self.spring)
             self.spring1.volume = 10
-            #self.spring1.loop()
+            self.spring1.loop()
             self.spring2.volume = 90
             
         def mouse(self, event):
