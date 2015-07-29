@@ -145,6 +145,14 @@ class Sprite(object):
         self.app._add(self)
         
     @property
+    def width(self):
+        return self.PIXI.width
+        
+    @property
+    def height(self):
+        return self.PIXI.height
+        
+    @property
     def x(self):
         return self.PIXI.position.x
         
@@ -527,7 +535,7 @@ if __name__ == '__main__':
             #circ = CircleAsset(self, 50, line, fcolor)
             #ell = EllipseAsset(self, 50, 75, line, fcolor)
             #poly = PolygonAsset(self, [(0,0), (50,50), (50,100), (0,0)], line, fcolor)
-            line = LineAsset(self, 50, 75, line)
+            line = LineAsset(self, -50, 75, line)
             
             
             for x in range(50,500,150):
@@ -537,6 +545,7 @@ if __name__ == '__main__':
             self.spring = SoundAsset(self, "spring.wav")
             self.springsound =Sound(self.spring)
             self.springsound.loop()
+            print(self.bunnies[0].width)
 
         def step(self):
             for s in self.bunnies:
