@@ -574,12 +574,12 @@ if __name__ == '__main__':
             #ell = EllipseAsset(self, 50, 75, line, fcolor)
             #poly = PolygonAsset(self, [(0,0), (50,50), (50,100), (0,0)], line, fcolor)
             #line = LineAsset(self, -50, 75, line)
-            text = TextAsset(self, "what up?", "20pt arial", fcolor, 300, 'center')
+            text = TextAsset(self, "what up?")
             
             
             for x in range(50,500,150):
                 for y in range(50,500,150):
-                    self.bunnies.append(bunnySprite(line, (x,y)))
+                    self.bunnies.append(bunnySprite(text, (x,y)))
             self.direction = 5
             self.spring = SoundAsset(self, "spring.wav")
             self.springsound =Sound(self.spring)
