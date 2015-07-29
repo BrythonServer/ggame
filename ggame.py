@@ -65,8 +65,8 @@ class RectangleAsset(object):
         self.app = app
         self.width = width
         self.height = height
-        self.app.graphics.lineStyle(line.width, line.color, line.alpha)
-        self.app.graphics.beginFill(fill.color, fill.alpha)
+        self.app.PIXI_Graphics.lineStyle(line.width, line.color, line.alpha)
+        self.app.PIXI_Graphics.beginFill(fill.color, fill.alpha)
         self.PIXI = self.app.PIXI_Graphics.drawRect(0, 0, width, height)
 
 class Sprite(object):
