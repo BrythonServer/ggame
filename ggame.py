@@ -110,7 +110,6 @@ class KeyEvent(Event):
     no_location = 0
     right_location = 2
     left_location = 1
-    locations = {0: 'none', 1: 'left', 2: 'right'}
     keydown = "keydown"
     keyup = "keyup"
     keypress = "keypress"
@@ -218,7 +217,6 @@ class KeyEvent(Event):
         super().__init__(hwevent)
         self.keynum = hwevent.keyCode
         self.key = self.keys[hwevent.keyCode]
-        self.location = self.locations[hwevent.keyLocation]
 
 
 
@@ -249,7 +247,7 @@ class App(object):
         
     def _keyEvent(self, hwevent):
         evtlist = self.eventdict.get(
-            (hwevent.type, KeyEvent.keys.get(hwevent.keyCode,0), hwevent.keyLocation), [])
+            (hwevent.type, KeyEvent.keys.get(hwevent.keyCode,0)), [])
         if len(evtlist) > 0:
             evt = KeyEvent(hwevent)
             self._routeEvent(evt, evtlist)
@@ -276,10 +274,10 @@ class App(object):
         self.renderer.render(self.stage)
         self.w.requestAnimationFrame(self._animate)
         
-    def listenKeyEvent(self, eventtype, key, callback, location = KeyEvent.no_location):
-        evtlist = self.eventdict.get((eventtype, key, location), [])
+    def listenKeyEvent(self, eventtype, key, callback):
+        evtlist = self.eventdict.get((eventtype, key), [])
         evtlist.append(callback)
-        self.eventdict[(eventtype, key, location)] = evtlist
+        self.eventdict[(eventtype, key)] = evtlist
 
     def listenMouseEvent(self, eventtype, callback):
         evtlist = self.eventdict.get(eventtype, [])
