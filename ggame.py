@@ -40,13 +40,14 @@ class Sprite(object):
     
     def __init__(self, asset, position = (0,0), frame = False):
         self.asset = asset
+        self.app = self.asset.app
         if (frame):
-            self.PIXI = self.asset.app.PIXI_Sprite(
-                self.asset.app.PIXI_Texture(asset.PIXI, frame.PIXI))
+            self.PIXI = self.app.PIXI_Sprite(
+                self.app.PIXI_Texture(asset.PIXI, frame.PIXI))
         else:
-            self.PIXI = self.asset.app.PIXI_Sprite(asset.PIXI)
+            self.PIXI = self.app.PIXI_Sprite(asset.PIXI)
         self.position = position
-        self.asset.app._add(self)
+        self.app._add(self)
         
     @property
     def x(self):
