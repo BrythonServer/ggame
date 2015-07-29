@@ -545,7 +545,6 @@ if __name__ == '__main__':
             self.spring = SoundAsset(self, "spring.wav")
             self.springsound =Sound(self.spring)
             self.springsound.loop()
-            print(self.bunnies[0].width)
 
         def step(self):
             for s in self.bunnies:
