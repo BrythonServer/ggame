@@ -343,7 +343,7 @@ if __name__ == '__main__':
 
     class bunnySprite(Sprite):
 
-        def __init__(self, app, asset, position = (0,0), frame = False):
+        def __init__(self, asset, position = (0,0), frame = False):
             super().__init__(app, asset, position, frame)
             self.app.listenKeyEvent(KeyEvent.keydown, "space", self.spaceKey)
             self.app.listenKeyEvent(KeyEvent.keydown, "left arrow", self.leftKey)
