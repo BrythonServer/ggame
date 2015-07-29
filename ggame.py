@@ -368,22 +368,17 @@ if __name__ == '__main__':
         def mouse(self, event):
             if event.wheelDelta > 0:
                 self.spring1.play()
-                print("UP")
             elif event.wheelDelta < 0:
                 self.spring2.play()
-                print("DOWN")
             event.consumed = True
             
         def mouseclick(self, event):
-            print("CLICK")
             event.consumed = True
             
         def doubleclick(self, event):
-            print("DOUBLE CLICK")
             event.consumed = True
             
         def mousemove(self, event):
-            print("MOVE, ", event.x, event.y)
             event.consumed = True
         
         def leftKey(self, event):
