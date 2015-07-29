@@ -121,6 +121,35 @@ class LineAsset(CurveAsset):
         self.app.PIXI_Graphics.moveTo(0, 0)
         self.PIXI = self.app.PIXI_Graphics.lineTo(self.deltaX, self.deltaY)
 
+class TextAsset(object):
+    
+    def __init__(self, app, text, **kwargs):
+        """
+        app : the App reference
+        text : text to display
+        style = : default "20px Arial", e.g. "italic 20pt Helvetica"
+        width = : width of text area (pixels), default 100
+        fill = : color of text, default black
+        align = : align style, default "left". "left", "center", "right"
+
+        """
+
+        self.app = app
+        self.text = text
+        self.style = kwargs.get('style', '20px Arial')
+        self.width = kwargs.get('width', 100)
+        self.fill = kwargs.get('fill', Color(0, 1))
+        self.align = kwargs.get('align', 'left')
+        self.PIXI = self.app.PIXI_Text(self.text, 
+            {'font': self.style,
+                'fill' : self.fill.color,
+                'align' : self.align,
+                'wordWrap' : True,
+                'wordWrapWidth' : self.width,
+                })
+        self.PIXI.alpha = self.fill.alpha
+        self.PIXI.visible = False
+
 class Sprite(object):
     
     
@@ -376,6 +405,7 @@ class App(object):
         self.PIXI_Texture_fromImage = JSConstructor(self.PIXI_Texture.fromImage)
         self.PIXI_Sprite = JSConstructor(self.PIXI.Sprite)
         self.PIXI_Graphics = JSConstructor(self.PIXI.Graphics)()
+        self.PIXI_Text = JSConstructor(self.PIXI.Text)
         self.BUZZ = JSObject(window.buzz)
         self.w = window.open("", "")
         self.w.onunload = self.cleanup
@@ -543,7 +573,8 @@ if __name__ == '__main__':
             #circ = CircleAsset(self, 50, line, fcolor)
             #ell = EllipseAsset(self, 50, 75, line, fcolor)
             #poly = PolygonAsset(self, [(0,0), (50,50), (50,100), (0,0)], line, fcolor)
-            line = LineAsset(self, -50, 75, line)
+            #line = LineAsset(self, -50, 75, line)
+            text = TextAsset(self, "what up?", "20pt arial", fcolor, 300, 'center')
             
             
             for x in range(50,500,150):
@@ -553,6 +584,7 @@ if __name__ == '__main__':
             self.spring = SoundAsset(self, "spring.wav")
             self.springsound =Sound(self.spring)
             self.springsound.loop()
+            
 
         def step(self):
             for s in self.bunnies:
