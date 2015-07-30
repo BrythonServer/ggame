@@ -19,10 +19,8 @@ The ggame library is intended to be trivially easy to use. For example:
     
     # Create the app, with a 500x500 pixel stage
     app = App(500,500)  
-    # Load an image asset for the app
-    bunny = ImageAsset(app, "ggame/bunny.png")
-    # Create a displayed object using the asset
-    Sprite(bunny, (100,100))
+    # Create a displayed object using an image asset
+    Sprite(app, ImageAsset("ggame/bunny.png"), (100,100))
     # Run the app
     app.run()
 
@@ -37,8 +35,10 @@ and step (i.e. poll) functions.
     
     class Bunny(Sprite):
         
-        def __init__(self, asset, position):
-            super().__init__(asset, position)
+        asset = ImageAsset("ggame/bunny.png")
+        
+        def __init__(self, app, position):
+            super().__init__(app, Bunny.asset, position)
             # register mouse events
             self.app.listenMouseEvent(MouseEvent.mousedown, self.mousedown)
             self.app.listenMouseEvent(MouseEvent.mouseup, self.mouseup)
@@ -79,10 +79,8 @@ and step (i.e. poll) functions.
         
         def __init__(self):
             super().__init__(500, 500)
-            bunny = ImageAsset(self, "ggame/bunny.png")
-            # Create several bunnies at random locations
             for i in range(10):
-                Bunny(bunny, (randint(50,450),randint(50,450)))
+                Bunny(self, (randint(50,450),randint(50,450)))
             
         def step(self):
             """
@@ -90,7 +88,7 @@ and step (i.e. poll) functions.
             """
             for bunny in self.spritelist:
                 bunny.step()
-
+    
     
     # Create the app
     app = DemoApp()  
