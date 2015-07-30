@@ -34,3 +34,6 @@ class GFX_Window(object):
     self._renderer.render(self._stage)
     self._w.requestAnimationFrame(stepcallback)
     
+  def destroy(self):
+    self.SND.all().stop()
+    self._stage.destroy()
