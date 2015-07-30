@@ -15,11 +15,12 @@ SND_Sound = JSConstructor(SND.sound)
 class GFX_Window(object):
   
   def __init__(self, width, height, onclose):
-    self._w = window.open("", "")
-    self._stage = JSConstructor(GFX.Container)()
-    self._renderer = GFX.autoDetectRenderer(width, height, {'transparent':True})
-    self._w.document.body.appendChild(self._renderer.view)
-    self._w.onunload = onclose
+    self.x = 5
+    #self._w = window.open("", "")
+    #self._stage = JSConstructor(GFX.Container)()
+    #self._renderer = GFX.autoDetectRenderer(width, height, {'transparent':True})
+    #self._w.document.body.appendChild(self._renderer.view)
+    #self._w.onunload = onclose
 
   def bind(self, evtspec, callback):
     self._w.document.body.bind(evtspec, callback)
