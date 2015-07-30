@@ -1,4 +1,4 @@
-from .sys import *
+from sysdeps import *
 
 class Frame(object):
 
