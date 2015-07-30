@@ -575,7 +575,6 @@ if __name__ == '__main__':
     class myApp(App):
         def __init__(self, width, height):
             super().__init__(width, height)
-            """
             grassurl = "grass_texture239.jpg"
             grass = ImageAsset(grassurl)
             Sprite(self, grass, (0,0))
@@ -602,8 +601,7 @@ if __name__ == '__main__':
             self.spring = SoundAsset("ggame/spring.wav")
             self.springsound =Sound(self.spring)
             self.springsound.loop()
-            """
-            
+
 
         def step(self):
             for s in self.bunnies:
