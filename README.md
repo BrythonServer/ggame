@@ -15,14 +15,16 @@ by the user are left as an exercise.
 
 The ggame library is intended to be trivially easy to use. For example:
 
-    from ggame import App, ImageAsset, Sprite
-    
-    # Create the app, with a 500x500 pixel stage
-    app = App(500,500)  
-    # Create a displayed object using an image asset
-    Sprite(app, ImageAsset("ggame/bunny.png"), (100,100))
-    # Run the app
-    app.run()
+```python
+from ggame import App, ImageAsset, Sprite
+
+# Create the app, with a 500x500 pixel stage
+app = App(500,500)  
+# Create a displayed object using an image asset
+Sprite(app, ImageAsset("ggame/bunny.png"), (100,100))
+# Run the app
+app.run()
+```
 
 ## Another Example 
 
@@ -30,70 +32,72 @@ The following example illustrates the more common use case in which the basic gg
 classes, Sprite and App, are subclassed as Bunny and DemoApp and given event handlers
 and step (i.e. poll) functions.
 
-    from ggame import App, ImageAsset, Sprite, MouseEvent
-    from random import random, randint
+```python
+from ggame import App, ImageAsset, Sprite, MouseEvent
+from random import random, randint
+
+class Bunny(Sprite):
     
-    class Bunny(Sprite):
+    asset = ImageAsset("ggame/bunny.png")
+    
+    def __init__(self, app, position):
+        super().__init__(app, Bunny.asset, position)
+        # register mouse events
+        self.app.listenMouseEvent(MouseEvent.mousedown, self.mousedown)
+        self.app.listenMouseEvent(MouseEvent.mouseup, self.mouseup)
+        self.app.listenMouseEvent(MouseEvent.mousemove, self.mousemove)
+        self.dragging = False
+
+    
+    def step(self):
+        """
+        Every now and then a bunny hops...
+        """
+        if random() < 0.001:
+            self.x += randint(-50,50)
+            self.y += randint(-50,50)
         
-        asset = ImageAsset("ggame/bunny.png")
-        
-        def __init__(self, app, position):
-            super().__init__(app, Bunny.asset, position)
-            # register mouse events
-            self.app.listenMouseEvent(MouseEvent.mousedown, self.mousedown)
-            self.app.listenMouseEvent(MouseEvent.mouseup, self.mouseup)
-            self.app.listenMouseEvent(MouseEvent.mousemove, self.mousemove)
+    def mousedown(self, event):
+        # capture any mouse down within 50 pixels
+        self.deltax = event.x - (self.x + self.width//2) 
+        self.deltay = event.y - (self.y + self.height//2)
+        if abs(self.deltax) < 50 and abs(self.deltay) < 50:
+            self.dragging = True
+            # only drag one bunny at a time - consume the event
+            event.consumed = True
+            
+    def mousemove(self, event):
+        if self.dragging:
+            self.x = event.x - self.deltax - self.width//2
+            self.y = event.y - self.deltay - self.height//2
+            event.consumed = True
+            
+    def mouseup(self, event):
+        if self.dragging:
             self.dragging = False
-    
+            event.consumed = True
+            
         
-        def step(self):
-            """
-            Every now and then a bunny hops...
-            """
-            if random() < 0.001:
-                self.x += randint(-50,50)
-                self.y += randint(-50,50)
-            
-        def mousedown(self, event):
-            # capture any mouse down within 50 pixels
-            self.deltax = event.x - (self.x + self.width//2) 
-            self.deltay = event.y - (self.y + self.height//2)
-            if abs(self.deltax) < 50 and abs(self.deltay) < 50:
-                self.dragging = True
-                # only drag one bunny at a time - consume the event
-                event.consumed = True
-                
-        def mousemove(self, event):
-            if self.dragging:
-                self.x = event.x - self.deltax - self.width//2
-                self.y = event.y - self.deltay - self.height//2
-                event.consumed = True
-                
-        def mouseup(self, event):
-            if self.dragging:
-                self.dragging = False
-                event.consumed = True
-                
-            
-    class DemoApp(App):
+class DemoApp(App):
+    
+    def __init__(self):
+        super().__init__(500, 500)
+        for i in range(10):
+            Bunny(self, (randint(50,450),randint(50,450)))
         
-        def __init__(self):
-            super().__init__(500, 500)
-            for i in range(10):
-                Bunny(self, (randint(50,450),randint(50,450)))
-            
-        def step(self):
-            """
-            Override step to perform action on each frame update
-            """
-            for bunny in self.spritelist:
-                bunny.step()
-    
-    
-    # Create the app
-    app = DemoApp()  
-    # Run the app
-    app.run()
+    def step(self):
+        """
+        Override step to perform action on each frame update
+        """
+        for bunny in self.spritelist:
+            bunny.step()
+
+
+# Create the app
+app = DemoApp()  
+# Run the app
+app.run()
+```
 
 ## Installing ggame
 
