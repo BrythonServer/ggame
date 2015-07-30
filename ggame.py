@@ -15,12 +15,11 @@ SND_Sound = JSConstructor(SND.sound)
 class GFX_Window(object):
   
   def __init__(self, width, height, onclose):
-    self.x = 5
-    #self._w = window.open("", "")
-    #self._stage = JSConstructor(GFX.Container)()
-    #self._renderer = GFX.autoDetectRenderer(width, height, {'transparent':True})
-    #self._w.document.body.appendChild(self._renderer.view)
-    #self._w.onunload = onclose
+    self._w = window.open("", "")
+    self._stage = JSConstructor(GFX.Container)()
+    self._renderer = GFX.autoDetectRenderer(width, height, {'transparent':True})
+    self._w.document.body.appendChild(self._renderer.view)
+    self._w.onunload = onclose
 
   def bind(self, evtspec, callback):
     self._w.document.body.bind(evtspec, callback)
@@ -445,8 +444,10 @@ class KeyEvent(Event):
 class App(object):
     
     def __init__(self, width, height):
-        self.window = GFX_Window(width, height, self.destroy)
-        self.window.bind(KeyEvent.keydown, self._keyEvent)
+        
+        self.w = GFX_Window(width, height, self.destroy)
+        
+        self.w.bind(KeyEvent.keydown, self._keyEvent)
         self.window.bind(KeyEvent.keyup, self._keyEvent)
         self.window.bind(KeyEvent.keypress, self._keyEvent)
         self.window.bind(MouseEvent.mousewheel, self._mouseEvent)
