@@ -503,6 +503,7 @@ class App(object):
         self.userfunc = userfunc
         self.window.animate(self._animate)
 
+"""
 if __name__ == '__main__':
 
     class bunnySprite(Sprite):
@@ -616,3 +617,4 @@ if __name__ == '__main__':
     
     app.run()
 
+"""
