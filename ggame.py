@@ -155,15 +155,15 @@ class TextAsset(GraphicsAsset):
 class Sprite(object):
     
     
-    def __init__(self, asset, position = (0,0), frame = False):
-        self.app = asset.app
+    def __init__(self, app, asset, position = (0,0), frame = False):
+        self.app = app
         if type(asset) == ImageAsset:
             self.asset = asset
             if (frame):
-                self.PIXI = self.app.PIXI_Sprite(
-                    self.app.PIXI_Texture(asset.PIXI, frame.PIXI))
+                self.GFX = GFX_Sprite(
+                    GFX_Texture(asset.GFX, frame.GFX))
             else:
-                self.PIXI = self.app.PIXI_Sprite(asset.PIXI)
+                self.GFX = GFX_Sprite(asset.GFX)
         elif type(asset) in [RectangleAsset, 
             CircleAsset, 
             EllipseAsset, 
@@ -171,47 +171,47 @@ class Sprite(object):
             LineAsset,
             ]:
             self.asset = asset
-            self.PIXI = asset.PIXI.clone()
-            self.PIXI.visible = True
+            self.GFX = asset.GFX.clone()
+            self.GFX.visible = True
         elif type(asset) in [TextAsset]:
             self.asset = asset.clone()
-            self.PIXI = self.asset.PIXI
-            self.PIXI.visible = True
+            self.GFX = self.asset.GFX
+            self.GFX.visible = True
         self.position = position
         self.app._add(self)
         
     @property
     def width(self):
-        return self.PIXI.width
+        return self.GFX.width
         
     @property
     def height(self):
-        return self.PIXI.height
+        return self.GFX.height
         
     @property
     def x(self):
-        return self.PIXI.position.x
+        return self.GFX.position.x
         
     @x.setter
     def x(self, value):
-        self.PIXI.position.x = value
+        self.GFX.position.x = value
         
     @property
     def y(self):
-        return self.PIXI.position.y
+        return self.GFX.position.y
         
     @y.setter
     def y(self, value):
-        self.PIXI.position.y = value
+        self.GFX.position.y = value
         
     @property
     def position(self):
-        return (self.PIXI.position.x, self.PIXI.position.y)
+        return (self.GFX.position.x, self.GFX.position.y)
         
     @position.setter
     def position(self, value):
-        self.PIXI.position.x = value[0]
-        self.PIXI.position.y = value[1]
+        self.GFX.position.x = value[0]
+        self.GFX.position.y = value[1]
         
     @property
     def visible(self):
@@ -219,17 +219,16 @@ class Sprite(object):
     
     @visible.setter
     def visible(self, value):
-        self.PIXI.visible = value
+        self.GFX.visible = value
 
-    def cleanup(self):
+    def destroy(self):
         self.app._remove(self)
-        self.asset.cleanup()
+        self.asset.destroy()
 
 
 class SoundAsset(object):
     
-    def __init__(self, app, url):
-        self.app = app
+    def __init__(self, url):
         self.url = url
 
         
@@ -237,30 +236,28 @@ class Sound(object):
 
     def __init__(self, asset):
         self.asset = asset
-        self.app = self.asset.app
-        self.BUZZ_Sound = JSConstructor(self.app.BUZZ.sound)
-        self.BUZZ = self.BUZZ_Sound(self.asset.url)
-        self.BUZZ.load()
+        self.SND = SND_Sound(self.asset.url)
+        self.SND.load()
         
     def play(self):
         self.stop()
-        self.BUZZ.play()
+        self.SND.play()
 
     def loop(self):
         self.stop()
-        self.BUZZ.loop()
-        self.BUZZ.play()
+        self.SND.loop()
+        self.SND.play()
         
     def stop(self):
-        self.BUZZ.stop()
+        self.SND.stop()
         
     @property
     def volume(self):
-        return self.BUZZ.getVolume()
+        return self.SND.getVolume()
         
     @volume.setter
     def volume(self, value):
-        self.BUZZ.setVolume(value)
+        self.SND.setVolume(value)
     
 
 class Event(object):
