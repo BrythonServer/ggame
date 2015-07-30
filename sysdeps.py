@@ -37,7 +37,7 @@ class GFX_Window(object):
     self._w.requestAnimationFrame(stepcallback)
     
   def destroy(self):
-    self.SND.all().stop()
+    SND.all().stop()
     self._stage.destroy()
 
 if __name__ == "__main__":
