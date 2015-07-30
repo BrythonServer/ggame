@@ -80,45 +80,45 @@ class RectangleAsset(ShapeAsset):
 
 class CircleAsset(ShapeAsset):
 
-    def __init__(self, app, radius, line, fill):
-        super().__init__(app, line, fill)
+    def __init__(self, radius, line, fill):
+        super().__init__(line, fill)
         self.radius = radius
-        self.PIXI = self.app.PIXI_Graphics.drawCircle(0, 0, self.radius)
-        self.PIXI.visible = False
+        self.GFX = GFX_Graphics.drawCircle(0, 0, self.radius)
+        self.GFX.visible = False
         
 class EllipseAsset(ShapeAsset):
 
-    def __init__(self, app, halfw, halfh, line, fill):
-        super().__init__(app, line, fill)
+    def __init__(self, halfw, halfh, line, fill):
+        super().__init__(line, fill)
         self.halfw = halfw
         self.halfh = halfh
-        self.PIXI = self.app.PIXI_Graphics.drawEllipse(0, 0, self.halfw, self.halfh)
-        self.PIXI.visible = False
+        self.GFX = GFX_Graphics.drawEllipse(0, 0, self.halfw, self.halfh)
+        self.GFX.visible = False
         
 class PolygonAsset(ShapeAsset):
 
-    def __init__(self, app, path, line, fill):
-        super().__init__(app, line, fill)
+    def __init__(self, path, line, fill):
+        super().__init__(line, fill)
         self.path = path
         jpath = []
         for point in self.path:
             jpath.extend(point)
-        self.PIXI = self.app.PIXI_Graphics.drawPolygon(jpath)
-        self.PIXI.visible = False
+        self.GFX = GFX_Graphics.drawPolygon(jpath)
+        self.GFX.visible = False
     
 
 class LineAsset(CurveAsset):
     
-    def __init__(self, app, x, y, line):
-        super().__init__(app, line)
+    def __init__(self, x, y, line):
+        super().__init__(line)
         self.deltaX = x
         self.deltaY = y
-        self.app.PIXI_Graphics.moveTo(0, 0)
-        self.PIXI = self.app.PIXI_Graphics.lineTo(self.deltaX, self.deltaY)
+        GFX_Graphics.moveTo(0, 0)
+        self.GFX = GFX_Graphics.lineTo(self.deltaX, self.deltaY)
 
 class TextAsset(GraphicsAsset):
     
-    def __init__(self, app, text, **kwargs):
+    def __init__(self, text, **kwargs):
         """
         app : the App reference
         text : text to display
@@ -129,25 +129,23 @@ class TextAsset(GraphicsAsset):
 
         """
 
-        self.app = app
         self.text = text
         self.style = kwargs.get('style', '20px Arial')
         self.width = kwargs.get('width', 100)
         self.fill = kwargs.get('fill', Color(0, 1))
         self.align = kwargs.get('align', 'left')
-        self.PIXI = self.app.PIXI_Text(self.text, 
+        self.GFX = GFX_Text(self.text, 
             {'font': self.style,
                 'fill' : self.fill.color,
                 'align' : self.align,
                 'wordWrap' : True,
                 'wordWrapWidth' : self.width,
                 })
-        self.PIXI.alpha = self.fill.alpha
-        self.PIXI.visible = False
+        self.GFX.alpha = self.fill.alpha
+        self.GFX.visible = False
         
     def clone(self):
-        return type(self)(self.app,
-            self.text,
+        return type(self)(self.text,
             style = self.style,
             width = self.width,
             fill = self.fill,
