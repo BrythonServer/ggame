@@ -18,7 +18,7 @@ class GFX_Window(object):
     self._w = window.open("", "")
     self._stage = JSConstructor(GFX.Container)()
     self._renderer = GFX.autoDetectRenderer(width, height, {'transparent':True})
-    self._w.document.body.appendChild(self.renderer.view)
+    self._w.document.body.appendChild(self._renderer.view)
     self._w.onunload = onclose
 
   def bind(self, evtspec, callback):
