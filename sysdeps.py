@@ -43,6 +43,7 @@ if __name__ == "__main__":
         print("Closing Window")
     
     w = GFX_Window(100, 100, closefunc)
+    print(dir(w))
     print("Test Complete")
     
     
