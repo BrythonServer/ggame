@@ -506,8 +506,8 @@ if __name__ == '__main__':
 
     class bunnySprite(Sprite):
 
-        def __init__(self, asset, position = (0,0), frame = False):
-            super().__init__(asset, position, frame)
+        def __init__(self, app, asset, position = (0,0), frame = False):
+            super().__init__(app, asset, position, frame)
             self.app.listenKeyEvent(KeyEvent.keydown, "space", self.spaceKey)
             self.app.listenKeyEvent(KeyEvent.keydown, "left arrow", self.leftKey)
             self.app.listenKeyEvent(KeyEvent.keydown, "right arrow", self.rightKey)
@@ -575,12 +575,12 @@ if __name__ == '__main__':
         def __init__(self, width, height):
             super().__init__(width, height)
             grassurl = "grass_texture239.jpg"
-            grass = ImageAsset(self, grassurl)
-            Sprite(grass, (0,0))
+            grass = ImageAsset(grassurl)
+            Sprite(self, grass, (0,0))
             
             self.bunnies = []
             bunnyurl = "bunny.png"
-            bunny = ImageAsset(self, bunnyurl)
+            bunny = ImageAsset(bunnyurl)
             
             fcolor = Color(0x5050ff, 0.8)
             lcolor = Color(0, 1)
@@ -590,14 +590,14 @@ if __name__ == '__main__':
             #ell = EllipseAsset(self, 50, 75, line, fcolor)
             #poly = PolygonAsset(self, [(0,0), (50,50), (50,100), (0,0)], line, fcolor)
             #line = LineAsset(self, -50, 75, line)
-            text = TextAsset(self, "what up? big long text string!")
+            text = TextAsset("what up? big long text string!")
             
             
             for x in range(50,500,150):
                 for y in range(50,500,150):
-                    self.bunnies.append(bunnySprite(text, (x,y)))
+                    self.bunnies.append(bunnySprite(self, text, (x,y)))
             self.direction = 5
-            self.spring = SoundAsset(self, "ggame/spring.wav")
+            self.spring = SoundAsset("ggame/spring.wav")
             self.springsound =Sound(self.spring)
             self.springsound.loop()
             
