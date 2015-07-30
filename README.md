@@ -24,7 +24,7 @@ The ggame library is intended to be trivially easy to use. For example:
 ## Installing ggame
 
 Before using ggame with your Python source repository on Github, you should add the ggame source
-tree to your repository. You can, of course, just clone the project in to your projecgt, but you
+tree to your repository. You can, of course, just clone the project in to your project, but you
 will probably find the following method to be easier to maintain and keep up-to-date with the 
 latest ggame sources: add ggame as a git subtree.
 
