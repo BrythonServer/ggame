@@ -404,6 +404,7 @@ class KeyEvent(Event):
 class App(object):
     
     def __init__(self, width, height):
+        """
         self.PIXI = JSObject(window.PIXI)
         self.PIXI_Rectangle = JSConstructor(self.PIXI.Rectangle)
         self.PIXI_Texture = JSObject(self.PIXI.Texture)
@@ -412,21 +413,26 @@ class App(object):
         self.PIXI_Graphics = JSConstructor(self.PIXI.Graphics)()
         self.PIXI_Text = JSConstructor(self.PIXI.Text)
         self.BUZZ = JSObject(window.buzz)
+        """
+        self.window = GFX_Window(width, height, self.destroy)
+        
+        """
         self.w = window.open("", "")
-        self.w.onunload = self.cleanup
-        self.stage = JSConstructor(self.PIXI.Container)()
-        self.renderer = self.PIXI.autoDetectRenderer(width, height, 
-            {'transparent':True})
-        self.w.document.body.appendChild(self.renderer.view)
-        self.w.document.body.bind(KeyEvent.keydown, self._keyEvent)
-        self.w.document.body.bind(KeyEvent.keyup, self._keyEvent)
-        self.w.document.body.bind(KeyEvent.keypress, self._keyEvent)
-        self.w.document.body.bind(MouseEvent.mousewheel, self._mouseEvent)
-        self.w.document.body.bind(MouseEvent.mousemove, self._mouseEvent)
-        self.w.document.body.bind(MouseEvent.mousedown, self._mouseEvent)
-        self.w.document.body.bind(MouseEvent.mouseup, self._mouseEvent)
-        self.w.document.body.bind(MouseEvent.click, self._mouseEvent)
-        self.w.document.body.bind(MouseEvent.dblclick, self._mouseEvent)
+        self.w.onunload = self.destroy
+        self.stage = GFX_Stage
+        self.renderer = GFX_DetectRenderer(width, height, {'transparent':True})
+        """
+        
+        #self.w.document.body.appendChild(self.renderer.view)
+        self.window.bind(KeyEvent.keydown, self._keyEvent)
+        self.window.bind(KeyEvent.keyup, self._keyEvent)
+        self.window.bind(KeyEvent.keypress, self._keyEvent)
+        self.window.bind(MouseEvent.mousewheel, self._mouseEvent)
+        self.window.bind(MouseEvent.mousemove, self._mouseEvent)
+        self.window.bind(MouseEvent.mousedown, self._mouseEvent)
+        self.window.bind(MouseEvent.mouseup, self._mouseEvent)
+        self.window.bind(MouseEvent.click, self._mouseEvent)
+        self.window.bind(MouseEvent.dblclick, self._mouseEvent)
         self.spritelist = []
         self.eventdict = {}
         
@@ -450,11 +456,11 @@ class App(object):
             self._routeEvent(evt, evtlist)
         
     def _add(self, obj):
-        self.stage.addChild(obj.PIXI)
+        self.window.add(obj.GFX)
         self.spritelist.append(obj)
         
     def _remove(self, obj):
-        self.stage.removeChild(obj.PIXI)
+        self.window.remove(obj.GFX)
         self.spritelist.remove(obj)
         
     def _animate(self, dummy):
@@ -462,12 +468,10 @@ class App(object):
             self.userfunc()
         else:
             self.step()
-        self.renderer.render(self.stage)
-        self.w.requestAnimationFrame(self._animate)
+        self.window.animate(self._animate)
 
-    def cleanup(self, dummy):
-        self.BUZZ.all().stop()
-        self.stage.destroy()
+    def destroy(self, dummy):
+        self.window.destroy()
 
     def listenKeyEvent(self, eventtype, key, callback):
         """
@@ -496,7 +500,7 @@ class App(object):
     
     def run(self, userfunc = None):
         self.userfunc = userfunc
-        self.w.requestAnimationFrame(self._animate)
+        self.window.animate(self._animate)
 
 if __name__ == '__main__':
 
