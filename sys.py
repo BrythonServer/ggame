@@ -39,10 +39,10 @@ class GFX_Window(object):
     self._stage.destroy()
 
 if __name__ == "__main__":
-    def close():
+    def closefunc():
         print("Closing Window")
     
-    w = GFX_Window(100, 100, close)
+    w = GFX_Window(100, 100, closefunc)
     print("Test Complete")
     
     
