@@ -1,3 +1,6 @@
+from sysdeps import *
+
+"""
 from browser import window, document
 from javascript import JSObject, JSConstructor
 
@@ -37,7 +40,7 @@ class GFX_Window(object):
   def destroy(self):
     self.SND.all().stop()
     self._stage.destroy()
-
+"""
 
 
 class Frame(object):
@@ -495,7 +498,7 @@ class App(object):
         self.win.animate(self._animate)
 
     def destroy(self, dummy):
-        self.window.destroy()
+        self.win.destroy()
 
     def listenKeyEvent(self, eventtype, key, callback):
         """
@@ -621,7 +624,7 @@ if __name__ == '__main__':
                 for y in range(50,500,150):
                     self.bunnies.append(bunnySprite(self, text, (x,y)))
             self.direction = 5
-            self.spring = SoundAsset("ggame/spring.wav")
+            self.spring = SoundAsset("spring.wav")
             self.springsound =Sound(self.spring)
             self.springsound.loop()
 
