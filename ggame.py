@@ -404,26 +404,7 @@ class KeyEvent(Event):
 class App(object):
     
     def __init__(self, width, height):
-        """
-        self.PIXI = JSObject(window.PIXI)
-        self.PIXI_Rectangle = JSConstructor(self.PIXI.Rectangle)
-        self.PIXI_Texture = JSObject(self.PIXI.Texture)
-        self.PIXI_Texture_fromImage = JSConstructor(self.PIXI_Texture.fromImage)
-        self.PIXI_Sprite = JSConstructor(self.PIXI.Sprite)
-        self.PIXI_Graphics = JSConstructor(self.PIXI.Graphics)()
-        self.PIXI_Text = JSConstructor(self.PIXI.Text)
-        self.BUZZ = JSObject(window.buzz)
-        """
         self.window = GFX_Window(width, height, self.destroy)
-        
-        """
-        self.w = window.open("", "")
-        self.w.onunload = self.destroy
-        self.stage = GFX_Stage
-        self.renderer = GFX_DetectRenderer(width, height, {'transparent':True})
-        """
-        
-        #self.w.document.body.appendChild(self.renderer.view)
         self.window.bind(KeyEvent.keydown, self._keyEvent)
         self.window.bind(KeyEvent.keyup, self._keyEvent)
         self.window.bind(KeyEvent.keypress, self._keyEvent)
@@ -503,7 +484,6 @@ class App(object):
         self.userfunc = userfunc
         self.window.animate(self._animate)
 
-"""
 if __name__ == '__main__':
 
     class bunnySprite(Sprite):
@@ -616,5 +596,3 @@ if __name__ == '__main__':
     
     
     app.run()
-
-"""
