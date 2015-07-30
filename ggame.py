@@ -23,7 +23,7 @@ class Frame(object):
         
 class ImageAsset(object):
 
-    def __init__(self url):
+    def __init__(self, url):
         self.url = url
         self.GFX = GFX_Texture_fromImage(url, False)
 
