@@ -445,17 +445,17 @@ class App(object):
     
     def __init__(self, width, height):
         
-        self.w = GFX_Window(width, height, self.destroy)
+        self.win = GFX_Window(width, height, self.destroy)
         
-        self.w.bind(KeyEvent.keydown, self._keyEvent)
-        self.window.bind(KeyEvent.keyup, self._keyEvent)
-        self.window.bind(KeyEvent.keypress, self._keyEvent)
-        self.window.bind(MouseEvent.mousewheel, self._mouseEvent)
-        self.window.bind(MouseEvent.mousemove, self._mouseEvent)
-        self.window.bind(MouseEvent.mousedown, self._mouseEvent)
-        self.window.bind(MouseEvent.mouseup, self._mouseEvent)
-        self.window.bind(MouseEvent.click, self._mouseEvent)
-        self.window.bind(MouseEvent.dblclick, self._mouseEvent)
+        self.win.bind(KeyEvent.keydown, self._keyEvent)
+        self.win.bind(KeyEvent.keyup, self._keyEvent)
+        self.win.bind(KeyEvent.keypress, self._keyEvent)
+        self.win.bind(MouseEvent.mousewheel, self._mouseEvent)
+        self.win.bind(MouseEvent.mousemove, self._mouseEvent)
+        self.win.bind(MouseEvent.mousedown, self._mouseEvent)
+        self.win.bind(MouseEvent.mouseup, self._mouseEvent)
+        self.win.bind(MouseEvent.click, self._mouseEvent)
+        self.win.bind(MouseEvent.dblclick, self._mouseEvent)
         self.spritelist = []
         self.eventdict = {}
 
@@ -480,11 +480,11 @@ class App(object):
             self._routeEvent(evt, evtlist)
         
     def _add(self, obj):
-        self.window.add(obj.GFX)
+        self.win.add(obj.GFX)
         self.spritelist.append(obj)
         
     def _remove(self, obj):
-        self.window.remove(obj.GFX)
+        self.win.remove(obj.GFX)
         self.spritelist.remove(obj)
         
     def _animate(self, dummy):
@@ -492,7 +492,7 @@ class App(object):
             self.userfunc()
         else:
             self.step()
-        self.window.animate(self._animate)
+        self.win.animate(self._animate)
 
     def destroy(self, dummy):
         self.window.destroy()
@@ -524,7 +524,7 @@ class App(object):
     
     def run(self, userfunc = None):
         self.userfunc = userfunc
-        self.window.animate(self._animate)
+        self.win.animate(self._animate)
 
 if __name__ == '__main__':
 
