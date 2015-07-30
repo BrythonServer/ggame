@@ -1,21 +1,14 @@
-from browser import window, document
-from javascript import JSObject, JSConstructor
-
-
-# depends on pixi.js, buzz.js
-
-
+from sys import *
 
 class Frame(object):
 
 
-    def __init__(self, app, x, y, w, h):
-        self.app = app
+    def __init__(self, x, y, w, h):
         self.x = x
         self.y = y
         self.w = w
         self.h = h
-        self.PIXI = app.PIXI_Rectangle(x,y,w,h)
+        self.GFX = GFX_Rectangle(x,y,w,h)
     
     @property
     def center(self):
@@ -30,10 +23,9 @@ class Frame(object):
         
 class ImageAsset(object):
 
-    def __init__(self, app, url):
-        self.app = app
+    def __init__(self url):
         self.url = url
-        self.PIXI = self.app.PIXI_Texture_fromImage(url, False)
+        self.GFX = GFX_Texture_fromImage(url, False)
 
 class Color(object):
 
@@ -61,30 +53,29 @@ class LineStyle(object):
 
 class GraphicsAsset(object):
     
-    def cleanup(self):
-        self.PIXI.destroy()
+    def destroy(self):
+        self.GFX.destroy()
 
 class CurveAsset(GraphicsAsset):
 
-    def __init__(self, app, line):
-        self.app = app
-        self.app.PIXI_Graphics.lineStyle(line.width, line.color.color, line.color.alpha)
+    def __init__(self, line):
+        GFX_Graphics.lineStyle(line.width, line.color.color, line.color.alpha)
 
 class ShapeAsset(CurveAsset):
 
-    def __init__(self, app, line, fill):
-        super().__init__(app, line)
-        self.app.PIXI_Graphics.beginFill(fill.color, fill.alpha)
+    def __init__(self, line, fill):
+        super().__init__(line)
+        GFX_Graphics.beginFill(fill.color, fill.alpha)
     
 
 class RectangleAsset(ShapeAsset):
 
-    def __init__(self, app, width, height, line, fill):
-        super().__init__(app, line, fill)
+    def __init__(self, width, height, line, fill):
+        super().__init__(line, fill)
         self.width = width
         self.height = height
-        self.PIXI = self.app.PIXI_Graphics.drawRect(0, 0, self.width, self.height)
-        self.PIXI.visible = False
+        self.GFX = GFX_Graphics.drawRect(0, 0, self.width, self.height)
+        self.GFX.visible = False
         
 
 class CircleAsset(ShapeAsset):
@@ -607,7 +598,7 @@ if __name__ == '__main__':
                 for y in range(50,500,150):
                     self.bunnies.append(bunnySprite(text, (x,y)))
             self.direction = 5
-            self.spring = SoundAsset(self, "spring.wav")
+            self.spring = SoundAsset(self, "ggame/spring.wav")
             self.springsound =Sound(self.spring)
             self.springsound.loop()
             
