@@ -37,3 +37,6 @@ class GFX_Window(object):
   def destroy(self):
     self.SND.all().stop()
     self._stage.destroy()
+
+if __name__ == "__main__":
+    w = GFX_Window()
