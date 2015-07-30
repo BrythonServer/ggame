@@ -1,6 +1,19 @@
 # ggame
 Simple cross-platform sprite and game platform for Brython and/or Pygame.
 
+## Adding as Subtree
+
+    git remote add -f ggame https://github.com/BrythonServer/ggame.git
+    git merge -s ours --no-commit ggame/master
+    mkdir ggame
+    git read-tree --prefix=ggame/ -u ggame/master
+    git commit -m "Merge ggame project as our subdirectory"
+    
+To pull in updates from ggame:
+    
+    git pull -s subtree ggame master
+    
+
 ## Functionality Goals
 
 The runsprites library is intended to be trivially easy to use. For example:
