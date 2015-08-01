@@ -625,6 +625,8 @@ if __name__ == '__main__':
             self.app.listenMouseEvent(MouseEvent.mousemove, self.mousemove)
             self.vx = 0
             self.vy = 0
+            self.xcenter = 0.5
+            self.ycenter = 0.5
 
         def mouse(self, event):
             if event.wheelDelta > 0:
@@ -680,10 +682,7 @@ if __name__ == '__main__':
         def step(self):
             self.x += self.vx*2
             self.y += self.vy*2
-            self.rotation += 0.001
-            #self.width += 1
-            print (self.width)
-
+            
     class myApp(App):
         def __init__(self, width, height):
             super().__init__(width, height)
