@@ -322,9 +322,7 @@ class Sprite(object):
         if self is obj:
             return False
         elif self._collisionStyle == obj._collisionStyle == type(self)._circCollision:
-            print(self.radius, obj.radius)
             dist2 = (self.xcenter - obj.xcenter)**2 + (self.ycenter - obj.ycenter)**2
-            print(dist2)
             return dist2 < (self.radius + obj.radius)**2
         else:
             return (not (self.xmin > obj.xmax
