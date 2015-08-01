@@ -256,7 +256,7 @@ class Sprite(object):
         """
         return self.GFX.anchor.x
         
-    @xcenter.setter
+    @fxcenter.setter
     def fxcenter(self, value):
         """
         Float: 0-1
@@ -271,7 +271,7 @@ class Sprite(object):
         """
         return self.GFX.anchor.y
         
-    @ycenter.setter
+    @fycenter.setter
     def fycenter(self, value):
         """
         Float: 0-1
