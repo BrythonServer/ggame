@@ -6,7 +6,7 @@ def module_exists(module_name):
     else:
         return True
 
-if module_exists(browser) and module_exists(javascript):
+if module_exists('browser') and module_exists('javascript'):
 
   from browser import window, document
   from javascript import JSObject, JSConstructor
