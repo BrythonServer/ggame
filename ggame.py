@@ -154,6 +154,8 @@ class TextAsset(GraphicsAsset):
 
 class Sprite(object):
     
+    _rectCollision = "rect"
+    _circCollision = "circ"
     
     def __init__(self, asset, position = (0,0), frame = False):
         self.app = App()
@@ -179,16 +181,25 @@ class Sprite(object):
             self.GFX.visible = True
         self.position = position
         self._setExtents()
+        self.rectangularCollisionModel()
         self.app._add(self)
         
     def _setExtents(self):
         """
         update min/max x and y based on position, center, width, height
         """
-        self.xmin = self.x - self.xcenter * self.width
-        self.xmax = self.x + (1 - self.xcenter) * self.width
-        self.ymin = self.y - self.ycenter * self.height
-        self.ymax = self.y + (1 - self.ycenter) * self.height
+        self.xmin = int(self.x - self.xcenter * self.width)
+        self.xmax = int(self.x + (1 - self.xcenter) * self.width)
+        self.ymin = int(self.y - self.ycenter * self.height)
+        self.ymax = int(self.y + (1 - self.ycenter) * self.height)
+        self.radius = int((self.width + self.height)/4)
+
+    def rectangularCollisionModel(self):
+        self._collisionStyle = type(self)._rectCollision
+
+    def circularCollisionModel(self):
+        self._collisionStyle = type(self)._circCollision
+        
 
     @property
     def width(self):
@@ -285,6 +296,16 @@ class Sprite(object):
         self.GFX.visible = value
 
     @property
+    def scale(self):
+        return self.GFX.scale.x
+        
+    @scale.setter
+    def scale(self, value):
+        self.GFX.scale.x = value
+        self.GFX.scale.y = value
+        self._setExtents()
+
+    @property
     def rotation(self):
         return self.GFX.rotation
         
@@ -294,13 +315,18 @@ class Sprite(object):
 
     def collidingWith(self, obj):
         """
-        Very simple: does not work with rotated sprites!
+        Very simple: does not work well with rotated sprites!
         """
-        return (not (self.xmin > obj.xmax
-            or self.xmax < obj.xmin
-            or self.ymin > obj.ymax
-            or self.ymax < obj.ymin) 
-            and not self is obj)
+        if self is obj:
+            return False
+        elif self._collisionStyle == obj._collisionStyle == type(self)._circCollision:
+            dist2 = (self.xcenter - obj.xcenter)**2 + (self.ycenter - obj.ycenter)**2
+            return dist2 < (self.radius + obj.radius)**2
+        else:
+            return (not (self.xmin > obj.xmax
+                or self.xmax < obj.xmin
+                or self.ymin > obj.ymax
+                or self.ymax < obj.ymin))
 
     def collidingWithSprites(self, sclass = None):
         if sclass is None:
@@ -627,6 +653,8 @@ if __name__ == '__main__':
             self.vy = 0
             self.xcenter = 0.5
             self.ycenter = 0.5
+            self.scale = 0.5
+            self.circularCollisionModel()
 
         def mouse(self, event):
             if event.wheelDelta > 0:
