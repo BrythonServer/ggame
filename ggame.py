@@ -222,19 +222,12 @@ class Sprite(object):
         self.GFX.visible = value
 
     def collidingWith(self, obj):
-        """r1 = self.x < (obj.x + obj.width)
-        r2 = (self.x + self.w) > obj.x
-        r3 = (self.x + self.w) > obj.x
-        r4 = (self.y + self.height) > obj.y
-        print(r1, r2, r3, r4)"""
-        print (self.x, self.y, self.width, self.height, obj.x, obj.y, obj.width, obj.height)
-        retval = (self.x < (obj.x + obj.width)
-            and (self.x + self.w) > obj.x
-            and self.y < (obj.y + obj.height)
-            and (self.y + self.height) > obj.y)
-        print(retval)
-        return retval
-            
+        return (self.x < obj.x + obj.width
+            and self.x + self.width > obj.x
+            and self.y < obj.y + obj.height
+            and self.y + self.height > obj.y
+            and not self is obj)
+
     def collidingWithSprites(self, sclass = None):
         if sclass is None:
             slist = self.app.spritelist
