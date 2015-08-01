@@ -402,22 +402,46 @@ class KeyEvent(Event):
 
 
 class App(object):
+    """
+    Singleton base class for ggame applications
+    """
+
+    __instance = None
+
+    def __new__(cls, *args):
+        if cls.__instance is None:
+            cls.__instance = object.__new__(cls)
+        return cls.__instance
+        
+    def __init__(cls, *args, **kwargs):
+        if len(args) == 2:
+            self.x = args[0]
+            self.y = args[1]
+            print("Initializing with {}, {}".format(x,y))
     
-    def __init__(self, width, height):
-        
-        self.win = GFX_Window(width, height, self.destroy)
-        
-        self.win.bind(KeyEvent.keydown, self._keyEvent)
-        self.win.bind(KeyEvent.keyup, self._keyEvent)
-        self.win.bind(KeyEvent.keypress, self._keyEvent)
-        self.win.bind(MouseEvent.mousewheel, self._mouseEvent)
-        self.win.bind(MouseEvent.mousemove, self._mouseEvent)
-        self.win.bind(MouseEvent.mousedown, self._mouseEvent)
-        self.win.bind(MouseEvent.mouseup, self._mouseEvent)
-        self.win.bind(MouseEvent.click, self._mouseEvent)
-        self.win.bind(MouseEvent.dblclick, self._mouseEvent)
-        self.spritelist = []
-        self.eventdict = {}
+    def __init__(self, *args):
+
+        if not hasattr(self, 'spritelist'):
+            self.spritelist = []
+        if not hasattr(self, 'eventdict'):
+            self.eventdict = {}
+        if len(args) == 2:
+            self.width = args[0]
+            self.height = args[1]
+            self.win = GFX_Window(self.width, self.height, self.destroy)
+            if len(self.spritelist) > 0:
+                for sprite in self.spritelist:
+                    self.win.add(obj.GFX)
+
+            self.win.bind(KeyEvent.keydown, self._keyEvent)
+            self.win.bind(KeyEvent.keyup, self._keyEvent)
+            self.win.bind(KeyEvent.keypress, self._keyEvent)
+            self.win.bind(MouseEvent.mousewheel, self._mouseEvent)
+            self.win.bind(MouseEvent.mousemove, self._mouseEvent)
+            self.win.bind(MouseEvent.mousedown, self._mouseEvent)
+            self.win.bind(MouseEvent.mouseup, self._mouseEvent)
+            self.win.bind(MouseEvent.click, self._mouseEvent)
+            self.win.bind(MouseEvent.dblclick, self._mouseEvent)
 
         
     def _routeEvent(self, event, evtlist):
@@ -440,7 +464,8 @@ class App(object):
             self._routeEvent(evt, evtlist)
         
     def _add(self, obj):
-        self.win.add(obj.GFX)
+        if hasattr(self, 'win'):
+            self.win.add(obj.GFX)
         self.spritelist.append(obj)
         
     def _remove(self, obj):
