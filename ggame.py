@@ -178,8 +178,18 @@ class Sprite(object):
             self.GFX = self.asset.GFX
             self.GFX.visible = True
         self.position = position
+        self._setExtents()
         self.app._add(self)
         
+    def _setExtents(self):
+        """
+        update min/max x and y based on position, center, width, height
+        """
+        self.xmin = self.x - self.xcenter * self.width
+        self.xmax = self.x + (1 - self.xcenter) * self.width
+        self.ymin = self.y - self.ycenter * self.height
+        self.ymax = self.y + (1 - self.ycenter) * self.height
+
     @property
     def width(self):
         return self.GFX.width
@@ -187,6 +197,7 @@ class Sprite(object):
     @width.setter
     def width(self, value):
         self.GFX.width = value
+        self._setExtents()
     
     @property
     def height(self):
@@ -195,6 +206,7 @@ class Sprite(object):
     @height.setter
     def height(self, value):
         self.GFX.height = value
+        self._setExtents()
         
     @property
     def x(self):
@@ -203,6 +215,7 @@ class Sprite(object):
     @x.setter
     def x(self, value):
         self.GFX.position.x = value
+        self._setExtents()
         
     @property
     def y(self):
@@ -211,7 +224,8 @@ class Sprite(object):
     @y.setter
     def y(self, value):
         self.GFX.position.y = value
-        
+        self._setExtents()
+    
     @property
     def position(self):
         return (self.GFX.position.x, self.GFX.position.y)
@@ -220,7 +234,48 @@ class Sprite(object):
     def position(self, value):
         self.GFX.position.x = value[0]
         self.GFX.position.y = value[1]
+        self._setExtents()
         
+    @property
+    def xcenter(self):
+        """
+        Float: 0-1
+        """
+        return self.GFX.anchor.x
+        
+    @xcenter.setter
+    def xcenter(self, value):
+        """
+        Float: 0-1
+        """
+        self.GFX.anchor.x = value
+        self._setExtents()
+        
+    @property
+    def ycenter(self):
+        """
+        Float: 0-1
+        """
+        return self.GFX.anchor.y
+        
+    @ycenter.setter
+    def ycenter(self, value):
+        """
+        Float: 0-1
+        """
+        self.GFX.anchor.y = value
+        self._setExtents()
+    
+    @property
+    def center(self):
+        return (self.GFX.anchor.x, self.GFX.anchor.y)
+        
+    @center.setter
+    def center(self, value):
+        self.GFX.anchor.x = value[0]
+        self.GFX.anchor.y = value[1]
+        self._setExtents()
+    
     @property
     def visible(self):
         return self.PIXI.visible
@@ -238,11 +293,14 @@ class Sprite(object):
         self.GFX.rotation = value
 
     def collidingWith(self, obj):
-        return (self.x < obj.x + obj.width
-            and self.x + self.width > obj.x
-            and self.y < obj.y + obj.height
-            and self.y + self.height > obj.y
-            and not self is obj)
+        """
+        Very simple: does not work with rotated sprites!
+        """
+        return (not (self.xmin > obj.xmax
+            or self.xmax < obj.xmin
+            or self.ymin > obj.ymax
+            or self.ymax < obj.ymin) 
+            ane not self is obj)
 
     def collidingWithSprites(self, sclass = None):
         if sclass is None:
@@ -622,8 +680,8 @@ if __name__ == '__main__':
         def step(self):
             self.x += self.vx*2
             self.y += self.vy*2
-            #self.rotation += 0.001
-            self.width += 1
+            self.rotation += 0.001
+            #self.width += 1
             print (self.width)
 
     class myApp(App):
