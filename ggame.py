@@ -465,15 +465,15 @@ class App(object):
         if hasattr(self, 'win'):
             self.win.add(obj.GFX)
         self.spritelist.append(obj)
-        if class(obj) not in self.spritesdict:
-            self.spritesdict[class(obj)] = []
-        self.spritesdict[class(obj)].append(obj)
+        if type(obj) not in self.spritesdict:
+            self.spritesdict[type(obj)] = []
+        self.spritesdict[type(obj)].append(obj)
         
     def _remove(self, obj):
         if hasattr(self, 'win'):
             self.win.remove(obj.GFX)
         self.spritelist.remove(obj)
-        self.spritesdict[class(obj)].remove(obj)
+        self.spritesdict[type(obj)].remove(obj)
         
     def _animate(self, dummy):
         if self.userfunc:
