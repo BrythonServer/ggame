@@ -156,7 +156,7 @@ class Sprite(object):
     
     
     def __init__(self, app, asset, position = (0,0), frame = False):
-        self.app = app
+        self.app = App()
         if type(asset) == ImageAsset:
             self.asset = asset
             if (frame):
@@ -409,16 +409,12 @@ class App(object):
     __instance = None
 
     def __new__(cls, *args):
-        if cls.__instance is None:
-            cls.__instance = object.__new__(cls)
-        return cls.__instance
+        print("New ")
+        if App.__instance is None:
+            App.__instance = object.__new__(cls)
+        return App.__instance
         
-    def __init__(cls, *args, **kwargs):
-        if len(args) == 2:
-            self.x = args[0]
-            self.y = args[1]
-            print("Initializing with {}, {}".format(x,y))
-    
+
     def __init__(self, *args):
 
         if not hasattr(self, 'spritelist'):
@@ -429,9 +425,11 @@ class App(object):
             self.width = args[0]
             self.height = args[1]
             self.win = GFX_Window(self.width, self.height, self.destroy)
+            print("self.win created")
             if len(self.spritelist) > 0:
                 for sprite in self.spritelist:
-                    self.win.add(obj.GFX)
+                    print("Adding object to window")
+                    self.win.add(sprite.GFX)
 
             self.win.bind(KeyEvent.keydown, self._keyEvent)
             self.win.bind(KeyEvent.keyup, self._keyEvent)
@@ -464,6 +462,7 @@ class App(object):
             self._routeEvent(evt, evtlist)
         
     def _add(self, obj):
+        print("hasattr(self, 'win')", hasattr(self, 'win'))
         if hasattr(self, 'win'):
             self.win.add(obj.GFX)
         self.spritelist.append(obj)
@@ -619,6 +618,7 @@ if __name__ == '__main__':
             #    s.x += self.direction
             #self.direction *= -1
 
+    print("creating myApp")
     app = myApp(500, 400)
     
     
