@@ -121,4 +121,4 @@ If you want to pull in updates from ggame in the future:
     
     git pull -s subtree ggame master
     
-
+You can see an example of how a ggame subtree is used by examining the [brython-server-testing](https://github.com/tiggerntatie/brython-server-testing) repo on Github. In particular, the s.py, a.py and trivial.py python programs are using the ggame subtree in this way.
