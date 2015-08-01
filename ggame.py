@@ -184,9 +184,17 @@ class Sprite(object):
     def width(self):
         return self.GFX.width
         
+    @width.setter
+    def width(self, value):
+        self.GFX.width = value
+    
     @property
     def height(self):
         return self.GFX.height
+    
+    @height.setter
+    def height(self, value):
+        self.GFX.height = value
         
     @property
     def x(self):
@@ -614,7 +622,9 @@ if __name__ == '__main__':
         def step(self):
             self.x += self.vx*2
             self.y += self.vy*2
-            self.rotation += 0.001
+            #self.rotation += 0.001
+            self.width += 1
+            print (self.width)
 
     class myApp(App):
         def __init__(self, width, height):
