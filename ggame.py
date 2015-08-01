@@ -188,11 +188,13 @@ class Sprite(object):
         """
         update min/max x and y based on position, center, width, height
         """
-        self.xmin = int(self.x - self.xcenter * self.width)
-        self.xmax = int(self.x + (1 - self.xcenter) * self.width)
-        self.ymin = int(self.y - self.ycenter * self.height)
-        self.ymax = int(self.y + (1 - self.ycenter) * self.height)
+        self.xmin = int(self.x - self.fxcenter * self.width)
+        self.xmax = int(self.x + (1 - self.fxcenter) * self.width)
+        self.ymin = int(self.y - self.fycenter * self.height)
+        self.ymax = int(self.y + (1 - self.fycenter) * self.height)
         self.radius = int((self.width + self.height)/4)
+        self.xcenter = int(self.x + (1 - self.fxcenter) * self.width / 2)
+        self.ycenter = int(self.y + (1 - self.fycenter) * self.height / 2)
 
     def rectangularCollisionModel(self):
         self._collisionStyle = type(self)._rectCollision
@@ -248,14 +250,14 @@ class Sprite(object):
         self._setExtents()
         
     @property
-    def xcenter(self):
+    def fxcenter(self):
         """
         Float: 0-1
         """
         return self.GFX.anchor.x
         
     @xcenter.setter
-    def xcenter(self, value):
+    def fxcenter(self, value):
         """
         Float: 0-1
         """
@@ -263,14 +265,14 @@ class Sprite(object):
         self._setExtents()
         
     @property
-    def ycenter(self):
+    def fycenter(self):
         """
         Float: 0-1
         """
         return self.GFX.anchor.y
         
     @ycenter.setter
-    def ycenter(self, value):
+    def fycenter(self, value):
         """
         Float: 0-1
         """
@@ -320,7 +322,9 @@ class Sprite(object):
         if self is obj:
             return False
         elif self._collisionStyle == obj._collisionStyle == type(self)._circCollision:
+            print(self.radius, obj.radius)
             dist2 = (self.xcenter - obj.xcenter)**2 + (self.ycenter - obj.ycenter)**2
+            print(dist2)
             return dist2 < (self.radius + obj.radius)**2
         else:
             return (not (self.xmin > obj.xmax
