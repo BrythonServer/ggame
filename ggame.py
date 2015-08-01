@@ -239,7 +239,7 @@ class Sprite(object):
         if sclass is None:
             slist = self.app.spritelist
         else:
-            slist = self.app.getSpritesbyClass
+            slist = self.app.getSpritesbyClass(sclass)
         return list(filter(self.collidingWith, slist))
 
     def destroy(self):
@@ -576,7 +576,6 @@ if __name__ == '__main__':
             event.consumed = True
         
         def checkCollide(self):
-            print("check")
             if len(self.collidingWithSprites(bunnySprite)) > 0:
                 self.app.springsound.play()
             
