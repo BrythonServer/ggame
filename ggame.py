@@ -616,7 +616,6 @@ if __name__ == '__main__':
             #    s.x += self.direction
             #self.direction *= -1
 
-    print("creating myApp")
     app = myApp(500, 400)
     
     
