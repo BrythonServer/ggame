@@ -221,6 +221,14 @@ class Sprite(object):
     def visible(self, value):
         self.GFX.visible = value
 
+    @property
+    def rotation(self):
+        return self.GFX.rotation
+        
+    @rotation.setter
+    def rotation(self, value):
+        self.GFX.rotation = value
+
     def collidingWith(self, obj):
         return (self.x < obj.x + obj.width
             and self.x + self.width > obj.x
@@ -551,7 +559,7 @@ if __name__ == '__main__':
             self.app.listenMouseEvent(MouseEvent.mousemove, self.mousemove)
             self.vx = 0
             self.vy = 0
-            
+
         def mouse(self, event):
             if event.wheelDelta > 0:
                 self.spring1.play()
@@ -569,7 +577,7 @@ if __name__ == '__main__':
             event.consumed = True
         
         def checkCollide(self):
-            if len(self.collidingWithSprites(bunnySprite)) > 0:
+            if self.collidingWithSprites(bunnySprite):
                 self.app.springsound.play()
             
         def leftKey(self, event):
@@ -606,6 +614,7 @@ if __name__ == '__main__':
         def step(self):
             self.x += self.vx*2
             self.y += self.vy*2
+            self.rotation += 0.001
 
     class myApp(App):
         def __init__(self, width, height):
@@ -631,7 +640,7 @@ if __name__ == '__main__':
             
             for x in range(50,500,150):
                 for y in range(50,500,150):
-                    self.bunnies.append(bunnySprite(text, (x,y)))
+                    self.bunnies.append(bunnySprite(bunny, (x,y)))
             self.direction = 5
             self.spring = SoundAsset("spring.wav")
             self.springsound =Sound(self.spring)
