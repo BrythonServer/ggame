@@ -221,6 +221,20 @@ class Sprite(object):
     def visible(self, value):
         self.GFX.visible = value
 
+    def collidingWith(self, obj):
+        return (self.x < obj.x + obj.width 
+            and self.x + self.w > obj.x
+            and self.y < obj.y + obj.height
+            and self.y + self.height > obj.y
+            and not self is obj)
+            
+    def collidingWithSprites(self, sclass = None):
+        if not sclass:
+            slist = self.app.spritelist
+        else:
+            slist = self.app.getSpritesbyClass(sclass)
+        return filter(self.collidingWith, slist)
+
     def destroy(self):
         self.app._remove(self)
         self.asset.destroy()
@@ -490,7 +504,6 @@ class App(object):
         eventtype : "keydown", "keyup", "keypress"
         key : e.g. "space", "a" or "*" for ALL!
         callback : function name to receive events
-        
         """
         evtlist = self.eventdict.get((eventtype, key), [])
         evtlist.append(callback)
@@ -506,6 +519,9 @@ class App(object):
 
     def unlistenMouseEvent(self, eventtype, callback):
         self.eventdict[eventtype].remove(callback)
+        
+    def getSpritesbyClass(self, sclass):
+        self.spritesdict.get(sclass, [])
         
     def step(self):
         pass
@@ -582,6 +598,8 @@ if __name__ == '__main__':
         def step(self):
             self.x += self.vx*2
             self.y += self.vy*2
+            if self.collidingWithSprites(bunnySprite):
+                self.app.springsound.play()
 
     class myApp(App):
         def __init__(self, width, height):
@@ -611,7 +629,7 @@ if __name__ == '__main__':
             self.direction = 5
             self.spring = SoundAsset("spring.wav")
             self.springsound =Sound(self.spring)
-            self.springsound.loop()
+            #self.springsound.loop()
 
 
         def step(self):
