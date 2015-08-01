@@ -300,7 +300,7 @@ class Sprite(object):
             or self.xmax < obj.xmin
             or self.ymin > obj.ymax
             or self.ymax < obj.ymin) 
-            ane not self is obj)
+            and not self is obj)
 
     def collidingWithSprites(self, sclass = None):
         if sclass is None:
