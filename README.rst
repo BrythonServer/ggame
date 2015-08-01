@@ -1,1 +1,4 @@
-  .. automodule:: ggame.ggame
+ggame
+*****
+
+.. automodule:: ggame
