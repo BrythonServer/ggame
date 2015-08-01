@@ -1,4 +1,0 @@
-ggame
-*****
-
-.. automodule:: ggame
