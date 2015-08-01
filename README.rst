@@ -1,1 +1,1 @@
-  .. automodule:: ggame
+  .. automodule:: ggame.ggame
