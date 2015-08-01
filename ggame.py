@@ -222,11 +222,12 @@ class Sprite(object):
         self.GFX.visible = value
 
     def collidingWith(self, obj):
-        r1 = self.x < (obj.x + obj.width)
+        """r1 = self.x < (obj.x + obj.width)
         r2 = (self.x + self.w) > obj.x
         r3 = (self.x + self.w) > obj.x
         r4 = (self.y + self.height) > obj.y
-        print(r1, r2, r3, r4)
+        print(r1, r2, r3, r4)"""
+        print (self.x, self.y, self.width, self.height, obj.x, obj.y, obj.width, obj.height)
         retval = (self.x < (obj.x + obj.width)
             and (self.x + self.w) > obj.x
             and self.y < (obj.y + obj.height)
@@ -238,7 +239,7 @@ class Sprite(object):
         if sclass is None:
             slist = self.app.spritelist
         else:
-            slist = self.app.getSpritesbyClass(sclass)
+            slist = self.app.getSpritesbyClass
         return list(filter(self.collidingWith, slist))
 
     def destroy(self):
@@ -575,10 +576,10 @@ if __name__ == '__main__':
             event.consumed = True
         
         def checkCollide(self):
+            print("check")
             if len(self.collidingWithSprites(bunnySprite)) > 0:
                 self.app.springsound.play()
             
-        
         def leftKey(self, event):
             self.vx = -1
             event.consumed = True
