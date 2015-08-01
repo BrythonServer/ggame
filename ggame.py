@@ -155,7 +155,7 @@ class TextAsset(GraphicsAsset):
 class Sprite(object):
     
     
-    def __init__(self, app, asset, position = (0,0), frame = False):
+    def __init__(self, asset, position = (0,0), frame = False):
         self.app = App()
         if type(asset) == ImageAsset:
             self.asset = asset
@@ -409,7 +409,6 @@ class App(object):
     __instance = None
 
     def __new__(cls, *args):
-        print("New ")
         if App.__instance is None:
             App.__instance = object.__new__(cls)
         return App.__instance
@@ -425,10 +424,9 @@ class App(object):
             self.width = args[0]
             self.height = args[1]
             self.win = GFX_Window(self.width, self.height, self.destroy)
-            print("self.win created")
+            # Add existing sprites to the window
             if len(self.spritelist) > 0:
                 for sprite in self.spritelist:
-                    print("Adding object to window")
                     self.win.add(sprite.GFX)
 
             self.win.bind(KeyEvent.keydown, self._keyEvent)
@@ -462,7 +460,7 @@ class App(object):
             self._routeEvent(evt, evtlist)
         
     def _add(self, obj):
-        print("hasattr(self, 'win')", hasattr(self, 'win'))
+        # only add sprites to window if it exists, otherwise will happen later
         if hasattr(self, 'win'):
             self.win.add(obj.GFX)
         self.spritelist.append(obj)
