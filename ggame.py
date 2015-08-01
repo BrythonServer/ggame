@@ -582,7 +582,7 @@ if __name__ == '__main__':
             super().__init__(width, height)
             grassurl = "grass_texture239.jpg"
             grass = ImageAsset(grassurl)
-            Sprite(self, grass, (0,0))
+            Sprite(grass, (0,0))
             
             self.bunnies = []
             bunnyurl = "bunny.png"
@@ -601,7 +601,7 @@ if __name__ == '__main__':
             
             for x in range(50,500,150):
                 for y in range(50,500,150):
-                    self.bunnies.append(bunnySprite(self, text, (x,y)))
+                    self.bunnies.append(bunnySprite(text, (x,y)))
             self.direction = 5
             self.spring = SoundAsset("spring.wav")
             self.springsound =Sound(self.spring)
