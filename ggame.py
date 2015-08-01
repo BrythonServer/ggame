@@ -420,6 +420,8 @@ class App(object):
             self.spritelist = []
         if not hasattr(self, 'eventdict'):
             self.eventdict = {}
+        if not hasattr(self, 'spritesdict'):
+            self.spritesdict = {}
         if len(args) == 2:
             self.width = args[0]
             self.height = args[1]
@@ -428,7 +430,6 @@ class App(object):
             if len(self.spritelist) > 0:
                 for sprite in self.spritelist:
                     self.win.add(sprite.GFX)
-
             self.win.bind(KeyEvent.keydown, self._keyEvent)
             self.win.bind(KeyEvent.keyup, self._keyEvent)
             self.win.bind(KeyEvent.keypress, self._keyEvent)
@@ -464,10 +465,15 @@ class App(object):
         if hasattr(self, 'win'):
             self.win.add(obj.GFX)
         self.spritelist.append(obj)
+        if class(obj) not in self.spritesdict:
+            self.spritesdict[class(obj)] = []
+        self.spritesdict[class(obj)].append(obj)
         
     def _remove(self, obj):
-        self.win.remove(obj.GFX)
+        if hasattr(self, 'win'):
+            self.win.remove(obj.GFX)
         self.spritelist.remove(obj)
+        self.spritesdict[class(obj)].remove(obj)
         
     def _animate(self, dummy):
         if self.userfunc:
@@ -617,6 +623,7 @@ if __name__ == '__main__':
             #self.direction *= -1
 
     app = myApp(500, 400)
+    app = App()
     
     
     app.run()
