@@ -222,18 +222,24 @@ class Sprite(object):
         self.GFX.visible = value
 
     def collidingWith(self, obj):
-        return (self.x < obj.x + obj.width 
-            and self.x + self.w > obj.x
-            and self.y < obj.y + obj.height
-            and self.y + self.height > obj.y
-            and not self is obj)
+        r1 = self.x < (obj.x + obj.width)
+        r2 = (self.x + self.w) > obj.x
+        r3 = (self.x + self.w) > obj.x
+        r4 = (self.y + self.height) > obj.y
+        print(r1, r2, r3, r4)
+        retval = (self.x < (obj.x + obj.width)
+            and (self.x + self.w) > obj.x
+            and self.y < (obj.y + obj.height)
+            and (self.y + self.height) > obj.y)
+        print(retval)
+        return retval
             
     def collidingWithSprites(self, sclass = None):
-        if not sclass:
+        if sclass is None:
             slist = self.app.spritelist
         else:
             slist = self.app.getSpritesbyClass(sclass)
-        return filter(self.collidingWith, slist)
+        return list(filter(self.collidingWith, slist))
 
     def destroy(self):
         self.app._remove(self)
@@ -521,7 +527,7 @@ class App(object):
         self.eventdict[eventtype].remove(callback)
         
     def getSpritesbyClass(self, sclass):
-        self.spritesdict.get(sclass, [])
+        return self.spritesdict.get(sclass, [])
         
     def step(self):
         pass
@@ -568,21 +574,30 @@ if __name__ == '__main__':
         def mousemove(self, event):
             event.consumed = True
         
+        def checkCollide(self):
+            if len(self.collidingWithSprites(bunnySprite)) > 0:
+                self.app.springsound.play()
+            
+        
         def leftKey(self, event):
             self.vx = -1
             event.consumed = True
+            self.checkCollide()
 
         def rightKey(self, event):
             self.vx = 1
             event.consumed = True
+            self.checkCollide()
             
         def upKey(self, event):
             self.vy = -1
             event.consumed = True
+            self.checkCollide()
         
         def downKey(self, event):
             self.vy = 1
             event.consumed = True
+            self.checkCollide()
             
         def horizUp(self, event):
             self.vx = 0
@@ -598,8 +613,6 @@ if __name__ == '__main__':
         def step(self):
             self.x += self.vx*2
             self.y += self.vy*2
-            if self.collidingWithSprites(bunnySprite):
-                self.app.springsound.play()
 
     class myApp(App):
         def __init__(self, width, height):
@@ -641,7 +654,5 @@ if __name__ == '__main__':
             #self.direction *= -1
 
     app = myApp(500, 400)
-    app = App()
-    
-    
+
     app.run()
