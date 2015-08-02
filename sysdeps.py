@@ -14,7 +14,7 @@ if module_exists('browser') and module_exists('javascript'):
   GFX = JSObject(window.PIXI)
   GFX_Rectangle = JSConstructor(GFX.Rectangle)
   GFX_Texture = JSConstructor(GFX.Texture)
-  GFX_Texture_fromImage = JSConstructor(GFX_Texture.fromImage)
+  GFX_Texture_fromImage = JSConstructor(GFX.Texture.fromImage)
   GFX_Sprite = JSConstructor(GFX.Sprite)
   GFX_Graphics = JSConstructor(GFX.Graphics)()
   GFX_Text = JSConstructor(GFX.Text)
