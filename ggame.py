@@ -655,8 +655,8 @@ if __name__ == '__main__':
             self.vy = 0
             self.xcenter = 0.5
             self.ycenter = 0.5
-            self.scale = 0.5
-            self.circularCollisionModel()
+            #self.scale = 0.5
+            #self.circularCollisionModel()
 
         def mouse(self, event):
             if event.wheelDelta > 0:
@@ -727,6 +727,7 @@ if __name__ == '__main__':
             bunniesurl = "bunnysheet5.png"
             bunnies = ImageAsset(bunniesurl)
             bunniesframe = Frame(22,213,36,32)
+            bunniesframe = Frame(22,22,100,100)
             
             fcolor = Color(0x5050ff, 0.8)
             lcolor = Color(0, 1)
@@ -741,6 +742,7 @@ if __name__ == '__main__':
             
             for x in range(50,500,150):
                 for y in range(50,500,150):
+                    #self.bunnies.append(bunnySprite(bunnies, (x,y)))
                     self.bunnies.append(bunnySprite(bunnies, (x,y), bunniesframe))
             self.direction = 5
             self.spring = SoundAsset("spring.wav")
