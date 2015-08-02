@@ -154,6 +154,8 @@ class TextAsset(GraphicsAsset):
 
 class Sprite(object):
     
+    _rectCollision = "rect"
+    _circCollision = "circ"
     
     def __init__(self, asset, position = (0,0), frame = False):
         self.app = App()
@@ -178,15 +180,46 @@ class Sprite(object):
             self.GFX = self.asset.GFX
             self.GFX.visible = True
         self.position = position
+        self._setExtents()
+        self.rectangularCollisionModel()
         self.app._add(self)
         
+    def _setExtents(self):
+        """
+        update min/max x and y based on position, center, width, height
+        """
+        self.xmin = int(self.x - self.fxcenter * self.width)
+        self.xmax = int(self.x + (1 - self.fxcenter) * self.width)
+        self.ymin = int(self.y - self.fycenter * self.height)
+        self.ymax = int(self.y + (1 - self.fycenter) * self.height)
+        self.radius = int((self.width + self.height)/4)
+        self.xcenter = int(self.x + (1 - self.fxcenter) * self.width / 2)
+        self.ycenter = int(self.y + (1 - self.fycenter) * self.height / 2)
+
+    def rectangularCollisionModel(self):
+        self._collisionStyle = type(self)._rectCollision
+
+    def circularCollisionModel(self):
+        self._collisionStyle = type(self)._circCollision
+        
+
     @property
     def width(self):
         return self.GFX.width
         
+    @width.setter
+    def width(self, value):
+        self.GFX.width = value
+        self._setExtents()
+    
     @property
     def height(self):
         return self.GFX.height
+    
+    @height.setter
+    def height(self, value):
+        self.GFX.height = value
+        self._setExtents()
         
     @property
     def x(self):
@@ -195,6 +228,7 @@ class Sprite(object):
     @x.setter
     def x(self, value):
         self.GFX.position.x = value
+        self._setExtents()
         
     @property
     def y(self):
@@ -203,7 +237,8 @@ class Sprite(object):
     @y.setter
     def y(self, value):
         self.GFX.position.y = value
-        
+        self._setExtents()
+    
     @property
     def position(self):
         return (self.GFX.position.x, self.GFX.position.y)
@@ -212,7 +247,48 @@ class Sprite(object):
     def position(self, value):
         self.GFX.position.x = value[0]
         self.GFX.position.y = value[1]
+        self._setExtents()
         
+    @property
+    def fxcenter(self):
+        """
+        Float: 0-1
+        """
+        return self.GFX.anchor.x
+        
+    @fxcenter.setter
+    def fxcenter(self, value):
+        """
+        Float: 0-1
+        """
+        self.GFX.anchor.x = value
+        self._setExtents()
+        
+    @property
+    def fycenter(self):
+        """
+        Float: 0-1
+        """
+        return self.GFX.anchor.y
+        
+    @fycenter.setter
+    def fycenter(self, value):
+        """
+        Float: 0-1
+        """
+        self.GFX.anchor.y = value
+        self._setExtents()
+    
+    @property
+    def center(self):
+        return (self.GFX.anchor.x, self.GFX.anchor.y)
+        
+    @center.setter
+    def center(self, value):
+        self.GFX.anchor.x = value[0]
+        self.GFX.anchor.y = value[1]
+        self._setExtents()
+    
     @property
     def visible(self):
         return self.PIXI.visible
@@ -220,6 +296,46 @@ class Sprite(object):
     @visible.setter
     def visible(self, value):
         self.GFX.visible = value
+
+    @property
+    def scale(self):
+        return self.GFX.scale.x
+        
+    @scale.setter
+    def scale(self, value):
+        self.GFX.scale.x = value
+        self.GFX.scale.y = value
+        self._setExtents()
+
+    @property
+    def rotation(self):
+        return self.GFX.rotation
+        
+    @rotation.setter
+    def rotation(self, value):
+        self.GFX.rotation = value
+
+    def collidingWith(self, obj):
+        """
+        Very simple: does not work well with rotated sprites!
+        """
+        if self is obj:
+            return False
+        elif self._collisionStyle == obj._collisionStyle == type(self)._circCollision:
+            dist2 = (self.xcenter - obj.xcenter)**2 + (self.ycenter - obj.ycenter)**2
+            return dist2 < (self.radius + obj.radius)**2
+        else:
+            return (not (self.xmin > obj.xmax
+                or self.xmax < obj.xmin
+                or self.ymin > obj.ymax
+                or self.ymax < obj.ymin))
+
+    def collidingWithSprites(self, sclass = None):
+        if sclass is None:
+            slist = self.app.spritelist
+        else:
+            slist = self.app.getSpritesbyClass(sclass)
+        return list(filter(self.collidingWith, slist))
 
     def destroy(self):
         self.app._remove(self)
@@ -420,6 +536,8 @@ class App(object):
             self.spritelist = []
         if not hasattr(self, 'eventdict'):
             self.eventdict = {}
+        if not hasattr(self, 'spritesdict'):
+            self.spritesdict = {}
         if len(args) == 2:
             self.width = args[0]
             self.height = args[1]
@@ -428,7 +546,6 @@ class App(object):
             if len(self.spritelist) > 0:
                 for sprite in self.spritelist:
                     self.win.add(sprite.GFX)
-
             self.win.bind(KeyEvent.keydown, self._keyEvent)
             self.win.bind(KeyEvent.keyup, self._keyEvent)
             self.win.bind(KeyEvent.keypress, self._keyEvent)
@@ -464,10 +581,15 @@ class App(object):
         if hasattr(self, 'win'):
             self.win.add(obj.GFX)
         self.spritelist.append(obj)
+        if type(obj) not in self.spritesdict:
+            self.spritesdict[type(obj)] = []
+        self.spritesdict[type(obj)].append(obj)
         
     def _remove(self, obj):
-        self.win.remove(obj.GFX)
+        if hasattr(self, 'win'):
+            self.win.remove(obj.GFX)
         self.spritelist.remove(obj)
+        self.spritesdict[type(obj)].remove(obj)
         
     def _animate(self, dummy):
         if self.userfunc:
@@ -484,7 +606,6 @@ class App(object):
         eventtype : "keydown", "keyup", "keypress"
         key : e.g. "space", "a" or "*" for ALL!
         callback : function name to receive events
-        
         """
         evtlist = self.eventdict.get((eventtype, key), [])
         evtlist.append(callback)
@@ -500,6 +621,9 @@ class App(object):
 
     def unlistenMouseEvent(self, eventtype, callback):
         self.eventdict[eventtype].remove(callback)
+        
+    def getSpritesbyClass(self, sclass):
+        return self.spritesdict.get(sclass, [])
         
     def step(self):
         pass
@@ -529,7 +653,11 @@ if __name__ == '__main__':
             self.app.listenMouseEvent(MouseEvent.mousemove, self.mousemove)
             self.vx = 0
             self.vy = 0
-            
+            self.xcenter = 0.5
+            self.ycenter = 0.5
+            self.scale = 0.5
+            self.circularCollisionModel()
+
         def mouse(self, event):
             if event.wheelDelta > 0:
                 self.spring1.play()
@@ -546,21 +674,29 @@ if __name__ == '__main__':
         def mousemove(self, event):
             event.consumed = True
         
+        def checkCollide(self):
+            if self.collidingWithSprites(bunnySprite):
+                self.app.springsound.play()
+            
         def leftKey(self, event):
             self.vx = -1
             event.consumed = True
+            self.checkCollide()
 
         def rightKey(self, event):
             self.vx = 1
             event.consumed = True
+            self.checkCollide()
             
         def upKey(self, event):
             self.vy = -1
             event.consumed = True
+            self.checkCollide()
         
         def downKey(self, event):
             self.vy = 1
             event.consumed = True
+            self.checkCollide()
             
         def horizUp(self, event):
             self.vx = 0
@@ -576,7 +712,7 @@ if __name__ == '__main__':
         def step(self):
             self.x += self.vx*2
             self.y += self.vy*2
-
+            
     class myApp(App):
         def __init__(self, width, height):
             super().__init__(width, height)
@@ -601,11 +737,11 @@ if __name__ == '__main__':
             
             for x in range(50,500,150):
                 for y in range(50,500,150):
-                    self.bunnies.append(bunnySprite(text, (x,y)))
+                    self.bunnies.append(bunnySprite(bunny, (x,y)))
             self.direction = 5
             self.spring = SoundAsset("spring.wav")
             self.springsound =Sound(self.spring)
-            self.springsound.loop()
+            #self.springsound.loop()
 
 
         def step(self):
@@ -617,6 +753,5 @@ if __name__ == '__main__':
             #self.direction *= -1
 
     app = myApp(500, 400)
-    
-    
+
     app.run()
