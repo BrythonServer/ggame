@@ -477,12 +477,12 @@ class Sprite(object):
         print("stroying Gfx sprite")
         self.GFX.destroy()
         print("did that..")
-        print("length of self.asset: ", len(self.asset))
-        print("first asset is: ", type(self.asset[0]))
-        for asset in self.asset:
-            print("destroying asset..")
-            asset.destroy()
-            print("asset destroyed")
+        self.asset.destroy()
+        print("asset destroyed")
+        #for asset in self.asset:
+        #    print("destroying asset..")
+        #    asset.destroy()
+        #    print("asset destroyed")
 
 
 class SoundAsset(object):
