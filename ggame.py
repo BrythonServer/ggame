@@ -25,9 +25,56 @@ class ImageAsset(object):
 
     def __init__(self, url, frame=None, qty=1, direction='horizontal' ):
         self.url = url
-        self.GFX = GFX_Texture_fromImage(url, False)
-        if not frame is None:
-            self.GFX = GFX_Texture(self.GFX, frame.GFX)
+        self.index = 0
+        self.GFXlist = []
+        self.append(url, frame, qty, direction)
+        
+    def _subframe(self, texture, frame):
+        return GFX_Texture(texture, frame.GFX)
+        
+    def append(self, url, frame=None, qty=1, direction='horizontal'):
+        GFX = GFX_Texture_fromImage(url, False)
+        dx = 0
+        dy = 0
+        for i in range(qty):
+            if not frame is None:
+                if direction == 'horizontal':
+                    dx = frame.w
+                elif direction == 'vertical':
+                    dy = frame.h
+                f = Frame(frame.x + dx * i, frame.y + dy * i, frame.w, frame.h)
+                GFX = self._subframe(GFX, f)
+            self.GFXlist.append(GFX)
+        
+    @property
+    def GFX(self):
+        return self.GFXlist[self.index]
+        
+    def __len__(self):
+        return len(self.GFXlist)
+        
+    def __getitem__(self, key):
+        return self.GFXlist[key]
+        
+    def __setitem__(self, key, value):
+        self.GFXlist[key] = value
+        
+    def __iter__(self):
+        class Iter():
+            def __init__(self, image):
+                self.obj = image
+                self.n = len(image.GFXlist)
+                self.i = 0
+                
+            def __iter__(self):
+                return self
+                
+            def __next__(self):
+                if self.i ==self.n:
+                    raise StopIteration
+                self.i += 1
+                return self.obj.GFXlist[self.i]
+        return Iter(self)
         
 
 class Color(object):
