@@ -474,6 +474,9 @@ class Sprite(object):
         print("removing..")
         self.app._remove(self)
         print("removed")
+        print("stroying Gfx sprite")
+        self.GFX.destroy()
+        print("did that..")
         print("length of self.asset: ", len(self.asset))
         print("first asset is: ", type(self.asset[0]))
         for asset in self.asset:
