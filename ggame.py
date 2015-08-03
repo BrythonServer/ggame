@@ -20,35 +20,19 @@ class Frame(object):
         self.x += value[0] - c[0]
         self.y += value[1] - c[1]
 
-        
-class ImageAsset(object):
+class Asset(object)
 
-    def __init__(self, url, frame=None, qty=1, direction='horizontal' ):
-        self.url = url
+    def __init(self):
         self.index = 0
         self.GFXlist = []
-        self.append(url, frame, qty, direction)
-        
-    def _subframe(self, texture, frame):
-        return GFX_Texture(texture, frame.GFX)
-        
-    def append(self, url, frame=None, qty=1, direction='horizontal'):
-        GFX = GFX_Texture_fromImage(url, False)
-        dx = 0
-        dy = 0
-        for i in range(qty):
-            if not frame is None:
-                if direction == 'horizontal':
-                    dx = frame.w
-                elif direction == 'vertical':
-                    dy = frame.h
-                f = Frame(frame.x + dx * i, frame.y + dy * i, frame.w, frame.h)
-                GFX = self._subframe(GFX, f)
-            self.GFXlist.append(GFX)
-        
+
     @property
     def GFX(self):
         return self.GFXlist[self.index]
+        
+    @GFX.setter
+    def GFX(self, value):
+        self.GFXlist[self.index] = value
         
     def __len__(self):
         return len(self.GFXlist)
@@ -76,6 +60,31 @@ class ImageAsset(object):
                 return self.obj.GFXlist[self.i]
         return Iter(self)
         
+        
+class ImageAsset(Asset):
+
+    def __init__(self, url, frame=None, qty=1, direction='horizontal' ):
+        super().__init__()
+        self.url = url
+        self.append(url, frame, qty, direction)
+        
+    def _subframe(self, texture, frame):
+        return GFX_Texture(texture, frame.GFX)
+        
+    def append(self, url, frame=None, qty=1, direction='horizontal'):
+        GFX = GFX_Texture_fromImage(url, False)
+        dx = 0
+        dy = 0
+        for i in range(qty):
+            if not frame is None:
+                if direction == 'horizontal':
+                    dx = frame.w
+                elif direction == 'vertical':
+                    dy = frame.h
+                f = Frame(frame.x + dx * i, frame.y + dy * i, frame.w, frame.h)
+                GFX = self._subframe(GFX, f)
+            self.GFXlist.append(GFX)
+        
 
 class Color(object):
 
@@ -99,7 +108,7 @@ class LineStyle(object):
         self.width = width
         self.color = color
 
-class GraphicsAsset(object):
+class GraphicsAsset(Asset):
     
     def __init__(self):
         GFX_Graphics.clear()
