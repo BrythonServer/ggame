@@ -22,7 +22,7 @@ class Frame(object):
 
 class Asset(object):
 
-    def __init(self):
+    def __init__(self):
         self.index = 0
         self.GFXlist = []
 
