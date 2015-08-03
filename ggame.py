@@ -192,7 +192,7 @@ class TextAsset(GraphicsAsset):
         align = : align style, default "left". "left", "center", "right"
 
         """
-
+        super().__init__()
         self.text = text
         self.style = kwargs.get('style', '20px Arial')
         self.width = kwargs.get('width', 100)
