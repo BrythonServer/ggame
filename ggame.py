@@ -77,7 +77,7 @@ class RectangleAsset(ShapeAsset):
         super().__init__(line, fill)
         self.width = width
         self.height = height
-        self.GFX = GFX_Graphics.drawRect(0, 0, self.width, self.height)
+        self.GFX = GFX_Graphics.drawRect(0, 0, self.width, self.height).clone()
         self.GFX.visible = False
         
 
@@ -86,7 +86,7 @@ class CircleAsset(ShapeAsset):
     def __init__(self, radius, line, fill):
         super().__init__(line, fill)
         self.radius = radius
-        self.GFX = GFX_Graphics.drawCircle(0, 0, self.radius)
+        self.GFX = GFX_Graphics.drawCircle(0, 0, self.radius).clone()
         self.GFX.visible = False
         
 class EllipseAsset(ShapeAsset):
@@ -95,7 +95,7 @@ class EllipseAsset(ShapeAsset):
         super().__init__(line, fill)
         self.halfw = halfw
         self.halfh = halfh
-        self.GFX = GFX_Graphics.drawEllipse(0, 0, self.halfw, self.halfh)
+        self.GFX = GFX_Graphics.drawEllipse(0, 0, self.halfw, self.halfh).clone()
         self.GFX.visible = False
         
 class PolygonAsset(ShapeAsset):
@@ -106,7 +106,7 @@ class PolygonAsset(ShapeAsset):
         jpath = []
         for point in self.path:
             jpath.extend(point)
-        self.GFX = GFX_Graphics.drawPolygon(jpath)
+        self.GFX = GFX_Graphics.drawPolygon(jpath).clone()
         self.GFX.visible = False
     
 
@@ -117,7 +117,7 @@ class LineAsset(CurveAsset):
         self.deltaX = x
         self.deltaY = y
         GFX_Graphics.moveTo(0, 0)
-        self.GFX = GFX_Graphics.lineTo(self.deltaX, self.deltaY)
+        self.GFX = GFX_Graphics.lineTo(self.deltaX, self.deltaY).clone()
 
 class TextAsset(GraphicsAsset):
     
@@ -755,15 +755,15 @@ if __name__ == '__main__':
             linesty = LineStyle(3, lcolor)
             rect = RectangleAsset(100, 150, linesty, fcolor)
             circ = CircleAsset(50, linesty, fcolor)
-            ell = EllipseAsset(50, 75, linesty, fcolor)
             poly = PolygonAsset([(0,0), (50,50), (50,100), (0,0)], linesty, fcolor)
             line = LineAsset(-50, 75, linesty)
+            ell = EllipseAsset(50, 75, linesty, fcolor)
             text = TextAsset("what up? big long text string!")
             
             
             for x in range(50,500,150):
                 for y in range(50,500,150):
-                    self.bunnies.append(bunnySprite(ell, (x,y)))
+                    self.bunnies.append(bunnySprite(line, (x,y)))
                     #self.bunnies.append(bunnySprite(line, (x,y), bunniesframe))
             self.direction = 5
             self.spring = SoundAsset("spring.wav")
