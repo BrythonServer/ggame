@@ -731,12 +731,12 @@ if __name__ == '__main__':
             
             fcolor = Color(0x5050ff, 0.8)
             lcolor = Color(0, 1)
-            line = LineStyle(3, lcolor)
-            #rect = RectangleAsset(self, 100, 150, line, fcolor)
-            #circ = CircleAsset(self, 50, line, fcolor)
-            #ell = EllipseAsset(self, 50, 75, line, fcolor)
-            #poly = PolygonAsset(self, [(0,0), (50,50), (50,100), (0,0)], line, fcolor)
-            #line = LineAsset(self, -50, 75, line)
+            linesty = LineStyle(3, lcolor)
+            #rect = RectangleAsset(self, 100, 150, linesty, fcolor)
+            #circ = CircleAsset(self, 50, linesty, fcolor)
+            #ell = EllipseAsset(self, 50, 75, linesty, fcolor)
+            #poly = PolygonAsset(self, [(0,0), (50,50), (50,100), (0,0)], linesty, fcolor)
+            line = LineAsset(self, -50, 75, linesty)
             text = TextAsset("what up? big long text string!")
             
             
