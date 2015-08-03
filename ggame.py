@@ -65,6 +65,7 @@ class Asset(object):
             try:
                 for gfx in self.GFXlist:
                     gfx.destroy()
+                    print("boom")
             except:
                 pass
         
