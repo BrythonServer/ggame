@@ -827,6 +827,7 @@ if __name__ == '__main__':
             self.x += self.vx*2
             self.y += self.vy*2
             if self.count % 10 == 0:
+                pass
                 self.nextImage(True)
             
     class myApp(App):
@@ -841,8 +842,8 @@ if __name__ == '__main__':
             bunny = ImageAsset(bunnyurl)
             
             bunniesurl = "bunnysheet5.png"
-            bunniesframe = Frame(20,213,36,32)
-            bunnies = ImageAsset(bunniesurl, bunniesframe, 6, 'horizontal')
+            bunniesframe = Frame(178,217,30,29)
+            bunnies = ImageAsset(bunniesurl, bunniesframe, 4, 'horizontal', 2)
             #bunniesframe = Frame(22,22,100,100)
             
             fcolor = Color(0x5050ff, 0.8)
