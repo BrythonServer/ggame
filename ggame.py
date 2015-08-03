@@ -467,7 +467,8 @@ class Sprite(object):
 
     def destroy(self):
         self.app._remove(self)
-        self.asset.destroy()
+        for asset in self.asset:
+            asset.destroy()
 
 
 class SoundAsset(object):
@@ -727,9 +728,12 @@ class App(object):
         self.win.animate(self._animate)
 
     def destroy(self, dummy):
+        print("destoying")
         self.win.destroy()
+        print("window done")
         for s in self.spritelist:
             s.destroy()
+        print("list done")
         del self.spritelist
         del self.spritesdict
         print("destroyed")
