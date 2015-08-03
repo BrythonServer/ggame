@@ -728,6 +728,10 @@ class App(object):
 
     def destroy(self, dummy):
         self.win.destroy()
+        for s in self.spritelist:
+            s.destroy()
+        del self.spritelist
+        del self.spritesdict
 
     def listenKeyEvent(self, eventtype, key, callback):
         """
