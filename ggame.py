@@ -23,9 +23,12 @@ class Frame(object):
         
 class ImageAsset(object):
 
-    def __init__(self, url, frame=None):
+    def __init__(self, url, frame=None, qty=1, direction='horizontal' ):
         self.url = url
         self.GFX = GFX_Texture_fromImage(url, False)
+        if not frame is None:
+            self.GFX = GFX_Texture(self.GFX, frame.GFX)
+        
 
 class Color(object):
 
