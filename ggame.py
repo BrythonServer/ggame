@@ -824,6 +824,7 @@ if __name__ == '__main__':
         def step(self):
             self.x += self.vx*2
             self.y += self.vy*2
+            self.nextImage(True)
             
     class myApp(App):
         def __init__(self, width, height):
@@ -838,7 +839,7 @@ if __name__ == '__main__':
             
             bunniesurl = "bunnysheet5.png"
             bunniesframe = Frame(22,213,36,32)
-            bunnies = ImageAsset(bunniesurl, bunniesframe)
+            bunnies = ImageAsset(bunniesurl, bunniesframe, 6, 'horizontal')
             #bunniesframe = Frame(22,22,100,100)
             
             fcolor = Color(0x5050ff, 0.8)
