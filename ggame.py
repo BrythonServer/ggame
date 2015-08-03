@@ -28,11 +28,11 @@ class Asset(object):
 
     @property
     def GFX(self):
-        return self.GFXlist[self.index]
+        return self.GFXlist[0]
         
     @GFX.setter
     def GFX(self, value):
-        self.GFXlist[self.index] = value
+        self.GFXlist[0] = value
         
     def __len__(self):
         return len(self.GFXlist)
@@ -85,7 +85,7 @@ class ImageAsset(Asset):
                 f = Frame(frame.x + dx * i, frame.y + dy * i, frame.w, frame.h)
                 GFX = self._subframe(GFX, f)
             self.GFXlist.append(GFX)
-        
+    
 
 class Color(object):
 
@@ -228,6 +228,7 @@ class Sprite(object):
         e.g. Sprite(asset, pos=(100,100))
         """
         self.app = App()
+        self.index = 0
         if type(asset) == ImageAsset:
             self.asset = asset
             self.GFX = GFX_Sprite(asset.GFX) # GFX is PIXI Sprite
@@ -262,19 +263,32 @@ class Sprite(object):
         self.ycenter = int(self.y + (1 - self.fycenter) * self.height / 2)
 
     def firstImage(self):
-        pass
+        self.GFX.texture = self.asset[0]
     
     def lastImage(self):
-        pass
+        self.GFX.texture = self.asset[-1]
     
     def nextImage(self, wrap = False):
-        pass
+        self.index += 1
+        if self.index >= len(self.asset):
+            if wrap:
+                self.index = 0
+            else:
+                self.index = len(self.asset)-1
+        self.GFX.texture = self.asset[self.index]
     
     def prevImage(self, wreap = False):
-        pass
+        self.index -= 1
+        if self.index < 0:
+            if wrap:
+                self.index = len(self.asset)-1
+            else:
+                self.index = 0
+        self.GFX.texture = self.asset[self.index]
     
     def setImage(self, index=0):
-        pass
+        self.index = index
+        self.GFX.texture = self.asset[self.index]
 
     def rectangularCollisionModel(self):
         self._collisionStyle = type(self)._rectCollision
