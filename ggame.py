@@ -64,6 +64,14 @@ class Asset(object):
 class ImageAsset(Asset):
 
     def __init__(self, url, frame=None, qty=1, direction='horizontal', margin=0):
+        """
+        Create a texture asset from an image file name (or URL)
+        url : the name of the file
+        frame : a frame that defines a region inside the image (if desired)
+        qty : a string of qty frames may be defined for animation purposes
+        direction : 'horizontal' or 'vertical' orientation of animation frames
+        margin : the number of pixels between frames, if any
+        """
         super().__init__()
         self.url = url
         del self.GFXlist[0]
@@ -73,6 +81,14 @@ class ImageAsset(Asset):
         return GFX_Texture(texture, frame.GFX)
         
     def append(self, url, frame=None, qty=1, direction='horizontal', margin=0):
+        """
+        Append a texture asset from an image file name (or URL)
+        url : the name of the file
+        frame : a frame that defines a region inside the image (if desired)
+        qty : a string of qty frames may be defined for animation purposes
+        direction : 'horizontal' or 'vertical' orientation of animation frames
+        margin : the number of pixels between frames, if any
+        """
         GFX = GFX_Texture_fromImage(url, False)
         dx = 0
         dy = 0
@@ -843,9 +859,13 @@ if __name__ == '__main__':
             
             bunniesurl = "bunnysheet5.png"
             bunniesframe = Frame(178,217,30,29)
+            # this gives us a series of frames from a sprite sheet
+            # the frame (above) defines the size and location of the first
+            # image. The ImageAsset call (below) says how many frames there
+            # will be, in what direction from the first, and how many pixels
+            # separate each frame
             bunnies = ImageAsset(bunniesurl, bunniesframe, 4, 'horizontal', 2)
-            #bunniesframe = Frame(22,22,100,100)
-            
+
             fcolor = Color(0x5050ff, 0.8)
             lcolor = Color(0, 1)
             linesty = LineStyle(3, lcolor)
