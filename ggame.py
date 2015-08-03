@@ -54,7 +54,8 @@ class LineStyle(object):
 class GraphicsAsset(object):
     
     def destroy(self):
-        self.GFX.destroy()
+        if hasattr(self, 'GFX'):
+            self.GFX.destroy()
 
 class CurveAsset(GraphicsAsset):
 
@@ -742,8 +743,8 @@ if __name__ == '__main__':
             
             for x in range(50,500,150):
                 for y in range(50,500,150):
-                    #self.bunnies.append(bunnySprite(bunnies, (x,y)))
-                    self.bunnies.append(bunnySprite(bunnies, (x,y), bunniesframe))
+                    self.bunnies.append(bunnySprite(line, (x,y)))
+                    #self.bunnies.append(bunnySprite(line, (x,y), bunniesframe))
             self.direction = 5
             self.spring = SoundAsset("spring.wav")
             self.springsound =Sound(self.spring)
