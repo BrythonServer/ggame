@@ -802,8 +802,8 @@ if __name__ == '__main__':
             
             for x in range(50,500,150):
                 for y in range(50,500,150):
-                    #self.bunnies.append(bunnySprite(text, (x,y)))
-                    self.bunnies.append(bunnySprite(bunnies, (x,y), bunniesframe))
+                    #self.bunnies.append(bunnySprite(text, pos=(x,y)))
+                    self.bunnies.append(bunnySprite(bunnies, pos=(x,y)))
             self.spring = SoundAsset("spring.wav")
             self.springsound =Sound(self.spring)
             #self.springsound.loop()
