@@ -109,6 +109,6 @@ else:
       
     def destroy(self):
       SND.all().stop()
-      self._stage.destroy()
+      #self._stage.destroy()
   
     
