@@ -67,7 +67,7 @@ class ImageAsset(Asset):
         super().__init__()
         self.url = url
         del self.GFXlist[0]
-        self.append(url, frame, qty, direction)
+        self.append(url, frame, qty, direction, margin)
         
     def _subframe(self, texture, frame):
         return GFX_Texture(texture, frame.GFX)
