@@ -161,6 +161,11 @@ class Sprite(object):
     _circCollision = "circ"
     
     def __init__(self, asset, position = (0,0), frame = False):
+        """
+        asset: an image or graphics asset instance
+        position: tuple with x,y coordinates
+        frame: frame object defining a region within the asset
+        """
         self.app = App()
         if type(asset) == ImageAsset:
             self.asset = asset
