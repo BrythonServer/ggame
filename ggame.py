@@ -20,7 +20,7 @@ class Frame(object):
         self.x += value[0] - c[0]
         self.y += value[1] - c[1]
 
-class Asset(object)
+class Asset(object):
 
     def __init(self):
         self.index = 0
