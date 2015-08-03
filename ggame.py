@@ -160,24 +160,16 @@ class Sprite(object):
     _rectCollision = "rect"
     _circCollision = "circ"
     
-    def __init__(self, *assets, **kwargs):
+    def __init__(self, asset, pos=(0,0)):
         """
-        assets: one or more image or graphics asset instances
-        position: tuple with x,y coordinates
-        e.g. Sprite(asset1, asset2, asset3, position=(100,100))
+        asset: an image or graphics asset instance
+        pos: keyward parameter, a tuple with x,y coordinates
+        e.g. Sprite(asset, pos=(100,100))
         """
         self.app = App()
-        try:
-            i = iter(assets[0])
-            assets = assets[0]
-        except:
-            pass
-        self.assetx = 0
-        self.assetlist = assets
-        asset = assets[0]
         if type(asset) == ImageAsset:
             self.asset = asset
-            self.GFX = GFX_Sprite(asset.GFX)
+            self.GFX = GFX_Sprite(asset.GFX) # GFX is PIXI Sprite
         elif type(asset) in [RectangleAsset, 
             CircleAsset, 
             EllipseAsset, 
@@ -185,14 +177,13 @@ class Sprite(object):
             LineAsset,
             ]:
             self.asset = asset
-            self.GFX = asset.GFX.clone()
+            self.GFX = asset.GFX.clone() # GFX is PIXI Graphics (from Sprite)
             self.GFX.visible = True
         elif type(asset) in [TextAsset]:
             self.asset = asset.clone()
-            self.GFX = self.asset.GFX
+            self.GFX = self.asset.GFX # GFX is PIXI Text (from Sprite)
             self.GFX.visible = True
-        #self.selectAsset(0)
-        self.position = kwargs.get('pos', (0,0))
+        self.position = pos
         self._setExtents()
         self.rectangularCollisionModel()
         self.app._add(self)
@@ -209,33 +200,6 @@ class Sprite(object):
         self.xcenter = int(self.x + (1 - self.fxcenter) * self.width / 2)
         self.ycenter = int(self.y + (1 - self.fycenter) * self.height / 2)
 
-    def _refreshAsset(self):
-        self.asset = self.assetlist[index]
-        self.GFX = self.GFXlist[index]
-        self._setExtents()
-
-    def selectAsset(self, index):
-        self.assetx = index
-        self._refreshAsset()
-        
-    def previousAsset(self, wrap = False):
-        self.assetx -= 1
-        if self.assettx == -1:
-            if wrap:
-                self.assetx = len(self.assetlist)
-            else:
-                self.assetx = 0
-        self._refreshAsset()        
-            
-    def nextAsset(self, wrap = False):
-        self.assetx += 1
-        if self.assettx == len(self.assetlist):
-            if wrap:
-                self.assetx = 0
-            else:
-                self.assetx = len(self.assetlist)-1
-        self._refreshAsset()        
-            
 
     def rectangularCollisionModel(self):
         self._collisionStyle = type(self)._rectCollision
