@@ -45,8 +45,6 @@ class LineStyle(object):
         """
         width : line width pixels
         color : integer e.g. 0xffff00
-        alpha : float 0-1
-        
         """
         self.width = width
         self.color = color
