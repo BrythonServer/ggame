@@ -253,40 +253,58 @@ class Sprite(object):
         """
         Float: 0-1
         """
-        return self.GFX.anchor.x
+        try:
+            return self.GFX.anchor.x
+        except:
+            return 0.0
         
     @fxcenter.setter
     def fxcenter(self, value):
         """
         Float: 0-1
         """
-        self.GFX.anchor.x = value
-        self._setExtents()
+        try:
+            self.GFX.anchor.x = value
+            self._setExtents()
+        except:
+            pass
         
     @property
     def fycenter(self):
         """
         Float: 0-1
         """
-        return self.GFX.anchor.y
+        try:
+            return self.GFX.anchor.y
+        except:
+            return 0.0
         
     @fycenter.setter
     def fycenter(self, value):
         """
         Float: 0-1
         """
-        self.GFX.anchor.y = value
-        self._setExtents()
+        try:
+            self.GFX.anchor.y = value
+            self._setExtents()
+        except:
+            pass
     
     @property
     def center(self):
-        return (self.GFX.anchor.x, self.GFX.anchor.y)
+        try:
+            return (self.GFX.anchor.x, self.GFX.anchor.y)
+        except:
+            return (0.0, 0.0)
         
     @center.setter
     def center(self, value):
-        self.GFX.anchor.x = value[0]
-        self.GFX.anchor.y = value[1]
-        self._setExtents()
+        try:
+            self.GFX.anchor.x = value[0]
+            self.GFX.anchor.y = value[1]
+            self._setExtents()
+        except:
+            pass
     
     @property
     def visible(self):
