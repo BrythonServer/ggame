@@ -24,7 +24,7 @@ class Asset(object):
 
     def __init__(self):
         self.index = 0
-        self.GFXlist = []
+        self.GFXlist = [None,]
 
     @property
     def GFX(self):
@@ -66,6 +66,7 @@ class ImageAsset(Asset):
     def __init__(self, url, frame=None, qty=1, direction='horizontal' ):
         super().__init__()
         self.url = url
+        del self.GFXlist[0]
         self.append(url, frame, qty, direction)
         
     def _subframe(self, texture, frame):
