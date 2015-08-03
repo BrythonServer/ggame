@@ -111,6 +111,7 @@ class LineStyle(object):
 class GraphicsAsset(Asset):
     
     def __init__(self):
+        super().__init__()
         GFX_Graphics.clear()
         
     def destroy(self):
