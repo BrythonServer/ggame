@@ -767,6 +767,7 @@ if __name__ == '__main__':
             self.vy = 0
             self.xcenter = 0.5
             self.ycenter = 0.5
+            self.count = 0
             #self.scale = 0.5
             #self.circularCollisionModel()
 
@@ -822,9 +823,11 @@ if __name__ == '__main__':
             pass
         
         def step(self):
+            self.count += 1
             self.x += self.vx*2
             self.y += self.vy*2
-            self.nextImage(True)
+            if self.count % 10 == 0:
+                self.nextImage(True)
             
     class myApp(App):
         def __init__(self, width, height):
