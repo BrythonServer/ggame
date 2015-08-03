@@ -167,7 +167,7 @@ class Sprite(object):
         e.g. Sprite(asset1, asset2, asset3, position=(100,100))
         """
         self.app = App()
-        self.position = kwargs.get('position', (0,0))
+        self.position = kwargs.get('pos', (0,0))
         try:
             i = iter(assets[0])
             assets = assets[0]
@@ -192,7 +192,7 @@ class Sprite(object):
             self.asset = asset.clone()
             self.GFX = self.asset.GFX
             self.GFX.visible = True
-        self.selectAsset(0)
+        #self.selectAsset(0)
         self.position = position
         self._setExtents()
         self.rectangularCollisionModel()
