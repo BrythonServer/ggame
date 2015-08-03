@@ -51,6 +51,9 @@ class LineStyle(object):
 
 class GraphicsAsset(object):
     
+    def __init__(self):
+        GFX_Graphics.clear()
+        
     def destroy(self):
         if hasattr(self, 'GFX'):
             self.GFX.destroy()
@@ -58,6 +61,7 @@ class GraphicsAsset(object):
 class CurveAsset(GraphicsAsset):
 
     def __init__(self, line):
+        super().__init__()
         GFX_Graphics.lineStyle(line.width, line.color.color, line.color.alpha)
 
 class ShapeAsset(CurveAsset):
