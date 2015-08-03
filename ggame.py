@@ -203,6 +203,20 @@ class Sprite(object):
         self.xcenter = int(self.x + (1 - self.fxcenter) * self.width / 2)
         self.ycenter = int(self.y + (1 - self.fycenter) * self.height / 2)
 
+    def firstImage(self):
+        pass
+    
+    def lastImage(self):
+        pass
+    
+    def nextImage(self, wrap = False):
+        pass
+    
+    def prevImage(self, wreap = False):
+        pass
+    
+    def setImage(self, index=0):
+        pass
 
     def rectangularCollisionModel(self):
         self._collisionStyle = type(self)._rectCollision
