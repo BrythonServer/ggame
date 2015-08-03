@@ -59,6 +59,14 @@ class Asset(object):
                 self.i += 1
                 return self.obj.GFXlist[self.i]
         return Iter(self)
+
+    def destroy(self):
+        if hasattr(self, 'GFX'):
+            try:
+                for gfx in self.GFXlist:
+                    gfx.destroy()
+            except:
+                pass
         
         
 class ImageAsset(Asset):
@@ -131,9 +139,6 @@ class GraphicsAsset(Asset):
         super().__init__()
         GFX_Graphics.clear()
         
-    def destroy(self):
-        if hasattr(self, 'GFX'):
-            self.GFX.destroy()
 
 class CurveAsset(GraphicsAsset):
 
@@ -466,9 +471,15 @@ class Sprite(object):
         return list(filter(self.collidingWith, slist))
 
     def destroy(self):
+        print("removing..")
         self.app._remove(self)
+        print("removed")
+        print("length of self.asset: ", len(self.asset))
+        print("first asset is: ", type(self.asset[0]))
         for asset in self.asset:
+            print("destroying asset..")
             asset.destroy()
+            print("asset destroyed")
 
 
 class SoundAsset(object):
