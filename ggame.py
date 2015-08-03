@@ -63,7 +63,7 @@ class Asset(object):
         
 class ImageAsset(Asset):
 
-    def __init__(self, url, frame=None, qty=1, direction='horizontal' ):
+    def __init__(self, url, frame=None, qty=1, direction='horizontal', margin=0):
         super().__init__()
         self.url = url
         del self.GFXlist[0]
@@ -72,16 +72,16 @@ class ImageAsset(Asset):
     def _subframe(self, texture, frame):
         return GFX_Texture(texture, frame.GFX)
         
-    def append(self, url, frame=None, qty=1, direction='horizontal'):
+    def append(self, url, frame=None, qty=1, direction='horizontal', margin=0):
         GFX = GFX_Texture_fromImage(url, False)
         dx = 0
         dy = 0
         for i in range(qty):
             if not frame is None:
                 if direction == 'horizontal':
-                    dx = frame.w
+                    dx = frame.w + margin
                 elif direction == 'vertical':
-                    dy = frame.h
+                    dy = frame.h + margin
                 f = Frame(frame.x + dx * i, frame.y + dy * i, frame.w, frame.h)
                 GFX = self._subframe(GFX, f)
             self.GFXlist.append(GFX)
@@ -841,7 +841,7 @@ if __name__ == '__main__':
             bunny = ImageAsset(bunnyurl)
             
             bunniesurl = "bunnysheet5.png"
-            bunniesframe = Frame(22,213,36,32)
+            bunniesframe = Frame(20,213,36,32)
             bunnies = ImageAsset(bunniesurl, bunniesframe, 6, 'horizontal')
             #bunniesframe = Frame(22,22,100,100)
             
