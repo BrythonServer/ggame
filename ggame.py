@@ -751,8 +751,8 @@ if __name__ == '__main__':
             bunny = ImageAsset(bunnyurl)
             
             bunniesurl = "bunnysheet5.png"
-            bunnies = ImageAsset(bunniesurl)
             bunniesframe = Frame(22,213,36,32)
+            bunnies = ImageAsset(bunniesurl, bunniesframe)
             #bunniesframe = Frame(22,22,100,100)
             
             fcolor = Color(0x5050ff, 0.8)
