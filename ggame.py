@@ -64,9 +64,10 @@ class Asset(object):
         if hasattr(self, 'GFX'):
             try:
                 for gfx in self.GFXlist:
-                    if hasattr(gfx, 'destroy'):
+                    try:
                         gfx.destroy(True)
-                        print("boom")
+                    except:
+                        pass
             except:
                 pass
         
@@ -86,8 +87,7 @@ class ImageAsset(Asset):
         self.url = url
         del self.GFXlist[0]
         self.append(url, frame, qty, direction, margin)
-        print("imageasset initialized")
-        
+
     def _subframe(self, texture, frame):
         return GFX_Texture(texture, frame.GFX)
         
@@ -259,7 +259,6 @@ class Sprite(object):
                 #self.GFX = GFX_Sprite()
                 self.GFX = GFX_Sprite(asset.GFX) # GFX is PIXI Sprite
             except:
-                print("Failed creating sprite")
                 self.GFX = None
         elif type(asset) in [RectangleAsset, 
             CircleAsset, 
@@ -479,14 +478,9 @@ class Sprite(object):
         return list(filter(self.collidingWith, slist))
 
     def destroy(self):
-        print("removing..")
         self.app._remove(self)
-        print("removed")
-        print("stroying Gfx sprite")
         self.GFX.destroy()
-        print("did that..")
         self.asset.destroy()
-        print("asset destroyed")
 
 
 class SoundAsset(object):
@@ -749,16 +743,11 @@ class App(object):
         self.win.animate(self._animate)
 
     def destroy(self, dummy):
-        print("destoying")
         self.win.destroy()
-        print("window done")
         for s in list(self.spritelist):
-            print("destroying, ", s)
             s.destroy()
-        print("list done")
         del self.spritelist
         del self.spritesdict
-        print("destroyed")
 
     def listenKeyEvent(self, eventtype, key, callback):
         """
