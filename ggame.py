@@ -4,11 +4,11 @@ class Frame(object):
 
 
     def __init__(self, x, y, w, h):
+        self.GFX = GFX_Rectangle(x,y,w,h)
         self.x = x
         self.y = y
         self.w = w
         self.h = h
-        self.GFX = GFX_Rectangle(x,y,w,h)
     
     @property
     def x(self):
