@@ -752,6 +752,7 @@ class App(object):
         self.win.animate(self._animate)
 
     def destroy(self, dummy):
+        return
         print("destoying")
         self.win.destroy()
         print("window done")
