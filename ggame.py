@@ -479,7 +479,7 @@ class Sprite(object):
 
     def destroy(self):
         print("removing..")
-        #self.app._remove(self)
+        self.app._remove(self)
         print("removed")
         print("stroying Gfx sprite")
         self.GFX.destroy()
