@@ -49,24 +49,124 @@ if module_exists('browser') and module_exists('javascript'):
       self._stage.destroy()
   
 
+elif module_exists('pygame'):
+
+  pass
+
 else:
   
-  window = document = object()
-  def JSConstructor():
-    pass
+  from PIL import Image
+
+  class _body(object):
     
-  def JSObject():
-    pass
+    def __init__(self):
+      self.events = {}
+
+    def appendChild(self, obj):
+      self.child = obj
+
+    def bind(self, evt, action):
+      self.events[evt] = action
+      print("Binding {} to {}".format(evt, action))
+
+  class _document(object):
+    
+    def __init__(self):
+      self.body = _body()
+
+  class _window(object):
+
+    def __init__(self):
+      self.document = _document()
+      self.animatex = 0
+
+    def open(self, s1, s2):
+      return self
+
+    def requestAnimationFrame(self, target):
+      if self.animatex < 10:
+        self.animatex += 1
+        target('dummy')
+        print("Animation frame")
+
+  class _Container(object):
+
+    def __init__(self):
+      pass
+
+    def destroy(self):
+      pass
+
+  class _Renderer(object):
+    
+    def __init__(self, x, y, argsdict):
+      self.x = x
+      self.y = y
+      self.argsdict = argsdict
+      self.view = 'view'
+      print("Rendering created with {}x{} area".format(x, y))
+
+    def render(self, stage):
+      pass
+
+  class _GFX(object):
+    
+    def __init__(self):
+      self.Container = _Container
+      self.autoDetectRenderer = _Renderer
+
+  window = _window()
+
+  GFX = _GFX()
+
+  #document = object()
   
-  GFX = object()
+  def JSConstructor(cls):
+    return cls
+    
+  def JSObject(obj):
+    return obj
   
-  def GFX_Rectangle():
-    pass
+  class _GFX_Rectangle(object):
+
+    def __init__(self, x, y, w, h):
+      self.x = x
+      self.y = y
+      self.width = w
+      self.height = h
   
-  GFX_Texture = object()
+  GFX_Rectangle = _GFX_Rectangle
+ 
+  class _Texture(object):
+ 
+    def __init__(self, img=''):
+      self.name = img
+      if img == '':
+        self.img = None
+        self.basewidth = 0
+        self.baseheight = 0
+      else:
+        self.img = Image.open(img)
+        self.basewidth = self.img.width
+        self.baseheight = self.img.height
+        print("Texture from image {}, {}x{} pixels".format(img, self.basewidth, self.baseheight))
+      self.baserect = _GFX_Rectangle(0, 0, self.width, self.height)
+      self.framerect = self.baserect  
+
+    @classmethod
+    def fromTexture(cls, texture, frame):
+      inst = cls()
+      inst.img = texture.img
+      inst.basewidth = texture.basewidth
+      inst.baseheight = texture.baseheight
+      inst.baserect = texture.baserect
+      self.framerect = frame
+      print("Texture from base texture {}, {}x{} subframe {}x{}".format(self.name, self.basewidth, self.baseheight, self.framerect.width, self.framerect.height))
+
+  GFX_Texture = _Texture.fromTexture
   
-  def GFX_Texture_fromImage():
-    pass
+  GFX_Texture_fromImage = _Texture  
+
   
   def GFX_Sprite():
     pass
@@ -79,11 +179,36 @@ else:
   
   def GFX_DetectRenderer():
     pass
+ 
+  class _SND_all(object):
+
+    def __init__(self):
+      pass
+
+    def stop(self):
+      print("Stopping all sounds")
+
+  class _SND(object):
+    
+    def __init__(self):
+      self.all = _SND_all
+
+  SND = _SND()
   
-  SND = object()
-  
-  def SND_Sound():
-    pass
+  class _SND_Sound(object):
+
+    def __init__(self, url):
+      self.url = url
+      print("Creating sound object {}".format(url))
+
+    def load(self):
+      pass
+
+    def play(self):
+      print("Playing sound object {}".format(self.url))
+
+  SND_Sound = _SND_Sound
+
   
   class GFX_Window(object):
     
