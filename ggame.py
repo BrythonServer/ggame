@@ -755,10 +755,9 @@ class App(object):
         print("destoying")
         self.win.destroy()
         print("window done")
-        for s in self.spritelist:
-            if hasattr(s, 'destroy'):
-                print("destroying, ", s)
-                s.destroy()
+        for s in list(self.spritelist):
+            print("destroying, ", s)
+            s.destroy()
         print("list done")
         del self.spritelist
         del self.spritesdict
