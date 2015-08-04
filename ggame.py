@@ -748,6 +748,7 @@ class App(object):
             s.destroy()
         del self.spritelist
         del self.spritesdict
+        App.__instance = None
 
     def listenKeyEvent(self, eventtype, key, callback):
         """
