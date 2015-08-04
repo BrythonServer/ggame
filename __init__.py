@@ -1,1 +1,1 @@
-from .ggame import *
+from ggame.ggame import *
