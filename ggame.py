@@ -85,6 +85,7 @@ class ImageAsset(Asset):
         self.url = url
         del self.GFXlist[0]
         self.append(url, frame, qty, direction, margin)
+        print("imageasset initialized")
         
     def _subframe(self, texture, frame):
         return GFX_Texture(texture, frame.GFX)
@@ -110,7 +111,7 @@ class ImageAsset(Asset):
                 f = Frame(frame.x + dx * i, frame.y + dy * i, frame.w, frame.h)
                 GFX = self._subframe(GFX, f)
             self.GFXlist.append(GFX)
-    
+
 
 class Color(object):
 
@@ -253,7 +254,12 @@ class Sprite(object):
         self.index = 0
         if type(asset) == ImageAsset:
             self.asset = asset
-            self.GFX = GFX_Sprite(asset.GFX) # GFX is PIXI Sprite
+            try:
+                #self.GFX = GFX_Sprite()
+                self.GFX = GFX_Sprite(asset.GFX) # GFX is PIXI Sprite
+            except:
+                print("Failed creating sprite")
+                self.GFX = None
         elif type(asset) in [RectangleAsset, 
             CircleAsset, 
             EllipseAsset, 
@@ -731,7 +737,10 @@ class App(object):
         
     def _remove(self, obj):
         if hasattr(self, 'win'):
-            self.win.remove(obj.GFX)
+            try:
+                self.win.remove(obj.GFX)
+            except:
+                pass
         self.spritelist.remove(obj)
         self.spritesdict[type(obj)].remove(obj)
         
