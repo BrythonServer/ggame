@@ -11,6 +11,38 @@ class Frame(object):
         self.GFX = GFX_Rectangle(x,y,w,h)
     
     @property
+    def x(self):
+        return self.GFX.x
+    
+    @x.setter
+    def x(self, value):
+        self.GFX.x = value
+        
+    @property
+    def y(self):
+        return self.GFX.y
+    
+    @y.setter
+    def y(self, value):
+        self.GFX.y = value
+    
+    @property
+    def w(self):
+        return self.GFX.width
+    
+    @w.setter
+    def w(self, value):
+        self.GFX.width = value
+        
+    @property
+    def h(self):
+        return self.GFX.height
+        
+    @h.setter
+    def h(self, value):
+        self.GFX.height = value
+    
+    @property
     def center(self):
         return (self.x + self.w//2, self.y + self.h//2)
     
