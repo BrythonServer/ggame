@@ -139,8 +139,9 @@ else:
  
   class _Texture(object):
  
-    def __init__(self, img=''):
+    def __init__(self, img='', crossdomain=False):
       self.name = img
+      self.crossdomain = crossdomain
       if img == '':
         self.img = None
         self.basewidth = 0
@@ -150,18 +151,27 @@ else:
         self.basewidth = self.img.width
         self.baseheight = self.img.height
         print("Texture from image {}, {}x{} pixels".format(img, self.basewidth, self.baseheight))
-      self.baserect = _GFX_Rectangle(0, 0, self.width, self.height)
+      self.baserect = _GFX_Rectangle(0, 0, self.basewidth, self.baseheight)
       self.framerect = self.baserect  
 
     @classmethod
     def fromTexture(cls, texture, frame):
       inst = cls()
       inst.img = texture.img
+      inst.name = texture.name
       inst.basewidth = texture.basewidth
       inst.baseheight = texture.baseheight
       inst.baserect = texture.baserect
-      self.framerect = frame
-      print("Texture from base texture {}, {}x{} subframe {}x{}".format(self.name, self.basewidth, self.baseheight, self.framerect.width, self.framerect.height))
+      inst.framerect = frame
+      print("Texture from base texture {}, {}x{} subframe {}x{}".format(inst.name, inst.basewidth, inst.baseheight, inst.framerect.width, inst.framerect.height))
+      return inst
+
+    def destroy(self):
+      try:
+        self.img.close()
+        print("Destroying an image")
+      except:
+        print("Destroying a non-image")
 
   GFX_Texture = _Texture.fromTexture
   
@@ -170,9 +180,72 @@ else:
   
   def GFX_Sprite():
     pass
-  
-  class GFX_Graphics(object):
-    pass
+
+  class _GFX_Graphics(object):
+
+    def __init__(self):
+      self.cleared = None
+      self.visible = True
+      self.width = None
+      self.color = None
+      self.alpha = None
+      self.fillcolor = None
+      self.fillalpha = None
+      self.x = None
+      self.y = None
+      self.rwidth = None
+      self.rheight = None
+      self.radius = None
+
+    def clone(self):
+      clone = type(self)()
+      clone.cleared = self.cleared
+      clone.visible = self.visible
+      clone.width = self.width
+      clone.color = self.color
+      clone.alpha = self.alpha
+      clone.fillalpha = self.fillalpha
+      clone.fillcolor = self.fillcolor
+      clone.x = self.x
+      clone.y = self.y
+      clone.rwidth = self.rwidth
+      clone.rheight = self.rheight
+      clone.radius = self.radius
+      return clone
+
+    def clear(self):
+      self.cleared = True
+
+    def lineStyle(self, width, color, alpha):
+      self.width = width
+      self.color = color
+      self.alpha = alpha
+
+    def beginFill(self, color, alpha):
+      self.fillcolor = color
+      self.fillalpha = alpha
+
+    def drawRect(self, x, y, w, h):
+      self.x = x
+      self.y = y
+      self.rwidth = w
+      self.rheight = h
+      self.cleared = False
+      print("Rectangle {}x{} at {},{}".format(w,h,x,y))
+      return self
+
+    def drawCircle(self, x, y, radius):
+      self.x = x
+      self.y = y
+      self.radius = radius
+      self.cleared = False
+      print("Circle, radius {} at {},{}".format(radius,x,y))
+      return self  
+
+  _globalGraphics = _GFX_Graphics()
+
+  GFX_Graphics = _globalGraphics
+
   
   def GFX_Text():
     pass
