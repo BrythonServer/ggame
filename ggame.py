@@ -479,7 +479,7 @@ class Sprite(object):
 
     def destroy(self):
         print("removing..")
-        self.app._remove(self)
+        #self.app._remove(self)
         print("removed")
         print("stroying Gfx sprite")
         self.GFX.destroy()
@@ -752,7 +752,6 @@ class App(object):
         self.win.animate(self._animate)
 
     def destroy(self, dummy):
-        return
         print("destoying")
         self.win.destroy()
         print("window done")
