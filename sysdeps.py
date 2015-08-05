@@ -245,7 +245,8 @@ else:
       self.scal.x = value[0]
       self.scal.y = value[1]
 
-
+    def destroy(self):
+      pass
 
   class _GFX_Graphics(object):
 
@@ -272,6 +273,10 @@ else:
       self.jpath = None
       self.width = None
       self.height = None
+      self.position = vector(0,0)
+
+    def destroy(self):
+      self.clear()
 
     def clone(self):
       clone = type(self)()
@@ -294,6 +299,7 @@ else:
       clone.jpath = self.jpath
       clone.width = self.width
       clone.height = self.height
+      clone.position = self.position
       return clone
 
     def lineStyle(self, width, color, alpha):
@@ -308,6 +314,7 @@ else:
     def drawRect(self, x, y, w, h):
       self.x = x
       self.y = y
+      self.position = vector(x,y)
       self.rwidth = w
       self.rheight = h
       self.width = w
@@ -319,6 +326,7 @@ else:
     def drawCircle(self, x, y, radius):
       self.x = x
       self.y = y
+      self.position = vector(x,y)
       self.radius = radius
       self.cleared = False
       self.width = radius*2
@@ -329,6 +337,7 @@ else:
     def drawEllipse(self, x, y, hw, hh):
       self.x = x
       self.y = y
+      self.position = vector(x,y)
       self.ehw = hw
       self.ehh = hh
       self.width = hw*2
@@ -340,6 +349,7 @@ else:
     def drawPolygon(self, jpath):
       self.jpath = jpath
       self.cleared = False
+      self.position = vector(jpath[0],jpath[1])
       x = []
       y = []
       for i in range(0,len(jpath)-1,2):
@@ -353,6 +363,7 @@ else:
     def moveTo(self, x, y):
       self.x = x
       self.y = y
+      self.position = vector(x,y)
       return self
 
     def lineTo(self, x, y):
@@ -373,11 +384,16 @@ else:
       self.visible = None
       self.width = 99
       self.height = 99
+      self.position = vector(0,0)
       print("Text: {} in {}".format(text, styledict['font']))
 
     def clone(self):
       clone = type(self)(self.text, self.styledict)
       return clone
+
+    def destroy(self):
+      self.text = ''
+
 
   GFX_Text = _GFX_Text
 

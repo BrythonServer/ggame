@@ -1,7 +1,7 @@
 import unittest
 from ggame import ImageAsset, Frame, Color, LineStyle, RectangleAsset
 from ggame import CircleAsset, EllipseAsset, PolygonAsset, LineAsset, TextAsset
-from ggame import Sprite
+from ggame import App, Sprite
 
 class TestSpriteMethods(unittest.TestCase):
 
@@ -23,6 +23,61 @@ class TestSpriteMethods(unittest.TestCase):
 
   def test_sprite(self):
     s = Sprite(self.image, (51,52))
+    self.assertEqual(s.x, 51)
+    self.assertEqual(s.y, 52)
+    self.assertEqual(s.width, 71)
+    self.assertEqual(s.height, 100)
+    self.assertEqual(s.position, (51,52))
+    self.assertEqual(s.fxcenter, 0.0)
+    s.x = 41
+    self.assertEqual(s.x, 41)
+    self.assertEqual(s.width, 71)
+    s.destroy()
+
+  def test_spritecollision(self):
+    s1 = Sprite(self.image, (51,52))
+    s2 = Sprite(self.image, (51, 52))
+    cl = s2.collidingWithSprites()
+    self.assertEqual(len(cl), 1)
+    self.assertEqual(s2.collidingWith(cl[0]), True)
+    s2.x = 125
+    self.assertEqual(s2.collidingWith(cl[0]), False)
+    s1.destroy()
+    s2.destroy()    
+
+
+  def test_spritevariety(self):
+    s1 = Sprite(self.multiimage)
+    s2 = Sprite(self.rect)
+    s3 = Sprite(self.circ)
+    s4 = Sprite(self.ellipse)
+    s5 = Sprite(self.line)
+    s6 = Sprite(self.poly)
+    s7 = Sprite(self.text)
+    s1.destroy()
+    s2.destroy()
+    s3.destroy()
+    s4.destroy()
+    s5.destroy()
+    s6.destroy()
+    s7.destroy()
+
+  def test_advancedspritecollision(self):
+    class SpriteChild(Sprite):
+      pass
+
+    s1 = Sprite(self.image, (51,52))
+    s2 = Sprite(self.image, (61,52))
+    s3 = SpriteChild(self.image, (71,52))
+    cl = s1.collidingWithSprites(SpriteChild)
+    self.assertEqual(len(cl), 1)
+    self.assertIs(cl[0], s3)
+    cl = s1.collidingWithSprites()
+    self.assertEqual(len(cl), 2)
+    s1.destroy()
+    s2.destroy()
+    s3.destroy()
+
 
 if __name__ == '__main__':
     unittest.main()
