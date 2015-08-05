@@ -235,6 +235,7 @@ class LineAsset(CurveAsset):
         self.deltaY = y
         GFX_Graphics.moveTo(0, 0)
         self.GFX = GFX_Graphics.lineTo(self.deltaX, self.deltaY).clone()
+        self.GFX.visible = False
 
 class TextAsset(GraphicsAsset):
     
@@ -463,7 +464,7 @@ class Sprite(object):
     
     @property
     def visible(self):
-        return self.PIXI.visible
+        return self.GFX.visible
     
     @visible.setter
     def visible(self, value):
