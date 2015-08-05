@@ -50,6 +50,33 @@ class TestImageAssetMethods(unittest.TestCase):
     self.assertEqual(c.radius, 30)
     self.assertEqual(c.GFX.x, 0)
 
+  def test_ellipseasset(self):
+    e = EllipseAsset(40, 50, LineStyle(4, Color(0x113355, 0.6)), Color(0x224466, 0.7))
+    self.assertEqual(e.GFX.visible, False)
+    self.assertEqual(e.GFX.ehw, 40)
+    self.assertEqual(e.GFX.ehh, 50)
+    self.assertEqual(e.GFX.x, 0)
+
+  def test_lineasset(self):
+    l = LineAsset(60, 70, LineStyle(5, Color(0x224466, 0.7)))
+    self.assertEqual(l.GFX.visible, False)
+    self.assertEqual(l.GFX.xto, 60)
+    self.assertEqual(l.GFX.yto, 70)
+    self.assertEqual(l.GFX.x, 0)
+
+  def test_polygonasset(self):
+    p = PolygonAsset([(10,10), (20,10), (15,15), (10,10)], LineStyle(6, Color(0x665544, 0.9)), Color(0x664422, 1.0))
+    self.assertEqual(len(p.GFX.jpath), 8)
+    self.assertEqual(p.GFX.jpath[4], 15)
+    self.assertEqual(p.GFX.visible, False)
+
+  def test_textasset(self):
+    t = TextAsset("sample text", style="20px Arial", width=200, fill=Color(0x123456, 1.0), align='center')
+    self.assertEqual(t.GFX.text, "sample text")
+    self.assertEqual(t.GFX.styledict['font'], "20px Arial")
+    self.assertEqual(t.GFX.styledict['fill'], 0x123456)
+    self.assertEqual(t.GFX.alpha, 1.0)
+
 
 if __name__ == '__main__':
     unittest.main()
