@@ -146,10 +146,14 @@ else:
         self.img = None
         self.basewidth = 0
         self.baseheight = 0
+        self.width = 0
+        self.height = 0
       else:
         self.img = Image.open(img)
         self.basewidth = self.img.width
         self.baseheight = self.img.height
+        self.width = self.basewidth
+        self.height = self.baseheight
         print("Texture from image {}, {}x{} pixels".format(img, self.basewidth, self.baseheight))
       self.baserect = _GFX_Rectangle(0, 0, self.basewidth, self.baseheight)
       self.framerect = self.baserect  
@@ -163,6 +167,8 @@ else:
       inst.baseheight = texture.baseheight
       inst.baserect = texture.baserect
       inst.framerect = frame
+      inst.width = frame.width
+      inst.height = frame.height
       print("Texture from base texture {}, {}x{} subframe {}x{}".format(inst.name, inst.basewidth, inst.baseheight, inst.framerect.width, inst.framerect.height))
       return inst
 
@@ -177,16 +183,79 @@ else:
   
   GFX_Texture_fromImage = _Texture  
 
+
+  class vector(object):
   
-  def GFX_Sprite():
-    pass
+    def __init__(self, x, y):
+      self.x = x
+      self.y = y
+
+    def __getitem__(self, key):
+      if key == 0:
+        return self.x
+      elif key == 1:
+        return self.y
+      else:
+        raise KeyError
+
+    def __setitem(self, key, value):
+      if key == 0:
+        self.x = value
+      elif key == 1:
+        self.y = value
+      else:
+        raise KeyError
+  
+  class GFX_Sprite(object):
+    
+    def __init__(self, texture):
+      self.texture = texture
+      self.visible = True
+      self.pos = vector(0,0)
+      self.anch = vector(0,0)
+      self.scal = vector(1.0, 1.0)
+      self.width = texture.width
+      self.height = texture.height
+      self.rotation = 0.0
+
+    @property
+    def position(self):
+      return self.pos
+
+    @position.setter
+    def position(self, value):
+      self.pos.x = value[0]
+      self.pos.y = value[1]
+
+    @property
+    def anchor(self):
+      return self.anch
+ 
+    @anchor.setter
+    def anchor(self, value):
+      self.anch.x = value[0]
+      self.anch.y = value[1]
+
+    @property
+    def scale(self):
+      return self.scal
+
+    @scale.setter
+    def scale(self, value):
+      self.scal.x = value[0]
+      self.scal.y = value[1]
+
+
 
   class _GFX_Graphics(object):
 
     def __init__(self):
-      self.cleared = None
+      self.clear()
+
+    def clear(self):
+      self.cleared = True
       self.visible = True
-      self.width = None
+      self.lwidth = None
       self.color = None
       self.alpha = None
       self.fillcolor = None
@@ -196,12 +265,19 @@ else:
       self.rwidth = None
       self.rheight = None
       self.radius = None
+      self.ehw = None
+      self.ehh = None
+      self.xto = None
+      self.yto = None
+      self.jpath = None
+      self.width = None
+      self.height = None
 
     def clone(self):
       clone = type(self)()
       clone.cleared = self.cleared
       clone.visible = self.visible
-      clone.width = self.width
+      clone.lwidth = self.lwidth
       clone.color = self.color
       clone.alpha = self.alpha
       clone.fillalpha = self.fillalpha
@@ -211,10 +287,14 @@ else:
       clone.rwidth = self.rwidth
       clone.rheight = self.rheight
       clone.radius = self.radius
+      clone.ehw = self.ehw
+      clone.ehh = self.ehh
+      clone.xto = self.xto
+      clone.yto = self.yto
+      clone.jpath = self.jpath
+      clone.width = self.width
+      clone.height = self.height
       return clone
-
-    def clear(self):
-      self.cleared = True
 
     def lineStyle(self, width, color, alpha):
       self.width = width
@@ -230,6 +310,8 @@ else:
       self.y = y
       self.rwidth = w
       self.rheight = h
+      self.width = w
+      self.height = h
       self.cleared = False
       print("Rectangle {}x{} at {},{}".format(w,h,x,y))
       return self
@@ -239,17 +321,70 @@ else:
       self.y = y
       self.radius = radius
       self.cleared = False
+      self.width = radius*2
+      self.height = radius*2
       print("Circle, radius {} at {},{}".format(radius,x,y))
       return self  
+
+    def drawEllipse(self, x, y, hw, hh):
+      self.x = x
+      self.y = y
+      self.ehw = hw
+      self.ehh = hh
+      self.width = hw*2
+      self.height = hh*2
+      self.cleared = False
+      print("Ellipse, {}x{} at {},{}".format(hw,hh,x,y))
+      return self
+
+    def drawPolygon(self, jpath):
+      self.jpath = jpath
+      self.cleared = False
+      x = []
+      y = []
+      for i in range(0,len(jpath)-1,2):
+        x.append(jpath[i])
+        y.append(jpath[i+1])
+      self.width = max(x)-min(x)
+      self.height = max(y)-min(y)
+      print("Polygon")
+      return self
+
+    def moveTo(self, x, y):
+      self.x = x
+      self.y = y
+      return self
+
+    def lineTo(self, x, y):
+      self.xto = x
+      self.yto = y
+      self.width = abs(x)
+      self.height = abs(y)
+      self.cleared = False
+      print("Line from {},{} to {},{}".format(self.x, self.y, x, y))
+      return self 
+
+  class _GFX_Text(object):
+
+    def __init__(self, text, styledict):
+      self.text = text
+      self.styledict = styledict
+      self.alpha = None
+      self.visible = None
+      self.width = 99
+      self.height = 99
+      print("Text: {} in {}".format(text, styledict['font']))
+
+    def clone(self):
+      clone = type(self)(self.text, self.styledict)
+      return clone
+
+  GFX_Text = _GFX_Text
 
   _globalGraphics = _GFX_Graphics()
 
   GFX_Graphics = _globalGraphics
 
-  
-  def GFX_Text():
-    pass
-  
   def GFX_DetectRenderer():
     pass
  
