@@ -91,14 +91,14 @@ if module_exists('pygame'):
     def __init__(self, img='', crossdomain=False):
       self.name = img
       if not img == '':
-      	self.img = pygame.image.load(img)  # pygame surface
-      	self.basewidth = self.img.get_width()
-      	self.baseheight = self.img.get_height()
-      	self.width = self.basewidth
-      	self.height = self.baseheight
-      	print("Texture from image {}, {}x{} pixels".format(img, self.basewidth, self.baseheight))
-      	self.baserect = _GFX_Rectangle(0, 0, self.basewidth, self.baseheight)
-      	self.framerect = self.baserect  
+        self.img = pygame.image.load(img)  # pygame surface
+        self.basewidth = self.img.get_width()
+        self.baseheight = self.img.get_height()
+        self.width = self.basewidth
+        self.height = self.baseheight
+        print("Texture from image {}, {}x{} pixels".format(img, self.basewidth, self.baseheight))
+        self.baserect = _GFX_Rectangle(0, 0, self.basewidth, self.baseheight)
+        self.framerect = self.baserect
 
     @classmethod
     def fromTexture(cls, texture, frame):
@@ -377,7 +377,83 @@ if module_exists('pygame'):
 
   SND_Sound = _SND_Sound
 
-  
+
+  class HwEvent(object):
+
+    evtmap = {2: 'keydown', 3: 'keyup', 4: 'mousemove', 5: 'mousedown', 6: 'mouseup'}
+    keymap = {304:16,
+              303:16,
+              306:17,
+              308:18,
+              301:20,
+              276:37,
+              273:38,
+              275:39,
+              274:40,
+              97:65,
+              98:66,
+              99:67,
+              100:68,
+              101:69,
+              102:70,
+              103:71,
+              104:72,
+              105:73,
+              106:74,
+              107:75,
+              108:76,
+              109:77,
+              110:78,
+              111:79,
+              112:80,
+              113:81,
+              114:82,
+              115:83,
+              116:84,
+              117:85,
+              118:86,
+              119:87,
+              120:88,
+              121:89,
+              122:90,
+              282:112,
+              283:113,
+              284:114,
+              285:115,
+              286:116,
+              287:117,
+              288:118,
+              289:119,
+              290:120,
+              291:121,
+              292:122,
+              293:123,
+              59:186,
+              61:187,
+              44:188,
+              46:190,
+              45:189,
+              47:191,
+              96:192,
+              92:220,
+              91:219,
+              93:221,
+              39:222}
+
+    def __init__(self, pevent):
+      self.type = HwEvent.evtmap.get(pevent.type, None)
+      if self.type in ['keydown', 'keyup']:
+        self.keyCode = HwEvent.keymap.get(pevent.key, pevent.key)
+      elif self.type in ['mousemove', 'mousedown', 'mouseup']:
+        self.wheelDelta = 0
+        if self.type != 'mousemove' and pevent.button == 5:
+          if self.type == 'mousedown':
+            self.wheelDelta = 1
+          else:
+            self.wheelDelta = -1
+        self.clientX = pevent.pos[0]
+        self.clientY = pevent.pos[1]
+
   class GFX_Window(object):
     
     def __init__(self, width, height, onclose):
@@ -386,6 +462,9 @@ if module_exists('pygame'):
       self.clock = pygame.time.Clock()
       self.sprites = []
       self.animatestarted = False
+      self.bindings = {}
+      self.onclose = onclose
+      self.stop = False
       #self._w = window.open("", "")
       #self._stage = JSConstructor(GFX.Container)()
       #self._renderer = GFX.autoDetectRenderer(width, height, {'transparent':True})
@@ -393,9 +472,8 @@ if module_exists('pygame'):
       #self._w.onunload = onclose
   
     def bind(self, evtspec, callback):
-      pass
-      #self._w.document.body.bind(evtspec, callback)
-      
+      self.bindings[evtspec] = callback
+
     def add(self, obj):
       self.sprites.append(obj)
       #self._stage.addChild(obj)
@@ -410,9 +488,19 @@ if module_exists('pygame'):
       for s in self.sprites:
         self._w.blit(s.texture.img, (s.pos.x, s.pos.y))
       pygame.display.flip()
+      events = pygame.event.get()
+      for event in events:
+        hwevent = HwEvent(event)
+        if hwevent.type != None:
+          self.bindings[hwevent.type](hwevent)
+        if event.type == 12:
+          print("Close!")
+          self.onclose()
+          self.destroy()
+          self.stop = True
       if not self.animatestarted:
         self.animatestarted = True
-        while True:
+        while not self.stop:
           self.clock.tick_busy_loop(30)
           stepcallback(0)
       #self._renderer.render(self._stage)
