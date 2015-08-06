@@ -709,7 +709,7 @@ class App(object):
             if not App.spritesadded and len(App.spritelist) > 0:
                 App.spritesadded = True
                 for sprite in App.spritelist:
-                    self.win.add(sprite.GFX)
+                    App.win.add(sprite.GFX)
             App.win.bind(KeyEvent.keydown, self._keyEvent)
             App.win.bind(KeyEvent.keyup, self._keyEvent)
             App.win.bind(KeyEvent.keypress, self._keyEvent)
@@ -741,14 +741,16 @@ class App(object):
             self._routeEvent(evt, evtlist)
         
     def _add(self, obj):
-        App.win.add(obj.GFX)
+        if App.win != None:
+            App.win.add(obj.GFX)
         App.spritelist.append(obj)
         if type(obj) not in App.spritesdict:
             App.spritesdict[type(obj)] = []
         App.spritesdict[type(obj)].append(obj)
         
     def _remove(self, obj):
-        App.win.remove(obj.GFX)
+        if App.win != None:
+            App.win.remove(obj.GFX)
         App.spritelist.remove(obj)
         App.spritesdict[type(obj)].remove(obj)
         
@@ -757,15 +759,16 @@ class App(object):
             self.userfunc()
         else:
             self.step()
-        self.win.animate(self._animate)
+        App.win.animate(self._animate)
 
     def destroy(self, dummy):
-        self.win.destroy()
+        App.win.destroy()
+        App.win = None
         for s in list(self.spritelist):
             s.destroy()
-        del self.spritelist
-        del self.spritesdict
-        App.__instance = None
+        App.spritelist = []
+        App.spritesdict = {}
+        App.eventdict = {}
 
     def listenKeyEvent(self, eventtype, key, callback):
         """
