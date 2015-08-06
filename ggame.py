@@ -284,7 +284,6 @@ class Sprite(object):
         pos: keyward parameter, a tuple with x,y coordinates
         e.g. Sprite(asset, pos=(100,100))
         """
-        self.app = App()
         self.index = 0
         if type(asset) == ImageAsset:
             self.asset = asset
@@ -309,7 +308,7 @@ class Sprite(object):
         self.position = pos
         self._setExtents()
         self.rectangularCollisionModel()
-        self.app._add(self)
+        App._add(self)
         
     def _setExtents(self):
         """
@@ -505,13 +504,13 @@ class Sprite(object):
 
     def collidingWithSprites(self, sclass = None):
         if sclass is None:
-            slist = self.app.spritelist
+            slist = App.spritelist
         else:
-            slist = self.app.getSpritesbyClass(sclass)
+            slist = App.getSpritesbyClass(sclass)
         return list(filter(self.collidingWith, slist))
 
     def destroy(self):
-        self.app._remove(self)
+        App._remove(self)
         self.GFX.destroy()
         self.asset.destroy()
 
@@ -739,16 +738,18 @@ class App(object):
         if len(evtlist) > 0:
             evt = MouseEvent(hwevent)
             self._routeEvent(evt, evtlist)
-        
-    def _add(self, obj):
+
+    @classmethod
+    def _add(cls, obj):
         if App.win != None:
             App.win.add(obj.GFX)
         App.spritelist.append(obj)
         if type(obj) not in App.spritesdict:
             App.spritesdict[type(obj)] = []
         App.spritesdict[type(obj)].append(obj)
-        
-    def _remove(self, obj):
+
+    @classmethod
+    def _remove(cls, obj):
         if App.win != None:
             App.win.remove(obj.GFX)
         App.spritelist.remove(obj)
@@ -761,7 +762,8 @@ class App(object):
             self.step()
         App.win.animate(self._animate)
 
-    def destroy(self, dummy):
+    @classmethod
+    def destroy(cls, dummy):
         App.win.destroy()
         App.win = None
         for s in list(App.spritelist):
@@ -770,7 +772,8 @@ class App(object):
         App.spritesdict = {}
         App.eventdict = {}
 
-    def listenKeyEvent(self, eventtype, key, callback):
+    @classmethod
+    def listenKeyEvent(cls, eventtype, key, callback):
         """
         eventtype : "keydown", "keyup", "keypress"
         key : e.g. "space", "a" or "*" for ALL!
@@ -780,18 +783,22 @@ class App(object):
         evtlist.append(callback)
         App.eventdict[(eventtype, key)] = evtlist
 
-    def listenMouseEvent(self, eventtype, callback):
+    @classmethod
+    def listenMouseEvent(cls, eventtype, callback):
         evtlist = App.eventdict.get(eventtype, [])
         evtlist.append(callback)
         App.eventdict[eventtype] = evtlist
-        
-    def unlistenKeyEvent(self, eventtype, key, callback):
+
+    @classmethod
+    def unlistenKeyEvent(cls, eventtype, key, callback):
         App.eventdict[(eventtype,key)].remove(callback)
 
-    def unlistenMouseEvent(self, eventtype, callback):
+    @classmethod
+    def unlistenMouseEvent(cls, eventtype, callback):
         App.eventdict[eventtype].remove(callback)
-        
-    def getSpritesbyClass(self, sclass):
+
+    @classmethod
+    def getSpritesbyClass(cls, sclass):
         return App.spritesdict.get(sclass, [])
         
     def step(self):
