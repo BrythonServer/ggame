@@ -23,11 +23,7 @@ class TestAppMethods(unittest.TestCase):
     self.mouseevtx = 0
 
   def test_app(self):
-    a1 = App()
-    a2 = App()
-    self.assertIs(a1, a2) 
     a3 = App(100,100)
-    self.assertIs(a1,a3)
     # event handling
     a3.listenKeyEvent(KeyEvent.keydown, "space", self.spacehandler)
     a3.listenMouseEvent(MouseEvent.mousewheel, self.wheelhandler)
