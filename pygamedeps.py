@@ -409,7 +409,6 @@ if module_exists('pygame'):
       self._w.fill(pygame.Color('white'))
       for s in self.sprites:
         self._w.blit(s.texture.img, (s.pos.x, s.pos.y))
-      pygame.display.flip()
       print("flip")
       if not self.animatestarted:
         self.animatestarted = True
