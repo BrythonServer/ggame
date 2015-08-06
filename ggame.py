@@ -727,15 +727,15 @@ class App(object):
                 callback(event)
         
     def _keyEvent(self, hwevent):
-        evtlist = self.eventdict.get(
+        evtlist = App.eventdict.get(
             (hwevent.type, KeyEvent.keys.get(hwevent.keyCode,0)), [])
-        evtlist.extend(self.eventdict.get((hwevent.type, '*'), []))
+        evtlist.extend(App.eventdict.get((hwevent.type, '*'), []))
         if len(evtlist) > 0:
             evt = KeyEvent(hwevent)
             self._routeEvent(evt, evtlist)
 
     def _mouseEvent(self, hwevent):
-        evtlist = self.eventdict.get(hwevent.type, [])
+        evtlist = App.eventdict.get(hwevent.type, [])
         if len(evtlist) > 0:
             evt = MouseEvent(hwevent)
             self._routeEvent(evt, evtlist)
@@ -764,7 +764,7 @@ class App(object):
     def destroy(self, dummy):
         App.win.destroy()
         App.win = None
-        for s in list(self.spritelist):
+        for s in list(App.spritelist):
             s.destroy()
         App.spritelist = []
         App.spritesdict = {}
@@ -792,7 +792,7 @@ class App(object):
         App.eventdict[eventtype].remove(callback)
         
     def getSpritesbyClass(self, sclass):
-        return self.spritesdict.get(sclass, [])
+        return App.spritesdict.get(sclass, [])
         
     def step(self):
         pass
