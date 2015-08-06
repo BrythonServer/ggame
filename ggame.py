@@ -692,43 +692,33 @@ class KeyEvent(Event):
 
 
 class App(object):
-    """
-    Singleton base class for ggame applications
-    """
 
-    __instance = None
-
-    def __new__(cls, *args):
-        if App.__instance is None:
-            App.__instance = object.__new__(cls)
-        return App.__instance
-        
+    spritelist = []
+    eventdict = {}
+    spritesdict = {}
+    spritesadded = False
+    win = None
 
     def __init__(self, *args):
 
-        if not hasattr(self, 'spritelist'):
-            self.spritelist = []
-        if not hasattr(self, 'eventdict'):
-            self.eventdict = {}
-        if not hasattr(self, 'spritesdict'):
-            self.spritesdict = {}
-        if len(args) == 2:
+        if App.win == None and len(args) == 2:
             self.width = args[0]
             self.height = args[1]
-            self.win = GFX_Window(self.width, self.height, self.destroy)
+            App.win = GFX_Window(self.width, self.height, self.destroy)
             # Add existing sprites to the window
-            if len(self.spritelist) > 0:
-                for sprite in self.spritelist:
+            if not App.spritesadded and len(App.spritelist) > 0:
+                App.spritesadded = True
+                for sprite in App.spritelist:
                     self.win.add(sprite.GFX)
-            self.win.bind(KeyEvent.keydown, self._keyEvent)
-            self.win.bind(KeyEvent.keyup, self._keyEvent)
-            self.win.bind(KeyEvent.keypress, self._keyEvent)
-            self.win.bind(MouseEvent.mousewheel, self._mouseEvent)
-            self.win.bind(MouseEvent.mousemove, self._mouseEvent)
-            self.win.bind(MouseEvent.mousedown, self._mouseEvent)
-            self.win.bind(MouseEvent.mouseup, self._mouseEvent)
-            self.win.bind(MouseEvent.click, self._mouseEvent)
-            self.win.bind(MouseEvent.dblclick, self._mouseEvent)
+            App.win.bind(KeyEvent.keydown, self._keyEvent)
+            App.win.bind(KeyEvent.keyup, self._keyEvent)
+            App.win.bind(KeyEvent.keypress, self._keyEvent)
+            App.win.bind(MouseEvent.mousewheel, self._mouseEvent)
+            App.win.bind(MouseEvent.mousemove, self._mouseEvent)
+            App.win.bind(MouseEvent.mousedown, self._mouseEvent)
+            App.win.bind(MouseEvent.mouseup, self._mouseEvent)
+            App.win.bind(MouseEvent.click, self._mouseEvent)
+            App.win.bind(MouseEvent.dblclick, self._mouseEvent)
 
         
     def _routeEvent(self, event, evtlist):
@@ -751,22 +741,16 @@ class App(object):
             self._routeEvent(evt, evtlist)
         
     def _add(self, obj):
-        # only add sprites to window if it exists, otherwise will happen later
-        if hasattr(self, 'win'):
-            self.win.add(obj.GFX)
-        self.spritelist.append(obj)
-        if type(obj) not in self.spritesdict:
-            self.spritesdict[type(obj)] = []
-        self.spritesdict[type(obj)].append(obj)
+        App.win.add(obj.GFX)
+        App.spritelist.append(obj)
+        if type(obj) not in App.spritesdict:
+            App.spritesdict[type(obj)] = []
+        App.spritesdict[type(obj)].append(obj)
         
     def _remove(self, obj):
-        if hasattr(self, 'win'):
-            try:
-                self.win.remove(obj.GFX)
-            except:
-                pass
-        self.spritelist.remove(obj)
-        self.spritesdict[type(obj)].remove(obj)
+        App.win.remove(obj.GFX)
+        App.spritelist.remove(obj)
+        App.spritesdict[type(obj)].remove(obj)
         
     def _animate(self, dummy):
         if self.userfunc:
@@ -789,20 +773,20 @@ class App(object):
         key : e.g. "space", "a" or "*" for ALL!
         callback : function name to receive events
         """
-        evtlist = self.eventdict.get((eventtype, key), [])
+        evtlist = App.eventdict.get((eventtype, key), [])
         evtlist.append(callback)
-        self.eventdict[(eventtype, key)] = evtlist
+        App.eventdict[(eventtype, key)] = evtlist
 
     def listenMouseEvent(self, eventtype, callback):
-        evtlist = self.eventdict.get(eventtype, [])
+        evtlist = App.eventdict.get(eventtype, [])
         evtlist.append(callback)
-        self.eventdict[eventtype] = evtlist
+        App.eventdict[eventtype] = evtlist
         
     def unlistenKeyEvent(self, eventtype, key, callback):
-        self.eventdict[(eventtype,key)].remove(callback)
+        App.eventdict[(eventtype,key)].remove(callback)
 
     def unlistenMouseEvent(self, eventtype, callback):
-        self.eventdict[eventtype].remove(callback)
+        App.eventdict[eventtype].remove(callback)
         
     def getSpritesbyClass(self, sclass):
         return self.spritesdict.get(sclass, [])
@@ -812,5 +796,5 @@ class App(object):
     
     def run(self, userfunc = None):
         self.userfunc = userfunc
-        self.win.animate(self._animate)
+        App.win.animate(self._animate)
 
