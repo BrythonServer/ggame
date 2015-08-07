@@ -319,8 +319,8 @@ class Sprite(object):
         self.ymin = int(self.y - self.fycenter * self.height)
         self.ymax = int(self.y + (1 - self.fycenter) * self.height)
         self.radius = int((self.width + self.height)/4)
-        self.xcenter = int(self.x + (1 - self.fxcenter) * self.width / 2)
-        self.ycenter = int(self.y + (1 - self.fycenter) * self.height / 2)
+        #self.xcenter = int(self.x + (1 - self.fxcenter) * self.width / 2)
+        #self.ycenter = int(self.y + (1 - self.fycenter) * self.height / 2)
 
     def firstImage(self):
         self.GFX.texture = self.asset[0]
@@ -410,6 +410,7 @@ class Sprite(object):
         """
         try:
             return self.GFX.anchor.x
+            self._setExtents()
         except:
             return 0.0
         
@@ -494,7 +495,7 @@ class Sprite(object):
         if self is obj:
             return False
         elif self._collisionStyle == obj._collisionStyle == type(self)._circCollision:
-            dist2 = (self.xcenter - obj.xcenter)**2 + (self.ycenter - obj.ycenter)**2
+            dist2 = (self.x - obj.x)**2 + (self.y - obj.y)**2
             return dist2 < (self.radius + obj.radius)**2
         else:
             return (not (self.xmin > obj.xmax
@@ -512,7 +513,6 @@ class Sprite(object):
     def destroy(self):
         App._remove(self)
         self.GFX.destroy()
-        self.asset.destroy()
 
 
 class SoundAsset(object):
@@ -701,9 +701,9 @@ class App(object):
     def __init__(self, *args):
 
         if App.win == None and len(args) == 2:
-            self.width = args[0]
-            self.height = args[1]
-            App.win = GFX_Window(self.width, self.height, self.destroy)
+            App.win = GFX_Window(args[0], args[1], self.destroy)
+            self.width = App.win.width
+            self.height = App.win.height
             # Add existing sprites to the window
             if not App.spritesadded and len(App.spritelist) > 0:
                 App.spritesadded = True
