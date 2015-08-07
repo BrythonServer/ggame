@@ -110,7 +110,9 @@ latest ggame sources: add ggame as a git subtree.
 
 ### Adding as Subtree
 
-From the same directory as your own python sources, execute the following terminal commands:
+From the same directory as your own python sources (note: you **must** have an existing git repository
+with committed files in order for the following to work properly), execute the following terminal 
+commands:
 
     git remote add -f ggame https://github.com/BrythonServer/ggame.git
     git merge -s ours --no-commit ggame/master
