@@ -397,6 +397,8 @@ if module_exists('PIL'):
     
     def __init__(self, width, height, onclose):
       self._w = window.open("", "")
+      self.width = width if width != 0 else 100
+      self.height = height if height != 0 else 100
       self._stage = JSConstructor(GFX.Container)()
       self._renderer = GFX.autoDetectRenderer(width, height, {'transparent':True})
       self._w.document.body.appendChild(self._renderer.view)
