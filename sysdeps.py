@@ -53,11 +53,15 @@ if module_exists('browser') and module_exists('javascript'):
 
 elif module_exists('pygame'):
 
-  from ggame.pygamedeps import *
+    try:
+        from ggame.pygamedeps import *
+    except:
+        from pygamedeps import *
 
 else:
-
-  from ggame.headlessdeps import *
-  
+    try:
+        from ggame.headlessdeps import *
+    except:
+        from headlessdeps import *
   
     
