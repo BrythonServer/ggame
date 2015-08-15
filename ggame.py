@@ -1210,7 +1210,7 @@ class App(object):
         window size is used.
         """
         if App._win == None and len(args) == 2:
-            App._win = GFX_Window(args[0], args[1], self.destroy)
+            App._win = GFX_Window(args[0], args[1], App.destroy)
             self.width = App._win.width
             self.height = App._win.height
             # Add existing sprites to the window
@@ -1272,7 +1272,7 @@ class App(object):
         App._win.animate(self._animate)
 
     @classmethod
-    def destroy(cls):
+    def destroy(cls, *args):
         """
         This will close the display window/tab, remove all references to 
         sprites and place the `App` class in a state in which a new 
