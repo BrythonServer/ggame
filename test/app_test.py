@@ -42,7 +42,7 @@ class TestAppMethods(unittest.TestCase):
     # run the app
     a3.run()
     # and destroy it
-    a3.destroy()
+    a3._destroy()
 
   def spacehandler(self, event):
     self.assertEqual(type(event), KeyEvent)
