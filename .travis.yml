@@ -4,8 +4,9 @@ python:
 - '3.4'
 install:
 - pip install -r requirements-headless.txt
-script: nosetests
-script: bash ./deploy.sh
+script: 
+- nosetests
+- bash ./deploy.sh
 env:
   global:
   - GH_REF: github.com/BrythonServer/ggame.git
