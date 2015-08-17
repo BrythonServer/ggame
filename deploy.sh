@@ -6,11 +6,11 @@ rm -rf out || exit 0;
 mkdir out;
 
 # run our compile script, discussed above
-bash compile.sh
+#bash compile.sh
 
 # go to the out directory and create a *new* Git repo
-cd out
-git init
+#cd out
+#git init
 
 # inside this git repo we'll pretend to be a new user
 #git config user.name "Travis CI"
