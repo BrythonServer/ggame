@@ -13,6 +13,8 @@ to create engaging and interactive games is a powerful motivator for many progam
 Accordingly, any functional or performance enhancements that *can* be reasonably implemented 
 by the user are left as an exercise. 
 
+Please visit the [detailed documentation page](http://brythonserver.github.io/ggame/) for ggame. This is generated automatically from the ggame sources.
+
 ## Functionality Goals
 
 The ggame library is intended to be trivially easy to use. For example:
