@@ -1289,6 +1289,7 @@ class App(object):
         App.spritelist = []
         App._spritesdict = {}
         App._eventdict = {}
+        App._spritesadded = False
 
     @classmethod
     def listenKeyEvent(cls, eventtype, key, callback):
