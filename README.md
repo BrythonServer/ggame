@@ -117,13 +117,13 @@ with committed files in order for the following to work properly), execute the f
 commands:
 
     git remote add -f ggame https://github.com/BrythonServer/ggame.git
-    git merge -s ours --no-commit ggame/master
+    git merge -s ours --no-commit ggame/minimal
     mkdir ggame
-    git read-tree --prefix=ggame/ -u ggame/master
+    git read-tree --prefix=ggame/ -u ggame/minimal
     git commit -m "Merge ggame project as our subdirectory"
     
 If you want to pull in updates from ggame in the future:
     
-    git pull -s subtree ggame master
+    git pull -s subtree ggame minimal
     
 You can see an example of how a ggame subtree is used by examining the [brython-server-testing](https://github.com/tiggerntatie/brython-server-testing) repo on Github. In particular, the s.py, a.py and trivial.py python programs are using the ggame subtree in this way.
