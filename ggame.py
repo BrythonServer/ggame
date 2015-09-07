@@ -1209,8 +1209,12 @@ class App(object):
         no size parameters at all (e.g. `myapp = App()`), in which case, the full browser
         window size is used.
         """
-        if App._win == None and len(args) == 2:
-            App._win = GFX_Window(args[0], args[1], App._destroy)
+        if App._win == None and (len(args) == 0 or len(args) == 2):
+            x = y = 0
+            if len(args) == 2:
+                x = args[0]
+                y = args[1]
+            App._win = GFX_Window(x, y, App._destroy)
             self.width = App._win.width
             self.height = App._win.height
             # Add existing sprites to the window
