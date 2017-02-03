@@ -15,6 +15,7 @@ class LineSegment(Sprite):
         self._newSegment(self._start, self._end, self._style)
         
     def _newSegment(self, start, end, style):
+        self.GFX.visible = False
         self.GFX.destroy()
         self.asset = LineAsset(end[0]-start[0], end[1]-start[1], style)
         self.GFX = self.asset.GFX
