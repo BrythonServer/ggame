@@ -20,8 +20,8 @@ class LineSegment(Sprite):
     @start.setter
     def start(self, val):
         self._start = val
-        self.GFX.points[0] = self._start[0]
-        self.GFX.points[1] = self._start[1]
+        self.GFX.currentPath.points[0] = self._start[0]
+        self.GFX.currentPath.points[1] = self._start[1]
         
     @property
     def end(self):
@@ -30,11 +30,10 @@ class LineSegment(Sprite):
     @end.setter
     def end(self, val):
         self._end = val
-        self.GFX.points[2] = self._end[0]
-        self.GFX.points[3] = self._end[1]
+        self.GFX.currentPath.points[2] = self._end[0]
+        self.GFX.currentPath.points[3] = self._end[1]
         
     def step(self):
-        print(self.GFX.points)
         self.start = (self.start[0]+1, self.start[1])
         
         
