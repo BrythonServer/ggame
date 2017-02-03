@@ -11,8 +11,8 @@ class LineSegment(Sprite):
         self._start = start
         self._end = end
         self._style = style
-        #super().__init__(LineSegment.la, start)
-        #self._newSegment(self._start, self._end, self._style)
+        super().__init__(LineSegment.la, start)
+        self._newSegment(self._start, self._end, self._style)
         
     def _newSegment(self, start, end, style):
         self.GFX.destroy()
@@ -47,7 +47,7 @@ l = LineSegment((100,100), (200,200))
 class MathApp(App):
     def step(self):
         for spr in MathApp.getSpritesbyClass(LineSegment):
-            spr.step()]
+            spr.step()
 
 ap = MathApp()
 ap.run()
