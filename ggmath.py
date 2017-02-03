@@ -53,7 +53,8 @@ class MathApp(App):
     
     def step(self):
         for spr in MathApp.getSpritesbyClass(LineSegment):
-            spr.step()
+            pass
+            #spr.step()
 
 ap = MathApp()
 ap.run()
