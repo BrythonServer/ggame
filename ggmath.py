@@ -29,11 +29,12 @@ class LineSegment(Sprite):
 
     @end.setter
     def end(self, val):
-        self._start = val
+        self._end = val
         self.GFX.points[2] = self._end[0]
-        self.GFX.points[3 ] = self._end[1]
+        self.GFX.points[3] = self._end[1]
         
     def step(self):
+        print(self.GFX.points)
         self.start = (self.start[0]+1, self.start[1])
         
         
@@ -45,5 +46,5 @@ class MathApp(App):
         for spr in MathApp.getSpritesbyClass(LineSegment):
             spr.step()
 
-ap = App()
+ap = MathApp()
 ap.run()
