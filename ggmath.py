@@ -52,9 +52,8 @@ class MathApp(App):
     def step(self):
         global g
         for spr in MathApp.getSpritesbyClass(LineSegment):
-            for l in lines:
-                g = g + 1
-                l.start = (300*sin(g)+300,300*cos(g)+300)
+            g = g + 1
+            spr.start = (300*sin(g)+300,300*cos(g)+300)
             pass
 
 ap = MathApp()
