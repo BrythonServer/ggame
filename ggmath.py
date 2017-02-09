@@ -19,6 +19,7 @@ class LineSegment(Sprite):
 
     def _newSegment(self, start, end, style):      
         self._updateAsset(LineAsset(end[0]-start[0], end[1]-start[1], style))
+        self.position = start
 
     def _refreshSegment(self, start, end, style):
         App._remove(self)
@@ -54,7 +55,8 @@ class MathApp(App):
         global g
         for spr in MathApp.getSpritesbyClass(LineSegment):
             g = g + 1
-            spr.start = (300*sin(g)+300,300*cos(g)+300)
+            spr.step()
+            #spr.start = (300*sin(g)+300,300*cos(g)+300)
             pass
 
 ap = MathApp()
