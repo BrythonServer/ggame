@@ -47,11 +47,14 @@ class LineSegment(Sprite):
 
 lines = [LineSegment((300*sin(x)+300,300*cos(x)+300), (-300*sin(x)+300,-300*cos(x)+300)) for x in range(50)]
 #l = LineSegment((200,200), (500,500))
-
+g = 0
 class MathApp(App):
     def step(self):
+        global g
         for spr in MathApp.getSpritesbyClass(LineSegment):
-            #spr.step()
+            for l in lines:
+                g = g + 1
+                l.start = (300*sin(g)+300,300*cos(g)+300)
             pass
 
 ap = MathApp()
