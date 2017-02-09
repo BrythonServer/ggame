@@ -51,7 +51,7 @@ class LineSegment(_MathVisual):
     @start.setter
     def start(self, val):
         self._start = val
-        self._refreshSegment(self._start, self._end, self._style)
+        self._refreshAsset(self._start, self._end, self._style)
 
     @property
     def end(self):
@@ -60,7 +60,7 @@ class LineSegment(_MathVisual):
     @end.setter
     def end(self, val):
         self._end = val
-        self._refreshSegment(self._start, self._end, self._style)
+        self._refreshAsset(self._start, self._end, self._style)
         
     def step(self):
         self.start = (self.start[0]+1, self.start[1])
