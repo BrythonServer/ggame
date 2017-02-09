@@ -17,10 +17,13 @@ class LineSegment(Sprite):
     def _newSegment(self, start, end, style):
         #self.GFX.visible = False
         #self.GFX.destroy()
-        print(start, end)
-        self.asset = LineAsset(end[0]-start[0], end[1]-start[1], style)
-        self.GFX = self.asset.GFX.clone()
-        self.GFX.visible = True        
+        print(start, end[0]-start[0], end[1]-start[1])
+        temp = LineAsset(end[0]-start[0], end[1]-start[1], style)
+        temp.GFX.visible = True
+        #self.asset = LineAsset(end[0]-start[0], end[1]-start[1], style)
+        #self.GFX = self.asset.GFX
+        #self.GFX.visible = True        
+        self.position = start
     
     @property
     def start(self):
@@ -42,14 +45,16 @@ class LineSegment(Sprite):
         self.la = LineAsset(end[0]-start[0], end[1]-start[1], style)
         
     def step(self):
-        self.start = (self.start[0]+1, self.start[1])
+        pass
+        #self.start = (self.start[0]+1, self.start[1])
 
-l = LineSegment((100,100), (200,200))
+l = LineSegment((200,200), (500,500))
 
 class MathApp(App):
     def step(self):
         for spr in MathApp.getSpritesbyClass(LineSegment):
-            spr.step()
+            #spr.step()
+            pass
 
 ap = MathApp()
 ap.run()
