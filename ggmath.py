@@ -48,7 +48,7 @@ class LineSegment(Sprite):
         self.start = (self.start[0]+1, self.start[1])
 
 
-lines = [LineSegment((300*sin(x)+300,300*cos(x)+300), (-300*sin(x)+300,-300*cos(x)+300)) for x in range(500)]
+lines = [LineSegment((300*sin(x)+300,300*cos(x)+300), (-300*sin(x)+300,-300*cos(x)+300)) for x in range(20)]
 #l = LineSegment((200,200), (500,500))
 g = 0
 class MathApp(App):
