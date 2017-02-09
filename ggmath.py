@@ -47,7 +47,7 @@ class LineSegment(_MathVisual):
         self._newAsset(self._start(), self._end(), self._style)
         
     def _newAsset(self, start, end, style):
-        if start != self.oldstart or end != self.oldend:
+        if start != self._oldstart or end != self._oldend:
             self._updateAsset(LineAsset(end[0]-start[0], end[1]-start[1], style))
             self.position = start
 
