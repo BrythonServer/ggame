@@ -22,7 +22,7 @@ class LineSegment(Sprite):
         self.GFX = self.asset.GFX
         self.GFX.visible = True        
         self.position = start
-        LineSegment._add(self)
+        App._add(self)
     
     @property
     def start(self):
