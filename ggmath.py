@@ -8,8 +8,16 @@ from math import sin, cos
 class _MathDynamic(metaclass=ABCMeta):
     
     @abstractmethod
-    def step(self):
+    def step():
         pass
+    
+    @classmethod
+    def Eval(cls, val):
+        if callable(val):
+            return(val)
+        else:
+            return lambda : val  
+            
 
 class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     
@@ -31,10 +39,10 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
 class LineSegment(_MathVisual):
     
     def __init__(self, start, end, style=LineStyle(1, Color(0,1))):
-        self._start = start
-        self._end = end
+        self._start = self.Eval(start)
+        self._end = self.Eval(end)
         self._style = style
-        self._newAsset(self._start, self._end, self._style)
+        self._newAsset(self._start(), self._end(), self._style)
         
     def _newAsset(self, start, end, style):      
         self._updateAsset(LineAsset(end[0]-start[0], end[1]-start[1], style))
@@ -50,8 +58,10 @@ class LineSegment(_MathVisual):
 
     @start.setter
     def start(self, val):
-        self._start = val
-        self._refreshAsset(self._start, self._end, self._style)
+        newval = self.Eval(val)
+        if newval != self._start:
+            self._start = newval
+            self._refreshAsset(self._start(), self._end(), self._style)
 
     @property
     def end(self):
@@ -59,8 +69,10 @@ class LineSegment(_MathVisual):
 
     @end.setter
     def end(self, val):
-        self._end = val
-        self._refreshAsset(self._start, self._end, self._style)
+        newval = self.Eval(val)
+        if newval != self._end:
+            self._end = newval
+            self._refreshAsset(self._start(), self._end(), self._style)
         
     def step(self):
         self.start = (self.start[0]+1, self.start[1])
