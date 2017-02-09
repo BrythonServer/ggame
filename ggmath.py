@@ -47,12 +47,17 @@ class LineSegment(Sprite):
         #self.start = (self.start[0]+1, self.start[1])
 
 l = LineSegment((200,200), (500,500))
+g = 100
 
 class MathApp(App):
     def step(self):
-        for spr in MathApp.getSpritesbyClass(LineSegment):
+        global g
+        g = g + 1
+        #pass
+        l.start = (g, g)
+        #for spr in MathApp.getSpritesbyClass(LineSegment):
             #spr.step()
-            pass
+            #pass
 
 ap = MathApp()
 ap.run()
