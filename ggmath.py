@@ -5,13 +5,10 @@ from math import sin, cos
 
 class LineSegment(Sprite):
     
-    la = LineAsset(0,0, LineStyle(1, Color(0x000000, 1)))
-    
     def __init__(self, start, end, style=LineStyle(1, Color(0,1))):
         self._start = start
         self._end = end
         self._style = style
-        #super().__init__(LineSegment.la, start)
         self._newSegment(self._start, self._end, self._style)
 
     def _newSegment(self, start, end, style):      
@@ -34,7 +31,6 @@ class LineSegment(Sprite):
         self._start = val
         self._refreshSegment(self._start, self._end, self._style)
 
-        
     @property
     def end(self):
         return self._end
