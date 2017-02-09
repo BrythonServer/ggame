@@ -13,12 +13,18 @@ class _MathDynamic(metaclass=ABCMeta):
 
 class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     
+    def _updateAsset(self, asset):
+        self.asset = asset
+        self.GFX = self.asset.GFX
+        self.GFX.visible = True        
+        App._add(self)
+
     @abstractmethod
-    def overridethis(self):
+    def _newAsset():    
         pass
-    
+
     @abstractmethod
-    def step(self):
+    def _refreshAsset():
         pass
 
 
@@ -28,21 +34,15 @@ class LineSegment(_MathVisual):
         self._start = start
         self._end = end
         self._style = style
-        self._newSegment(self._start, self._end, self._style)
+        self._newAsset(self._start, self._end, self._style)
         
-    def _updateAsset(self, asset):
-        self.asset = asset
-        self.GFX = self.asset.GFX
-        self.GFX.visible = True        
-        App._add(self)
-
-    def _newSegment(self, start, end, style):      
+    def _newAsset(self, start, end, style):      
         self._updateAsset(LineAsset(end[0]-start[0], end[1]-start[1], style))
         self.position = start
 
-    def _refreshSegment(self, start, end, style):
+    def _refreshAsset(self, start, end, style):
         App._remove(self)
-        self._newSegment(start, end, style)
+        self._newAsset(start, end, style)
     
     @property
     def start(self):
@@ -65,8 +65,6 @@ class LineSegment(_MathVisual):
     def step(self):
         self.start = (self.start[0]+1, self.start[1])
         
-    def overridethis(self):
-        pass
 
 
 lines = [LineSegment((300*sin(x)+300,300*cos(x)+300), (-300*sin(x)+300,-300*cos(x)+300)) for x in range(50)]
