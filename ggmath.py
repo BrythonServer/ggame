@@ -11,16 +11,15 @@ class LineSegment(Sprite):
         self._style = style
         self._newSegment(self._start, self._end, self._style)
         
-    def _updateAsset(self):
+    def _updateAsset(self, asset):
+        self.asset = asset
         self.GFX = self.asset.GFX
         self.GFX.visible = True        
-        self.position = start
         App._add(self)
 
     def _newSegment(self, start, end, style):      
-        self.asset = LineAsset(end[0]-start[0], end[1]-start[1], style)
-        self._updateAsset()
- 
+        self._updateAsset(LineAsset(end[0]-start[0], end[1]-start[1], style))
+
     def _refreshSegment(self, start, end, style):
         App._remove(self)
         self._newSegment(start, end, style)
