@@ -18,11 +18,9 @@ class LineSegment(Sprite):
         #self.GFX.visible = False
         #self.GFX.destroy()
         print(start, end[0]-start[0], end[1]-start[1])
-        temp = LineAsset(end[0]-start[0], end[1]-start[1], style)
-        temp.GFX.visible = True
-        #self.asset = LineAsset(end[0]-start[0], end[1]-start[1], style)
-        #self.GFX = self.asset.GFX
-        #self.GFX.visible = True        
+        self.asset = LineAsset(end[0]-start[0], end[1]-start[1], style)
+        self.GFX = self.asset.GFX
+        self.GFX.visible = True        
         self.position = start
     
     @property
