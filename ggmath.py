@@ -5,15 +5,24 @@ from abc import ABCMeta, abstractmethod
 
 from math import sin, cos
 
+class _MathDynamic(metaclass=ABCMeta):
+    
+    @abstractmethod
+    def step(self):
+        pass
 
-class _MathObj(Sprite, metaclass=ABCMeta):
+class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     
     @abstractmethod
     def overridethis(self):
         pass
+    
+    @abstractmethod
+    def step(self):
+        pass
 
 
-class LineSegment(_MathObj):
+class LineSegment(_MathVisual):
     
     def __init__(self, start, end, style=LineStyle(1, Color(0,1))):
         self._start = start
