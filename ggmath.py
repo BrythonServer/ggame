@@ -1,9 +1,21 @@
 # ggmath - ggame extensions for geometry and mathematics in the browser
 
 from ggame import Color, LineStyle, LineAsset, Sprite, App
+from abc import ABCMeta, abstractmethod
+
 from math import sin, cos
 
-class LineSegment(Sprite):
+
+class _MathObj(Sprite):
+    
+    __metaclass__ = ABCMeta
+
+    @abstractmethod
+    def overridethis(self):
+        pass
+
+
+class LineSegment(_MathObj):
     
     def __init__(self, start, end, style=LineStyle(1, Color(0,1))):
         self._start = start
