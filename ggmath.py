@@ -17,7 +17,6 @@ class LineSegment(Sprite):
     def _newSegment(self, start, end, style):
         self.GFX.visible = False
         self.GFX.destroy()
-        print(start, end[0]-start[0], end[1]-start[1])
         self.asset = LineAsset(end[0]-start[0], end[1]-start[1], style)
         self.GFX = self.asset.GFX
         self.GFX.visible = True        
@@ -41,24 +40,17 @@ class LineSegment(Sprite):
     @end.setter
     def end(self, val):
         self._end = val
-        self.la = LineAsset(end[0]-start[0], end[1]-start[1], style)
+        self.la = LineAsset(self._start, self._end, style)
         
     def step(self):
-        pass
-        #self.start = (self.start[0]+1, self.start[1])
+        self.start = (self.start[0]+1, self.start[1])
 
 l = LineSegment((200,200), (500,500))
-g = 100
 
 class MathApp(App):
     def step(self):
-        global g
-        g = g + 1
-        #pass
-        if (g < 300):
-            l.start = (g, g)
-        #for spr in MathApp.getSpritesbyClass(LineSegment):
-            #spr.step()
+        for spr in MathApp.getSpritesbyClass(LineSegment):
+            spr.step()
             #pass
 
 ap = MathApp()
