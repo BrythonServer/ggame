@@ -81,7 +81,8 @@ class LineSegment(_MathVisual):
             self._touchAsset()
         
     def step(self):
-        self.start = (self.start[0]+1, self.start[1])
+        pass
+        #self.start = (self.start[0]+1, self.start[1])
         
 
 
