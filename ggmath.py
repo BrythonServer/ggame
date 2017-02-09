@@ -6,10 +6,8 @@ from abc import ABCMeta, abstractmethod
 from math import sin, cos
 
 
-class _MathObj(Sprite):
+class _MathObj(Sprite, metaclass=ABCMeta):
     
-    __metaclass__ = ABCMeta
-
     @abstractmethod
     def overridethis(self):
         pass
