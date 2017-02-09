@@ -11,16 +11,19 @@ class LineSegment(Sprite):
         self._start = start
         self._end = end
         self._style = style
-        super().__init__(LineSegment.la, start)
+        #super().__init__(LineSegment.la, start)
         self._newSegment(self._start, self._end, self._style)
-        
-    def _newSegment(self, start, end, style):
-        App._remove(self)
+
+    def _newSegment(self, start, end, style):      
         self.asset = LineAsset(end[0]-start[0], end[1]-start[1], style)
         self.GFX = self.asset.GFX
         self.GFX.visible = True        
         self.position = start
         App._add(self)
+ 
+    def _refreshSegment(self, start, end, style):
+        App._remove(self)
+        self._newSegment(start, end, style)
     
     @property
     def start(self):
@@ -29,7 +32,7 @@ class LineSegment(Sprite):
     @start.setter
     def start(self, val):
         self._start = val
-        self._newSegment(self._start, self._end, self._style)
+        self._refreshSegment(self._start, self._end, self._style)
 
         
     @property
@@ -39,13 +42,13 @@ class LineSegment(Sprite):
     @end.setter
     def end(self, val):
         self._end = val
-        self.la = LineAsset(self._start, self._end, style)
+        self._refreshSegment(self._start, self._end, self._style)
         
     def step(self):
         self.start = (self.start[0]+1, self.start[1])
 
 
-lines = [LineSegment((300*sin(x)+300,300*cos(x)+300), (-300*sin(x)+300,-300*cos(x)+300)) for x in range(5)]
+lines = [LineSegment((300*sin(x)+300,300*cos(x)+300), (-300*sin(x)+300,-300*cos(x)+300)) for x in range(500)]
 #l = LineSegment((200,200), (500,500))
 g = 0
 class MathApp(App):
