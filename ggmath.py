@@ -42,11 +42,14 @@ class LineSegment(_MathVisual):
         self._start = self.Eval(start)
         self._end = self.Eval(end)
         self._style = style
+        self._oldstart = None
+        self._oldend = None
         self._newAsset(self._start(), self._end(), self._style)
         
-    def _newAsset(self, start, end, style):      
-        self._updateAsset(LineAsset(end[0]-start[0], end[1]-start[1], style))
-        self.position = start
+    def _newAsset(self, start, end, style):
+        if start != self.oldstart or end != self.oldend:
+            self._updateAsset(LineAsset(end[0]-start[0], end[1]-start[1], style))
+            self.position = start
 
     def _refreshAsset(self, start, end, style):
         App._remove(self)
@@ -54,7 +57,7 @@ class LineSegment(_MathVisual):
     
     @property
     def start(self):
-        return self._start
+        return self._start()
 
     @start.setter
     def start(self, val):
@@ -65,7 +68,7 @@ class LineSegment(_MathVisual):
 
     @property
     def end(self):
-        return self._end
+        return self._end()
 
     @end.setter
     def end(self, val):
