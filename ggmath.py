@@ -64,6 +64,9 @@ class LineSegment(_MathVisual):
         
     def step(self):
         self.start = (self.start[0]+1, self.start[1])
+        
+    def overridethis(self):
+        pass
 
 
 lines = [LineSegment((300*sin(x)+300,300*cos(x)+300), (-300*sin(x)+300,-300*cos(x)+300)) for x in range(50)]
