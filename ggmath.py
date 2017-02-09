@@ -1,7 +1,7 @@
 # ggmath - ggame extensions for geometry and mathematics in the browser
 
 from ggame import Color, LineStyle, LineAsset, Sprite, App
-
+from math import sin, cos
 
 class LineSegment(Sprite):
     
@@ -15,8 +15,6 @@ class LineSegment(Sprite):
         self._newSegment(self._start, self._end, self._style)
         
     def _newSegment(self, start, end, style):
-        #self.GFX.visible = False
-        #self.GFX.destroy()
         App._remove(self)
         self.asset = LineAsset(end[0]-start[0], end[1]-start[1], style)
         self.GFX = self.asset.GFX
@@ -46,13 +44,15 @@ class LineSegment(Sprite):
     def step(self):
         self.start = (self.start[0]+1, self.start[1])
 
-l = LineSegment((200,200), (500,500))
+
+lines = [LineSegment((100*sin(x)+100,100*cos(x)+100), (-100*sin(x)+100,-100*cos(x)+100)) for x in range(50)]
+#l = LineSegment((200,200), (500,500))
 
 class MathApp(App):
     def step(self):
         for spr in MathApp.getSpritesbyClass(LineSegment):
-            spr.step()
-            #pass
+            #spr.step()
+            pass
 
 ap = MathApp()
 ap.run()
