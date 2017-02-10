@@ -95,7 +95,8 @@ class MathApp(App):
     def __init__(self):
         super().__init__()
         self.g = 0
-        self.lines = [LineSegment((300*sin(x)+300,lambda x = self.g:300*cos(x)+300), (-300*sin(x)+300,-300*cos(x)+300)) for x in range(10)]
+        f = lambda x = self.g:300*cos(x)+300
+        self.lines = [LineSegment((300*sin(x)+300, f), (-300*sin(x)+300,-300*cos(x)+300)) for x in range(10)]
 
     def step(self):
         self.g = self.g + 1
