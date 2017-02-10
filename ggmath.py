@@ -85,6 +85,7 @@ class LineSegment(_MathVisual):
             self._touchAsset()
         
     def step(self):
+        print("STEP")
         self._touchAsset()
 
 
@@ -98,13 +99,15 @@ class MathApp(App):
         super().__init__()
         
         self.g = 0
-        self.lines = [LineSegment(lambda x=self.g:(300*sin(x)+300, 300*cos(x)+300), (-300*sin(x)+300,-300*cos(x)+300)) for x in range(10)]
+        self.lines = [LineSegment(
+            lambda :(300*sin(self.g)+300, 300*cos(self.g-x/10)+300), 
+            lambda :(-300*sin(self.g+x/10)+300, -300*cos(self.g)+300)) for x in range(10)]
 
     def step(self):
-        for spr in App.getSpritesbyClass():
+        for spr in App.spritelist:
             spr.step()
         
-        self.g = self.g + 1
+        self.g = self.g + 0.1
         if self.g > 60:
             self.g = 0
         
