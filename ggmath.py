@@ -103,9 +103,7 @@ class MathApp(App):
             return 300*cos(self.g)+300
         
         self.g = 0
-        f = lambda :300*cos(self.g)+300
-        #f = 100
-        self.lines = [LineSegment((300*sin(x)+300, f), (-300*sin(x)+300,-300*cos(x)+300)) for x in range(10)]
+        self.lines = [LineSegment(lambda x = self.g:(300*sin(x)+300, 300*cos(x)+300), (-300*sin(x)+300,-300*cos(x)+300)) for x in range(10)]
 
     def step(self):
         self.g = self.g + 1
