@@ -99,16 +99,17 @@ class MathApp(App):
     def __init__(self):
         super().__init__()
         
-        def f():
-            return 300*cos(self.g)+300
-        
         self.g = 0
         self.lines = [LineSegment(lambda x = self.g:(300*sin(x)+300, 300*cos(x)+300), (-300*sin(x)+300,-300*cos(x)+300)) for x in range(10)]
 
     def step(self):
+        for spr in App.getSpritesbyClass(_MathDynamic):
+            spr.step()
+        
         self.g = self.g + 1
         if self.g > 60:
             self.g = 0
+        
 
 ap = MathApp()
 ap.run()
