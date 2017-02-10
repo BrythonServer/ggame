@@ -100,8 +100,8 @@ class MathApp(App):
         
         self.g = 0
         self.lines = [LineSegment(
-            lambda :(300*sin(self.g)+300, 300*cos(self.g-x/10)+300), 
-            lambda :(-300*sin(self.g+x/10)+300, -300*cos(self.g)+300)) for x in range(10)]
+            lambda x=x:(300*sin(self.g)+300, 300*cos(self.g-x/10)+300), 
+            lambda x=x:(-300*sin(self.g+x/10)+300, -300*cos(self.g)+300)) for x in range(10)]
 
     def step(self):
         for spr in App.spritelist:
