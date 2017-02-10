@@ -107,7 +107,7 @@ class MathApp(App):
         for spr in App.spritelist:
             spr.step()
         
-        self.g = self.g + 0.1
+        self.g = self.g + 0.01
         if self.g > 60:
             self.g = 0
         
