@@ -13,9 +13,12 @@ class _MathDynamic(metaclass=ABCMeta):
     
     @classmethod
     def Eval(cls, val):
+        print("ONE")
         if callable(val):
+            print("TWO")
             return(val)
         else:
+            print("THREE")
             return lambda : val  
             
 
@@ -90,12 +93,18 @@ class LineSegment(_MathVisual):
 
 #l = LineSegment((200,200), (500,500))
 
+
 class MathApp(App):
     
     def __init__(self):
         super().__init__()
+        
+        def f():
+            return 300*cos(self.g)+300
+        
         self.g = 0
-        f = lambda x = self.g:300*cos(x)+300
+        f = lambda :300*cos(self.g)+300
+        #f = 100
         self.lines = [LineSegment((300*sin(x)+300, f), (-300*sin(x)+300,-300*cos(x)+300)) for x in range(10)]
 
     def step(self):
