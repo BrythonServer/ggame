@@ -104,7 +104,7 @@ class MathApp(App):
             lambda xx=x:(-300*sin(self.g+xx)+300, -300*cos(self.g)+300)) for x in range(10)]
 
     def step(self):
-        for spr in App.spritelist:
+        for spr in self.lines:
             spr.step()
         
         self.g = self.g + 0.01
