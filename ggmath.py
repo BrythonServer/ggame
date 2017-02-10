@@ -39,7 +39,7 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
 class LineSegment(_MathVisual):
     
     def __init__(self, start, end, style=LineStyle(1, Color(0,1))):
-        self._start = self.Eval(start)
+        self._start = self.Eval(start)  # save function
         self._end = self.Eval(end)
         self._style = style
         self._oldstart = None
@@ -47,7 +47,10 @@ class LineSegment(_MathVisual):
         self._newAsset(self._start(), self._end(), self._style)
         
     def _newAsset(self, start, end, style):
+        # start and end are simple numerics
         if start != self._oldstart or end != self._oldend:
+            self._oldstart = start
+            self._oldend = end
             self._updateAsset(LineAsset(end[0]-start[0], end[1]-start[1], style))
             self.position = start
 
@@ -56,7 +59,7 @@ class LineSegment(_MathVisual):
         self._newAsset(start, end, style)
     
     def _touchAsset(self):
-        self._refreshAsset(self._start, self._end, self._style)
+        self._refreshAsset(self._start(), self._end(), self._style)
     
     @property
     def start(self):
