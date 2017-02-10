@@ -13,12 +13,9 @@ class _MathDynamic(metaclass=ABCMeta):
     
     @classmethod
     def Eval(cls, val):
-        print("ONE")
         if callable(val):
-            print("TWO")
             return(val)
         else:
-            print("THREE")
             return lambda : val  
             
 
