@@ -84,23 +84,23 @@ class LineSegment(_MathVisual):
             self._touchAsset()
         
     def step(self):
-        pass
-        #self.start = (self.start[0]+1, self.start[1])
-        
+        self._touchAsset()
 
 
-lines = [LineSegment((300*sin(x)+300,300*cos(x)+300), (-300*sin(x)+300,-300*cos(x)+300)) for x in range(10)]
+
 #l = LineSegment((200,200), (500,500))
-g = 0
+
 class MathApp(App):
+    
+    def __init__(self):
+        super().__init__()
+        self.g = 0
+        self.lines = [LineSegment((300*sin(x)+300,lambda x = self.g:300*cos(x)+300), (-300*sin(x)+300,-300*cos(x)+300)) for x in range(10)]
+
     def step(self):
-        global g
-        for spr in MathApp.getSpritesbyClass(LineSegment):
-            g = g + 1
-            #spr.step()
-            #spr.start = (300*sin(g)+300,300*cos(g)+300)
-            spr.start = (spr.start[0]+1, spr.start[1])
-            pass
+        self.g = self.g + 1
+        if self.g > 60:
+            self.g = 0
 
 ap = MathApp()
 ap.run()
