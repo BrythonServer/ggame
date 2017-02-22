@@ -45,10 +45,10 @@ class LineSegment(_MathVisual):
         self._start = self.Eval(start)  # save function
         self._end = self.Eval(end)
         self._style = style
-        self._oldstart = None
-        self._oldend = None
-        self._newAsset(self._start(), self._end(), self._style)
-        
+        self._oldstart = start
+        self._oldend = end
+        super().__init__(LineAsset(end[0]-start[0], end[1]-start[1], style), start)
+
     def _newAsset(self, start, end, style):
         # start and end are simple numerics
         if start != self._oldstart or end != self._oldend:
