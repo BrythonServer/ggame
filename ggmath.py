@@ -44,7 +44,7 @@ class Point(_MathVisual):
     def __init__(self, pos, size=5, color=Color(0,1), style=LineStyle(0, Color(0,1))):
         self._pos = self.Eval(pos)  # create a *callable* position function
         self._size = size
-        super().__init__(CircleAsset(size, color, style), self._pos())
+        super().__init__(CircleAsset(size, style, color), self._pos())
 
     def _newAsset():
         pass
