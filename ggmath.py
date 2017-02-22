@@ -46,6 +46,12 @@ class Point(_MathVisual):
         self._size = size
         super().__init__(CircleAsset(size, color, style), self._pos())
 
+    def _newAsset():
+        pass
+    
+    def _refreshAsset():
+        pass
+
 class LineSegment(_MathVisual):
     
     def __init__(self, start, end, style=LineStyle(1, Color(0,1))):
