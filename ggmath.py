@@ -39,6 +39,13 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         pass
 
 
+class Point(_MathVisual):
+    
+    def __init__(self, pos, size=5, color=Color(0,1), style=LineStyle(0, Color(0,1))):
+        self._pos = self.Eval(pos)  # create a *callable* position function
+        self._size = size
+        super().__init__(CircleAsset(size, color, style), self._pos())
+
 class LineSegment(_MathVisual):
     
     def __init__(self, start, end, style=LineStyle(1, Color(0,1))):
@@ -47,7 +54,8 @@ class LineSegment(_MathVisual):
         self._style = style
         self._oldstart = start
         self._oldend = end
-        super().__init__(LineAsset(end[0]-start[0], end[1]-start[1], style), start)
+        super().__init__(LineAsset(self.end[0]-self.start[0], 
+            self.end[1]-self.start[1], style), self._start())
 
     def _newAsset(self, start, end, style):
         # start and end are simple numerics
@@ -60,7 +68,6 @@ class LineSegment(_MathVisual):
     def _refreshAsset(self, start, end, style):
         self._newAsset(start, end, style)
 
-    
     def _touchAsset(self):
         self._refreshAsset(self._start(), self._end(), self._style)
     
@@ -93,6 +100,7 @@ class LineSegment(_MathVisual):
 
 #l = LineSegment((200,200), (500,500))
 
+p = Point(300,300)
 
 class MathApp(App):
     
@@ -102,15 +110,14 @@ class MathApp(App):
         self.g = 0
         self.lines = [LineSegment(
             lambda xx=x:(300*sin(self.g)+300, 300*cos(self.g-xx)+300), 
-            lambda xx=x:(-300*sin(self.g+xx)+300, -300*cos(self.g)+300)) for x in range(10)]
+            lambda xx=x:(-300*sin(self.g+xx)+300, -300*cos(self.g)+300)) for x in range(5)]
 
     def step(self):
-        print("APP STEP")
         for spr in self.lines:
             spr.step()
         
         self.g = self.g + 0.01
-        if self.g > 60:
+        if self.g > 3.14:
             self.g = 0
         
 
