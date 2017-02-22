@@ -109,7 +109,7 @@ class LineSegment(_MathVisual):
 
 #l = LineSegment((200,200), (500,500))
 
-p = Point(300,300)
+p = Point((300,300))
 
 class MathApp(App):
     
