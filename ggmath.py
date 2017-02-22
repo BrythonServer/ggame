@@ -59,7 +59,7 @@ class LineSegment(_MathVisual):
         self._newAsset(start, end, style)
     
     def _touchAsset(self):
-        print(self._start())
+        print(self._start(), self._end())
         self._refreshAsset(self._start(), self._end(), self._style)
     
     @property
