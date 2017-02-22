@@ -1,6 +1,6 @@
 # ggmath - ggame extensions for geometry and mathematics in the browser
 
-from ggame import Color, LineStyle, LineAsset, Sprite, App
+from ggame import Color, LineStyle, LineAsset, CircleAsset, Sprite, App
 from abc import ABCMeta, abstractmethod
 
 from math import sin, cos
@@ -50,6 +50,9 @@ class Point(_MathVisual):
         pass
     
     def _refreshAsset():
+        pass
+
+    def step():
         pass
 
 class LineSegment(_MathVisual):
