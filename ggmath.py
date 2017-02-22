@@ -22,11 +22,14 @@ class _MathDynamic(metaclass=ABCMeta):
 class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     
     def _updateAsset(self, asset):
+        if App._win != None:
+            App._win.remove(self.GFX)
         self.asset = asset
         self.GFX = self.asset.GFX
         self.GFX.visible = True        
-        App._add(self)
-
+        if App._win != None:
+            App._win.add(self.GFX)
+            
     @abstractmethod
     def _newAsset():    
         pass
@@ -55,11 +58,10 @@ class LineSegment(_MathVisual):
             self.position = start
 
     def _refreshAsset(self, start, end, style):
-        App._remove(self)
         self._newAsset(start, end, style)
+
     
     def _touchAsset(self):
-        print(self._start(), self._end())
         self._refreshAsset(self._start(), self._end(), self._style)
     
     @property
@@ -85,7 +87,6 @@ class LineSegment(_MathVisual):
             self._touchAsset()
         
     def step(self):
-        print("STEP")
         self._touchAsset()
 
 
@@ -104,6 +105,7 @@ class MathApp(App):
             lambda xx=x:(-300*sin(self.g+xx)+300, -300*cos(self.g)+300)) for x in range(10)]
 
     def step(self):
+        print("APP STEP")
         for spr in self.lines:
             spr.step()
         
