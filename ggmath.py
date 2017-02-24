@@ -59,6 +59,7 @@ class Point(_MathVisual):
             self._ppos = ppos
             self._updateAsset(CircleAsset(size, style, color))
             self.position = ppos
+            print(ppos)
 
     def _touchAsset(self):
         self._newAsset(self._pos, self._size, self._color, self._style)
@@ -154,7 +155,7 @@ class MathApp(App):
 
         try:
             return (xxform(lp[0], cls._xscale, cls._xcenter, cls._win.width),
-                yxform(lp[0], cls._yscale, cls._ycenter, cls._win.height))
+                yxform(lp[1], cls._yscale, cls._ycenter, cls._win.height))
         except AttributeError:
             return lp
             
