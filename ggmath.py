@@ -142,7 +142,7 @@ class MathApp(App):
     _xcenter = 0    # center of screen in units
     _ycenter = 0    
     _mathVisualList = [] #
-    _stepDynamicList = []
+    _mathDynamicList = []
     
     def __init__(self, scale=(_xscale, _yscale)):
         super().__init__()
