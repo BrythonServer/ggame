@@ -164,11 +164,6 @@ class MathApp(App):
         for obj in self._mathVisualList:
             obj._touchAsset()
 
-        self.g = 0
-        self.lines = [LineSegment(
-            lambda xx=x:(3*sin(self.g), 3*cos(self.g-xx)), 
-            lambda xx=x:(-3*sin(self.g+xx), -3*cos(self.g))) for x in range(5)]
-
     def step(self):
         MathApp.time = time()
         for spr in self._mathDynamicList:
@@ -221,6 +216,13 @@ for i in range(100):
     Point((i/20, -1))
 
 LineSegment(p1,p4)
+[LineSegment(
+            lambda xx=x:(3*sin(t.time), 3*cos(t.time-xx)), 
+            lambda xx=x:(-3*sin(t.time+xx), -3*cos(t.time))) for x in range(5)]
+
+
+
+
 
 ap = MathApp((100,100))
 ap.run()
