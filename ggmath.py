@@ -28,8 +28,8 @@ class _MathDynamic(metaclass=ABCMeta):
 class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     
     def __init__(self, asset, pos):
-        Sprite.__init__(asset, pos)
-        _MathDynamic.__init__()
+        Sprite.__init__(self, asset, pos)
+        _MathDynamic.__init__(self)
     
     def destroy(self):
         super().destroy()
@@ -81,7 +81,7 @@ class Point(_MathVisual):
     def _touchAsset(self):
         self._newAsset(self._pos, self._size, self._color, self._style)
 
-    def step():
+    def step(self):
         self._touchAsset()
 
 class LineSegment(_MathVisual):
@@ -156,7 +156,7 @@ class MathApp(App):
             lambda xx=x:(-3*sin(self.g+xx), -3*cos(self.g))) for x in range(5)]
 
     def step(self):
-        for spr in self.lines:
+        for spr in self._mathDynamicList:
             spr.step()
         
         self.g = self.g + 0.01
@@ -177,7 +177,6 @@ class MathApp(App):
     @classmethod
     def _add(cls, obj):
         if isinstance(obj, _MathDynamic):
-            print("Adding", obj)
             cls._mathDynamicList.append(obj)
             
     @classmethod
