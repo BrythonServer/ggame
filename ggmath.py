@@ -62,7 +62,7 @@ class Point(_MathVisual):
 
     def _touchAsset(self):
         print("touched a point")
-        self._newAsset(self, self._pos, self._size, self._color, self._style)
+        self._newAsset(self._pos, self._size, self._color, self._style)
 
     def step():
         pass
