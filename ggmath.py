@@ -8,7 +8,7 @@ from math import sin, cos
 class _MathDynamic(metaclass=ABCMeta):
     
     def __init__(self):
-        MathApp._addDynamic(self)
+        pass
 
     def destroy(self):
         MathApp._removeDynamic(self)
@@ -19,8 +19,10 @@ class _MathDynamic(metaclass=ABCMeta):
     
     def Eval(self, val):
         if callable(val):
+            MathApp._addDynamic(self) # dynamically defined .. must step
             return val
         else:
+            MathApp._removeDynamic(self) # statically defined .. no need to step
             return lambda : val  
             
 
@@ -188,7 +190,7 @@ class MathApp(App):
 
     @classmethod
     def _addDynamic(cls, obj):
-        if isinstance(obj, _MathDynamic):
+        if isinstance(obj, _MathDynamic) and obj not in _MathDynamic:
             cls._mathDynamicList.append(obj)
             
     @classmethod
