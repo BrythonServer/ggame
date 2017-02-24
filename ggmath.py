@@ -190,7 +190,7 @@ class MathApp(App):
 
     @classmethod
     def _addDynamic(cls, obj):
-        if isinstance(obj, _MathDynamic) and obj not in _MathDynamic:
+        if isinstance(obj, _MathDynamic) and obj not in cls._mathDynamicList:
             cls._mathDynamicList.append(obj)
             
     @classmethod
