@@ -216,7 +216,7 @@ p1 = Point((0,0))
 p2 = Point((2,0))
 p3 = Point((3,0))
 t = Timer()
-p4 = Point(lambda :(3, int(t.time) % 4))
+p4 = Point(lambda :(3, (int(t.time*10) % 40)/10))
 for i in range(100):
     Point((i/20, -1))
 
