@@ -216,7 +216,8 @@ class MathApp(App):
 p1 = Point((0,0))
 p2 = Point((2,0))
 p3 = Point((3,0))
-p4 = Point((3,3))
+t = Timer()
+p4 = Point(lambda :(3, int(t.time) % 4))
 for i in range(100):
     Point((i/20, -1))
 
