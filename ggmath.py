@@ -150,8 +150,8 @@ class MathApp(App):
         
     @classmethod
     def logicalToPhysical(cls, lp):
-        xxform = lambda xvalue, xscale, xcenter, physwidth: (xvalue-xcenter)*xscale + physwidth/2
-        yxform = lambda yvalue, yscale, ycenter, physheight: physheight/2 - (yvalue-ycenter)*yscale
+        xxform = lambda xvalue, xscale, xcenter, physwidth: int((xvalue-xcenter)*xscale + physwidth/2)
+        yxform = lambda yvalue, yscale, ycenter, physheight: int(physheight/2 - (yvalue-ycenter)*yscale)
 
         try:
             return (xxform(lp[0], cls._xscale, cls._xcenter, cls._win.width),
