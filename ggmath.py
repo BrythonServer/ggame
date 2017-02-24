@@ -154,6 +154,7 @@ class MathApp(App):
     _ycenter = 0    
     _mathVisualList = [] #
     _mathDynamicList = []
+    time = time()
     
     def __init__(self, scale=(_xscale, _yscale)):
         super().__init__()
@@ -162,9 +163,7 @@ class MathApp(App):
         # touch all visual object assets to use scaling
         for obj in self._mathVisualList:
             obj._touchAsset()
-        # 
-        MathApp.time = time()
-        
+
         self.g = 0
         self.lines = [LineSegment(
             lambda xx=x:(3*sin(self.g), 3*cos(self.g-xx)), 
