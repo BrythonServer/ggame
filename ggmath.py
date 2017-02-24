@@ -4,12 +4,10 @@ from ggame import Color, LineStyle, LineAsset, CircleAsset, Sprite, App
 from abc import ABCMeta, abstractmethod
 
 from math import sin, cos
+from time import time
 
 class _MathDynamic(metaclass=ABCMeta):
     
-    def __init__(self):
-        pass
-
     def destroy(self):
         MathApp._removeDynamic(self)
 
@@ -58,8 +56,19 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
 
 class Timer(_MathDynamic):
     
-    def step():
-        pass
+    def __init__(self):
+        super().__init__()
+        self.reset()
+        self.step()
+        MathApp._addDynamic(self)  # always dynamically defined
+        
+    def reset(self):
+        self._reset = MathApp.time
+        
+    def step(self):
+        self.time = MathApp.time - self._reset
+        
+    
 
 class Point(_MathVisual):
     
@@ -153,13 +162,16 @@ class MathApp(App):
         # touch all visual object assets to use scaling
         for obj in self._mathVisualList:
             obj._touchAsset()
-            
+        # 
+        MathApp.time = time()
+        
         self.g = 0
         self.lines = [LineSegment(
             lambda xx=x:(3*sin(self.g), 3*cos(self.g-xx)), 
             lambda xx=x:(-3*sin(self.g+xx), -3*cos(self.g))) for x in range(5)]
 
     def step(self):
+        MathApp.time = time()
         for spr in self._mathDynamicList:
             spr.step()
         
