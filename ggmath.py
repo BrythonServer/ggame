@@ -107,10 +107,6 @@ class LineSegment(_MathVisual):
 
 
 
-#l = LineSegment((200,200), (500,500))
-
-p = Point((0,0))
-
 class MathApp(App):
     
     _xscale = 200   # pixels per unit
@@ -151,6 +147,12 @@ class MathApp(App):
             print("failed to transform")
             return lp
             
+
+
+# test code here
+
+p = Point((0,0))
+
 
 ap = MathApp()
 ap.run()
