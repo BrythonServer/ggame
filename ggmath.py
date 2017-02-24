@@ -25,6 +25,10 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         MathApp._add(self)
         super().__init__(asset, pos)
     
+    def destroy(self):
+        super().destroy()
+        MathApp._remove(self)
+    
     def _updateAsset(self, asset):
         if App._win != None:
             App._win.remove(self.GFX)
@@ -127,10 +131,10 @@ class MathApp(App):
     _ycenter = 0    
     _mathVisualList = []
     
-    def __init__(self, xscale=_xscale, yscale=_yscale):
+    def __init__(self, scale=(_xscale, _yscale)):
         super().__init__()
-        MathApp._xscale = xscale   # pixels per unit
-        MathApp._yscale = yscale
+        MathApp._xscale = scale[0]   # pixels per unit
+        MathApp._yscale = scale[1]
         # touch all visual object assets to use scaling
         for obj in self._mathVisualList:
             obj._touchAsset()
@@ -175,7 +179,8 @@ class MathApp(App):
 p = Point((0,0))
 Point((2,0))
 Point((3,0))
+Point((3,3))
 
 
-ap = MathApp()
+ap = MathApp((100,100))
 ap.run()
