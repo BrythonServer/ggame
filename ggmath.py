@@ -120,13 +120,14 @@ class MathApp(App):
     _yscale = 200
     _xcenter = 0    # center of screen in units
     _ycenter = 0    
+    _mathVisualList = []
     
     def __init__(self, xscale=_xscale, yscale=_yscale):
         super().__init__()
         MathApp._xscale = xscale   # pixels per unit
         MathApp._yscale = yscale
         # touch all visual object assets to use scaling
-        for obj in self.getSpritesbyClass(_MathVisual):
+        for obj in self._mathVisualList:
             obj._touchAsset()
             
         self.g = 0
@@ -154,6 +155,17 @@ class MathApp(App):
             print("failed to transform")
             return lp
             
+    @classmethod
+    def _add(cls, obj):
+        super(MathApp, cls)._add(obj)
+        if isinstance(obj, _MathVisual):
+            _mathVisualList.append(obj)
+            
+    @classmethod
+    def _remove(cls, obj):
+        super(MathApp, cls)._remove(obj)
+        if isinstance(obj, _MathVisual):
+            _mathVisualList.remove(obj)
 
 
 # test code here
