@@ -7,6 +7,12 @@ from math import sin, cos
 
 class _MathDynamic(metaclass=ABCMeta):
     
+    def __init__(self, asset, pos):
+        MathApp._add(self)
+
+    def destroy(self):
+        MathApp._remove(self)
+
     @abstractmethod
     def step():
         pass
@@ -22,12 +28,11 @@ class _MathDynamic(metaclass=ABCMeta):
 class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     
     def __init__(self, asset, pos):
-        MathApp._add(self)
         super().__init__(asset, pos)
     
     def destroy(self):
         super().destroy()
-        MathApp._remove(self)
+        #MathApp._remove(self)
     
     def _updateAsset(self, asset):
         if App._win != None:
@@ -42,8 +47,10 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     def _newAsset(self):    
         pass
 
-    @abstractmethod
-    def _touchAsset(self):
+
+class Timer(_MathDynamic):
+    
+    def step():
         pass
 
 class Point(_MathVisual):
@@ -66,11 +73,9 @@ class Point(_MathVisual):
             self._updateAsset(CircleAsset(size, style, color))
             self.position = ppos
 
-    def _touchAsset(self):
-        self._newAsset(self._pos, self._size, self._color, self._style)
-
     def step():
-        self._touchAsset()
+        super().step()
+        self._newAsset(self._pos, self._size, self._color, self._style)
 
 class LineSegment(_MathVisual):
     
@@ -92,9 +97,7 @@ class LineSegment(_MathVisual):
             self._updateAsset(LineAsset(pend[0]-pstart[0], pend[1]-pstart[1], style))
             self.position = pstart
 
-    def _touchAsset(self):
-        self._newAsset(self._start, self._end, self._style)
-    
+
     @property
     def start(self):
         return self._start()
@@ -118,7 +121,8 @@ class LineSegment(_MathVisual):
             self._touchAsset()
         
     def step(self):
-        self._touchAsset()
+        super().step()
+        self._newAsset(self._start, self._end, self._style)
 
 
 
@@ -128,15 +132,15 @@ class MathApp(App):
     _yscale = 200
     _xcenter = 0    # center of screen in units
     _ycenter = 0    
-    _mathVisualList = []
+    _mathDynamicList = []
     
     def __init__(self, scale=(_xscale, _yscale)):
         super().__init__()
         MathApp._xscale = scale[0]   # pixels per unit
         MathApp._yscale = scale[1]
         # touch all visual object assets to use scaling
-        for obj in self._mathVisualList:
-            obj._touchAsset()
+        for obj in self._mathDynamicList:
+            obj.step()
             
         self.g = 0
         self.lines = [LineSegment(
@@ -164,13 +168,13 @@ class MathApp(App):
             
     @classmethod
     def _add(cls, obj):
-        if isinstance(obj, _MathVisual):
-            cls._mathVisualList.append(obj)
+        if isinstance(obj, _MathDynamic):
+            cls._mathDynamicList.append(obj)
             
     @classmethod
     def _remove(cls, obj):
-        if isinstance(obj, _MathVisual):
-            cls._mathVisualList.remove(obj)
+        if isinstance(obj, _MathDynamic):
+            cls._mathDynamicList.remove(obj)
 
 
 # test code here
