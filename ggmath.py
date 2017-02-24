@@ -143,7 +143,7 @@ class MathApp(App):
         try:
             return (xxform(lp[0], cls._xscale, cls._xcenter, cls._win.width),
                 yxform(lp[0], cls._yscale, cls._ycenter, cls._win.height))
-        except TypeError:
+        except AttributeError:
             print("failed to transform")
             return lp
             
