@@ -54,14 +54,13 @@ class Point(_MathVisual):
         super().__init__(CircleAsset(size, style, color), self._ppos)
 
     def _newAsset(self, pos, size, color, style):
-        ppos = MathApp.logicalToPhysical(self._pos())
+        ppos = MathApp.logicalToPhysical(pos())
         if ppos != self._ppos:
             self._ppos = ppos
             self._updateAsset(CircleAsset(size, style, color))
             self.position = ppos
 
     def _touchAsset(self):
-        print("touched a point")
         self._newAsset(self._pos, self._size, self._color, self._style)
 
     def step():
@@ -157,7 +156,6 @@ class MathApp(App):
             return (xxform(lp[0], cls._xscale, cls._xcenter, cls._win.width),
                 yxform(lp[0], cls._yscale, cls._ycenter, cls._win.height))
         except AttributeError:
-            print("failed to transform")
             return lp
             
     @classmethod
@@ -174,6 +172,8 @@ class MathApp(App):
 # test code here
 
 p = Point((0,0))
+Point((2,0))
+Point((3,0))
 
 
 ap = MathApp()
