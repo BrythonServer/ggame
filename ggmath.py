@@ -14,7 +14,7 @@ class _MathDynamic(metaclass=ABCMeta):
     @classmethod
     def Eval(cls, val):
         if callable(val):
-            return(val)
+            return val
         else:
             return lambda : val  
             
@@ -81,6 +81,7 @@ class LineSegment(_MathVisual):
         self._style = style
         self._pstart = MathApp.logicalToPhysical(self._start())
         self._pend = MathApp.logicalToPhysical(self._end())
+        print(self._pstart, self._pend)
         super().__init__(LineAsset(self._pend[0]-self._pstart[0], 
             self._pend[1]-self._pstart[1], style), self._pstart)
 
@@ -141,8 +142,8 @@ class MathApp(App):
             
         self.g = 0
         self.lines = [LineSegment(
-            lambda xx=x:(300*sin(self.g)+300, 300*cos(self.g-xx)+300), 
-            lambda xx=x:(-300*sin(self.g+xx)+300, -300*cos(self.g)+300)) for x in range(5)]
+            lambda xx=x:(3*sin(self.g), 3*cos(self.g-xx)), 
+            lambda xx=x:(-3*sin(self.g+xx), -3*cos(self.g))) for x in range(5)]
 
     def step(self):
         for spr in self.lines:
@@ -176,11 +177,12 @@ class MathApp(App):
 
 # test code here
 
-p = Point((0,0))
-Point((2,0))
-Point((3,0))
-Point((3,3))
+p1 = Point((0,0))
+p2 = Point((2,0))
+p3 = Point((3,0))
+p4 = Point((3,3))
 
+LineSegment(p1,p4)
 
 ap = MathApp((100,100))
 ap.run()
