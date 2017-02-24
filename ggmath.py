@@ -54,8 +54,10 @@ class Point(_MathVisual):
         self._size = size
         self._color = color
         self._style = style
-        print(self._ppos)
         super().__init__(CircleAsset(size, style, color), self._ppos)
+        
+    def __call__(self):
+        return self._pos
 
     def _newAsset(self, pos, size, color, style):
         ppos = MathApp.logicalToPhysical(pos())
@@ -69,7 +71,7 @@ class Point(_MathVisual):
         self._newAsset(self._pos, self._size, self._color, self._style)
 
     def step():
-        pass
+        self._touchAsset()
 
 class LineSegment(_MathVisual):
     
@@ -77,24 +79,22 @@ class LineSegment(_MathVisual):
         self._start = self.Eval(start)  # save function
         self._end = self.Eval(end)
         self._style = style
-        self._oldstart = start
-        self._oldend = end
-        super().__init__(LineAsset(self.end[0]-self.start[0], 
-            self.end[1]-self.start[1], style), self._start())
+        self._pstart = MathApp.logicalToPhysical(self._start())
+        self._pend = MathApp.logicalToPhysical(self._end())
+        super().__init__(LineAsset(self._pend[0]-self._pstart[0], 
+            self._pend[1]-self._pstart[1], style), self._pstart)
 
     def _newAsset(self, start, end, style):
-        # start and end are simple numerics
-        if start != self._oldstart or end != self._oldend:
-            self._oldstart = start
-            self._oldend = end
-            self._updateAsset(LineAsset(end[0]-start[0], end[1]-start[1], style))
-            self.position = start
-
-    def _refreshAsset(self, start, end, style):
-        self._newAsset(start, end, style)
+        pstart = MathApp.logicalToPhysical(start())
+        pend = MathApp.logicalToPhysical(end())
+        if pstart != self._pstart or pend != self._pend:
+            self._pstart = pstart
+            self._pend = pend
+            self._updateAsset(LineAsset(pend[0]-pstart[0], pend[1]-pstart[1], style))
+            self.position = pstart
 
     def _touchAsset(self):
-        self._refreshAsset(self._start(), self._end(), self._style)
+        self._newAsset(self._start, self._end, self._style)
     
     @property
     def start(self):
