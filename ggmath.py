@@ -57,7 +57,7 @@ class Point(_MathVisual):
         super().__init__(CircleAsset(size, style, color), self._ppos)
         
     def __call__(self):
-        return self._pos
+        return self._pos()
 
     def _newAsset(self, pos, size, color, style):
         ppos = MathApp.logicalToPhysical(pos())
@@ -65,7 +65,6 @@ class Point(_MathVisual):
             self._ppos = ppos
             self._updateAsset(CircleAsset(size, style, color))
             self.position = ppos
-            print(ppos)
 
     def _touchAsset(self):
         self._newAsset(self._pos, self._size, self._color, self._style)
@@ -81,7 +80,6 @@ class LineSegment(_MathVisual):
         self._style = style
         self._pstart = MathApp.logicalToPhysical(self._start())
         self._pend = MathApp.logicalToPhysical(self._end())
-        print(self._pstart, self._pend)
         super().__init__(LineAsset(self._pend[0]-self._pstart[0], 
             self._pend[1]-self._pstart[1], style), self._pstart)
 
