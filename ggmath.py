@@ -21,6 +21,10 @@ class _MathDynamic(metaclass=ABCMeta):
 
 class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     
+    def __init__(self, *args, **kwargs):
+        MathApp._add(self)
+        super().__init__(args, kwargs)
+    
     def _updateAsset(self, asset):
         if App._win != None:
             App._win.remove(self.GFX)
@@ -157,13 +161,11 @@ class MathApp(App):
             
     @classmethod
     def _add(cls, obj):
-        super(MathApp, cls)._add(obj)
         if isinstance(obj, _MathVisual):
             _mathVisualList.append(obj)
             
     @classmethod
     def _remove(cls, obj):
-        super(MathApp, cls)._remove(obj)
         if isinstance(obj, _MathVisual):
             _mathVisualList.remove(obj)
 
