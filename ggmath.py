@@ -31,25 +31,25 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
             App._win.add(self.GFX)
             
     @abstractmethod
-    def _newAsset():    
+    def _newAsset(self):    
         pass
 
     @abstractmethod
-    def _refreshAsset():
+    def _touchAsset(self):
         pass
-
 
 class Point(_MathVisual):
     
     def __init__(self, pos, size=5, color=Color(0,1), style=LineStyle(0, Color(0,1))):
         self._pos = self.Eval(pos)  # create a *callable* position function
         self._size = size
-        super().__init__(CircleAsset(size, style, color), self._pos())
+        super().__init__(CircleAsset(size, style, color), 
+            MathApp.logicalToPhysical(self._pos()))
 
-    def _newAsset():
+    def _newAsset(self):
         pass
     
-    def _refreshAsset():
+    def _touchAsset(self):
         pass
 
     def step():
@@ -109,18 +109,23 @@ class LineSegment(_MathVisual):
 
 #l = LineSegment((200,200), (500,500))
 
-p = Point((300,300))
+p = Point((0,0))
 
 class MathApp(App):
     
-    _xscale = 200
+    _xscale = 200   # pixels per unit
     _yscale = 200
+    _xcenter = 0    # center of screen in units
+    _ycenter = 0    
     
-    def __init__(self, xscale=MathApp._xscale, yscale=MathApp._yscale):
+    def __init__(self, xscale=_xscale, yscale=_yscale):
         super().__init__()
         MathApp._xscale = xscale   # pixels per unit
         MathApp._yscale = yscale
-        
+        # touch all visual object assets to use scaling
+        for obj in self.getSpritesbyClass(_MathVisual):
+            obj._touchAsset()
+            
         self.g = 0
         self.lines = [LineSegment(
             lambda xx=x:(300*sin(self.g)+300, 300*cos(self.g-xx)+300), 
@@ -134,6 +139,18 @@ class MathApp(App):
         if self.g > 3.14:
             self.g = 0
         
+    @classmethod
+    def logicalToPhysical(cls, lp):
+        xxform = lambda xvalue, xscale, xcenter, physwidth: (xvalue-xcenter)*xscale + physwidth/2
+        yxform = lambda yvalue, yscale, ycenter, physheight: physheight/2 - (yvalue-ycenter)*yscale
+
+        try:
+            return (xxform(lp[0], cls._xscale, cls._xcenter, cls._win.width),
+                yxform(lp[0], cls._yscale, cls._ycenter, cls._win.height))
+        except TypeError:
+            print("failed to transform")
+            return lp
+            
 
 ap = MathApp()
 ap.run()
