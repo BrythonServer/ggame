@@ -42,15 +42,22 @@ class Point(_MathVisual):
     
     def __init__(self, pos, size=5, color=Color(0,1), style=LineStyle(0, Color(0,1))):
         self._pos = self.Eval(pos)  # create a *callable* position function
+        self._ppos = MathApp.logicalToPhysical(self._pos()) # physical position
         self._size = size
-        super().__init__(CircleAsset(size, style, color), 
-            MathApp.logicalToPhysical(self._pos()))
+        self._color = color
+        self._style = style
+        super().__init__(CircleAsset(size, style, color), self._ppos)
 
-    def _newAsset(self):
-        pass
-    
+    def _newAsset(self, pos, size, color, style):
+        ppos = MathApp.logicalToPhysical(self._pos())
+        if ppos != self._ppos:
+            self._ppos = ppos
+            self._updateAsset(CircleAsset(size, style, color))
+            self.position = ppos
+
     def _touchAsset(self):
-        pass
+        print("touched a point")
+        self._newAsset(self, self._pos, self._size, self._color, self._style)
 
     def step():
         pass
