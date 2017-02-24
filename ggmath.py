@@ -21,9 +21,9 @@ class _MathDynamic(metaclass=ABCMeta):
 
 class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     
-    def __init__(self, *args, **kwargs):
+    def __init__(self, asset, pos):
         MathApp._add(self)
-        super().__init__(args, kwargs)
+        super().__init__(asset, pos)
     
     def _updateAsset(self, asset):
         if App._win != None:
@@ -50,6 +50,7 @@ class Point(_MathVisual):
         self._size = size
         self._color = color
         self._style = style
+        print(self._ppos)
         super().__init__(CircleAsset(size, style, color), self._ppos)
 
     def _newAsset(self, pos, size, color, style):
