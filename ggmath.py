@@ -7,7 +7,7 @@ from math import sin, cos
 
 class _MathDynamic(metaclass=ABCMeta):
     
-    def __init__(self, asset, pos):
+    def __init__(self):
         MathApp._add(self)
 
     def destroy(self):
@@ -28,7 +28,8 @@ class _MathDynamic(metaclass=ABCMeta):
 class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     
     def __init__(self, asset, pos):
-        super().__init__(asset, pos)
+        Sprite.__init__(asset, pos)
+        _MathDynamic.__init__()
     
     def destroy(self):
         super().destroy()
@@ -45,6 +46,10 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
             
     @abstractmethod
     def _newAsset(self):    
+        pass
+
+    @abstractmethod
+    def _touchAsset(self):
         pass
 
 
@@ -73,9 +78,11 @@ class Point(_MathVisual):
             self._updateAsset(CircleAsset(size, style, color))
             self.position = ppos
 
-    def step():
-        super().step()
+    def _touchAsset(self):
         self._newAsset(self._pos, self._size, self._color, self._style)
+
+    def step():
+        self._touchAsset()
 
 class LineSegment(_MathVisual):
     
@@ -97,7 +104,9 @@ class LineSegment(_MathVisual):
             self._updateAsset(LineAsset(pend[0]-pstart[0], pend[1]-pstart[1], style))
             self.position = pstart
 
-
+    def _touchAsset(self):
+        self._newAsset(self._start, self._end, self._style)
+    
     @property
     def start(self):
         return self._start()
@@ -121,8 +130,7 @@ class LineSegment(_MathVisual):
             self._touchAsset()
         
     def step(self):
-        super().step()
-        self._newAsset(self._start, self._end, self._style)
+        self._touchAsset()
 
 
 
@@ -140,7 +148,7 @@ class MathApp(App):
         MathApp._yscale = scale[1]
         # touch all visual object assets to use scaling
         for obj in self._mathDynamicList:
-            obj.step()
+            obj._touchAsset()
             
         self.g = 0
         self.lines = [LineSegment(
@@ -169,6 +177,7 @@ class MathApp(App):
     @classmethod
     def _add(cls, obj):
         if isinstance(obj, _MathDynamic):
+            print("Adding", obj)
             cls._mathDynamicList.append(obj)
             
     @classmethod
