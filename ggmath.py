@@ -162,12 +162,12 @@ class MathApp(App):
     @classmethod
     def _add(cls, obj):
         if isinstance(obj, _MathVisual):
-            _mathVisualList.append(obj)
+            cls._mathVisualList.append(obj)
             
     @classmethod
     def _remove(cls, obj):
         if isinstance(obj, _MathVisual):
-            _mathVisualList.remove(obj)
+            cls._mathVisualList.remove(obj)
 
 
 # test code here
