@@ -113,8 +113,13 @@ p = Point((300,300))
 
 class MathApp(App):
     
-    def __init__(self):
+    _xscale = 200
+    _yscale = 200
+    
+    def __init__(self, xscale=MathApp._xscale, yscale=MathApp._yscale):
         super().__init__()
+        MathApp._xscale = xscale   # pixels per unit
+        MathApp._yscale = yscale
         
         self.g = 0
         self.lines = [LineSegment(
