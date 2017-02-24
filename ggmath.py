@@ -8,10 +8,10 @@ from math import sin, cos
 class _MathDynamic(metaclass=ABCMeta):
     
     def __init__(self):
-        MathApp._add(self)
+        MathApp._addDynamic(self)
 
     def destroy(self):
-        MathApp._remove(self)
+        MathApp._removeDynamic(self)
 
     @abstractmethod
     def step():
@@ -27,13 +27,15 @@ class _MathDynamic(metaclass=ABCMeta):
 class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     
     def __init__(self, asset, pos):
+        MathApp._addVisual(self)
         Sprite.__init__(self, asset, pos)
         _MathDynamic.__init__(self)
     
     def destroy(self):
-        super().destroy()
-        #MathApp._remove(self)
-    
+        MathApp._removeVisual(self)
+        _MathDynamic.destroy(self)
+        Sprite.destroy(self)
+
     def _updateAsset(self, asset):
         if App._win != None:
             App._win.remove(self.GFX)
@@ -175,14 +177,24 @@ class MathApp(App):
             return lp
             
     @classmethod
-    def _add(cls, obj):
+    def _addVisual(cls, obj):
         if isinstance(obj, _MathVisual):
             cls._mathVisualList.append(obj)
             
     @classmethod
-    def _remove(cls, obj):
-        if isinstance(obj, _MathVisual):
+    def _removeVisual(cls, obj):
+        if isinstance(obj, _MathVisual) and obj in cls._mathVisualList:
             cls._mathVisualList.remove(obj)
+
+    @classmethod
+    def _addDynamic(cls, obj):
+        if isinstance(obj, _MathDynamic):
+            cls._mathDynamicList.append(obj)
+            
+    @classmethod
+    def _removeDynamic(cls, obj):
+        if isinstance(obj, _MathDynamic) and obj in cls._mathDynamicList:
+            cls._mathDynamicList.remove(obj)
 
 
 # test code here
