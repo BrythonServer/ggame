@@ -17,8 +17,7 @@ class _MathDynamic(metaclass=ABCMeta):
     def step():
         pass
     
-    @classmethod
-    def Eval(cls, val):
+    def Eval(self, val):
         if callable(val):
             return val
         else:
@@ -140,14 +139,15 @@ class MathApp(App):
     _yscale = 200
     _xcenter = 0    # center of screen in units
     _ycenter = 0    
-    _mathDynamicList = []
+    _mathVisualList = [] #
+    _stepDynamicList = []
     
     def __init__(self, scale=(_xscale, _yscale)):
         super().__init__()
         MathApp._xscale = scale[0]   # pixels per unit
         MathApp._yscale = scale[1]
         # touch all visual object assets to use scaling
-        for obj in self._mathDynamicList:
+        for obj in self._mathVisualList:
             obj._touchAsset()
             
         self.g = 0
@@ -176,13 +176,13 @@ class MathApp(App):
             
     @classmethod
     def _add(cls, obj):
-        if isinstance(obj, _MathDynamic):
-            cls._mathDynamicList.append(obj)
+        if isinstance(obj, _MathVisual):
+            cls._mathVisualList.append(obj)
             
     @classmethod
     def _remove(cls, obj):
-        if isinstance(obj, _MathDynamic):
-            cls._mathDynamicList.remove(obj)
+        if isinstance(obj, _MathVisual):
+            cls._mathVisualList.remove(obj)
 
 
 # test code here
@@ -191,6 +191,8 @@ p1 = Point((0,0))
 p2 = Point((2,0))
 p3 = Point((3,0))
 p4 = Point((3,3))
+for i in range(100):
+    Point((i/20, -1))
 
 LineSegment(p1,p4)
 
