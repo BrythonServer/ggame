@@ -91,16 +91,16 @@ class Label(_MathVisual):
     def step():
         self._touchAsset()
     
-    def _newAsset(self):    
+    def _newAsset(self, pos, text, size, color):    
         if self._positioning != "physical":
-            ppos = MathApp.logicalToPhysical(self._pos())
-        text = self._text()
+            ppos = MathApp.logicalToPhysical(pos())
+        text = text()
         if ppos != self._ppos or text != self._ptext:
             self._ppos = ppos
             self._ptext = text
-            self._updateAsset(TextAsset(self._ptext, 
-                style="{0}px".format(self._size),
-                color=self._color))
+            self._updateAsset(TextAsset(text, 
+                style="{0}px".format(size),
+                color=color))
             self.position = ppos
         
 
