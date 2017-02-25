@@ -71,12 +71,13 @@ class Timer(_MathDynamic):
 
 class Label(_MathVisual):
     
-    def __init__(self, pos, text, positioning="logical", size=10, color=Color(0,1)):
+    def __init__(self, pos, text, positioning="logical", size=10, width=200, color=Color(0,1)):
         self._text = self.Eval(text) # create a *callable* text value function
         self._ptext = self._text()
         self._pos = self.Eval(pos)
         self._positioning = positioning
         self._size = size
+        self._width = width
         self._color = color
         if self._positioning == "physical":
             self._ppos = self._pos()
@@ -85,13 +86,14 @@ class Label(_MathVisual):
             
         super().__init__(TextAsset(self._ptext, 
                 style="{0}px Arial".format(self._size), 
+                width=self._width,
                 color=self._color), 
             self._ppos)
 
     def step():
         self._touchAsset()
     
-    def _newAsset(self, pos, text, size, color):    
+    def _newAsset(self, pos, text, size, width, color):    
         if self._positioning != "physical":
             ppos = MathApp.logicalToPhysical(pos())
         text = text()
@@ -100,12 +102,13 @@ class Label(_MathVisual):
             self._ptext = text
             self._updateAsset(TextAsset(text, 
                 style="{0}px Arial".format(size),
+                width=width,
                 color=color))
             self.position = ppos
         
 
     def _touchAsset(self):
-        self._newAsset(self._pos, self._text, self._size, self._color)
+        self._newAsset(self._pos, self._text, self._size, self._width, self._color)
     
 
 class Point(_MathVisual):
@@ -255,7 +258,7 @@ LineSegment(p1,p4)
             lambda xx=x:(3*sin(t.time), 3*cos(t.time-xx)), 
             lambda xx=x:(-3*sin(t.time+xx), -3*cos(t.time))) for x in range(5)]
 
-l1 = Label((3,-3), "Hello, world!", size=50)
+l1 = Label((3,-3), "Hello, world!", size=20)
 
 
 
