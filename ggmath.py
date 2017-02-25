@@ -258,7 +258,7 @@ LineSegment(p1,p4)
             lambda xx=x:(3*sin(t.time), 3*cos(t.time-xx)), 
             lambda xx=x:(-3*sin(t.time+xx), -3*cos(t.time))) for x in range(5)]
 
-l1 = Label((3,-3), lambda: "{0}".format(t.time), size=20)
+l1 = Label((200,200), lambda: "{0}".format(t.time), size=20, positioning="physical")
 
 
 
