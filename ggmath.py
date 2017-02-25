@@ -1,6 +1,7 @@
 # ggmath - ggame extensions for geometry and mathematics in the browser
 
 from ggame import Color, LineStyle, LineAsset, CircleAsset, Sprite, App
+from ggame import TextAsset
 from abc import ABCMeta, abstractmethod
 
 from math import sin, cos
@@ -20,7 +21,6 @@ class _MathDynamic(metaclass=ABCMeta):
             MathApp._addDynamic(self) # dynamically defined .. must step
             return val
         else:
-            MathApp._removeDynamic(self) # statically defined .. no need to step
             return lambda : val  
             
 
@@ -68,6 +68,43 @@ class Timer(_MathDynamic):
     def step(self):
         self.time = MathApp.time - self._reset
         
+
+class Label(_MathVisual):
+    
+    def __init__(self, pos, text, positioning="logical", size=10, color=Color(0,1)):
+        self._text = self.Eval(text) # create a *callable* text value function
+        self._ptext = self._text()
+        self._pos = self.Eval(pos)
+        self._positioning = positioning
+        self._size = size
+        self._color = color
+        if self._positioning == "physical":
+            self._ppos = self._pos()
+        else:
+            self._ppos = MathApp.logicalToPhysical(self._pos())
+        super().__init__(TextAsset(self._ptext, 
+            style="{0}px".format(self._size), 
+            color=self._color)
+            self._ppos)
+
+    def step():
+        self._touchAsset()
+    
+    def _newAsset(self):    
+        if self._positioning != "physical":
+            ppos = MathApp.logicalToPhysical(self._pos())
+        text = self._text()
+        if ppos != self._ppos or text != self._ptext:
+            self._ppos = ppos
+            self._ptext = text
+            self._updateAsset(TextAsset(self._ptext, 
+                style="{0}px".format(self._size),
+                color=self._color)
+            self.position = ppos
+        
+
+    def _touchAsset(self):
+        self._newAsset(self._pos, self._text, self._size, self._color)
     
 
 class Point(_MathVisual):
