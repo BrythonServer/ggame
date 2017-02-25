@@ -100,7 +100,7 @@ class Label(_MathVisual):
             self._ptext = text
             self._updateAsset(TextAsset(self._ptext, 
                 style="{0}px".format(self._size),
-                color=self._color)
+                color=self._color))
             self.position = ppos
         
 
