@@ -82,9 +82,10 @@ class Label(_MathVisual):
             self._ppos = self._pos()
         else:
             self._ppos = MathApp.logicalToPhysical(self._pos())
+            
         super().__init__(TextAsset(self._ptext, 
-            style="{0}px".format(self._size), 
-            color=self._color)
+                style="{0}px".format(self._size), 
+                color=self._color), 
             self._ppos)
 
     def step():
