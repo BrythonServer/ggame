@@ -306,7 +306,7 @@ class MathApp(App):
             
     @classmethod
     def _removeMovable(cls, obj):
-        if isinstance(obj, _MathMovable) and obj in cls._mathMovableList:
+        if isinstance(obj, _MathVisual) and obj in cls._mathMovableList:
             cls._mathMovableList.remove(obj)
 
 
