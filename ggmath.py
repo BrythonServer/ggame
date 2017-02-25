@@ -9,6 +9,9 @@ from time import time
 
 class _MathDynamic(metaclass=ABCMeta):
     
+    def __init__(self):
+        self._dynamic = False  # not switched on, by default!
+    
     def destroy(self):
         MathApp._removeDynamic(self)
 
@@ -18,10 +21,14 @@ class _MathDynamic(metaclass=ABCMeta):
     
     def Eval(self, val):
         if callable(val):
-            MathApp._addDynamic(self) # dynamically defined .. must step
+            self._setDynamic() # dynamically defined .. must step
             return val
         else:
             return lambda : val  
+            
+    def _setDynamic(self):
+        MathApp._addDynamic(self)
+        self._dynamic = True
             
 
 class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
@@ -30,9 +37,11 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         MathApp._addVisual(self)
         Sprite.__init__(self, asset, pos)
         _MathDynamic.__init__(self)
+        self._movable = False
     
     def destroy(self):
         MathApp._removeVisual(self)
+        MathApp._removeMovable(self)
         _MathDynamic.destroy(self)
         Sprite.destroy(self)
 
@@ -44,6 +53,32 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         self.GFX.visible = True        
         if App._win != None:
             App._win.add(self.GFX)
+            
+    @property
+    def movable(self):
+        return self._movable
+        
+    @movable.setter
+    def movable(self, val):
+        if not self._dynamic:
+            self._setMovable(val)
+
+    def _setMovable(self, val):
+        self._movable = val
+        if val:
+            MathApp._addMovable(self)
+        else:
+            MathApp._removeMovable(self)
+            
+    # define how your class responds to mouse clicks - returns True/False
+    @abstractmethod
+    def physicalPointTouching(self, ppos):
+        pass
+    
+    # define how your class responds to being moved (physical units)
+    @abstractmethod
+    def translate(self, pdisp):
+        pass
             
     @abstractmethod
     def _newAsset(self):    
@@ -90,12 +125,11 @@ class Label(_MathVisual):
                 color=self._color), 
             self._ppos)
 
-    def step(self):
-        self._touchAsset()
-    
     def _newAsset(self, pos, text, size, width, color):    
         if self._positioning != "physical":
             ppos = MathApp.logicalToPhysical(pos())
+        else:
+            ppos = pos()
         text = text()
         if ppos != self._ppos or text != self._ptext:
             self._ppos = ppos
@@ -109,6 +143,16 @@ class Label(_MathVisual):
 
     def _touchAsset(self):
         self._newAsset(self._pos, self._text, self._size, self._width, self._color)
+
+    def step(self):
+        self._touchAsset()
+    
+    def physicalPointTouching(self, ppos):
+        return False
+        
+    def translate(self, pdisp):
+        pass
+
     
 
 class Point(_MathVisual):
@@ -136,6 +180,13 @@ class Point(_MathVisual):
 
     def step(self):
         self._touchAsset()
+
+    def physicalPointTouching(self, ppos):
+        return False
+        
+    def translate(self, pdisp):
+        pass
+
 
 class LineSegment(_MathVisual):
     
@@ -185,6 +236,11 @@ class LineSegment(_MathVisual):
     def step(self):
         self._touchAsset()
 
+    def physicalPointTouching(self, ppos):
+        return False
+        
+    def translate(self, pdisp):
+        pass
 
 
 class MathApp(App):
@@ -195,6 +251,7 @@ class MathApp(App):
     _ycenter = 0    
     _mathVisualList = [] #
     _mathDynamicList = []
+    _mathMovableList = []
     time = time()
     
     def __init__(self, scale=(_xscale, _yscale)):
@@ -242,6 +299,16 @@ class MathApp(App):
         if isinstance(obj, _MathDynamic) and obj in cls._mathDynamicList:
             cls._mathDynamicList.remove(obj)
 
+    @classmethod
+    def _addMovable(cls, obj):
+        if isinstance(obj, _MathVisual) and obj not in cls._mathMovableList:
+            cls._mathMovableList.append(obj)
+            
+    @classmethod
+    def _removeMovable(cls, obj):
+        if isinstance(obj, _MathMovable) and obj in cls._mathMovableList:
+            cls._mathMovableList.remove(obj)
+
 
 # test code here
 
@@ -258,7 +325,7 @@ LineSegment(p1,p4)
             lambda xx=x:(3*sin(t.time), 3*cos(t.time-xx)), 
             lambda xx=x:(-3*sin(t.time+xx), -3*cos(t.time))) for x in range(5)]
 
-l1 = Label((200,200), lambda: "{0}".format(t.time), size=20, positioning="physical")
+l1 = Label((200,200), lambda: "Elapsed Time: {0:.0}".format(t.time), size=20, width=400, positioning="physical")
 
 
 
