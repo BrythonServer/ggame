@@ -13,7 +13,7 @@ class _MathDynamic(metaclass=ABCMeta):
         MathApp._removeDynamic(self)
 
     @abstractmethod
-    def step():
+    def step(self):
         pass
     
     def Eval(self, val):
@@ -90,7 +90,7 @@ class Label(_MathVisual):
                 color=self._color), 
             self._ppos)
 
-    def step():
+    def step(self):
         self._touchAsset()
     
     def _newAsset(self, pos, text, size, width, color):    
