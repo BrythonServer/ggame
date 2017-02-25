@@ -84,7 +84,7 @@ class Label(_MathVisual):
             self._ppos = MathApp.logicalToPhysical(self._pos())
             
         super().__init__(TextAsset(self._ptext, 
-                style="{0}px".format(self._size), 
+                style="{0}px Arial".format(self._size), 
                 color=self._color), 
             self._ppos)
 
@@ -99,7 +99,7 @@ class Label(_MathVisual):
             self._ppos = ppos
             self._ptext = text
             self._updateAsset(TextAsset(text, 
-                style="{0}px".format(size),
+                style="{0}px Arial".format(size),
                 color=color))
             self.position = ppos
         
@@ -255,7 +255,7 @@ LineSegment(p1,p4)
             lambda xx=x:(3*sin(t.time), 3*cos(t.time-xx)), 
             lambda xx=x:(-3*sin(t.time+xx), -3*cos(t.time))) for x in range(5)]
 
-l1 = Label((3,-3), "Hello, world!")
+l1 = Label((3,-3), "Hello, world!", size=50)
 
 
 
