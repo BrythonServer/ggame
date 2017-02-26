@@ -258,6 +258,12 @@ class MathApp(App):
         super().__init__()
         MathApp._xscale = scale[0]   # pixels per unit
         MathApp._yscale = scale[1]
+        # register event callbacks
+        self.listenMouseEvent("click", self.handleMouseClick)
+        self.listenMouseEvent("mousedown", self.handleMouseDown)
+        self.listenMouseEvent("mouseup", self.handleMouseUp)
+        self.listenMouseEvent("mousemove", self.handleMouseMove)
+        self.listenMouseEvent("mousewheel", self.handleMouseWheel)
         # touch all visual object assets to use scaling
         for obj in self._mathVisualList:
             obj._touchAsset()
@@ -278,6 +284,36 @@ class MathApp(App):
                 yxform(lp[1], cls._yscale, cls._ycenter, cls._win.height))
         except AttributeError:
             return lp
+            
+    @classmethod
+    def translatePhysicalToLogical(cls, pp):
+        xxform = lambda xvalue, xscale: xvalue/xscale
+        yxform = lambda yvalue, yscale: yvalue/yscale
+
+        try:
+            return (xxform(lp[0], cls._xscale), yxform(lp[1], cls._yscale))
+        except AttributeError:
+            return lp
+            
+    def handleMouseClick(self, event):
+        pass
+    
+    def handleMouseDown(self, event):
+        for obj in self._mathMovableList:
+            if obj.physicalPointTouching(event.pos):
+                print("touching")
+            else:
+                print("not touching")
+
+    def handleMouseUp(self, event):
+        pass
+    
+    def handleMouseMove(self, event):
+        pass
+    
+    def handleMouseWheel(self, event):
+        pass
+        
             
     @classmethod
     def _addVisual(cls, obj):
