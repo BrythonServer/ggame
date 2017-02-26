@@ -272,6 +272,7 @@ class MathApp(App):
         self.listenMouseEvent("mousewheel", self.handleMouseWheel)
         self.mouseDown = False
         self.mouseCapturedObject = None
+        self.mouseX = self.mouseY = None
         # touch all visual object assets to use scaling
         for obj in self._mathVisualList:
             obj._touchAsset()
@@ -337,9 +338,14 @@ class MathApp(App):
         self.mouseCapturedObject = None
 
     def handleMouseMove(self, event):
+        print(dir(event))
         self._tweakMouseEvent(event)
+        dx = event.x - self.mouseX
+        dy = event.y - self.mouseY
+        self.mouseX = event.x
+        self.mouseY = event.y
         if self.mouseDown and self.mouseCapturedObject:
-            self.mouseCapturedObject.translate((event.x, event.y))
+            self.mouseCapturedObject.translate((dx, dy))
 
     def handleMouseWheel(self, event):
         self._tweakMouseEvent(event)
