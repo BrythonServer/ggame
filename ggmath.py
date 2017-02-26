@@ -315,7 +315,7 @@ class MathApp(App):
     def handleMouseDown(self, event):
         rect = self._win._renderer.view.getBoundingClientRect()
         for obj in self._mathMovableList:
-            if obj.physicalPointTouching((event.x - rect.width, event.y - rect.top)):
+            if obj.physicalPointTouching((event.x - rect.left, event.y - rect.top)):
                 print("touching")
             else:
                 print("not touching")
