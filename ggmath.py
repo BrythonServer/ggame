@@ -46,11 +46,12 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         Sprite.destroy(self)
 
     def _updateAsset(self, asset):
+        visible = self.GFX.visible
         if App._win != None:
             App._win.remove(self.GFX)
         self.asset = asset
         self.GFX = self.asset.GFX
-        self.GFX.visible = True        
+        self.GFX.visible = visible        
         if App._win != None:
             App._win.add(self.GFX)
             
@@ -406,6 +407,9 @@ p2.movable = True
 p3 = Point((3,0))
 t = Timer()
 p4 = Point(lambda :(3, (int(t.time*100) % 400)/100))
+print(p4.visible)
+p4.visible = False
+print(p4.visible)
 
 
 LineSegment(p1,p4)
@@ -413,7 +417,7 @@ LineSegment(p1,p4)
             lambda xx=x:(3*sin(t.time), 3*cos(t.time-xx)), 
             lambda xx=x:(-3*sin(t.time+xx), -3*cos(t.time))) for x in range(5)]
 
-l1 = Label((-4,-4), lambda: "Elapsed Time: {0:.0}".format(t.time), size=20, width=400, positioning="logical")
+l1 = Label((-4,2), lambda: "Elapsed Time: {0:.0}".format(t.time), size=20, width=400, positioning="logical")
 
 
 
