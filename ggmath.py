@@ -182,7 +182,7 @@ class InputNumeric(Label):
             width=200, color=Color(0,1)):
         self._fmt = fmt
         self._val = self.Eval(val)()  # initialize to simple numeric
-        super().__init__(pos, fmt.format(self._val()), positioning=positioning, 
+        super().__init__(pos, fmt.format(self._val), positioning=positioning, 
             size=size, width=width, color=color)
         self.selectable = True
 
