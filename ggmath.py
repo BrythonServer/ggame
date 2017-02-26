@@ -396,7 +396,8 @@ p3 = Point((3,0))
 t = Timer()
 p4 = Point(lambda :(3, (int(t.time*100) % 400)/100))
 for i in range(100):
-    Point((i/20, -1))
+    p = Point((i/20, -1))
+    p.movable = True
 
 LineSegment(p1,p4)
 [LineSegment(
