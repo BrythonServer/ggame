@@ -184,7 +184,6 @@ class Point(_MathVisual):
         self._touchAsset()
 
     def physicalPointTouching(self, ppos):
-        print(ppos, self._ppos,MathApp.distance(ppos, self._ppos), self._size )
         return MathApp.distance(ppos, self._ppos) < self._size
         
     def translate(self, pdisp):
@@ -308,14 +307,19 @@ class MathApp(App):
             return (xxform(pp[0], cls._xscale), yxform(pp[1], cls._yscale))
         except AttributeError:
             return pp
-            
+
+    def _tweakMouseEvent(self, event):
+        rect = self._win._renderer.view.getBoundingClientRect()
+        event.x = event.x - rect.left
+        event.y = event.y - rect.top
+        
     def handleMouseClick(self, event):
         pass
     
     def handleMouseDown(self, event):
-        rect = self._win._renderer.view.getBoundingClientRect()
+        self._tweakMouseEvent(event)
         for obj in self._mathMovableList:
-            if obj.physicalPointTouching((event.x - rect.left, event.y - rect.top)):
+            if obj.physicalPointTouching((event.x, event.y)):
                 print("touching")
             else:
                 print("not touching")
