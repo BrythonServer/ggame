@@ -187,7 +187,9 @@ class Point(_MathVisual):
         return MathApp.distance(ppos, self._ppos) < self._size
         
     def translate(self, pdisp):
-        pass
+        ldisp = MathApp.translatePhysicalToLogical(pdisp)
+        self._pos = self.Eval((self.pos[0] + ldisp[0], self.pos[1] + ldisp[1]))
+        self._touchAsset()
 
 
 class LineSegment(_MathVisual):
@@ -266,6 +268,8 @@ class MathApp(App):
         self.listenMouseEvent("mouseup", self.handleMouseUp)
         self.listenMouseEvent("mousemove", self.handleMouseMove)
         self.listenMouseEvent("mousewheel", self.handleMouseWheel)
+        self.mouseDown = False
+        self.mouseCapturedObject = None
         # touch all visual object assets to use scaling
         for obj in self._mathVisualList:
             obj._touchAsset()
@@ -314,23 +318,29 @@ class MathApp(App):
         event.y = event.y - rect.top
         
     def handleMouseClick(self, event):
+        self._tweakMouseEvent(event)
         pass
     
     def handleMouseDown(self, event):
         self._tweakMouseEvent(event)
+        self.mouseDown = True
         for obj in self._mathMovableList:
             if obj.physicalPointTouching((event.x, event.y)):
-                print("touching")
-            else:
-                print("not touching")
+                self.mouseCapturedObject = obj
+                break
 
     def handleMouseUp(self, event):
-        pass
-    
+        self._tweakMouseEvent(event)
+        self.mouseUp = False
+        self.mouseCapturedObject = None
+
     def handleMouseMove(self, event):
-        pass
-    
+        self._tweakMouseEvent(event)
+        if self.mouseDown and self.mouseCapturedObject:
+            self.mouseCapturedObject.translate((event.x, event.y))
+
     def handleMouseWheel(self, event):
+        self._tweakMouseEvent(event)
         pass
      
     @classmethod   
