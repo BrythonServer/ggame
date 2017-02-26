@@ -211,7 +211,7 @@ class InputNumeric(Label):
             self._touchAsset()
         elif event.key in ['enter','escape']:
             if event.key == 'enter':
-                self._val = float(self._text)
+                self._val = float(self._text())
                 self._updateText()
             else:
                 self._val = self._savedval
