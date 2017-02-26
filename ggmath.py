@@ -41,7 +41,7 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         _MathDynamic.__init__(self)
         self._movable = False
         self._selectable = False
-        self._selected = False
+        self.selected = False
     
     def destroy(self):
         MathApp._removeVisual(self)
@@ -84,13 +84,13 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         else:
             MathApp._removeSelectable(self)
 
-    @property
-    def selected(self):
-        return self._selected
-        
-    @selected.setter
-    def selected(self, val):
-        self._selected = val
+    
+    def select(self):
+        self.selected = True
+
+
+    def unselect(self):
+        self._selected = False
 
     def processEvent(self, event):
         pass
@@ -201,16 +201,12 @@ class InputNumeric(Label):
     def processEvent(self, event):
         pass
 
-    @selected.setter
-    def selected(self, val):
-        self._selected = val
-        if val:
-            self._savedval = self._val
-            self._val = 0  
-        else:
-            self._val = self._savedval
-        self._touchAsset()
-        
+    def select(self):
+        super().select()
+
+    def unselect(self):
+        super().unselect()
+
     def __call__(self):
         return self._val()
 
@@ -381,8 +377,11 @@ class MathApp(App):
     def handleMouseClick(self, event):
         for obj in self._mathSelectableList:
             if obj.physicalPointTouching((event.x, event.y)):
-                obj.selected = not obj.selected
-    
+                if obj.selected: 
+                    obj.unselect()
+                else:
+                    obj.select()
+
     def handleMouseDown(self, event):
         self.mouseDown = True
         for obj in self._mathMovableList:
