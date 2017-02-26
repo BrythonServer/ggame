@@ -182,7 +182,7 @@ class Point(_MathVisual):
         self._touchAsset()
 
     def physicalPointTouching(self, ppos):
-        return MathApp.distance(ppos, self_ppos) < self._size
+        return MathApp.distance(ppos, self._ppos) < self._size
         
     def translate(self, pdisp):
         pass
