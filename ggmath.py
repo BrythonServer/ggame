@@ -313,7 +313,7 @@ class MathApp(App):
         pass
     
     def handleMouseDown(self, event):
-        print(self._win._renderer.view.getBoundingClientRect())
+        print(self._win._renderer.view.getBoundingClientRect().left)
         p = Point(self.physicalToLogical((event.x,event.y)), size=1)
         print(p.width, p.height, p.center)
         
