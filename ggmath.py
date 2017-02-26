@@ -174,6 +174,7 @@ class Point(_MathVisual):
             self._ppos = ppos
             self._updateAsset(CircleAsset(size, style, color))
             self.position = ppos
+            self._setExtents()
 
     def _touchAsset(self):
         self._newAsset(self._pos, self._size, self._color, self._style)
@@ -311,7 +312,8 @@ class MathApp(App):
         pass
     
     def handleMouseDown(self, event):
-        Point(self.physicalToLogical((event.x,event.y)), size=1)
+        p = Point(self.physicalToLogical((event.x,event.y)), size=1)
+        print(p.width, p.height, p.center)
         
         for obj in self._mathMovableList:
             if obj.physicalPointTouching((event.x, event.y)):
