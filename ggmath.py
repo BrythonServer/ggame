@@ -318,17 +318,10 @@ class MathApp(App):
         except AttributeError:
             return pp
 
-    def _tweakMouseEvent(self, event):
-        rect = self._win._renderer.view.getBoundingClientRect()
-        event.x = event.x - rect.left
-        event.y = event.y - rect.top
-        
     def handleMouseClick(self, event):
-        self._tweakMouseEvent(event)
         pass
     
     def handleMouseDown(self, event):
-        self._tweakMouseEvent(event)
         self.mouseDown = True
         for obj in self._mathMovableList:
             if obj.physicalPointTouching((event.x, event.y)):
@@ -336,12 +329,10 @@ class MathApp(App):
                 break
 
     def handleMouseUp(self, event):
-        self._tweakMouseEvent(event)
         self.mouseDown = False
         self.mouseCapturedObject = None
 
     def handleMouseMove(self, event):
-        self._tweakMouseEvent(event)
         if not self.mouseX:
             self.mouseX = event.x
             self.mouseY = event.y
@@ -360,7 +351,6 @@ class MathApp(App):
                         
 
     def handleMouseWheel(self, event):
-        self._tweakMouseEvent(event)
         pass
      
     @classmethod   
