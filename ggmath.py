@@ -199,12 +199,16 @@ class InputNumeric(Label):
         self._text = self.Eval(self._fmt.format(self._val))
 
     def processEvent(self, event):
-        print(dir(event))
+        if event.key in ['-0123456789.']:
+            self._val = float(str(event._val) + event.key)
+            self._touchAsset()
+            
 
     def select(self):
         super().select()
         self._savedval = self._val
         self._val = 0
+        self._edittext = '0'
         self._updateText()
         self._touchAsset()
         MathApp.listenKeyEvent("keypress", "*", self.processEvent)
