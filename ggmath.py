@@ -338,7 +338,6 @@ class MathApp(App):
         self.mouseCapturedObject = None
 
     def handleMouseMove(self, event):
-        print(dir(event))
         self._tweakMouseEvent(event)
         dx = event.x - self.mouseX
         dy = event.y - self.mouseY
