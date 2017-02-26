@@ -41,7 +41,7 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         _MathDynamic.__init__(self)
         self._movable = False
         self._selectable = False
-        self.selected = False
+        self._selected = False
     
     def destroy(self):
         MathApp._removeVisual(self)
@@ -84,6 +84,13 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         else:
             MathApp._removeSelectable(self)
 
+    @property
+    def selected(self):
+        return self._selected
+        
+    @selected.setter
+    def selected(self, val):
+        self._selected = val
 
     def processEvent(self, event):
         pass
@@ -182,13 +189,28 @@ class InputNumeric(Label):
             width=200, color=Color(0,1)):
         self._fmt = fmt
         self._val = self.Eval(val)()  # initialize to simple numeric
-        super().__init__(pos, fmt.format(self._val), positioning=positioning, 
+        self._savedval = self._val
+        self._updateText()
+        super().__init__(pos, self._text, positioning=positioning, 
             size=size, width=width, color=color)
         self.selectable = True
+
+    def _updateText(self):
+        self._text = self._fmt.format(self._val)
 
     def processEvent(self, event):
         pass
 
+    @selected.setter
+    def selected(self, val):
+        self._selected = val
+        if val:
+            self._savedval = self._val
+            self._val = 0  
+        else:
+            self._val = self._savedval
+        self._touchAsset()
+        
     def __call__(self):
         return self._val()
 
@@ -455,7 +477,7 @@ LineSegment(p1,p4)
             lambda xx=x:(-3*sin(t.time+xx), -3*cos(t.time))) for x in range(5)]
 
 l1 = Label((-4,2), lambda: "Elapsed Time: {0:.0}".format(t.time), size=20, width=400, positioning="logical")
-i1 = InputNumeric((-4,0), 99.9)
+i1 = InputNumeric((-4,0), 99.9, size=20)
 
 
 ap = MathApp((100,100))
