@@ -205,11 +205,13 @@ class InputNumeric(Label):
         super().select()
         self._savedval = self._val
         self._val = 0
+        self._updateText()
         self._touchAsset()
 
     def unselect(self):
         super().unselect()
         self._val = self._savedval
+        self._updateText()
         self._touchAsset()
 
     def __call__(self):
