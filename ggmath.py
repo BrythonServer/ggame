@@ -199,6 +199,7 @@ class InputNumeric(Label):
         self._text = self.Eval(self._fmt.format(self._val))
 
     def processEvent(self, event):
+        print(event.key)
         if event.key in "0123456789insertdelete":
             key = event.key
             if event.key == 'insert':
@@ -212,6 +213,7 @@ class InputNumeric(Label):
         elif event.key in ['enter','escape']:
             if event.key == 'enter':
                 self._val = float(self._text())
+                self._savedval = self._val
                 self._updateText()
             else:
                 self._val = self._savedval
@@ -356,6 +358,7 @@ class MathApp(App):
         self.mouseCapturedObject = None
         self.mouseX = self.mouseY = None
         self._touchAllVisuals()
+        self.selectedObj = None
 
     def step(self):
         MathApp.time = time()
@@ -403,10 +406,11 @@ class MathApp(App):
     def handleMouseClick(self, event):
         for obj in self._mathSelectableList:
             if obj.physicalPointTouching((event.x, event.y)):
-                if obj.selected: 
-                    obj.unselect()
-                else:
+                if not obj.selected: 
                     obj.select()
+                    self.selectedObj = obj
+            elif self.selectedObj:
+                self.selectedObj.unselect()
 
     def handleMouseDown(self, event):
         self.mouseDown = True
