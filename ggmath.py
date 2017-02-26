@@ -407,9 +407,6 @@ p2.movable = True
 p3 = Point((3,0))
 t = Timer()
 p4 = Point(lambda :(3, (int(t.time*100) % 400)/100))
-print(p4.visible)
-p4.visible = False
-print(p4.visible)
 
 
 LineSegment(p1,p4)
