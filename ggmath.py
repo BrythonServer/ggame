@@ -199,7 +199,7 @@ class InputNumeric(Label):
         self._text = self.Eval(self._fmt.format(self._val))
 
     def processEvent(self, event):
-        if event.key in ['-0123456789.']:
+        if event.key in "-0123456789.":
             self._val = float(str(event._val) + event.key)
             self._updateText()
             self._touchAsset()
