@@ -7,6 +7,8 @@ from abc import ABCMeta, abstractmethod
 from math import sin, cos, sqrt
 from time import time
 
+
+
 class _MathDynamic(metaclass=ABCMeta):
     
     def __init__(self):
@@ -38,6 +40,8 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         Sprite.__init__(self, asset, pos)
         _MathDynamic.__init__(self)
         self._movable = False
+        self._selectable = False
+        self.selected = False
     
     def destroy(self):
         MathApp._removeVisual(self)
@@ -62,15 +66,28 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     @movable.setter
     def movable(self, val):
         if not self._dynamic:
-            self._setMovable(val)
+            self._movable = val
+            if val:
+                MathApp._addMovable(self)
+            else:
+                MathApp._removeMovable(self)
 
-    def _setMovable(self, val):
-        self._movable = val
+    @property
+    def selectable(self):
+        return self._selectable
+        
+    @selectable.setter
+    def selectable(self, val):
+        self._selectable = val
         if val:
-            MathApp._addMovable(self)
+            MathApp._addSelectable(self)
         else:
-            MathApp._removeMovable(self)
-            
+            MathApp._removeSelectable(self)
+
+
+    def processEvent(self, event):
+        pass
+
     # define how your class responds to mouse clicks - returns True/False
     @abstractmethod
     def physicalPointTouching(self, ppos):
@@ -88,7 +105,6 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     @abstractmethod
     def _touchAsset(self):
         pass
-
 
 class Timer(_MathDynamic):
     
@@ -141,6 +157,8 @@ class Label(_MathVisual):
                 color=color))
             self.position = ppos
         
+    def __call__(self):
+        return self._text()
 
     def _touchAsset(self):
         self._newAsset(self._pos, self._text, self._size, self._width, self._color)
@@ -149,12 +167,31 @@ class Label(_MathVisual):
         self._touchAsset()
     
     def physicalPointTouching(self, ppos):
-        return False
-        
+        return (ppos[0] >= self._ppos[0] and 
+            ppos[0] <= self._ppos[0] + self._width and
+            ppos[1] >= self._ppos[1] and 
+            ppos[1] <= self._ppos[1] + self._size)
+
     def translate(self, pdisp):
         pass
 
-    
+
+class InputNumeric(Label):
+
+    def __init__(self, pos, val, fmt="{0.2}", positioning="logical", size=10, 
+            width=200, color=Color(0,1)):
+        self._fmt = fmt
+        self._val = self.Eval(val)()  # initialize to simple numeric
+        super().__init__(pos, fmt.format(self._val()), positioning=positioning, 
+            size=size, width=width, color=color)
+        self.selectable = True
+
+    def processEvent(self, event):
+        pass
+
+    def __call__(self):
+        return self._val()
+
 
 class Point(_MathVisual):
     
@@ -258,6 +295,7 @@ class MathApp(App):
     _mathVisualList = [] #
     _mathDynamicList = []
     _mathMovableList = []
+    _mathSelectableList = []
     time = time()
     
     def __init__(self, scale=(_xscale, _yscale)):
@@ -319,7 +357,9 @@ class MathApp(App):
             return pp
 
     def handleMouseClick(self, event):
-        pass
+        for obj in self._mathSelectableList:
+            if obj.physicalPointTouching((event.x, event.y)):
+                obj.selected = not obj.selected
     
     def handleMouseDown(self, event):
         self.mouseDown = True
@@ -386,6 +426,16 @@ class MathApp(App):
     def _removeMovable(cls, obj):
         if isinstance(obj, _MathVisual) and obj in cls._mathMovableList:
             cls._mathMovableList.remove(obj)
+
+    @classmethod
+    def _addSelectable(cls, obj):
+        if isinstance(obj, _MathVisual) and obj not in cls._mathSelectableList:
+            cls._mathSelectableList.append(obj)
+            
+    @classmethod
+    def _removeSelectable(cls, obj):
+        if isinstance(obj, _MathVisual) and obj in cls._mathSelectableList:
+            cls._mathSelectableList.remove(obj)
 
 
 # test code here
