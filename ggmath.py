@@ -188,7 +188,10 @@ class Point(_MathVisual):
         
     def translate(self, pdisp):
         ldisp = MathApp.translatePhysicalToLogical(pdisp)
-        self._pos = self.Eval((self.pos[0] + ldisp[0], self.pos[1] + ldisp[1]))
+        pos = self._pos()
+        print("before: ", pos)
+        self._pos = self.Eval((pos[0] + ldisp[0], pos[1] + ldisp[1]))
+        print("after: ", self._pos())
         self._touchAsset()
 
 
