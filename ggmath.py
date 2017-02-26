@@ -199,7 +199,7 @@ class InputNumeric(Label):
         self._text = self.Eval(self._fmt.format(self._val))
 
     def processEvent(self, event):
-        pass
+        print(dir(event))
 
     def select(self):
         super().select()
