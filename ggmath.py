@@ -182,7 +182,7 @@ class Point(_MathVisual):
         self._touchAsset()
 
     def physicalPointTouching(self, ppos):
-        return False
+        return MathApp.distance(ppos, self_ppos) < self._size
         
     def translate(self, pdisp):
         pass
@@ -299,9 +299,8 @@ class MathApp(App):
         pass
     
     def handleMouseDown(self, event):
-        print("mouse down")
         for obj in self._mathMovableList:
-            if obj.physicalPointTouching(event.pos):
+            if obj.physicalPointTouching((event.x, event.y)):
                 print("touching")
             else:
                 print("not touching")
@@ -314,7 +313,10 @@ class MathApp(App):
     
     def handleMouseWheel(self, event):
         pass
-        
+     
+    @classmethod   
+    def distance(cls, pos1, pos2):
+        return math.sqrt((pos2[0]-pos1[0])**2 + (pos2[1]-pos1[1])**2)
             
     @classmethod
     def _addVisual(cls, obj):
