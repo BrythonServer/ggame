@@ -1039,9 +1039,10 @@ class MouseEvent(_Event):
             self.wheelDelta = hwevent.deltaY
         else:
             self.wheelDelta = 0
-        self.x = hwevent.clientX
+        rect = App._win._renderer.view.getBoundingClientRect()
+        self.x = hwevent.clientX - rect.left
         """The window x-coordinate of the mouse pointer when the event occurred."""
-        self.y = hwevent.clientY
+        self.y = hwevent.clientY - rect.top
         """The window y-coordinate of the mouse pointer when the event occurred."""
 
 
@@ -1249,9 +1250,6 @@ class App(object):
     def _mouseEvent(self, hwevent):
         evtlist = App._eventdict.get(hwevent.type, [])
         if len(evtlist) > 0:
-            rect = App._win._renderer.view.getBoundingClientRect()
-            hwevent.clientX = hwevent.clientX - rect.left
-            hwevent.clientY = hwevent.clientY - rect.top
             evt = MouseEvent(hwevent)
             self._routeEvent(evt, evtlist)
 
