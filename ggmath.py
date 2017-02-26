@@ -507,7 +507,7 @@ LineSegment(p1,p4)
 
 l1 = Label((-4,2), lambda: "Elapsed Time: {0:.0}".format(t.time), size=20, width=400, positioning="logical")
 i1 = InputNumeric((200,300), 99.9, size=20, positioning="physical")
-
+l2 = Label((-4,1), lambda: "{0}".format(i1()), size=20)
 
 ap = MathApp((100,100))
 ap.run()
