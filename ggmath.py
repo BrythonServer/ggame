@@ -308,7 +308,7 @@ class MathApp(App):
     @classmethod
     def translatePhysicalToLogical(cls, pp):
         xxform = lambda xvalue, xscale: xvalue/xscale
-        yxform = lambda yvalue, yscale: yvalue/yscale
+        yxform = lambda yvalue, yscale: -yvalue/yscale
 
         try:
             return (xxform(pp[0], cls._xscale), yxform(pp[1], cls._yscale))
