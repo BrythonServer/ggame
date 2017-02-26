@@ -1249,6 +1249,9 @@ class App(object):
     def _mouseEvent(self, hwevent):
         evtlist = App._eventdict.get(hwevent.type, [])
         if len(evtlist) > 0:
+            rect = App._win._renderer.view.getBoundingClientRect()
+            hwevent.x = hwevent.x - rect.left
+            hwevent.y = hwevent.y - rect.top
             evt = MouseEvent(hwevent)
             self._routeEvent(evt, evtlist)
 
