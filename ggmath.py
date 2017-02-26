@@ -199,8 +199,16 @@ class InputNumeric(Label):
         self._text = self.Eval(self._fmt.format(self._val))
 
     def processEvent(self, event):
-        if event.key in "-0123456789.":
-            self._text = self.Eval(self._text() + event.key)
+        print(event.key)
+        if event.key in "0123456789insertdelete":
+            key = event.key
+            if event.key == 'insert':
+                key = '-'
+            elif event.key == 'delete':
+                key = '.'
+            if self._text() == "0":
+                self._text = self.Eval("")
+            self._text = self.Eval(self._text() + key)
             self._touchAsset()
             
 
