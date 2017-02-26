@@ -90,7 +90,7 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
 
 
     def unselect(self):
-        self._selected = False
+        self.selected = False
 
     def processEvent(self, event):
         pass
@@ -207,12 +207,14 @@ class InputNumeric(Label):
         self._val = 0
         self._updateText()
         self._touchAsset()
+        print("select")
 
     def unselect(self):
         super().unselect()
         self._val = self._savedval
         self._updateText()
         self._touchAsset()
+        print("unselect")
 
     def __call__(self):
         return self._val()
