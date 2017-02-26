@@ -288,8 +288,8 @@ class MathApp(App):
             
     @classmethod
     def physicalToLogical(cls, pp):
-        xxform = lambda xvalue, xscale, xcenter, physwidth: (xvalue - physwidth/2)/xscale + xcenter)
-        yxform = lambda yvalue, yscale, ycenter, physheight: (physheight/2 - yvalue)/xscale + xcenter)
+        xxform = lambda xvalue, xscale, xcenter, physwidth: (xvalue - physwidth/2)/xscale + xcenter
+        yxform = lambda yvalue, yscale, ycenter, physheight: (physheight/2 - yvalue)/yscale + ycenter
 
         try:
             return (xxform(pp[0], cls._xscale, cls._xcenter, cls._win.width),
