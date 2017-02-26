@@ -1250,8 +1250,8 @@ class App(object):
         evtlist = App._eventdict.get(hwevent.type, [])
         if len(evtlist) > 0:
             rect = App._win._renderer.view.getBoundingClientRect()
-            hwevent.x = hwevent.x - rect.left
-            hwevent.y = hwevent.y - rect.top
+            hwevent.clientX = hwevent.clientX - rect.left
+            hwevent.clientY = hwevent.clientY - rect.top
             evt = MouseEvent(hwevent)
             self._routeEvent(evt, evtlist)
 
