@@ -196,7 +196,7 @@ class InputNumeric(Label):
         self.selectable = True
 
     def _updateText(self):
-        self._text = self._fmt.format(self._val)
+        self._text = self.Eval(self._fmt.format(self._val))
 
     def processEvent(self, event):
         pass
