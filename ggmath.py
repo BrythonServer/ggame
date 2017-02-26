@@ -272,14 +272,17 @@ class MathApp(App):
         self.mouseDown = False
         self.mouseCapturedObject = None
         self.mouseX = self.mouseY = None
-        # touch all visual object assets to use scaling
-        for obj in self._mathVisualList:
-            obj._touchAsset()
+        self._touchAllVisuals()
 
     def step(self):
         MathApp.time = time()
         for spr in self._mathDynamicList:
             spr.step()
+        
+    def _touchAllVisuals(self):
+        # touch all visual object assets to use scaling
+        for obj in self._mathVisualList:
+            obj._touchAsset()
         
 
     @classmethod
@@ -333,7 +336,7 @@ class MathApp(App):
 
     def handleMouseUp(self, event):
         self._tweakMouseEvent(event)
-        self.mouseUp = False
+        self.mouseDown = False
         self.mouseCapturedObject = None
 
     def handleMouseMove(self, event):
@@ -345,8 +348,15 @@ class MathApp(App):
         dy = event.y - self.mouseY
         self.mouseX = event.x
         self.mouseY = event.y
-        if self.mouseDown and self.mouseCapturedObject:
-            self.mouseCapturedObject.translate((dx, dy))
+        if self.mouseDown:
+            if self.mouseCapturedObject:
+                self.mouseCapturedObject.translate((dx, dy))
+            else:
+                lmove = self.translatePhysicalToLogical((dx, dy))
+                MathApp._xcenter -= lmove[0]
+                MathApp._ycenter -= lmove[1]
+                self._touchAllVisuals()
+                        
 
     def handleMouseWheel(self, event):
         self._tweakMouseEvent(event)
@@ -390,6 +400,7 @@ class MathApp(App):
 # test code here
 
 p1 = Point((0,0))
+p1.movable = True
 p2 = Point((2,0))
 p2.movable = True
 p3 = Point((3,0))
