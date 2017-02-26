@@ -207,12 +207,14 @@ class InputNumeric(Label):
         self._val = 0
         self._updateText()
         self._touchAsset()
+        MathApp.listenKeyEvent("keypress", "*", self.processEvent)
 
     def unselect(self):
         super().unselect()
         self._val = self._savedval
         self._updateText()
         self._touchAsset()
+        MathApp.unlistenKeyEvent("keypress", "*", self.processEvent)
 
     def __call__(self):
         return self._val()
