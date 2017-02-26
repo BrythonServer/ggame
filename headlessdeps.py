@@ -56,13 +56,21 @@ if module_exists('PIL'):
     def removeChild(self, obj):
       self.things.remove(obj)
 
+  class getBoundingClientRect(object):
+    left = 0
+    right = 0
+  
+  class renderView(object):
+    def getBoundingClientRect(self):
+      return getBoundingClientRect()
+
   class _Renderer(object):
     
     def __init__(self, x, y, argsdict):
       self.x = x
       self.y = y
       self.argsdict = argsdict
-      self.view = 'view'
+      self.view = renderView()
       print("Rendering created with {}x{} area".format(x, y))
 
     def render(self, stage):
