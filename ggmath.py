@@ -299,6 +299,7 @@ class MathApp(App):
         pass
     
     def handleMouseDown(self, event):
+        print("mouse down")
         for obj in self._mathMovableList:
             if obj.physicalPointTouching(event.pos):
                 print("touching")
