@@ -212,7 +212,10 @@ class InputNumeric(Label):
             self._touchAsset()
         elif event.key in ['enter','escape']:
             if event.key == 'enter':
-                self._val = float(self._text())
+                try:
+                    self._val = float(self._text())
+                except ValueError:
+                    self._val = self._savedval
                 self._savedval = self._val
                 self._updateText()
             else:
@@ -236,7 +239,7 @@ class InputNumeric(Label):
         MathApp.unlistenKeyEvent("keypress", "*", self.processEvent)
 
     def __call__(self):
-        return self._val()
+        return self._val
 
 
 class Point(_MathVisual):
