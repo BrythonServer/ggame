@@ -164,6 +164,7 @@ class Point(_MathVisual):
         self._color = color
         self._style = style
         super().__init__(CircleAsset(size, style, color), self._ppos)
+        self.center = (0.5, 0.5)
         
     def __call__(self):
         return self._pos()
@@ -312,6 +313,7 @@ class MathApp(App):
         pass
     
     def handleMouseDown(self, event):
+        print(self._win._renderer.view.getBoundingClientRect())
         p = Point(self.physicalToLogical((event.x,event.y)), size=1)
         print(p.width, p.height, p.center)
         
