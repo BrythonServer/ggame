@@ -4,7 +4,7 @@ from ggame import Color, LineStyle, LineAsset, CircleAsset, Sprite, App
 from ggame import TextAsset
 from abc import ABCMeta, abstractmethod
 
-from math import sin, cos
+from math import sin, cos, sqrt
 from time import time
 
 class _MathDynamic(metaclass=ABCMeta):
@@ -182,6 +182,7 @@ class Point(_MathVisual):
         self._touchAsset()
 
     def physicalPointTouching(self, ppos):
+        print(ppos, self._ppos,MathApp.distance(ppos, self._ppos), self._size )
         return MathApp.distance(ppos, self._ppos) < self._size
         
     def translate(self, pdisp):
@@ -286,19 +287,32 @@ class MathApp(App):
             return lp
             
     @classmethod
+    def physicalToLogical(cls, pp):
+        xxform = lambda xvalue, xscale, xcenter, physwidth: (xvalue - physwidth/2)/xscale + xcenter)
+        yxform = lambda yvalue, yscale, ycenter, physheight: (physheight/2 - yvalue)/xscale + xcenter)
+
+        try:
+            return (xxform(pp[0], cls._xscale, cls._xcenter, cls._win.width),
+                yxform(pp[1], cls._yscale, cls._ycenter, cls._win.height))
+        except AttributeError:
+            return pp
+            
+    @classmethod
     def translatePhysicalToLogical(cls, pp):
         xxform = lambda xvalue, xscale: xvalue/xscale
         yxform = lambda yvalue, yscale: yvalue/yscale
 
         try:
-            return (xxform(lp[0], cls._xscale), yxform(lp[1], cls._yscale))
+            return (xxform(pp[0], cls._xscale), yxform(pp[1], cls._yscale))
         except AttributeError:
-            return lp
+            return pp
             
     def handleMouseClick(self, event):
         pass
     
     def handleMouseDown(self, event):
+        Point(self.physicalToLogical((event.x,event.y)), size=1)
+        
         for obj in self._mathMovableList:
             if obj.physicalPointTouching((event.x, event.y)):
                 print("touching")
@@ -316,7 +330,7 @@ class MathApp(App):
      
     @classmethod   
     def distance(cls, pos1, pos2):
-        return math.sqrt((pos2[0]-pos1[0])**2 + (pos2[1]-pos1[1])**2)
+        return sqrt((pos2[0]-pos1[0])**2 + (pos2[1]-pos1[1])**2)
             
     @classmethod
     def _addVisual(cls, obj):
