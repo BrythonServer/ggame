@@ -455,7 +455,7 @@ LineSegment(p1,p4)
             lambda xx=x:(-3*sin(t.time+xx), -3*cos(t.time))) for x in range(5)]
 
 l1 = Label((-4,2), lambda: "Elapsed Time: {0:.0}".format(t.time), size=20, width=400, positioning="logical")
-
+i1 = InputNumeric((-4,0), 99.9)
 
 
 ap = MathApp((100,100))
