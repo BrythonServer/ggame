@@ -339,6 +339,9 @@ class MathApp(App):
 
     def handleMouseMove(self, event):
         self._tweakMouseEvent(event)
+        if not self.mouseX:
+            self.mouseX = event.x
+            self.mouseY = event.y
         dx = event.x - self.mouseX
         dy = event.y - self.mouseY
         self.mouseX = event.x
