@@ -183,6 +183,24 @@ class Label(_MathVisual):
         pass
 
 
+class InputButton(Label):
+    
+    def __init__(self, pos, text, callback, positioning="logical", 
+            size=10, width=200, color=Color(0,1)):
+        self._callback = callback
+        super().__init__(pos, text, positioning=positioning,
+            size=size, width=width, color=color)
+        self.selectable = True
+
+    def select(self):
+        super().select()
+        self._callback()
+        self.unselect()
+
+    def unselect(self):
+        super().unselect()
+
+        
 class InputNumeric(Label):
 
     def __init__(self, pos, val, fmt="{0.2}", positioning="logical", size=10, 
@@ -511,6 +529,7 @@ if __name__ == "__main__":
     l1 = Label((-4,2), lambda: "Elapsed Time: {0:.0}".format(t.time), size=20, width=400, positioning="logical")
     i1 = InputNumeric((200,300), 99.9, size=20, positioning="physical")
     l2 = Label((-4,1), lambda: "{0}".format(i1()), size=20)
+    b1 = InputButton((200,350), "PRESS", lambda: print("clicked"), size=20, positioning="physical")
     
     ap = MathApp((100,100))
     ap.run()
