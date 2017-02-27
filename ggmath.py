@@ -522,10 +522,7 @@ if __name__ == "__main__":
     
     
     LineSegment(p1,p4)
-    [LineSegment(
-                lambda xx=x:(3*sin(t.time), 3*cos(t.time-xx)), 
-                lambda xx=x:(-3*sin(t.time+xx), -3*cos(t.time))) for x in range(5)]
-    
+
     l1 = Label((-4,2), lambda: "Elapsed Time: {0:.0}".format(t.time), size=20, width=400, positioning="logical")
     i1 = InputNumeric((200,300), 99.9, size=20, positioning="physical")
     l2 = Label((-4,1), lambda: "{0}".format(i1()), size=20)
