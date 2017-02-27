@@ -199,7 +199,6 @@ class InputNumeric(Label):
         self._text = self.Eval(self._fmt.format(self._val))
 
     def processEvent(self, event):
-        print(event.key)
         if event.key in "0123456789insertdelete":
             key = event.key
             if event.key == 'insert':
@@ -414,6 +413,7 @@ class MathApp(App):
                     self.selectedObj = obj
             elif self.selectedObj:
                 self.selectedObj.unselect()
+                self.selectedObj = None
 
     def handleMouseDown(self, event):
         self.mouseDown = True
