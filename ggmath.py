@@ -232,7 +232,10 @@ class InputNumeric(Label):
         self._val = self._savedval
         self._updateText()
         self._touchAsset()
-        MathApp.unlistenKeyEvent("keypress", "*", self.processEvent)
+        try:
+            MathApp.unlistenKeyEvent("keypress", "*", self.processEvent)
+        except ValueError:
+            pass
 
     def __call__(self):
         return self._val
