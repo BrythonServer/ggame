@@ -424,14 +424,16 @@ class MathApp(App):
             return pp
 
     def handleMouseClick(self, event):
+        found = False
         for obj in self._mathSelectableList:
             if obj.physicalPointTouching((event.x, event.y)):
+                found = True
                 if not obj.selected: 
                     obj.select()
                     self.selectedObj = obj
-            elif self.selectedObj:
-                self.selectedObj.unselect()
-                self.selectedObj = None
+        if not found and self.selectedObj:
+            self.selectedObj.unselect()
+            self.selectedObj = None
 
     def handleMouseDown(self, event):
         self.mouseDown = True
