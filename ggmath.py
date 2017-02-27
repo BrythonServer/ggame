@@ -216,10 +216,7 @@ class InputNumeric(Label):
                 except ValueError:
                     self._val = self._savedval
                 self._savedval = self._val
-                self._updateText()
-            else:
-                self._val = self._savedval
-                self._updateText()
+            self.unselect()
             
 
     def select(self):
