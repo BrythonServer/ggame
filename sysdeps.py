@@ -20,6 +20,7 @@ if module_exists('browser') and module_exists('javascript'):
         GFX_Sprite = GFX.Sprite.new
         GFX_Graphics = GFX.Graphics.new()
         GFX_Text = GFX.Text.new
+        GFX_NewStage = GFX.Container
         SND = window.buzz
         SND_Sound = SND.sound.new
     else:
@@ -30,6 +31,7 @@ if module_exists('browser') and module_exists('javascript'):
         GFX_Sprite = JSConstructor(GFX.Sprite)
         GFX_Graphics = JSConstructor(GFX.Graphics)()
         GFX_Text = JSConstructor(GFX.Text)
+        GFX_NewStage = JSConstructor(GFX.Container)
         SND = JSObject(window.buzz)
         SND_Sound = JSConstructor(SND.sound)
     GFX_DetectRenderer = GFX.autoDetectRenderer 
@@ -38,7 +40,7 @@ if module_exists('browser') and module_exists('javascript'):
         
         def __init__(self, width, height, onclose):
             self._w = window.open("", "")
-            self._stage = JSConstructor(GFX.Container)()
+            self._stage = GFX.NewStage()
             self.width = width if width != 0 else int(window.innerWidth * 0.9)
             self.height = height if height != 0 else int(window.innerHeight * 0.9)
             self._renderer = GFX.autoDetectRenderer(self.width, self.height, {'transparent':True, 'antialias':True})
