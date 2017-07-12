@@ -45,17 +45,19 @@ if module_exists('browser') and module_exists('javascript'):
                 window.graphicsmode()
                 w, h = canvas.width, canvas.height
                 options = {'transparent':True, 'antialias':True, 'view':canvas}
+                attachpoint = window.document.getElementById('ggame-canvas')
                 print("width, height: ", w, h)
             else:
                 self._w = window.open("", "")
                 w, h = self._w.innerWidth * 0.9, self._w.innerHeight * 0.9
                 options = {'transparent':True, 'antialias':True}
+                attachpoint = self._w.document.body
             GFX.utils._saidHello = True; # ugly hack to block pixi banner
             self._stage = GFX_NewStage()
             self.width = width if width != 0 else int(w)
             self.height = height if height != 0 else int(h)
             self._renderer = GFX.autoDetectRenderer(self.width, self.height, options)
-            self._w.document.body.appendChild(self._renderer.view)
+            attachpoint.appendChild(self._renderer.view)
             self._w.onunload = onclose
       
         def bind(self, evtspec, callback):
