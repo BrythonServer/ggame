@@ -44,19 +44,17 @@ if module_exists('browser') and module_exists('javascript'):
                 print("1")
                 self._w = window
                 w, h = canvas.innerwidth, canvas.innerheight
+                options = {'transparent':True, 'antialias':True, 'view':canvas}
             else:
                 print("2")
                 self._w = window.open("", "")
                 w, h = self._w.innerWidth * 0.9, self._w.innerHeight * 0.9
-                canvas = self._w.document.body
+                options = {'transparent':True, 'antialias':True}
             GFX.utils._saidHello = True; # ugly hack to block pixi banner
             self._stage = GFX_NewStage()
             self.width = width if width != 0 else int(w)
             self.height = height if height != 0 else int(h)
-            self._renderer = GFX.autoDetectRenderer(self.width, self.height, 
-                                                    {'transparent':True, 'antialias':True})
-            #self._renderer = GFX.autoDetectRenderer(self.width, self.height, 
-            #                                       {'transparent':True, 'antialias':True, 'view':canvas})
+            self._renderer = GFX.autoDetectRenderer(self.width, self.height, options)
             self._w.document.body.appendChild(self._renderer.view)
             self._w.onunload = onclose
       
