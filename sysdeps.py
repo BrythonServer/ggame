@@ -39,7 +39,7 @@ if module_exists('browser') and module_exists('javascript'):
     class GFX_Window(object):
         
         def __init__(self, width, height, onclose):
-            canvas = window.document.getElementById('ggame-canvas')
+            canvas = window.document.getElementById('graphics-column')
             if canvas:
                 self._w = window
                 window.graphicsmode()
