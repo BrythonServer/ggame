@@ -43,7 +43,7 @@ if module_exists('browser') and module_exists('javascript'):
             if canvas:
                 print("1")
                 self._w = window
-                w, h = canvas.innerwidth, canvas.innerheight
+                w, h = canvas.width, canvas.height
                 options = {'transparent':True, 'antialias':True, 'view':canvas}
             else:
                 print("2")
