@@ -39,7 +39,6 @@ if module_exists('browser') and module_exists('javascript'):
     class GFX_Window(object):
         
         def __init__(self, width, height, onclose):
-            window.alert("New Window")
             self._w = window.open("", "")
             GFX.utils._saidHello = True; # ugly hack to block pixi banner
             self._stage = GFX_NewStage()
