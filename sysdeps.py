@@ -39,12 +39,20 @@ if module_exists('browser') and module_exists('javascript'):
     class GFX_Window(object):
         
         def __init__(self, width, height, onclose):
-            self._w = window.open("", "")
+            canvas = window.document.getElementById('game-canvas')
+            if canvas:
+                self._w = window
+                w, h = canvas.innerwidth, canvas.innerheight
+            else:
+                self._w = window.open("", "")
+                w, h = self._w.innerWidth * 0.9, self._w.innerHeight * 0.9
+                canvas = self._w
             GFX.utils._saidHello = True; # ugly hack to block pixi banner
             self._stage = GFX_NewStage()
-            self.width = width if width != 0 else int(window.innerWidth * 0.9)
-            self.height = height if height != 0 else int(window.innerHeight * 0.9)
-            self._renderer = GFX.autoDetectRenderer(self.width, self.height, {'transparent':True, 'antialias':True})
+            self.width = width if width != 0 else int(w)
+            self.height = height if height != 0 else int(h)
+            self._renderer = GFX.autoDetectRenderer(self.width, self.height, 
+                                                    {'transparent':True, 'antialias':True, 'view':canvas})
             self._w.document.body.appendChild(self._renderer.view)
             self._w.onunload = onclose
       
