@@ -1368,7 +1368,7 @@ class App(object):
         self.userfunc = userfunc
         App._win.animate(self._animate)
 
-app = App(100,100)
+app = App()
 red = Color(0xff0000, 1.0)
 line = LineStyle(0, red)
 rect = RectangleAsset(75, 25, line, red)
