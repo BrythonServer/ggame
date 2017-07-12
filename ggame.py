@@ -1370,7 +1370,7 @@ class App(object):
 
 app = App(100,100)
 red = Color(0xff0000, 1.0)
-line = Linestyle(0, red)
+line = LineStyle(0, red)
 rect = RectangleAsset(75, 25, line, red)
 spr = Sprite(rect, (0,0))
 app.run()
