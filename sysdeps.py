@@ -20,7 +20,7 @@ if module_exists('browser') and module_exists('javascript'):
         GFX_Sprite = GFX.Sprite.new
         GFX_Graphics = GFX.Graphics.new()
         GFX_Text = GFX.Text.new
-        GFX_NewStage = GFX.Container
+        GFX_NewStage = GFX.Container.new
         SND = window.buzz
         SND_Sound = SND.sound.new
     else:
