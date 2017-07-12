@@ -46,7 +46,7 @@ if module_exists('browser') and module_exists('javascript'):
             else:
                 self._w = window.open("", "")
                 w, h = self._w.innerWidth * 0.9, self._w.innerHeight * 0.9
-                canvas = self._w
+                canvas = self._w.document.body
             GFX.utils._saidHello = True; # ugly hack to block pixi banner
             self._stage = GFX_NewStage()
             self.width = width if width != 0 else int(w)
