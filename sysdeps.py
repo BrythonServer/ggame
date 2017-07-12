@@ -41,9 +41,11 @@ if module_exists('browser') and module_exists('javascript'):
         def __init__(self, width, height, onclose):
             canvas = window.document.getElementById('game-canvas')
             if canvas:
+                print("1")
                 self._w = window
                 w, h = canvas.innerwidth, canvas.innerheight
             else:
+                print("2")
                 self._w = window.open("", "")
                 w, h = self._w.innerWidth * 0.9, self._w.innerHeight * 0.9
                 canvas = self._w.document.body
@@ -53,6 +55,8 @@ if module_exists('browser') and module_exists('javascript'):
             self.height = height if height != 0 else int(h)
             self._renderer = GFX.autoDetectRenderer(self.width, self.height, 
                                                     {'transparent':True, 'antialias':True, 'view':canvas})
+            #self._renderer = GFX.autoDetectRenderer(self.width, self.height, 
+            #                                       {'transparent':True, 'antialias':True, 'view':canvas})
             self._w.document.body.appendChild(self._renderer.view)
             self._w.onunload = onclose
       
