@@ -39,13 +39,13 @@ if module_exists('browser') and module_exists('javascript'):
     class GFX_Window(object):
         
         def __init__(self, width, height, onclose):
-            canvas = window.document.getElementById('graphics-column')
+            canvas = window.document.getElementById('ggame-canvas')
             if canvas:
                 self._w = window
                 window.graphicsmode()
                 w, h = canvas.width, canvas.height
                 options = {'transparent':True, 'antialias':True, 'view':canvas}
-                attachpoint = window.document.getElementById('ggame-canvas')
+                attachpoint = window.document.getElementById('graphics-column')
                 print("width, height: ", w, h)
             else:
                 self._w = window.open("", "")
