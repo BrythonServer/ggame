@@ -41,12 +41,11 @@ if module_exists('browser') and module_exists('javascript'):
         def __init__(self, width, height, onclose):
             canvas = window.document.getElementById('ggame-canvas')
             if canvas:
-                print("1")
                 self._w = window
                 w, h = canvas.width, canvas.height
                 options = {'transparent':True, 'antialias':True, 'view':canvas}
+                print("width, height: ", w, h)
             else:
-                print("2")
                 self._w = window.open("", "")
                 w, h = self._w.innerWidth * 0.9, self._w.innerHeight * 0.9
                 options = {'transparent':True, 'antialias':True}
