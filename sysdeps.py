@@ -54,7 +54,7 @@ if module_exists('browser') and module_exists('javascript'):
             self.width = width if width != 0 else int(w)
             self.height = height if height != 0 else int(h)
             self._renderer = GFX.autoDetectRenderer(self.width, self.height, 
-                                                    {'transparent':True, 'antialias':True, 'view':canvas})
+                                                    {'transparent':True, 'antialias':True})
             #self._renderer = GFX.autoDetectRenderer(self.width, self.height, 
             #                                       {'transparent':True, 'antialias':True, 'view':canvas})
             self._w.document.body.appendChild(self._renderer.view)
