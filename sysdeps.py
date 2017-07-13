@@ -42,7 +42,7 @@ if module_exists('browser') and module_exists('javascript'):
             canvas = window.document.getElementById('ggame-canvas')
             if canvas:
                 self._w = window
-                window.graphicsmode()
+                window.bsUI.graphicsmode()
                 options = {'transparent':True, 'antialias':True, 'view':canvas}
                 attachpoint = window.document.getElementById('graphics-column')
                 w, h = attachpoint.clientWidth, attachpoint.clientHeight
