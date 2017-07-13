@@ -61,6 +61,7 @@ if module_exists('browser') and module_exists('javascript'):
             self._w.onunload = onclose
       
         def bind(self, evtspec, callback):
+            self._w.document.body.unbind(evtspec) # in case already bound
             self._w.document.body.bind(evtspec, callback)
 
         def unbind(self, evtspec):
