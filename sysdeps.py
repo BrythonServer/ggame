@@ -43,9 +43,9 @@ if module_exists('browser') and module_exists('javascript'):
             if canvas:
                 self._w = window
                 window.graphicsmode()
-                w, h = canvas.width, canvas.height
                 options = {'transparent':True, 'antialias':True, 'view':canvas}
                 attachpoint = window.document.getElementById('graphics-column')
+                w, h = attachpoint.clientWidth, attachpoint.clientHeight
                 print("width, height: ", w, h)
             else:
                 self._w = window.open("", "")
