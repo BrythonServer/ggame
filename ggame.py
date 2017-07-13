@@ -1210,7 +1210,6 @@ class App(object):
         no size parameters at all (e.g. `myapp = App()`), in which case, the full browser
         window size is used.
         """
-        print("Entering App constructor. _win= ", App._win)
         if App._win == None and (len(args) == 0 or len(args) == 2):
             x = y = 0
             if len(args) == 2:
@@ -1241,7 +1240,6 @@ class App(object):
                 callback(event)
         
     def _keyEvent(self, hwevent):
-        print("App._eventdict: ", App._eventdict)
         evtlist = App._eventdict.get(
             (hwevent.type, KeyEvent.keys.get(hwevent.keyCode,0)), [])
         evtlist.extend(App._eventdict.get((hwevent.type, '*'), []))
@@ -1287,9 +1285,7 @@ class App(object):
         sprites and place the `App` class in a state in which a new 
         application could be instantiated.
         """ 
-        print("entering destroy")
         if App._win:
-            print("_win.destroy")
             App._win.unbind(KeyEvent.keydown)
             App._win.unbind(KeyEvent.keyup)
             App._win.unbind(KeyEvent.keypress)
