@@ -1386,11 +1386,15 @@ def test(event):
     x = input("Enter something")
     print(x)
 
+def testm(event):
+    print('squeek!')
+
 app = App()
 red = Color(0xff0000, 1.0)
 line = LineStyle(0, red)
 rect = RectangleAsset(75, 25, line, red)
 spr = Sprite(rect, (0,0))
 app.listenKeyEvent('keydown', 'e', test)
+app.listenMouseEvent('mousedown', testm)
 app.run()
 
