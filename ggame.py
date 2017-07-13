@@ -1374,7 +1374,7 @@ def test(event):
     x = input("Enter something")
     print(x)
 
-app = App(1000,100)
+app = App()
 red = Color(0xff0000, 1.0)
 line = LineStyle(0, red)
 rect = RectangleAsset(75, 25, line, red)
