@@ -46,7 +46,6 @@ if module_exists('browser') and module_exists('javascript'):
                 options = {'transparent':True, 'antialias':True, 'view':canvas}
                 attachpoint = window.document.getElementById('graphics-column')
                 w, h = attachpoint.clientWidth, attachpoint.clientHeight
-                print("width, height: ", w, h)
             else:
                 self._w = window.open("", "")
                 w, h = self._w.innerWidth * 0.9, self._w.innerHeight * 0.9
