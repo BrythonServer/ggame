@@ -1210,6 +1210,7 @@ class App(object):
         no size parameters at all (e.g. `myapp = App()`), in which case, the full browser
         window size is used.
         """
+        print("Entering App constructor. _win= ", App._win)
         if App._win == None and (len(args) == 0 or len(args) == 2):
             x = y = 0
             if len(args) == 2:
