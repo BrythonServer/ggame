@@ -27,7 +27,7 @@ The ggame library is intended to be trivially easy to use. For example:
 
 ## Overview
 
-There are three major components to the `ggame` system: Assets, Sprites and the App.
+There are three major components to the `ggame` system: Assets, Sprites and the App.e
 
 ### Assets
 
@@ -1289,6 +1289,15 @@ class App(object):
         print("entering destroy")
         if App._win:
             print("_win.destroy")
+            App._win.unbind(KeyEvent.keydown)
+            App._win.unbind(KeyEvent.keyup)
+            App._win.unbind(KeyEvent.keypress)
+            App._win.unbind(MouseEvent.mousewheel)
+            App._win.unbind(MouseEvent.mousemove)
+            App._win.unbind(MouseEvent.mousedown)
+            App._win.unbind(MouseEvent.mouseup)
+            App._win.unbind(MouseEvent.click)
+            App._win.unbind(MouseEvent.dblclick)
             App._win.destroy()
         App._win = None
         for s in list(App.spritelist):
