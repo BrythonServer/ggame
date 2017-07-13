@@ -1368,10 +1368,17 @@ class App(object):
         self.userfunc = userfunc
         App._win.animate(self._animate)
 
-app = App()
+
+def test(event):
+    print("BOOM")
+    x = input("Enter something")
+    print(x)
+
+app = App(1000,100)
 red = Color(0xff0000, 1.0)
 line = LineStyle(0, red)
 rect = RectangleAsset(75, 25, line, red)
 spr = Sprite(rect, (0,0))
+app.listenKeyEvent('keydown', 'e', test)
 app.run()
 
