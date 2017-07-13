@@ -1240,6 +1240,7 @@ class App(object):
                 callback(event)
         
     def _keyEvent(self, hwevent):
+        print("App._eventdict: ", App._eventdict)
         evtlist = App._eventdict.get(
             (hwevent.type, KeyEvent.keys.get(hwevent.keyCode,0)), [])
         evtlist.extend(App._eventdict.get((hwevent.type, '*'), []))
@@ -1285,7 +1286,9 @@ class App(object):
         sprites and place the `App` class in a state in which a new 
         application could be instantiated.
         """ 
+        print("entering destroy")
         if App._win:
+            print("_win.destroy")
             App._win.destroy()
         App._win = None
         for s in list(App.spritelist):
