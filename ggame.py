@@ -1283,7 +1283,8 @@ class App(object):
         sprites and place the `App` class in a state in which a new 
         application could be instantiated.
         """ 
-        App._win.destroy()
+        if App._win:
+            App._win.destroy()
         App._win = None
         for s in list(App.spritelist):
             s.destroy()
