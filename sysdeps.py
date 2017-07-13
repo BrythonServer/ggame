@@ -61,10 +61,10 @@ if module_exists('browser') and module_exists('javascript'):
             self._w.onunload = onclose
       
         def bind(self, evtspec, callback):
-            self._w.document.body.on(evtspec, callback)
+            self._w.document.body.bind(evtspec, callback)
 
         def unbind(self, evtspec):
-            self._w.document.body.off(evtspec)
+            self._w.document.body.unbind(evtspec)
           
         def add(self, obj):
             self._stage.addChild(obj)
