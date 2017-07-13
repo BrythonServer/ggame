@@ -1246,12 +1246,14 @@ class App(object):
         if len(evtlist) > 0:
             evt = KeyEvent(hwevent)
             self._routeEvent(evt, evtlist)
+        return False
 
     def _mouseEvent(self, hwevent):
         evtlist = App._eventdict.get(hwevent.type, [])
         if len(evtlist) > 0:
             evt = MouseEvent(hwevent)
             self._routeEvent(evt, evtlist)
+        return False
 
     @classmethod
     def _add(cls, obj):
