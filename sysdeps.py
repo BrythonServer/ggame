@@ -20,7 +20,7 @@ if module_exists('browser') and module_exists('javascript'):
         GFX_Sprite = GFX.Sprite.new
         GFX_Graphics = GFX.Graphics.new()
         GFX_Text = GFX.Text.new
-        GFX_NewStage = GFX.Container
+        GFX_NewStage = GFX.Container.new
         SND = window.buzz
         SND_Sound = SND.sound.new
     else:
@@ -39,17 +39,32 @@ if module_exists('browser') and module_exists('javascript'):
     class GFX_Window(object):
         
         def __init__(self, width, height, onclose):
-            self._w = window.open("", "")
+            canvas = window.document.getElementById('ggame-canvas')
+            if canvas:
+                self._w = window
+                window.bsUI.graphicsmode()
+                options = {'transparent':True, 'antialias':True, 'view':canvas}
+                attachpoint = window.document.getElementById('graphics-column')
+                w, h = attachpoint.clientWidth, attachpoint.clientHeight
+            else:
+                self._w = window.open("", "")
+                w, h = self._w.innerWidth * 0.9, self._w.innerHeight * 0.9
+                options = {'transparent':True, 'antialias':True}
+                attachpoint = self._w.document.body
             GFX.utils._saidHello = True; # ugly hack to block pixi banner
-            self._stage = GFX.NewStage()
-            self.width = width if width != 0 else int(window.innerWidth * 0.9)
-            self.height = height if height != 0 else int(window.innerHeight * 0.9)
-            self._renderer = GFX.autoDetectRenderer(self.width, self.height, {'transparent':True, 'antialias':True})
-            self._w.document.body.appendChild(self._renderer.view)
+            self._stage = GFX_NewStage()
+            self.width = width if width != 0 else int(w)
+            self.height = height if height != 0 else int(h)
+            self._renderer = GFX.autoDetectRenderer(self.width, self.height, options)
+            attachpoint.appendChild(self._renderer.view)
             self._w.onunload = onclose
       
         def bind(self, evtspec, callback):
+            self._w.document.body.unbind(evtspec) # in case already bound
             self._w.document.body.bind(evtspec, callback)
+
+        def unbind(self, evtspec):
+            self._w.document.body.unbind(evtspec)
           
         def add(self, obj):
             self._stage.addChild(obj)

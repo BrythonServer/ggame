@@ -21,6 +21,9 @@ if module_exists('PIL'):
     def bind(self, evt, action):
       self.events[evt] = action
       print("Binding {} to {}".format(evt, action))
+        
+    def unbind(self, evt):
+      print("Unbinding {}".format(evt))
 
   class _document(object):
     
@@ -414,6 +417,9 @@ if module_exists('PIL'):
   
     def bind(self, evtspec, callback):
       self._w.document.body.bind(evtspec, callback)
+
+    def unbind(self, evtspec):
+      self._w.document.body.unbind(evtspec)         
       
     def add(self, obj):
       self._stage.addChild(obj)

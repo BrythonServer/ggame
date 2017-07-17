@@ -27,7 +27,7 @@ The ggame library is intended to be trivially easy to use. For example:
 
 ## Overview
 
-There are three major components to the `ggame` system: Assets, Sprites and the App.
+There are three major components to the `ggame` system: Assets, Sprites and the App.e
 
 ### Assets
 
@@ -1246,12 +1246,14 @@ class App(object):
         if len(evtlist) > 0:
             evt = KeyEvent(hwevent)
             self._routeEvent(evt, evtlist)
+        return False
 
     def _mouseEvent(self, hwevent):
         evtlist = App._eventdict.get(hwevent.type, [])
         if len(evtlist) > 0:
             evt = MouseEvent(hwevent)
             self._routeEvent(evt, evtlist)
+        return False
 
     @classmethod
     def _add(cls, obj):
@@ -1283,7 +1285,17 @@ class App(object):
         sprites and place the `App` class in a state in which a new 
         application could be instantiated.
         """ 
-        App._win.destroy()
+        if App._win:
+            App._win.unbind(KeyEvent.keydown)
+            App._win.unbind(KeyEvent.keyup)
+            App._win.unbind(KeyEvent.keypress)
+            App._win.unbind(MouseEvent.mousewheel)
+            App._win.unbind(MouseEvent.mousemove)
+            App._win.unbind(MouseEvent.mousedown)
+            App._win.unbind(MouseEvent.mouseup)
+            App._win.unbind(MouseEvent.click)
+            App._win.unbind(MouseEvent.dblclick)
+            App._win.destroy()
         App._win = None
         for s in list(App.spritelist):
             s.destroy()
@@ -1367,4 +1379,25 @@ class App(object):
         """
         self.userfunc = userfunc
         App._win.animate(self._animate)
+
+
+        
+if __name__ == '__main__':
+    
+    def test(event):
+        print("BOOM")
+        x = input("Enter something")
+        print(x)
+
+    def testm(event):
+        print('squeek!')
+
+    app = App()
+    red = Color(0xff0000, 1.0)
+    line = LineStyle(0, red)
+    rect = RectangleAsset(75, 25, line, red)
+    spr = Sprite(rect, (0,0))
+    app.listenKeyEvent('keydown', 'e', test)
+    app.listenMouseEvent('mousedown', testm)
+    app.run()
 
