@@ -1392,7 +1392,13 @@ if __name__ == '__main__':
     def testm(event):
         print('squeek!')
 
-    app = App()
+    class TestApp(App):
+        
+        def __init__(self, width, height):
+            super().__init__(width, height)
+            print("Auto screen size: ", self.width, " pixels wide.")
+
+    app = TestApp()
     red = Color(0xff0000, 1.0)
     line = LineStyle(0, red)
     rect = RectangleAsset(75, 25, line, red)
