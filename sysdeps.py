@@ -1,4 +1,4 @@
-me def module_exists(module_name):
+def module_exists(module_name):
     try:
         __import__(module_name)
     except ImportError:
