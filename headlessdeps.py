@@ -62,6 +62,8 @@ if module_exists('PIL'):
   class getBoundingClientRect(object):
     left = 0
     top = 0
+    width = 1
+    height = 1
   
   class renderView(object):
     def getBoundingClientRect(self):
