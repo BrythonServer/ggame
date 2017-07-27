@@ -1040,9 +1040,11 @@ class MouseEvent(_Event):
         else:
             self.wheelDelta = 0
         rect = App._win._renderer.view.getBoundingClientRect()
-        self.x = hwevent.clientX - rect.left
+        xscale = App._win.width/rect.width
+        yscale = App._win.height/rect.height
+        self.x = (hwevent.clientX - rect.left) * xscale
         """The window x-coordinate of the mouse pointer when the event occurred."""
-        self.y = hwevent.clientY - rect.top
+        self.y = (hwevent.clientY - rect.top) * yscale
         """The window y-coordinate of the mouse pointer when the event occurred."""
 
 
