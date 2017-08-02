@@ -1275,11 +1275,10 @@ class App(object):
         
     def _animate(self, dummy):
         if self.userfunc:
-            ret = self.userfunc()
+            self.userfunc()
         else:
-            ret = self.step()
-        if not ret:
-            App._win.animate(self._animate)
+            self.step()
+        App._win.animate(self._animate)
 
     @classmethod
     def _destroy(cls, *args):
@@ -1378,8 +1377,8 @@ class App(object):
     def run(self, userfunc = None):
         """
         Calling the `ggame.App.run` method begins the animation process whereby the 
-        `ggame.App.step` method is called once per animation frame. The user-defined
-        step function should return `True` to end the program.
+        `ggame.App.step` method is called once per animation frame. Set `userfunc`
+        to any function which shall be called once per animation frame.
         """
         self.userfunc = userfunc
         App._win.animate(self._animate)
@@ -1388,13 +1387,19 @@ class App(object):
         
 if __name__ == '__main__':
     
+    epressed = False
+    
     def test(event):
         print("BOOM")
         x = input("Enter something")
         print(x)
+        epressed = True
 
     def testm(event):
         print('squeek!')
+
+    def step():
+        return epressed
 
     app = App()
     red = Color(0xff0000, 1.0)
@@ -1403,5 +1408,5 @@ if __name__ == '__main__':
     spr = Sprite(rect, (0,0))
     app.listenKeyEvent('keydown', 'e', test)
     app.listenMouseEvent('mousedown', testm)
-    app.run()
+    app.run(step)
 
