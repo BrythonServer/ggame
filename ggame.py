@@ -1275,10 +1275,11 @@ class App(object):
         
     def _animate(self, dummy):
         if self.userfunc:
-            self.userfunc()
+            ret = self.userfunc()
         else:
-            self.step()
-        App._win.animate(self._animate)
+            ret = self.step()
+        if not ret:
+            App._win.animate(self._animate)
 
     @classmethod
     def _destroy(cls, *args):
@@ -1377,7 +1378,8 @@ class App(object):
     def run(self, userfunc = None):
         """
         Calling the `ggame.App.run` method begins the animation process whereby the 
-        `ggame.App.step` method is called once per animation frame.
+        `ggame.App.step` method is called once per animation frame. The user-defined
+        step function should return `True` to end the program.
         """
         self.userfunc = userfunc
         App._win.animate(self._animate)
