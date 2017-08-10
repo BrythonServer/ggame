@@ -656,7 +656,15 @@ class Sprite(object):
         # find center as sprite-relative points
         x = self.edgedef.width * self.fxcenter
         y = self.edgedef.height * self.fycenter
-        
+        # trig func for rotation
+        c = math.cos(self.rotation)
+        s = math.sin(self.rotation)
+        sc = self.scale
+        # center-relative, scaled coordinates
+        crsc = [((xp-x)*sc,(yp-y)*sc) for xp,yp in self._basevertices]
+        # absolute, rotated coordinates
+        self._absolutevertices = [(self.x + x*c + y*s, self.y + -x*s + y*c) 
+                                    for x,y in crsc]
         
 
     def _setExtents(self):
@@ -671,14 +679,12 @@ class Sprite(object):
             self.ymax = self.ymin + D
         else:
             # Build vertex list
-            self._absolutvertices = []
-            if type(self.asset) is RectangleAsset:
-                self.
-        self.xmin = int(self.x - self.fxcenter * self.width)
-        self.xmax = int(self.x + (1 - self.fxcenter) * self.width)
-        self.ymin = int(self.y - self.fycenter * self.height)
-        self.ymax = int(self.y + (1 - self.fycenter) * self.height)
-        self.radius = int((self.width + self.height)/4)
+            self._xformVertices()
+            x, y = zip(*self._absolutevertices)
+            self.xmin = min(x)
+            self.xmax = max(x)
+            self.ymin = min(y)
+            self.ymax = max(y)
         self._extentsdirty = False
 
     def firstImage(self):
