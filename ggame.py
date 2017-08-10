@@ -680,7 +680,7 @@ class Sprite(object):
         """
         if self._extentsdirty:
             if type(self.asset) is CircleAsset:
-                D = 2*self.radius
+                D = self.width
                 self.xmin = int(self.x - self.fxcenter * D)
                 self.xmax = self.xmin + D
                 self.ymin = int(self.y - self.fycenter * D)
@@ -752,6 +752,20 @@ class Sprite(object):
         directly.
         """
         self.index = index
+
+    def rectangularCollisionModel(self):
+        """
+        Obsolete. No op.
+        """
+        pass
+    
+    def circularCollisionModel(self):
+        """
+        Obsolete. No op.
+        """
+        pass
+    
+    
 
     @property
     def index(self):
@@ -967,9 +981,16 @@ class Sprite(object):
                 or self.ymin > obj.ymax
                 or self.ymax < obj.ymin):
                 return False
-            else:
-                # Otherwise, perform a careful overlap determination
-                pass
+            # Otherwise, perform a careful overlap determination
+            elif type(self.asset) is CircleAsset:
+                if type(obj.asset) is CircleAsset:
+                    sx = (self.xmin + self.xmax) / 2
+                    sy = (self.ymin + self.ymax) / 2
+                    ox = (obj.xmin + obj.xmax) / 2
+                    oy = (obj.ymin + obj.ymax) / 2
+                    d = math.sqrt((sx-ox)**2 + (sy-oy)**2)
+                    return dsq <= self.width/2 + obj.width/2
+                
                 
 
     def collidingWithSprites(self, sclass = None):
