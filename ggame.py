@@ -1459,10 +1459,10 @@ if __name__ == '__main__':
     line = LineStyle(0, red)
     rect = RectangleAsset(75, 25, line, red)
     spr = Sprite(rect, (100,100))
-    h1 = Sprite(LineAsset((500,0)))
-    h2 = Sprite(LineAsset((500,0)))
-    v1 = Sprite(LineAsset((0,500)))
-    v2 = Sprite(LineAsset((0,500)))
+    h1 = Sprite(LineAsset(500,0))
+    h2 = Sprite(LineAsset(500,0))
+    v1 = Sprite(LineAsset(0,500))
+    v2 = Sprite(LineAsset(0,500))
 
     def step():
         global spr
