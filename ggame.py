@@ -665,7 +665,7 @@ class Sprite(object):
         # absolute, rotated coordinates
         self._absolutevertices = [(self.x + x*c + y*s, self.y + -x*s + y*c) 
                                     for x,y in crsc]
-        
+
 
     def _setExtents(self):
         """
@@ -796,7 +796,7 @@ class Sprite(object):
     @x.setter
     def x(self, value):
         self.GFX.position.x = value
-        self._setExtents()
+        self._extentsdirty = True
         
     @property
     def y(self):
