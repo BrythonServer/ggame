@@ -368,7 +368,7 @@ class LineStyle(object):
         self.width = width
         self.color = color
 
-blackline = LineSytyle(1, black)
+blackline = LineStyle(1, black)
 """
 Default thin black line
 """
