@@ -962,6 +962,13 @@ class Sprite(object):
     def rotation(self, value):
         self.GFX.rotation = -value
 
+    @classmethod
+    def collidingCircleWithPoly(cls, circ, poly):
+        pass
+    
+    def collidingPolyWithPoly(self, obj):
+        pass
+
     def collidingWith(self, obj):
         """
         Return a boolean True if this sprite is currently overlapping the sprite 
@@ -984,12 +991,20 @@ class Sprite(object):
             # Otherwise, perform a careful overlap determination
             elif type(self.asset) is CircleAsset:
                 if type(obj.asset) is CircleAsset:
+                    # two circles .. check distance between
                     sx = (self.xmin + self.xmax) / 2
                     sy = (self.ymin + self.ymax) / 2
                     ox = (obj.xmin + obj.xmax) / 2
                     oy = (obj.ymin + obj.ymax) / 2
                     d = math.sqrt((sx-ox)**2 + (sy-oy)**2)
                     return dsq <= self.width/2 + obj.width/2
+                else:
+                    return self.collidingCircleWithPoly(self, obj)
+            else:
+                if type(obj.asset) is CircleAsset:
+                    return self.collidingCircleWithPoly(obj, self)
+                else:
+                    return self.collidingPolyWithPoly(obj)
                 
                 
 
