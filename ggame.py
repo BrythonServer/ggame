@@ -1402,6 +1402,7 @@ if __name__ == '__main__':
         return epressed
 
     app = App()
+
     red = Color(0xff0000, 1.0)
     line = LineStyle(0, red)
     rect = RectangleAsset(75, 25, line, red)
