@@ -653,9 +653,9 @@ class Sprite(object):
         """
         Create window-relative list of vertex coordinates for boundary
         """
-        # find center as sprite-relative points
-        x = self.edgedef.width * self.fxcenter
-        y = self.edgedef.height * self.fycenter
+        # find center as sprite-relative points (note sprite may be scaled)
+        x = self.width * self.fxcenter / self.scale
+        y = self.height * self.fycenter / self.scale
         if self.scale != 1.0:
             sc = self.scale
             # center-relative, scaled coordinates
@@ -1467,7 +1467,7 @@ if __name__ == '__main__':
     red = Color(0xff0000, 1.0)
     line = LineStyle(0, red)
     poly = PolygonAsset([(0,0),(50,75),(100,60),(90,150),(45,100),(0,0)], line, red)
-    spr = Sprite(poly, (100,100))
+    spr = Sprite(poly, (200,250))
     h1 = Sprite(LineAsset(500,0))
     h2 = Sprite(LineAsset(500,0))
     v1 = Sprite(LineAsset(0,500))
