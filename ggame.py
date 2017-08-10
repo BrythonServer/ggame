@@ -656,15 +656,22 @@ class Sprite(object):
         # find center as sprite-relative points
         x = self.edgedef.width * self.fxcenter
         y = self.edgedef.height * self.fycenter
-        # trig func for rotation
-        c = math.cos(self.rotation)
-        s = math.sin(self.rotation)
-        sc = self.scale
-        # center-relative, scaled coordinates
-        crsc = [((xp-x)*sc,(yp-y)*sc) for xp,yp in self._basevertices]
+        if self.scale != 1.0:
+            sc = self.scale
+            # center-relative, scaled coordinates
+            crsc = [((xp-x)*sc,(yp-y)*sc) for xp,yp in self._basevertices]
+        else:
+            crsc = [(xp-x,yp-y) for xp,yp in self._basevertices]
+            
         # absolute, rotated coordinates
-        self._absolutevertices = [(self.x + x*c + y*s, self.y + -x*s + y*c) 
-                                    for x,y in crsc]
+        if self.rotation != 0.0:
+            # trig func for rotation
+            c = math.cos(self.rotation)
+            s = math.sin(self.rotation)
+            self._absolutevertices = [(self.x + x*c + y*s, self.y + -x*s + y*c) 
+                                        for x,y in crsc]
+        else:
+            self._absolutevertices = crsc[:]
 
 
     def _setExtents(self):
@@ -1455,6 +1462,7 @@ if __name__ == '__main__':
 
     xcenter = 0.0
     xstep = 0.01
+    scale = 0.5
     red = Color(0xff0000, 1.0)
     line = LineStyle(0, red)
     rect = RectangleAsset(75, 25, line, red)
@@ -1472,12 +1480,15 @@ if __name__ == '__main__':
         global h2
         global v1
         global v2
+        global scale
         
+        scale = scale + xstep
         spr.fxcenter = xcenter
         xcenter = xcenter + xstep
         if xcenter >= 1.0 or xcenter <= 0.0:
             xstep = xstep * -1
         spr.rotation = spr.rotation + 10*xstep
+        spr.scale = scale
         spr._setExtents()
         h1.y = spr.ymin
         h2.y = spr.ymax
