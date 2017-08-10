@@ -341,6 +341,14 @@ class Color(object):
         self.color = color
         self.alpha = alpha
         
+black = Color(0, 1.0)
+"""
+Default black color
+"""
+white = Color(0xffffff, 1.0)
+"""
+Default white color
+"""
 
 class LineStyle(object):
     """
@@ -359,6 +367,15 @@ class LineStyle(object):
         """
         self.width = width
         self.color = color
+
+blackline = LineSytyle(1, black)
+"""
+Default thin black line
+"""
+whiteline = LineStyle(1, white)
+"""
+Default thin white line
+"""
 
 class _GraphicsAsset(_Asset):
     
@@ -386,7 +403,7 @@ class RectangleAsset(_ShapeAsset):
     fly without requiring creation of an image file.
     """
 
-    def __init__(self, width, height, line, fill):
+    def __init__(self, width, height, line=blackline, fill=black):
         """
         Creation of a `ggame.RectangleAsset` requires specification of the 
         rectangle `width` and `height` in pixels, the `line` (as a proper
@@ -407,7 +424,7 @@ class CircleAsset(_ShapeAsset):
     fly without requiring creation of an image file.
     """    
 
-    def __init__(self, radius, line, fill):
+    def __init__(self, radius, line=blackline, fill=black):
         """
         Creation of a `ggame.CircleAsset` requires specification of the circle
         `radius` in pixels, the `line` (as a proper `ggame.LineStyle` instance)
@@ -425,7 +442,7 @@ class EllipseAsset(_ShapeAsset):
     fly without requiring creation of an image file.
     """
 
-    def __init__(self, halfw, halfh, line, fill):
+    def __init__(self, halfw, halfh, line=blackline, fill=black):
         """
         Creation of a `ggame.EllipseAsset` requires specification of the ellipse
         `halfw`, or semi-axis length in the horizontal direction (half of the
@@ -446,7 +463,7 @@ class PolygonAsset(_ShapeAsset):
     fly without requiring creation of an image file.
     """
 
-    def __init__(self, path, line, fill):
+    def __init__(self, path, line=blackline, fill=black):
         """
         Creation of a `ggame.PolygonAsset` requires specification of a 
         `path` consisting of a list of coordinate tuples. `line` and 
@@ -473,7 +490,7 @@ class LineAsset(_CurveAsset):
     represents a single line segment.
     """
 
-    def __init__(self, x, y, line):
+    def __init__(self, x, y, line=blackline):
         """
         Creation of a `ggame.LineAsset` requires specification of an `x` and
         `y` coordinate for the endpoint of the line. The starting point of the
@@ -557,16 +574,25 @@ class Sprite(object):
     _rectCollision = "rect"
     _circCollision = "circ"
     
-    def __init__(self, asset, pos=(0,0)):
+    def __init__(self, asset, pos=(0,0), edgedef=None):
         """
         The `ggame.Sprite` must be created with an existing graphical `asset`.
+        
         An optional `pos` or position may be provided, which specifies the 
         starting (x,y) coordinates of the sprite on the screen. By default,
         the position of a sprite defines the location of its upper-left hand
         corner. This behavior can be modified by customizing the `center` of
         the sprite.
-
-        Example: player = Sprite(ImageAsset("player.png", (100,100))
+        
+        An optional `edgedef` or edge definition may be provided, which
+        specifies an asset that will be used to define the boundaries of
+        the sprite for the purpose of collision detection. If no `edgedef` 
+        asset is given, the Sprite asset is used, which will be a rectangular
+        asset in the case of an image texture. This option is typically used
+        to define a visible image outline for a texture-based sprite that has
+        a transparent texture image background.
+        
+        Example: player = Sprite(ImageAsset("player.png", (100,100), CircleAsset(50)
         """
         self._index = 0
         if type(asset) == ImageAsset:
@@ -1388,25 +1414,32 @@ class App(object):
         
 if __name__ == '__main__':
     
-    epressed = False
-    
+
     def test(event):
         print("BOOM")
         x = input("Enter something")
-        print(x)
-        epressed = True
+        print(stex)
 
     def testm(event):
         print('squeek!')
 
+    xcenter = 0.0
+    xstep = 0.01
     red = Color(0xff0000, 1.0)
     line = LineStyle(0, red)
     rect = RectangleAsset(75, 25, line, red)
-    spr = Sprite(rect, (0,0))
+    spr = Sprite(rect, (100,100))
 
 
     def step():
-        return epressed
+        global spr
+        global xcenter
+        global xstep
+        spr.fxcenter = xcenter
+        xcenter = xcenter + xstep
+        if xcenter >= 1.0 or xcenter <= 0.0:
+            xstep = xstep * -1
+        spr.rotation = spr.rotation + 10*xstep
 
     app = App()
 
