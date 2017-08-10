@@ -583,7 +583,7 @@ class Sprite(object):
             LineAsset,
             ]:
             self.asset = asset
-            self.GFX = GFX_Sprite(asset.generateCanvasTexture())
+            self.GFX = GFX_Sprite(asset.GFX.generateTexture())
             #self.GFX = asset.GFX.clone() # GFX is PIXI Graphics (from Sprite)
             #self.GFX.visible = True
         elif type(asset) in [TextAsset]:
@@ -1399,15 +1399,17 @@ if __name__ == '__main__':
     def testm(event):
         print('squeek!')
 
+    red = Color(0xff0000, 1.0)
+    line = LineStyle(0, red)
+    rect = RectangleAsset(75, 25, line, red)
+    spr = Sprite(rect, (0,0))
+
+
     def step():
         return epressed
 
     app = App()
 
-    red = Color(0xff0000, 1.0)
-    line = LineStyle(0, red)
-    rect = RectangleAsset(75, 25, line, red)
-    spr = Sprite(rect, (0,0))
     app.listenKeyEvent('keydown', 'e', test)
     app.listenMouseEvent('mousedown', testm)
     app.run(step)
