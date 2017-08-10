@@ -951,21 +951,26 @@ class Sprite(object):
     def collidingWith(self, obj):
         """
         Return a boolean True if this sprite is currently overlapping the sprite 
-        referenced by `obj`. Uses the collision model specified (rectangular, by 
-        default). Collision/overlap decision is based purely on the overall, gross
-        dimensions of the image rectangle. There is no attempt to verify that 
-        non-transparent pixels in one sprite are actually overlapping visible
-        pixels in another.
+        referenced by `obj`. Returns False if checking for collision with 
+        itself. Returns False if extents of object make it impossible for
+        collision to occur. Returns True if sprite's `edgedef` parameter overlaps
+        with other sprite's `edgedef` parameter, taking into consideration both
+        sprites' center, rotation and scale settings.
         """
         if self is obj:
             return False
         else:
-            if self._extentsdirty:
-                self._setExtents()
-            return (not (self.xmin > obj.xmax
+            self._setExtents()
+            # Gross check for overlap will usually rule out a collision
+            if (self.xmin > obj.xmax
                 or self.xmax < obj.xmin
                 or self.ymin > obj.ymax
-                or self.ymax < obj.ymin))
+                or self.ymax < obj.ymin):
+                return False
+            else:
+                # Otherwise, perform a careful overlap determination
+                pass
+                
 
     def collidingWithSprites(self, sclass = None):
         """
