@@ -102,6 +102,8 @@ about x and y coordinates in math class!
 
 """
 
+import math
+
 try:
     from ggame.sysdeps import *
 except:
@@ -626,21 +628,58 @@ class Sprite(object):
             self.edgedef = edgedef
         self.position = pos
         """Tuple indicates the position of the sprite on the screen."""
-        self._setExtents()
-        self.rectangularCollisionModel()
+        self._extentsdirty = True
+        """Boolean indicates if extents must be calculated before collision test"""
+        self._createBaseVertices()
         App._add(self)
         
+    def _createBaseVertices(self):
+        """
+        Create sprite-relative list of vertex coordinates for boundary
+        """
+        self._basevertices = []
+        if type(self.edgedef) in [RectangleAsset, ImageAsset]:
+            self._basevertices = [(0,0), 
+                (0,self.edgedef.height), 
+                (self.edgedef.width,self.edgedef.height),
+                (self.edgedef.width,0)]
+        elif type(self.edgedef) is PolygonAsset:
+            self._basevertices = self.edgedef.path[:-1]
+        elif type(self.edgedef) is LineAsset:
+            self._basevertices = [(0,0), 
+                (self.edgedef.deltaX, self.edgedef.deltaY)]
+                
+    def _xformVertices(self):
+        """
+        Create window-relative list of vertex coordinates for boundary
+        """
+        # find center as sprite-relative points
+        x = self.edgedef.width * self.fxcenter
+        y = self.edgedef.height * self.fycenter
+        
+        
+
     def _setExtents(self):
         """
         update min/max x and y based on position, center, width, height
         """
+        if type(self.asset) is CircleAsset:
+            D = 2*self.radius
+            self.xmin = int(self.x - self.fxcenter * D)
+            self.xmax = self.xmin + D
+            self.ymin = int(self.y - self.fycenter * D)
+            self.ymax = self.ymin + D
+        else:
+            # Build vertex list
+            self._absolutvertices = []
+            if type(self.asset) is RectangleAsset:
+                self.
         self.xmin = int(self.x - self.fxcenter * self.width)
         self.xmax = int(self.x + (1 - self.fxcenter) * self.width)
         self.ymin = int(self.y - self.fycenter * self.height)
         self.ymax = int(self.y + (1 - self.fycenter) * self.height)
         self.radius = int((self.width + self.height)/4)
-        #self.xcenter = int(self.x + (1 - self.fxcenter) * self.width / 2)
-        #self.ycenter = int(self.y + (1 - self.fycenter) * self.height / 2)
+        self._extentsdirty = False
 
     def firstImage(self):
         """
@@ -700,28 +739,6 @@ class Sprite(object):
         """
         self.index = index
 
-    def rectangularCollisionModel(self):
-        """
-        Calling this method will configure the sprite to use a simple 
-        rectangular collision model when checking for overlap with 
-        other sprites. In this model, the "collideable" area of the sprite
-        is equal to the rectangle of the asset image. If the sprite asset
-        image includes a large transparent margin, this may cause the 
-        collision box to be larger than desired.
-        """
-        self._collisionStyle = type(self)._rectCollision
-
-    def circularCollisionModel(self):
-        """
-        Calling the sprite's `ggame.Sprite.circularCollisionModel` method 
-        will configure the sprite to use a simple circular collision model 
-        when checking for overlap with other sprites. In this model, the
-        "collideable" area of the sprite is regarded as a circle whose
-        diameter is equal to the mean of the width and height of the 
-        asset image.
-        """
-        self._collisionStyle = type(self)._circCollision
-
     @property
     def index(self):
         """This is an integer index in to the list of images available for this sprite."""
@@ -747,7 +764,7 @@ class Sprite(object):
     @width.setter
     def width(self, value):
         self.GFX.width = value
-        self._setExtents()
+        self._extentsdirty = True
     
     @property
     def height(self):
@@ -760,7 +777,7 @@ class Sprite(object):
     @height.setter
     def height(self, value):
         self.GFX.height = value
-        self._setExtents()
+        self._extentsdirty = True
         
     @property
     def x(self):
@@ -786,7 +803,7 @@ class Sprite(object):
     @y.setter
     def y(self, value):
         self.GFX.position.y = value
-        self._setExtents()
+        self._extentsdirty = True
     
     @property
     def position(self):
@@ -800,7 +817,7 @@ class Sprite(object):
     def position(self, value):
         self.GFX.position.x = value[0]
         self.GFX.position.y = value[1]
-        self._setExtents()
+        self._extentsdirty = True
         
     @property
     def fxcenter(self):
@@ -813,7 +830,7 @@ class Sprite(object):
         """
         try:
             return self.GFX.anchor.x
-            self._setExtents()
+            self._extentsdirty = True
         except:
             return 0.0
         
@@ -824,7 +841,7 @@ class Sprite(object):
         """
         try:
             self.GFX.anchor.x = value
-            self._setExtents()
+            self._extentsdirty = True
         except:
             pass
         
@@ -849,7 +866,7 @@ class Sprite(object):
         """
         try:
             self.GFX.anchor.y = value
-            self._setExtents()
+            self._extentsdirty = True
         except:
             pass
     
@@ -871,7 +888,7 @@ class Sprite(object):
         try:
             self.GFX.anchor.x = value[0]
             self.GFX.anchor.y = value[1]
-            self._setExtents()
+            self._extentsdirty = True
         except:
             pass
     
@@ -901,7 +918,7 @@ class Sprite(object):
     def scale(self, value):
         self.GFX.scale.x = value
         self.GFX.scale.y = value
-        self._setExtents()
+        self._extentsdirty = True
 
     @property
     def rotation(self):
@@ -928,7 +945,10 @@ class Sprite(object):
         """
         if self is obj:
             return False
-        elif self._collisionStyle == obj._collisionStyle == type(self)._circCollision:
+        else:
+            if self._extentsdirty:
+                self._setExtents()
+            if self._collisionStyle == obj._collisionStyle == type(self)._circCollision:
             dist2 = (self.x - obj.x)**2 + (self.y - obj.y)**2
             return dist2 < (self.radius + obj.radius)**2
         else:
