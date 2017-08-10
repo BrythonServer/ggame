@@ -1040,9 +1040,11 @@ class MouseEvent(_Event):
         else:
             self.wheelDelta = 0
         rect = App._win._renderer.view.getBoundingClientRect()
-        self.x = hwevent.clientX - rect.left
+        xscale = App._win.width/rect.width
+        yscale = App._win.height/rect.height
+        self.x = (hwevent.clientX - rect.left) * xscale
         """The window x-coordinate of the mouse pointer when the event occurred."""
-        self.y = hwevent.clientY - rect.top
+        self.y = (hwevent.clientY - rect.top) * yscale
         """The window y-coordinate of the mouse pointer when the event occurred."""
 
 
@@ -1375,7 +1377,8 @@ class App(object):
     def run(self, userfunc = None):
         """
         Calling the `ggame.App.run` method begins the animation process whereby the 
-        `ggame.App.step` method is called once per animation frame.
+        `ggame.App.step` method is called once per animation frame. Set `userfunc`
+        to any function which shall be called once per animation frame.
         """
         self.userfunc = userfunc
         App._win.animate(self._animate)
@@ -1384,26 +1387,27 @@ class App(object):
         
 if __name__ == '__main__':
     
+    epressed = False
+    
     def test(event):
         print("BOOM")
         x = input("Enter something")
         print(x)
+        epressed = True
 
     def testm(event):
         print('squeek!')
 
-    class TestApp(App):
-        
-        def __init__(self, width, height):
-            super().__init__(width, height)
-            print("Auto screen size: ", self.width, " pixels wide.")
+    def step():
+        return epressed
 
-    app = TestApp(0,0)
+    app = App()
+
     red = Color(0xff0000, 1.0)
     line = LineStyle(0, red)
     rect = RectangleAsset(75, 25, line, red)
     spr = Sprite(rect, (0,0))
     app.listenKeyEvent('keydown', 'e', test)
     app.listenMouseEvent('mousedown', testm)
-    app.run()
+    app.run(step)
 
