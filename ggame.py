@@ -1463,7 +1463,10 @@ if __name__ == '__main__':
     line = LineStyle(0, red)
     rect = RectangleAsset(75, 25, line, red)
     spr = Sprite(rect, (100,100))
-
+    h1 = Sprite(LineAsset((500,0)))
+    h2 = Sprite(LineAsset((500,0)))
+    v1 = Sprite(LineAsset((0,500)))
+    v2 = Sprite(LineAsset((0,500)))
 
     def step():
         global spr
@@ -1474,6 +1477,11 @@ if __name__ == '__main__':
         if xcenter >= 1.0 or xcenter <= 0.0:
             xstep = xstep * -1
         spr.rotation = spr.rotation + 10*xstep
+        spr._getExtents()
+        h1.y = spr.ymin
+        h2.y = spr.ymax
+        v1.x = spr.xmin
+        v2.x = spr.xmax
 
     app = App()
 
