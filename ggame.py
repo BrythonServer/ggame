@@ -678,21 +678,22 @@ class Sprite(object):
         """
         update min/max x and y based on position, center, width, height
         """
-        if type(self.asset) is CircleAsset:
-            D = 2*self.radius
-            self.xmin = int(self.x - self.fxcenter * D)
-            self.xmax = self.xmin + D
-            self.ymin = int(self.y - self.fycenter * D)
-            self.ymax = self.ymin + D
-        else:
-            # Build vertex list
-            self._xformVertices()
-            x, y = zip(*self._absolutevertices)
-            self.xmin = min(x)
-            self.xmax = max(x)
-            self.ymin = min(y)
-            self.ymax = max(y)
-        self._extentsdirty = False
+        if self._extentsdirty:
+            if type(self.asset) is CircleAsset:
+                D = 2*self.radius
+                self.xmin = int(self.x - self.fxcenter * D)
+                self.xmax = self.xmin + D
+                self.ymin = int(self.y - self.fycenter * D)
+                self.ymax = self.ymin + D
+            else:
+                # Build vertex list
+                self._xformVertices()
+                x, y = zip(*self._absolutevertices)
+                self.xmin = min(x)
+                self.xmax = max(x)
+                self.ymin = min(y)
+                self.ymax = max(y)
+            self._extentsdirty = False
 
     def firstImage(self):
         """
@@ -1465,8 +1466,8 @@ if __name__ == '__main__':
     scale = 0.5
     red = Color(0xff0000, 1.0)
     line = LineStyle(0, red)
-    rect = RectangleAsset(75, 25, line, red)
-    spr = Sprite(rect, (100,100))
+    poly = PolygonAsset([(0,0),(50,75),(100,60),(90,150),(45,100),(0,0)], line, red)
+    spr = Sprite(poly, (100,100))
     h1 = Sprite(LineAsset(500,0))
     h2 = Sprite(LineAsset(500,0))
     v1 = Sprite(LineAsset(0,500))
