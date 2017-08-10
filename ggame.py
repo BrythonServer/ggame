@@ -1468,6 +1468,11 @@ if __name__ == '__main__':
         global spr
         global xcenter
         global xstep
+        global h1
+        global h2
+        global v1
+        global v2
+        
         spr.fxcenter = xcenter
         xcenter = xcenter + xstep
         if xcenter >= 1.0 or xcenter <= 0.0:
