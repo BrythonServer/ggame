@@ -954,10 +954,6 @@ class Sprite(object):
         else:
             if self._extentsdirty:
                 self._setExtents()
-            if self._collisionStyle == obj._collisionStyle == type(self)._circCollision:
-            dist2 = (self.x - obj.x)**2 + (self.y - obj.y)**2
-            return dist2 < (self.radius + obj.radius)**2
-        else:
             return (not (self.xmin > obj.xmax
                 or self.xmax < obj.xmin
                 or self.ymin > obj.ymax
