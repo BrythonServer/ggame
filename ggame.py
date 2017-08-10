@@ -620,6 +620,10 @@ class Sprite(object):
             self.asset = asset._clone()
             self.GFX = self.asset.GFX # GFX is PIXI Text (from Sprite)
             self.GFX.visible = True
+        if not edgedef:
+            self.edgedef = asset
+        else:
+            self.edgedef = edgedef
         self.position = pos
         """Tuple indicates the position of the sprite on the screen."""
         self._setExtents()
