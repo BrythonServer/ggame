@@ -671,7 +671,7 @@ class Sprite(object):
             self._absolutevertices = [(self.x + x*c + y*s, self.y + -x*s + y*c) 
                                         for x,y in crsc]
         else:
-            self._absolutevertices = crsc[:]
+            self._absolutevertices = crsc
 
 
     def _setExtents(self):
