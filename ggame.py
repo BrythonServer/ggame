@@ -681,7 +681,7 @@ class Sprite(object):
         if self._extentsdirty:
             if type(self.asset) is CircleAsset:
                 th = math.atan2(
-                    0.5 - self.fycenter, self.fxcenter - 0.5) + self.rotation
+                    self.fycenter - 0.5, 5.0 - self.fxcenter) + self.rotation
                 D = self.width
                 L = self.scale * math.sqrt(math.pow(self.fxcenter - 0.5, 2) + 
                     math.pow(self.fycenter - 0.5, 2)) * D
@@ -1536,7 +1536,7 @@ if __name__ == '__main__':
         xcenter = xcenter + xstep
         if xcenter >= 1.0 or xcenter <= 0.0:
             xstep = xstep * -1
-        spr.rotation = spr.rotation + 10*xstep
+        #spr.rotation = spr.rotation + 10*xstep
         #spr.scale = scale
         spr._setExtents()
         h1.y = spr.ymin
