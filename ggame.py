@@ -683,7 +683,7 @@ class Sprite(object):
                 th = math.atan2(
                     self.fycenter - 0.5, 0.5 - self.fxcenter) + self.rotation
                 D = self.width
-                L = self.scale * math.sqrt(math.pow(self.fxcenter - 0.5, 2) + 
+                L = math.sqrt(math.pow(self.fxcenter - 0.5, 2) + 
                     math.pow(self.fycenter - 0.5, 2)) * D
                 self.xmin = self.x + int(L*math.cos(th)) - D//2
                 self.ymin = self.y - int(L*math.sin(th)) - D//2
@@ -1537,7 +1537,7 @@ if __name__ == '__main__':
         if xcenter >= 1.0 or xcenter <= 0.0:
             xstep = xstep * -1
         #spr.rotation = spr.rotation + 10*xstep
-        #spr.scale = scale
+        spr.scale = scale
         spr._setExtents()
         h1.y = spr.ymin
         h2.y = spr.ymax
