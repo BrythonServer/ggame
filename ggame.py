@@ -680,10 +680,14 @@ class Sprite(object):
         """
         if self._extentsdirty:
             if type(self.asset) is CircleAsset:
+                th = math.atan2(
+                    (self.fycenter - 0.5)/(0.5 - self.fxcenter)) + self.rotation
                 D = self.width
-                self.xmin = int(self.x - self.fxcenter * D)
+                L = self.scale * math.sqrt(math.sqr(self.fxcenter - 0.5) + 
+                    math.sqr(self.fycenter - 0.5)) * D
+                self.xmin = self.x + L*math.cos(th) - D/2
+                self.ymin = self.y - L*math.sin(th) - D/2
                 self.xmax = self.xmin + D
-                self.ymin = int(self.y - self.fycenter * D)
                 self.ymax = self.ymin + D
             else:
                 # Build vertex list
