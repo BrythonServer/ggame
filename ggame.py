@@ -685,8 +685,8 @@ class Sprite(object):
                 D = self.width
                 L = self.scale * math.sqrt(math.sqr(self.fxcenter - 0.5) + 
                     math.sqr(self.fycenter - 0.5)) * D
-                self.xmin = self.x + L*math.cos(th) - D/2
-                self.ymin = self.y - L*math.sin(th) - D/2
+                self.xmin = self.x + int(L*math.cos(th) - D/2)
+                self.ymin = self.y - int(L*math.sin(th) - D/2)
                 self.xmax = self.xmin + D
                 self.ymax = self.ymin + D
             else:
