@@ -680,7 +680,6 @@ class Sprite(object):
         """
         if self._extentsdirty:
             if type(self.asset) is CircleAsset:
-                print("->Extents")
                 th = math.atan2(
                     0.5 - self.fycenter, self.fxcenter - 0.5) + self.rotation
                 D = self.width
@@ -690,7 +689,6 @@ class Sprite(object):
                 self.ymin = self.y - int(L*math.sin(th)) - D//2
                 self.xmax = self.xmin + D
                 self.ymax = self.ymin + D
-                print("Extents")
             else:
                 # Build vertex list
                 self._xformVertices()
