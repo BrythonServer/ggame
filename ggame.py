@@ -680,15 +680,17 @@ class Sprite(object):
         """
         if self._extentsdirty:
             if type(self.asset) is CircleAsset:
+                print("->Extents")
                 th = math.atan2(
-                    self.fycenter - 0.5, 0.5 - self.fxcenter) + self.rotation
+                    0.5 - self.fycenter, self.fxcenter - 0.5) + self.rotation
                 D = self.width
                 L = self.scale * math.sqrt(math.pow(self.fxcenter - 0.5, 2) + 
                     math.pow(self.fycenter - 0.5, 2)) * D
-                self.xmin = self.x + int(L*math.cos(th) - D/2)
-                self.ymin = self.y - int(L*math.sin(th) - D/2)
+                self.xmin = self.x + int(L*math.cos(th)) - D//2
+                self.ymin = self.y - int(L*math.sin(th)) - D//2
                 self.xmax = self.xmin + D
                 self.ymax = self.ymin + D
+                print("Extents")
             else:
                 # Build vertex list
                 self._xformVertices()
@@ -965,6 +967,8 @@ class Sprite(object):
     @rotation.setter
     def rotation(self, value):
         self.GFX.rotation = -value
+        if value:
+            self._extentsdirty = True
 
     @classmethod
     def collidingCircleWithPoly(cls, circ, poly):
@@ -1530,12 +1534,12 @@ if __name__ == '__main__':
         global scale
         
         scale = scale + xstep
-        spr.fxcenter = xcenter
+        #spr.fxcenter = xcenter
         xcenter = xcenter + xstep
         if xcenter >= 1.0 or xcenter <= 0.0:
             xstep = xstep * -1
         spr.rotation = spr.rotation + 10*xstep
-        spr.scale = scale
+        #spr.scale = scale
         spr._setExtents()
         h1.y = spr.ymin
         h2.y = spr.ymax
