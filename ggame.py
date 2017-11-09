@@ -1532,11 +1532,12 @@ if __name__ == '__main__':
         global scale
         
         scale = scale + xstep
-        #spr.fxcenter = xcenter
+        spr.fxcenter = xcenter
+        spr.fycenter = xcenter
         xcenter = xcenter + xstep
         if xcenter >= 1.0 or xcenter <= 0.0:
             xstep = xstep * -1
-        #spr.rotation = spr.rotation + 10*xstep
+        spr.rotation = spr.rotation + 10*xstep
         spr.scale = scale
         spr._setExtents()
         h1.y = spr.ymin
