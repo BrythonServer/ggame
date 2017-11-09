@@ -1508,7 +1508,8 @@ if __name__ == '__main__':
     red = Color(0xff0000, 1.0)
     line = LineStyle(0, red)
     poly = PolygonAsset([(0,0),(50,75),(100,60),(90,150),(45,100),(0,0)], line, red)
-    spr = Sprite(poly, (200,250))
+    circ = CircleAsset(75, line, red)
+    spr = Sprite(circ, (200,250))
     h1 = Sprite(LineAsset(500,0))
     h2 = Sprite(LineAsset(500,0))
     v1 = Sprite(LineAsset(0,500))
@@ -1542,4 +1543,5 @@ if __name__ == '__main__':
     app.listenKeyEvent('keydown', 'e', test)
     app.listenMouseEvent('mousedown', testm)
     app.run(step)
+
 
