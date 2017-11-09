@@ -683,8 +683,8 @@ class Sprite(object):
                 th = math.atan2(
                     self.fycenter - 0.5, 0.5 - self.fxcenter) + self.rotation
                 D = self.width
-                L = self.scale * math.sqrt(math.sqr(self.fxcenter - 0.5) + 
-                    math.sqr(self.fycenter - 0.5)) * D
+                L = self.scale * math.sqrt(math.pow(self.fxcenter - 0.5, 2) + 
+                    math.pow(self.fycenter - 0.5, 2)) * D
                 self.xmin = self.x + int(L*math.cos(th) - D/2)
                 self.ymin = self.y - int(L*math.sin(th) - D/2)
                 self.xmax = self.xmin + D
