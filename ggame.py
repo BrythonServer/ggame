@@ -626,6 +626,7 @@ class Sprite(object):
             self.edgedef = asset
         else:
             self.edgedef = edgedef
+        #self.xmin = self.xmax = self.ymin = self.ymax = 0
         self.position = pos
         """Tuple indicates the position of the sprite on the screen."""
         self._extentsdirty = True
@@ -823,10 +824,11 @@ class Sprite(object):
         
     @x.setter
     def x(self, value):
-        deltax = value - self.GFX.position.x
-        self.xmax += deltax
-        self.xmin += deltax
+        #deltax = value - self.GFX.position.x
+        #self.xmax += deltax
+        #self.xmin += deltax
         """Adjust extents directly with low overhead"""
+        self._extentsdirty = True
         self.GFX.position.x = value
 
     @property
@@ -839,10 +841,11 @@ class Sprite(object):
         
     @y.setter
     def y(self, value):
-        deltay = value - self.GFX.position.y
-        self.ymax += deltay
-        self.ymin += deltay
+        #deltay = value - self.GFX.position.y
+        #self.ymax += deltay
+        #self.ymin += deltay
         """Adjust extents directly with low overhead"""
+        self._extentsdirty = True
         self.GFX.position.y = value
 
     @property
