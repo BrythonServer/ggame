@@ -626,7 +626,7 @@ class Sprite(object):
             self.edgedef = asset
         else:
             self.edgedef = edgedef
-        #self.xmin = self.xmax = self.ymin = self.ymax = 0
+        self.xmin = self.xmax = self.ymin = self.ymax = 0
         self.position = pos
         """Tuple indicates the position of the sprite on the screen."""
         self._extentsdirty = True
@@ -824,11 +824,10 @@ class Sprite(object):
         
     @x.setter
     def x(self, value):
-        #deltax = value - self.GFX.position.x
-        #self.xmax += deltax
-        #self.xmin += deltax
+        deltax = value - self.GFX.position.x
+        self.xmax += deltax
+        self.xmin += deltax
         """Adjust extents directly with low overhead"""
-        self._extentsdirty = True
         self.GFX.position.x = value
 
     @property
@@ -841,11 +840,10 @@ class Sprite(object):
         
     @y.setter
     def y(self, value):
-        #deltay = value - self.GFX.position.y
-        #self.ymax += deltay
-        #self.ymin += deltay
+        deltay = value - self.GFX.position.y
+        self.ymax += deltay
+        self.ymin += deltay
         """Adjust extents directly with low overhead"""
-        self._extentsdirty = True
         self.GFX.position.y = value
 
     @property
@@ -858,10 +856,8 @@ class Sprite(object):
         
     @position.setter
     def position(self, value):
-        self.GFX.position.x = value[0]
-        self.GFX.position.y = value[1]
-        self._extentsdirty = True
-        
+        self.x, self.y = *value
+
     @property
     def fxcenter(self):
         """
@@ -1531,6 +1527,11 @@ if __name__ == '__main__':
     circ2 = CircleAsset(55, line, blue)
     spr = Sprite(circ, (200,250))
     spr2 = Sprite(poly, (375, 255))
+    # TRYING to get the extents to initialize!!
+    spr2._extentsdirty = True
+    spr2._setExtents()
+    spr2.rotation = 0.0001
+    # /\ this does it
     h1 = Sprite(LineAsset(500,0))
     h2 = Sprite(LineAsset(500,0))
     v1 = Sprite(LineAsset(0,500))
