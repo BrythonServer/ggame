@@ -631,8 +631,8 @@ class Sprite(object):
         self._extentsdirty = True
         """Boolean indicates if extents must be calculated before collision test"""
         self._createBaseVertices()
-        """Initialize the extents (xmax, xmin, etc.) for collision detection"""
         self._setExtents()
+        """Initialize the extents (xmax, xmin, etc.) for collision detection"""
         App._add(self)
         
     def _createBaseVertices(self):
@@ -823,10 +823,10 @@ class Sprite(object):
         
     @x.setter
     def x(self, value):
-        """Adjust extents directly with low overhead"""
         deltax = value - self.GFX.position.x
         self.xmax += deltax
         self.xmin += deltax
+        """Adjust extents directly with low overhead"""
         self.GFX.position.x = value
 
     @property
@@ -839,10 +839,10 @@ class Sprite(object):
         
     @y.setter
     def y(self, value):
-        """Adjust extents directly with low overhead"""
         deltay = value - self.GFX.position.y
         self.ymax += deltay
         self.ymin += deltay
+        """Adjust extents directly with low overhead"""
         self.GFX.position.y = value
 
     @property
@@ -978,10 +978,10 @@ class Sprite(object):
 
     @classmethod
     def collidingCircleWithPoly(cls, circ, poly):
-        pass
+        return True
     
     def collidingPolyWithPoly(self, obj):
-        pass
+        return True
 
     def collidingWith(self, obj):
         """
@@ -996,6 +996,7 @@ class Sprite(object):
             return False
         else:
             self._setExtents()
+            obj._setExtents()
             # Gross check for overlap will usually rule out a collision
             if (self.xmin > obj.xmax
                 or self.xmax < obj.xmin
@@ -1011,7 +1012,7 @@ class Sprite(object):
                     ox = (obj.xmin + obj.xmax) / 2
                     oy = (obj.ymin + obj.ymax) / 2
                     d = math.sqrt((sx-ox)**2 + (sy-oy)**2)
-                    return dsq <= self.width/2 + obj.width/2
+                    return d <= self.width/2 + obj.width/2
                 else:
                     return self.collidingCircleWithPoly(self, obj)
             else:
@@ -1520,23 +1521,35 @@ if __name__ == '__main__':
     xstep = 0.01
     scale = 0.5
     red = Color(0xff0000, 1.0)
+    blue = Color(0x0000ff, 1.0)
     line = LineStyle(0, red)
     poly = PolygonAsset([(0,0),(50,75),(100,60),(90,150),(45,100),(0,0)], line, red)
     circ = CircleAsset(75, line, red)
+    circ2 = CircleAsset(55, line, blue)
     spr = Sprite(circ, (200,250))
+    spr2 = Sprite(poly, (375, 255))
     h1 = Sprite(LineAsset(500,0))
     h2 = Sprite(LineAsset(500,0))
     v1 = Sprite(LineAsset(0,500))
     v2 = Sprite(LineAsset(0,500))
+    hh1 = Sprite(LineAsset(500,0))
+    hh2 = Sprite(LineAsset(500,0))
+    vv1 = Sprite(LineAsset(0,500))
+    vv2 = Sprite(LineAsset(0,500))
 
     def step():
         global spr
+        global spr2
         global xcenter
         global xstep
         global h1
         global h2
         global v1
         global v2
+        global hh1
+        global hh2
+        global vv1
+        global vv2
         global scale
         
         scale = scale + xstep
@@ -1552,6 +1565,13 @@ if __name__ == '__main__':
         h2.y = spr.ymax
         v1.x = spr.xmin
         v2.x = spr.xmax
+        spr2._setExtents()
+        hh1.y = spr2.ymin
+        hh2.y = spr2.ymax
+        vv1.x = spr2.xmin
+        vv2.x = spr2.xmax
+        if spr.collidingWith(spr2):
+            print("BANG")
 
     app = App()
 
