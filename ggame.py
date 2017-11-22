@@ -632,7 +632,7 @@ class Sprite(object):
         """Boolean indicates if extents must be calculated before collision test"""
         self._createBaseVertices()
         """Initialize the extents (xmax, xmin, etc.) for collision detection"""
-        _setExtents()
+        self._setExtents()
         App._add(self)
         
     def _createBaseVertices(self):
