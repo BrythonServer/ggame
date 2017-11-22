@@ -631,6 +631,8 @@ class Sprite(object):
         self._extentsdirty = True
         """Boolean indicates if extents must be calculated before collision test"""
         self._createBaseVertices()
+        """Initialize the extents (xmax, xmin, etc.) for collision detection"""
+        _setExtents()
         App._add(self)
         
     def _createBaseVertices(self):
@@ -821,7 +823,7 @@ class Sprite(object):
         
     @x.setter
     def x(self, value):
-        # adjust extents directly with low overhead
+        """Adjust extents directly with low overhead"""
         deltax = value - self.GFX.position.x
         self.xmax += deltax
         self.xmin += deltax
@@ -837,7 +839,7 @@ class Sprite(object):
         
     @y.setter
     def y(self, value):
-        # adjust extents directly with low overhead
+        """Adjust extents directly with low overhead"""
         deltay = value - self.GFX.position.y
         self.ymax += deltay
         self.ymin += deltay
