@@ -313,6 +313,8 @@ class ImageAsset(_Asset):
         dy = 0
         for i in range(qty):
             if not frame is None:
+                self.width = frame.w
+                self.height = frame.h
                 if direction == 'horizontal':
                     dx = frame.w + margin
                 elif direction == 'vertical':
