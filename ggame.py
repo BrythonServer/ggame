@@ -534,7 +534,7 @@ class TextAsset(_GraphicsAsset):
         self.text = text
         self.style = kwargs.get('style', '20px Arial')
         """A string that specifies style, size and typeface (e.g. `'italic 20pt Helvetica'` or `'20px Arial'`)"""
-        self.width = kwargs.get('width', 100)
+        width = kwargs.get('width', 100)
         """Width of the text block on the screen, in pixels."""
         self.fill = kwargs.get('fill', Color(0, 1))
         """A valid `ggame.Color` instance that specifies the color and transparency of the text."""
@@ -545,7 +545,7 @@ class TextAsset(_GraphicsAsset):
                 'fill' : self.fill.color,
                 'align' : self.align,
                 'wordWrap' : True,
-                'wordWrapWidth' : self.width,
+                'wordWrapWidth' : width,
                 })
         """The `GFX` property represents the underlying system object."""
         self.GFX.alpha = self.fill.alpha
