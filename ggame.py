@@ -856,7 +856,7 @@ class Sprite(object):
         
     @position.setter
     def position(self, value):
-        self.x, self.y = *value
+        self.x, self.y = value
 
     @property
     def fxcenter(self):
