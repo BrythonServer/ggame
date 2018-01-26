@@ -968,7 +968,10 @@ class Sprite(object):
         screen. Value may be a floating point number. A value of 1.0 means that the sprite
         image will keep its original size. A value of 2.0 would double it, etc.
         """
-        return self.GFX.scale.x
+        try:
+            return self.GFX.scale.x
+        except NameError:
+            return 1.0
         
     @scale.setter
     def scale(self, value):
