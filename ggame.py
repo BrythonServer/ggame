@@ -557,6 +557,14 @@ class TextAsset(_GraphicsAsset):
             width = self.width,
             fill = self.fill,
             align = self.align)
+    
+    @property
+    def width(self):
+        return self.GFX.width
+        
+    @property
+    def height(self):
+        return self.GFX.height
 
 
 class Sprite(object):
