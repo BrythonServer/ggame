@@ -987,7 +987,10 @@ class Sprite(object):
         of 1.0 means  a rotation of 1 radian in a counter-clockwise direction. One radian
         is 180/pi or approximately 57.3 degrees.
         """
-        return -self.GFX.rotation
+        try:
+            return -self.GFX.rotation
+        except AttributeError:
+            return 0.0
         
     @rotation.setter
     def rotation(self, value):
