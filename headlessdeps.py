@@ -347,6 +347,9 @@ if module_exists('PIL'):
       print("Line from {},{} to {},{}".format(self.x, self.y, x, y))
       return self 
 
+    def generateTexture(self):
+        return _Texture()
+
   class _GFX_Text(object):
 
     def __init__(self, text, styledict):
