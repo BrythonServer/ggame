@@ -698,6 +698,7 @@ class Sprite(object):
             else:
                 # Build vertex list
                 self._xformVertices()
+                print(self._basevertices)
                 x, y = zip(*self._absolutevertices)
                 self.xmin = min(x)
                 self.xmax = max(x)
