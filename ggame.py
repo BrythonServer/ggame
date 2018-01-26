@@ -970,7 +970,7 @@ class Sprite(object):
         """
         try:
             return self.GFX.scale.x
-        except NameError:
+        except AttributeError:
             return 1.0
         
     @scale.setter
