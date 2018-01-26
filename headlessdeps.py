@@ -348,7 +348,7 @@ if module_exists('PIL'):
       return self 
 
     def generateTexture(self):
-        pass
+        return _Texture()
 
   class _GFX_Text(object):
 
