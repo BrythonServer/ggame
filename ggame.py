@@ -290,6 +290,7 @@ class ImageAsset(_Asset):
         A string that represents the path or url of the original file.
         """
         del self.GFXlist[0]
+        self.width = self.height = 0
         self.append(url, frame, qty, direction, margin)
 
     def _subframe(self, texture, frame):
