@@ -644,17 +644,22 @@ class Sprite(object):
         Create sprite-relative list of vertex coordinates for boundary
         """
         self._basevertices = []
-        if type(self.edgedef) in [RectangleAsset, ImageAsset]:
+        assettype = type(self.edgedef)
+        if assettype in [RectangleAsset, ImageAsset, TextAsset]:
             self._basevertices = [(0,0), 
                 (0,self.edgedef.height), 
                 (self.edgedef.width,self.edgedef.height),
                 (self.edgedef.width,0)]
-        elif type(self.edgedef) is PolygonAsset:
+        elif assettype is PolygonAsset:
             self._basevertices = self.edgedef.path[:-1]
-        elif type(self.edgedef) is LineAsset:
+        elif assettype is LineAsset:
             self._basevertices = [(0,0), 
                 (self.edgedef.deltaX, self.edgedef.deltaY)]
-                
+        elif assettype is EllipseAsset:
+            hw = self.edgedef.halfw
+            hh = self.edgedef.halfh
+            self._basevertices = [(-hw,-hh), (-hw,hh), (hw,hh), (hw,-hh)]
+
     def _xformVertices(self):
         """
         Create window-relative list of vertex coordinates for boundary
