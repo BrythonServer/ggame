@@ -667,9 +667,9 @@ class Sprite(object):
             self._basevertices = [(0,0), 
                 (self.edgedef.deltaX, self.edgedef.deltaY)]
         elif assettype is EllipseAsset:
-            hw = self.edgedef.halfw
-            hh = self.edgedef.halfh
-            self._basevertices = [(-hw,-hh), (-hw,hh), (hw,hh), (hw,-hh)]
+            w = self.edgedef.halfw * 2
+            h = self.edgedef.halfh * 2
+            self._basevertices = [(0,0), (0,h), (w,h), (w,0)]
 
     def _xformVertices(self):
         """
@@ -1439,7 +1439,7 @@ class App(object):
             App._win.unbind(MouseEvent.click)
             App._win.unbind(MouseEvent.dblclick)
             App._win.destroy()
-        App._win = Nones
+        App._win = None
         for s in list(App.spritelist):
             s.destroy()
         App.spritelist = []
@@ -1548,7 +1548,8 @@ if __name__ == '__main__':
     circ2 = CircleAsset(55, line, blue)
     bun = ImageAsset('bunny.png')
     rect = RectangleAsset(30,150)
-    spr = Sprite(rect, (200,250))
+    ell = EllipseAsset(100,25)
+    spr = Sprite(ell, (200,250))
     spr2 = Sprite(poly, (375, 255))
     # TRYING to get the extents to initialize!!
     spr2._extentsdirty = True
