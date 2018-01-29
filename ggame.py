@@ -322,6 +322,9 @@ class ImageAsset(_Asset):
                     dy = frame.h + margin
                 f = Frame(frame.x + dx * i, frame.y + dy * i, frame.w, frame.h)
                 GFX = self._subframe(GFX, f)
+            else:
+                self.width = GFX.width
+                self.height = GFX.height
             self.GFXlist.append(GFX)
 
 
@@ -664,9 +667,9 @@ class Sprite(object):
             self._basevertices = [(0,0), 
                 (self.edgedef.deltaX, self.edgedef.deltaY)]
         elif assettype is EllipseAsset:
-            hw = self.edgedef.halfw
-            hh = self.edgedef.halfh
-            self._basevertices = [(-hw,-hh), (-hw,hh), (hw,hh), (hw,-hh)]
+            w = self.edgedef.halfw * 2
+            h = self.edgedef.halfh * 2
+            self._basevertices = [(0,0), (0,h), (w,h), (w,0)]
 
     def _xformVertices(self):
         """
@@ -683,14 +686,10 @@ class Sprite(object):
             crsc = [(xp-x,yp-y) for xp,yp in self._basevertices]
             
         # absolute, rotated coordinates
-        if self.rotation != 0.0:
-            # trig func for rotation
-            c = math.cos(self.rotation)
-            s = math.sin(self.rotation)
-            self._absolutevertices = [(self.x + x*c + y*s, self.y + -x*s + y*c) 
-                                        for x,y in crsc]
-        else:
-            self._absolutevertices = crsc
+        c = math.cos(self.rotation)
+        s = math.sin(self.rotation)
+        self._absolutevertices = [(self.x + x*c + y*s, self.y + -x*s + y*c) 
+                                    for x,y in crsc]
 
 
     def _setExtents(self):
@@ -1547,12 +1546,15 @@ if __name__ == '__main__':
     poly = PolygonAsset([(0,0),(50,75),(100,60),(90,150),(45,100),(0,0)], line, red)
     circ = CircleAsset(75, line, red)
     circ2 = CircleAsset(55, line, blue)
-    spr = Sprite(circ, (200,250))
+    bun = ImageAsset('bunny.png')
+    rect = RectangleAsset(30,150)
+    ell = EllipseAsset(100,25)
+    spr = Sprite(ell, (200,250))
     spr2 = Sprite(poly, (375, 255))
     # TRYING to get the extents to initialize!!
     spr2._extentsdirty = True
     spr2._setExtents()
-    spr2.rotation = 0.0001
+    spr2.rotation = 0.000
     # /\ this does it
     h1 = Sprite(LineAsset(500,0))
     h2 = Sprite(LineAsset(500,0))
