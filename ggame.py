@@ -1532,7 +1532,7 @@ if __name__ == '__main__':
     def test(event):
         print("BOOM")
         x = input("Enter something")
-        print(stex)
+        print(x)
 
     def testm(event):
         print('squeek!')
@@ -1548,8 +1548,8 @@ if __name__ == '__main__':
     circ2 = CircleAsset(55, line, blue)
     bun = ImageAsset('bunny.png')
     rect = RectangleAsset(30,150)
-    ell = EllipseAsset(100,25)
-    spr = Sprite(ell, (200,250))
+    ell = EllipseAsset(10,3)
+    spr = Sprite(ell, (200,300))
     spr2 = Sprite(poly, (375, 255))
     # TRYING to get the extents to initialize!!
     spr2._extentsdirty = True
@@ -1588,6 +1588,7 @@ if __name__ == '__main__':
             xstep = xstep * -1
         spr.rotation = spr.rotation + 10*xstep
         spr.scale = scale
+        spr.x += 1
         spr._setExtents()
         h1.y = spr.ymin
         h2.y = spr.ymax
