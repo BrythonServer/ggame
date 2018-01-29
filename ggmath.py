@@ -1,7 +1,7 @@
 # ggmath - ggame extensions for geometry and mathematics in the browser
 
 from ggame import Color, LineStyle, LineAsset, CircleAsset, Sprite, App
-from ggame import TextAsset
+from ggame import TextAsset, ImageAsset, PolygonAsset
 from abc import ABCMeta, abstractmethod
 
 from math import sin, cos, sqrt
@@ -352,6 +352,50 @@ class LineSegment(_MathVisual):
         pass
 
 
+class Bunny(_MathVisual):
+    
+    def __init__(self, pos):
+        self._pos = self.Eval(pos)  # create a *callable* position function
+        self._ppos = MathApp.logicalToPhysical(self._pos()) # physical position
+        self.polyasset = PolygonAsset([(0,0), (-15,10),(15,10),(0,0)])
+        super().__init__(self.polyasset, self._ppos)
+        self.speed = 1
+        self.center = (0.5, 0.5)
+        
+    def __call__(self):
+        return self._pos()
+
+    def _newAsset(self, pos):
+        ppos = MathApp.logicalToPhysical(pos())
+        if ppos != self._ppos:
+            self._ppos = ppos
+            self._updateAsset(PolygonAsset([(0,0), (-15,10),(15,10),(0,0)]))
+            self.position = ppos
+            self._setExtents()
+
+    def _touchAsset(self):
+        self._newAsset(self._pos)
+
+    def step(self):
+        print("step")
+        #step = MathApp.translateLogicalToPhysical(self.speed * cos(self.rotation), 
+        #    self.speed * sin(self.rotation))
+        #self.x = self.x + step[0]
+        #self.y = self.y + step[1]
+        self._touchAsset()
+        
+    
+
+    #def physicalPointTouching(self, ppos):
+    #    return MathApp.distance(ppos, self._ppos) < self._size
+        
+    #def translate(self, pdisp):
+    #    ldisp = MathApp.translatePhysicalToLogical(pdisp)
+    #    pos = self._pos()
+    #    self._pos = self.Eval((pos[0] + ldisp[0], pos[1] + ldisp[1]))
+    #    self._touchAsset()
+
+
 class MathApp(App):
     
     _xscale = 200   # pixels per unit
@@ -417,6 +461,16 @@ class MathApp(App):
     def translatePhysicalToLogical(cls, pp):
         xxform = lambda xvalue, xscale: xvalue/xscale
         yxform = lambda yvalue, yscale: -yvalue/yscale
+
+        try:
+            return (xxform(pp[0], cls._xscale), yxform(pp[1], cls._yscale))
+        except AttributeError:
+            return pp
+
+    @classmethod
+    def translateLogicalToPhysical(cls, pp):
+        xxform = lambda xvalue, xscale: xvalue*xscale
+        yxform = lambda yvalue, yscale: -yvalue*yscale
 
         try:
             return (xxform(pp[0], cls._xscale), yxform(pp[1], cls._yscale))
@@ -529,6 +583,9 @@ if __name__ == "__main__":
     i1 = InputNumeric((200,300), 99.9, size=20, positioning="physical")
     l2 = Label((-4,1), lambda: "{0}".format(i1()), size=20)
     b1 = InputButton((200,350), "RESET", lambda: t.reset(), size=20, positioning="physical")
+    
+    r = Bunny((1,1))
+    
     
     ap = MathApp((100,100))
     ap.run()
