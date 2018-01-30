@@ -4,7 +4,7 @@ from ggame import Color, LineStyle, LineAsset, CircleAsset, Sprite, App
 from ggame import TextAsset, ImageAsset, PolygonAsset
 from abc import ABCMeta, abstractmethod
 
-from math import sin, cos, sqrt
+from math import sin, cos, sqrt, pi
 from time import time
 
 
@@ -386,7 +386,7 @@ class Bunny():
         
     def Move(self, d):
         next = (self.pos[0] + d*cos(self.angle), self.pos[1] + d*sin(self.angle))
-        LineSegment(Point(self.pos), Point(next), LineStyle(1, self.color))
+        LineSegment(Point(self.pos, 0), Point(next, 0), LineStyle(1, self.color))
         self.pos = next
 
     #def physicalPointTouching(self, ppos):
@@ -584,27 +584,29 @@ if __name__ == "__main__":
         return retval
         
     
-    p1 = Point((0,0))
-    p1.movable = True
-    p2 = Point((2,0))
-    p2.movable = True
-    p3 = Point((3,0))
-    t = Timer()
-    p4 = Point(lambda :(3, (int(t.time*100) % 400)/100))
+    #p1 = Point((0,0))
+    #p1.movable = True
+    #p2 = Point((2,0))
+    #p2.movable = True
+    #p3 = Point((3,0))
+    #t = Timer()
+    #p4 = Point(lambda :(3, (int(t.time*100) % 400)/100))
     
-    p5 = Point(lambda :nextcoord())
+    #p5 = Point(lambda :nextcoord())
     
-    LineSegment(p1,p4)
+    #LineSegment(p1,p4)
 
-    l1 = Label((-4,2), lambda: "Elapsed Time: {0:.0}".format(t.time), size=20, width=400, positioning="logical")
-    i1 = InputNumeric((200,300), 99.9, size=20, positioning="physical")
-    l2 = Label((-4,1), lambda: "{0}".format(i1()), size=20)
-    b1 = InputButton((200,350), "RESET", lambda: t.reset(), size=20, positioning="physical")
+    #l1 = Label((-4,2), lambda: "Elapsed Time: {0:.0}".format(t.time), size=20, width=400, positioning="logical")
+    #i1 = InputNumeric((200,300), 99.9, size=20, positioning="physical")
+    #l2 = Label((-4,1), lambda: "{0}".format(i1()), size=20)
+    #b1 = InputButton((200,350), "RESET", lambda: t.reset(), size=20, positioning="physical")
     
     
     b = Bunny()
     b.PenDown()
-    b.Move(3)
-    
+    for i in range(100):
+        b.Right(1.5)
+        b.Move(i/25)
+
     ap = MathApp((100,100))
     ap.run()
