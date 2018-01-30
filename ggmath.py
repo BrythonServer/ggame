@@ -362,9 +362,7 @@ class Bunny():
         self.Color(0)
         self.PenUp() 
         self.SetAngle(0)
-        self.moves = []
-        self.movex = 0
-        
+
     def PenUp(self):
         self.down = False
 
@@ -388,7 +386,7 @@ class Bunny():
         
     def Move(self, d):
         next = (self.pos[0] + d*cos(self.angle), self.pos[1] + d*sin(self.angle))
-        self.moves.append((self.pos, next, self.color if self.down else None))
+        LineSegment(Point(self.pos), Point(next), LineStyle(1, self.color))
         self.pos = next
 
     #def physicalPointTouching(self, ppos):
