@@ -366,7 +366,7 @@ class Bunny():
     def PenUp(self):
         self.down = False
 
-    def PenDown(self);
+    def PenDown(self):
         self.down = True
         
     def Color(self, color):
@@ -602,6 +602,9 @@ if __name__ == "__main__":
     b1 = InputButton((200,350), "RESET", lambda: t.reset(), size=20, positioning="physical")
     
     
+    b = Bunny()
+    b.PenDown()
+    b.Move(3)
     
     ap = MathApp((100,100))
     ap.run()
