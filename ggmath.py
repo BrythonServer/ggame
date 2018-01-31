@@ -276,11 +276,15 @@ class Point(_MathVisual):
 
     def _newAsset(self, pos, size, color, style):
         ppos = MathApp.logicalToPhysical(pos())
+        if size != self._size or color != self._color or style != self._style:
+            self._updateAsset(CircleAsset(size, style, color))
+            self._size = size
+            self._color = color
+            self._style = style
+            
         if ppos != self._ppos:
             self._ppos = ppos
-            self._updateAsset(CircleAsset(size, style, color))
             self.position = ppos
-            self._setExtents()
 
     def _touchAsset(self):
         self._newAsset(self._pos, self._size, self._color, self._style)
