@@ -357,6 +357,18 @@ class LineSegment(_MathVisual):
 
 class Bunny():
     
+    """Bunny class is similar to turtle. Needs refinement.
+    
+    Example use:
+    
+        b = Bunny()
+        b.PenDown()
+        for i in range(100):
+            b.Right(1.5)
+            b.Move(i/25)
+
+    """
+    
     def __init__ (self):
         self.GoTo(0,0)
         self.Color(0)
@@ -602,11 +614,6 @@ if __name__ == "__main__":
     #b1 = InputButton((200,350), "RESET", lambda: t.reset(), size=20, positioning="physical")
     
     
-    b = Bunny()
-    b.PenDown()
-    for i in range(100):
-        b.Right(1.5)
-        b.Move(i/25)
 
     ap = MathApp((100,100))
     ap.run()
