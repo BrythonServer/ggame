@@ -1462,7 +1462,8 @@ class App(object):
         to use with the `key` paramter.
         """
         evtlist = App._eventdict.get((eventtype, key), [])
-        evtlist.append(callback)
+        if not callback in evtlist:
+            evtlist.append(callback)
         App._eventdict[(eventtype, key)] = evtlist
 
     @classmethod
@@ -1476,7 +1477,8 @@ class App(object):
         `ggame.MouseEvent` object when the event occurs.
         """
         evtlist = App._eventdict.get(eventtype, [])
-        evtlist.append(callback)
+        if not callback in evtlist:
+            evtlist.append(callback)
         App._eventdict[eventtype] = evtlist
 
     @classmethod

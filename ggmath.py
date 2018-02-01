@@ -1,10 +1,10 @@
 # ggmath - ggame extensions for geometry and mathematics in the browser
 
 from ggame import Color, LineStyle, LineAsset, CircleAsset, Sprite, App
-from ggame import TextAsset
+from ggame import TextAsset, ImageAsset, PolygonAsset
 from abc import ABCMeta, abstractmethod
 
-from math import sin, cos, sqrt
+from math import sin, cos, sqrt, pi
 from time import time
 
 
@@ -259,6 +259,7 @@ class InputNumeric(Label):
         return self._val
 
 
+
 class Point(_MathVisual):
     
     def __init__(self, pos, size=5, color=Color(0,1), style=LineStyle(0, Color(0,1))):
@@ -275,11 +276,15 @@ class Point(_MathVisual):
 
     def _newAsset(self, pos, size, color, style):
         ppos = MathApp.logicalToPhysical(pos())
+        if size != self._size or color != self._color or style != self._style:
+            self._updateAsset(CircleAsset(size, style, color))
+            self._size = size
+            self._color = color
+            self._style = style
+            
         if ppos != self._ppos:
             self._ppos = ppos
-            self._updateAsset(CircleAsset(size, style, color))
             self.position = ppos
-            self._setExtents()
 
     def _touchAsset(self):
         self._newAsset(self._pos, self._size, self._color, self._style)
@@ -352,6 +357,64 @@ class LineSegment(_MathVisual):
         pass
 
 
+
+
+class Bunny():
+    
+    """Bunny class is similar to turtle. Needs refinement.
+    
+    Example use:
+    
+        b = Bunny()
+        b.PenDown()
+        for i in range(100):
+            b.Right(1.5)
+            b.Move(i/25)
+
+    """
+    
+    def __init__ (self):
+        self.GoTo(0,0)
+        self.Color(0)
+        self.PenUp() 
+        self.SetAngle(0)
+
+    def PenUp(self):
+        self.down = False
+
+    def PenDown(self):
+        self.down = True
+        
+    def Color(self, color):
+        self.color = Color(color,1)
+        
+    def GoTo(self, x, y):
+        self.pos = (x,y)
+        
+    def SetAngle(self, a):
+        self.angle = a
+        
+    def Right(self, da):
+        self.angle = self.angle - da
+        
+    def Left(self, da):
+        self.angle = self.angle + da
+        
+    def Move(self, d):
+        next = (self.pos[0] + d*cos(self.angle), self.pos[1] + d*sin(self.angle))
+        LineSegment(Point(self.pos, 0), Point(next, 0), LineStyle(1, self.color))
+        self.pos = next
+
+    #def physicalPointTouching(self, ppos):
+    #    return MathApp.distance(ppos, self._ppos) < self._size
+        
+    #def translate(self, pdisp):
+    #    ldisp = MathApp.translatePhysicalToLogical(pdisp)
+    #    pos = self._pos()
+    #    self._pos = self.Eval((pos[0] + ldisp[0], pos[1] + ldisp[1]))
+    #    self._touchAsset()
+
+
 class MathApp(App):
     
     _xscale = 200   # pixels per unit
@@ -417,6 +480,16 @@ class MathApp(App):
     def translatePhysicalToLogical(cls, pp):
         xxform = lambda xvalue, xscale: xvalue/xscale
         yxform = lambda yvalue, yscale: -yvalue/yscale
+
+        try:
+            return (xxform(pp[0], cls._xscale), yxform(pp[1], cls._yscale))
+        except AttributeError:
+            return pp
+
+    @classmethod
+    def translateLogicalToPhysical(cls, pp):
+        xxform = lambda xvalue, xscale: xvalue*xscale
+        yxform = lambda yvalue, yscale: -yvalue*yscale
 
         try:
             return (xxform(pp[0], cls._xscale), yxform(pp[1], cls._yscale))
@@ -514,6 +587,19 @@ class MathApp(App):
 
 # test code here
 if __name__ == "__main__":
+    
+    index = 0
+    coordlist = [(1,1), (2,1), (2,0), (1,2), (1,1)]
+    
+    def nextcoord():
+        global index
+        if index == len(coordlist):
+            index = 0
+        retval = coordlist[index]
+        index = index + 1
+        return retval
+        
+    
     p1 = Point((0,0))
     p1.movable = True
     p2 = Point((2,0))
@@ -522,6 +608,7 @@ if __name__ == "__main__":
     t = Timer()
     p4 = Point(lambda :(3, (int(t.time*100) % 400)/100))
     
+    #p5 = Point(lambda :nextcoord())
     
     LineSegment(p1,p4)
 
@@ -530,5 +617,7 @@ if __name__ == "__main__":
     l2 = Label((-4,1), lambda: "{0}".format(i1()), size=20)
     b1 = InputButton((200,350), "RESET", lambda: t.reset(), size=20, positioning="physical")
     
+    
+
     ap = MathApp((100,100))
     ap.run()
