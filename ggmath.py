@@ -600,31 +600,34 @@ class PointMass(Point):
         self._setDynamic() # always dynamic
 
     def step(self):
-        print('step')
         super().step()
         dt = MathApp.time - self.lastTime
         self.lastTime = MathApp.time
         A = self.acceleration
-        print(A)
         dV = (a*dt for a in A)
-        dP = map(add, (v*dt for v in dV), (a*0.5*sqr(dt) for a in A))
-        self.V = map(add, self.V, self.DV)
+        print('one')
+        dP = map(add, (v*dt for v in dV), (a*0.5*dt*dt for a in A))
+        print('two')
+        self.V = map(add, self.V, dV)
+        print('three')
+        print(list(dP))
         self._pos = map(add, self._pos, dP)
+        print('four')
         self._ppos = MathApp.logicalToPhysical(self._pos())
         
     @property
     def force(self):
-        return forceAt(self._pos)
+        return self.forceAt(self._pos)
     
     def forceAt(self, pos):
-        return forceGrav(pos)
+        return self.forceGrav(pos)
     
     def forceGrav(self, pos):
         return (0,self.mass*self.g)
       
     @property
     def acceleration(self):
-        F = force
+        F = self.force
         return (f/self.mass for f in F)
         
     
