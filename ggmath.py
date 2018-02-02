@@ -3,6 +3,7 @@
 from ggame import Color, LineStyle, LineAsset, CircleAsset, Sprite, App
 from ggame import TextAsset, ImageAsset, PolygonAsset
 from abc import ABCMeta, abstractmethod
+from operator import add
 
 from math import sin, cos, sqrt, pi
 from time import time
@@ -589,15 +590,44 @@ class MathApp(App):
 
 
 class PointMass(Point):
-    
-    @abstractmethod
-    @property
-    def mass(self):
-        return 1
 
-    @setter
-    def mass(self, newmass):
+    def __init__(self, pos):
+        super().__init__(pos)
+        self.mass = 1
+        self.lastTime = MathApp.time
+        self.V = (0,0)
+        self.g = -9.81   #0
+
+    def step(self):
+        super().step()
+        dt = MathApp.time - self.lastTime
+        self.lastTime = MathApp.time
+        A = self.acceleration
+        dV = (a*dt for a in A)
+        dP = map(add, (v*dt for v in dV), (a*0.5*sqr(dt) for a in A))
+        self.V = map(add, self.V, self.DV)
+        self._pos = map(add, self._pos, dP)
+        self._ppos = MathApp.logicalToPhysical(self._pos())
         
+        
+    @property
+    def force(self):
+        return forceAt(self._pos)
+    
+    def forceAt(self, pos):
+        return forceGrav(pos)
+    
+    def forceGrav(self, pos):
+        return (0,self.mass*self.g)
+      
+    @property
+    def acceleration(self):
+        F = force
+        return (f/self.mass for f in F)
+        
+    
+        
+    
 
 
 # test code here
