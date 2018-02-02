@@ -260,21 +260,37 @@ class InputNumeric(Label):
         return self._val
 
 
+class _Point(_MathVisual, metaclass=ABCMeta):
     
-
-class Point(_MathVisual):
-    
-    def __init__(self, pos, size=5, color=Color(0,1), style=LineStyle(0, Color(0,1))):
+    def __init__(self, pos, asset):
         self._pos = self.Eval(pos)  # create a *callable* position function
         self._ppos = MathApp.logicalToPhysical(self._pos()) # physical position
-        self._size = size
-        self._color = color
-        self._style = style
-        super().__init__(CircleAsset(size, style, color), self._ppos)
+        super().__init__(asset, self._ppos)
         self.center = (0.5, 0.5)
         
     def __call__(self):
         return self._pos()
+
+    def step(self):
+        self._touchAsset()
+
+    def physicalPointTouching(self, ppos):
+        return MathApp.distance(ppos, self._ppos) < self._size
+        
+    def translate(self, pdisp):
+        ldisp = MathApp.translatePhysicalToLogical(pdisp)
+        pos = self._pos()
+        self._pos = self.Eval((pos[0] + ldisp[0], pos[1] + ldisp[1]))
+        self._touchAsset()
+
+
+class Point(_Point):
+
+    def __init__(self, pos, size=5, color=Color(0,1), style=LineStyle(0, Color(0,1))):
+        self._size = size
+        self._color = color
+        self._style = style
+        super().__init__(pos, CircleAsset(size, style, color))
 
     def _newAsset(self, pos, size, color, style):
         ppos = MathApp.logicalToPhysical(pos())
@@ -291,20 +307,23 @@ class Point(_MathVisual):
     def _touchAsset(self):
         self._newAsset(self._pos, self._size, self._color, self._style)
 
-    def step(self):
-        self._touchAsset()
-
-    def physicalPointTouching(self, ppos):
-        return MathApp.distance(ppos, self._ppos) < self._size
-        
-    def translate(self, pdisp):
-        ldisp = MathApp.translatePhysicalToLogical(pdisp)
-        pos = self._pos()
-        self._pos = self.Eval((pos[0] + ldisp[0], pos[1] + ldisp[1]))
-        self._touchAsset()
 
 
+class ImagePoint(_Point):
+    def __init__(self, pos, url, frame=None, qty=1, direction='horizontal', margin=0):
+        super().__init__(pos, ImageAsset(url, frame, qty, direction, margin))
 
+    def _newAsset(self, pos):
+        ppos = MathApp.logicalToPhysical(pos())
+        if ppos != self._ppos:
+            self._ppos = ppos
+            self.position = ppos
+
+    def _touchAsset(self):
+        self._newAsset(self._pos)
+
+
+    
 
 class LineSegment(_MathVisual):
     
@@ -589,10 +608,10 @@ class MathApp(App):
             cls._mathSelectableList.remove(obj)
 
 
-class PointMass(Point):
+class PointMass(ImagePoint):
 
     def __init__(self, pos):
-        super().__init__(pos)
+        super().__init__(pos, 'bunny.png')
         self.mass = 1
         self.lastTime = MathApp.time
         self.V = (0,0)
@@ -627,7 +646,7 @@ class PointMass(Point):
         return tuple(f/self.mass for f in F)
         
     
-        
+
     
 
 
@@ -666,5 +685,5 @@ if __name__ == "__main__":
     
     
 
-    ap = MathApp((100,100))
+    ap = MathApp((1,1))
     ap.run()
