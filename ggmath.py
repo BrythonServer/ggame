@@ -259,6 +259,7 @@ class InputNumeric(Label):
         return self._val
 
 
+    
 
 class Point(_MathVisual):
     
@@ -300,6 +301,8 @@ class Point(_MathVisual):
         pos = self._pos()
         self._pos = self.Eval((pos[0] + ldisp[0], pos[1] + ldisp[1]))
         self._touchAsset()
+
+
 
 
 class LineSegment(_MathVisual):
@@ -585,6 +588,18 @@ class MathApp(App):
             cls._mathSelectableList.remove(obj)
 
 
+class PointMass(Point):
+    
+    @abstractmethod
+    @property
+    def mass(self):
+        return 1
+
+    @setter
+    def mass(self, newmass):
+        
+
+
 # test code here
 if __name__ == "__main__":
     
@@ -599,6 +614,8 @@ if __name__ == "__main__":
         index = index + 1
         return retval
         
+    pm1 = PointMass((0.1,0))
+    print(pm1.mass)
     
     p1 = Point((0,0))
     p1.movable = True
