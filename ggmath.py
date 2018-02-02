@@ -597,18 +597,20 @@ class PointMass(Point):
         self.lastTime = MathApp.time
         self.V = (0,0)
         self.g = -9.81   #0
+        self._setDynamic() # always dynamic
 
     def step(self):
+        print('step')
         super().step()
         dt = MathApp.time - self.lastTime
         self.lastTime = MathApp.time
         A = self.acceleration
+        print(A)
         dV = (a*dt for a in A)
         dP = map(add, (v*dt for v in dV), (a*0.5*sqr(dt) for a in A))
         self.V = map(add, self.V, self.DV)
         self._pos = map(add, self._pos, dP)
         self._ppos = MathApp.logicalToPhysical(self._pos())
-        
         
     @property
     def force(self):
@@ -645,8 +647,7 @@ if __name__ == "__main__":
         return retval
         
     pm1 = PointMass((0.1,0))
-    print(pm1.mass)
-    
+
     p1 = Point((0,0))
     p1.movable = True
     p2 = Point((2,0))
