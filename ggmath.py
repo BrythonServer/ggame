@@ -600,18 +600,17 @@ class PointMass(Point):
         self._setDynamic() # always dynamic
 
     def step(self):
-        super().step()
         dt = MathApp.time - self.lastTime
         self.lastTime = MathApp.time
         A = self.acceleration
         dV = tuple(a*dt for a in A)
-        A = tuple(v*dt for v in dV)
+        A = tuple(v*dt for v in self.V)
         B = tuple(a*0.5*dt*dt for a in A)
         dP = tuple(map(add, A, B))
         self.V = tuple(map(add, self.V, dV))
         self._pos = self.Eval(tuple(map(add, self._pos(), dP)))
-        self._ppos = MathApp.logicalToPhysical(self._pos())
-        
+        super().step()
+
     @property
     def force(self):
         return self.forceAt(self._pos)
