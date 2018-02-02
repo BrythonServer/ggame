@@ -607,9 +607,9 @@ class PointMass(Point):
         dV = tuple(a*dt for a in A)
         A = tuple(v*dt for v in dV)
         B = tuple(a*0.5*dt*dt for a in A)
-        dP = map(add, A, B)
-        self.V = map(add, self.V, dV)
-        self._pos = map(add, self._pos, dP)
+        dP = tuple(map(add, A, B))
+        self.V = tuple(map(add, self.V, dV))
+        self._pos = self.Eval(tuple(map(add, self._pos(), dP)))
         self._ppos = MathApp.logicalToPhysical(self._pos())
         
     @property
