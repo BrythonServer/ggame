@@ -604,15 +604,12 @@ class PointMass(Point):
         dt = MathApp.time - self.lastTime
         self.lastTime = MathApp.time
         A = self.acceleration
-        dV = (a*dt for a in A)
-        print('one')
-        dP = map(add, (v*dt for v in dV), (a*0.5*dt*dt for a in A))
-        print('two')
+        dV = tuple(a*dt for a in A)
+        A = tuple(v*dt for v in dV)
+        B = tuple(a*0.5*dt*dt for a in A)
+        dP = map(add, A, B)
         self.V = map(add, self.V, dV)
-        print('three')
-        print(list(dP))
         self._pos = map(add, self._pos, dP)
-        print('four')
         self._ppos = MathApp.logicalToPhysical(self._pos())
         
     @property
@@ -628,7 +625,7 @@ class PointMass(Point):
     @property
     def acceleration(self):
         F = self.force
-        return (f/self.mass for f in F)
+        return tuple(f/self.mass for f in F)
         
     
         
