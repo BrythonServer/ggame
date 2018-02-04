@@ -164,7 +164,7 @@ class Slider(_MathVisual):
             ppos = MathApp.logicalToPhysical(pos())
         else:
             ppos = pos()
-        if ppos != self._ppos or text != self._ptext:
+        if ppos != self._ppos:
             self._ppos = ppos
             self.position = ppos
 
@@ -725,7 +725,9 @@ if __name__ == "__main__":
 
     p1 = Point((0,0))
     p1.movable = True
+    
     s1 = Slider((0, 1), 0, 10, 5)
+    
     p2 = Point((2,0))
     p2.movable = True
     p3 = Point((3,0))
