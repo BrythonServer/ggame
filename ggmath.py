@@ -152,9 +152,6 @@ class Slider(_MathVisual):
         else:
             self._ppos = MathApp.logicalToPhysical(self._pos())
         
-        MathApp.listenKeyEvent("keypress", "a", self.defaultLeft)
-        MathApp.listenKeyEvent("keypress", "d", self.defaultRight)
-
         super().__init__(RectangleAsset(self._width, self._size,
             LineStyle(1, self.color), Color(0,0)), self._ppos)
         self.selectable = True  # must be after super init!
@@ -198,25 +195,29 @@ class Slider(_MathVisual):
         self.setThumb()
         
     def select(self):
+        print("selecting slider")
         super().select()
-        MathApp.listenKeyEvent("keypress", "left arrow", self.defaultLeft)
-        MathApp.listenKeyEvent("keypress", "right arrow", self.defaultRight)
+        MathApp.listenKeyEvent("keypress", "a", self.defaultLeft)
+        MathApp.listenKeyEvent("keypress", "d", self.defaultRight)
+        print("listening...")
 
     def unselect(self):
+        print("unselecting slider")
         super().unselect()
         try:
-            MathApp.unlistenKeyEvent("keypress", "left arrow", self.defaultLeft)
-            MathApp.unlistenKeyEvent("keypress", "right arrow", self.defaultRight)
+            MathApp.unlistenKeyEvent("keypress", "a", self.defaultLeft)
+            MathApp.unlistenKeyEvent("keypress", "d", self.defaultRight)
+            print("unlistening...")
         except ValueError:
             pass
 
-    def defaultLeft(self):
+    def defaultLeft(self, event):
         print('left')
-        self.increment(-self._step)
+        #self.increment(-self._step)
 
-    def defaultRight(self):
+    def defaultRight(self, event):
         print('right')
-        self.increment(self._step)
+        #self.increment(self._step)
     
     def physicalPointTouching(self, ppos):
         return (ppos[0] >= self._ppos[0] and 
