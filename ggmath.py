@@ -219,7 +219,7 @@ class Slider(_MathVisual):
     def moveLeft(self, event):
         self.increment(-self._step)
 
-    def moveRght(self, event):
+    def moveRight(self, event):
         self.increment(self._step)
         
     def moveCenter(self, event):
