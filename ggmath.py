@@ -207,14 +207,19 @@ class Slider(_MathVisual):
         super().select()
         MathApp.listenKeyEvent("keydown", "left arrow", self.moveLeft)
         MathApp.listenKeyEvent("keydown", "right arrow", self.moveRight)
+        MathApp.listenMouseEvent("mouseclick", self.mouseClick)
 
     def unselect(self):
         super().unselect()
         try:
             MathApp.unlistenKeyEvent("keydown", "left arrow", self.moveLeft)
             MathApp.unlistenKeyEvent("keydown", "right arrow", self.moveRight)
+            MathApp.unlistenMouseEvent("mouseclick", self.mouseClick)
         except ValueError:
             pass
+
+    def mouseClick(self, event):
+        print(event.x, event.y)
 
     def moveLeft(self, event):
         self.increment(-self._step)
