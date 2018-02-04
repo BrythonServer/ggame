@@ -777,7 +777,8 @@ if __name__ == "__main__":
 
     l1 = Label((-4,2), lambda: "Elapsed Time: {0:.0}".format(t.time), size=20, width=400, positioning="logical")
     i1 = InputNumeric((200,300), 99.9, size=20, positioning="physical")
-    l2 = Label((-4,1), lambda: "{0}".format(i1()), size=20)
+    #l2 = Label((-4,1), lambda: "{0}".format(i1()), size=20)
+    l3 = Label((-4,1), lambda: "{0:4.2f}".format(s1()), size=20)
     b1 = InputButton((200,350), "RESET", lambda: t.reset(), size=20, positioning="physical")
     
     
