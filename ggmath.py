@@ -726,7 +726,7 @@ if __name__ == "__main__":
     p1 = Point((0,0))
     p1.movable = True
     
-    s1 = Slider((0, 1), 0, 10, 5)
+    s1 = Slider((2, -1), 0, 10, 2, positioning='logical')
     
     p2 = Point((2,0))
     p2.movable = True
