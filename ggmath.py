@@ -136,7 +136,7 @@ class Slider(_MathVisual):
         self._min = minval
         self._max = maxval
         self.initial = initial
-        self.value = initial
+        self._val = initial
         
         self._steps = kwargs.get('steps', 50)
         self._step = (self._max-self._min)/self._steps
@@ -161,10 +161,10 @@ class Slider(_MathVisual):
             
             
     def __call__(self):
-        return self.value
+        return self._val
 
     def thumbXY(self):
-        return (self._ppos[0]+(self.value-self._min)*self._width/(self._max-self._min),
+        return (self._ppos[0]+(self._val-self._min)*self._width/(self._max-self._min),
                 self._ppos[1]+1)
             
     def _newAsset(self, pos):
@@ -187,32 +187,33 @@ class Slider(_MathVisual):
         pass
     
     def increment(self, step):
-        self.value = self.value + step
-        if self.value <= self._min:
-            self.value = self._min
-        elif self.value >= self._max:
-            self.value = self._max
+        self._val = self._val + step
+        if self._val <= self._min:
+            self._val = self._min
+        elif self._val >= self._max:
+            self._val = self._max
         self.setThumb()
         
     def select(self):
         print("selecting slider")
         super().select()
-        MathApp.listenKeyEvent("keypress", "a", self.defaultLeft)
-        MathApp.listenKeyEvent("keypress", "d", self.defaultRight)
+        MathApp.listenKeyEvent("keypress", "*", self.defaultLeft)
+        #MathApp.listenKeyEvent("keypress", "", self.defaultRight)
         print("listening...")
 
     def unselect(self):
         print("unselecting slider")
         super().unselect()
         try:
-            MathApp.unlistenKeyEvent("keypress", "a", self.defaultLeft)
-            MathApp.unlistenKeyEvent("keypress", "d", self.defaultRight)
+            MathApp.unlistenKeyEvent("keypress", "*", self.defaultLeft)
+            #MathApp.unlistenKeyEvent("keypress", "d", self.defaultRight)
             print("unlistening...")
         except ValueError:
             pass
 
     def defaultLeft(self, event):
         print('left')
+        print(event.key)
         #self.increment(-self._step)
 
     def defaultRight(self, event):
