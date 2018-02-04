@@ -141,7 +141,7 @@ class Slider(_MathVisual):
         self._leftctrl = kwargs.get('leftkey', None)
         self._rightctrl = kwargs.get('rightkey', None)
         self._centerctrl = kwargs.get('centerkey', None)
-        self.positioning = kwargs.get('positioning', 'logical')
+        self._positioning = kwargs.get('positioning', 'logical')
         self._size = kwargs.get('size', 20)
         self._width = kwargs.get('width', 200)
         self.color = kwargs.get('color', Color(0,1))
@@ -725,7 +725,7 @@ if __name__ == "__main__":
 
     p1 = Point((0,0))
     p1.movable = True
-    s1 = Slider((0, 1))
+    s1 = Slider((0, 1), 0, 10, 5)
     p2 = Point((2,0))
     p2.movable = True
     p3 = Point((3,0))
