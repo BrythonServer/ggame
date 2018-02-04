@@ -132,7 +132,7 @@ class Timer(_MathDynamic):
 class Slider(_MathVisual):
     
     def __init__(self, pos, minval, maxval, initial, *args, **kwargs):
-        self.pos = self.Eval(pos)
+        self._pos = self.Eval(pos)
         self._min = minval
         self._max = maxval
         self.initial = initial
@@ -146,14 +146,14 @@ class Slider(_MathVisual):
         self._width = kwargs.get('width', 200)
         self.color = kwargs.get('color', Color(0,1))
         if self._positioning == "physical":
-            self._ppos = pos
+            self._ppos = self._pos()
         else:
-            self._ppos = MathApp.logicalToPhysical(pos)
+            self._ppos = MathApp.logicalToPhysical(self._pos())
         super().__init__(RectangleAsset(self._width, self._size,
             LineStyle(1, self.color), Color(0,0)), self._ppos)
         self.thumb = Sprite(RectangleAsset(max(self._width/40, 1), 
             self._size-2, LineStyle(1, self.color), self.color), 
-            self.thumbXY)
+            self.thumbXY())
 
     def thumbXY(self):
         return (self._ppos[0]+(self.value-self._min)*self._width/(self._max-self._min),
