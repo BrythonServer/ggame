@@ -129,6 +129,56 @@ class Timer(_MathDynamic):
         self.time = MathApp.time - self._reset
         
 
+class Slider(_MathVisual):
+    
+    def __init__(self, pos, min, max, initial, *args, **kwargs):
+        self._pos = self.Eval(pos)
+        self.min = min
+        self.max = max
+        self.initial = initial
+        self.value = initial
+        
+        self.leftctrl = kwargs.get('leftkey', None)
+        self.rightctrl = kwargs.get('rightkey', None)
+        self.centerctrl = kwargs.get('centerkey', None)
+        self.positioning = kwargs.get('positioning', 'logical')
+        self.size = kwargs.get('size', 20)
+        self.width = kwargs.get('width', 200)
+        self.color = kwargs.get('color', Color(0,1))
+        if self._positioning == "physical":
+            self._ppos = pos
+        else:
+            self._ppos = MathApp.logicalToPhysical(pos)
+        super().__init__(RectangleAsset(self.width, self.height,
+            LineStle(1, self.color), Color(0,0)), self._ppos)
+        self.thumb = Sprite(RectangleAsset(max([self.width/40, 1]), 
+            self.height-2, LineStyle(1, self.color), self.color), 
+            self.thumbXY)
+
+    def thumbXY(self):
+        return (self._ppos[0]+(self.value-self.min)*self.width/(self.max-self.min),
+                self._ppos[1]+1)
+            
+    def _newAsset(self, pos):
+        if self._positioning != "physical":
+            ppos = MathApp.logicalToPhysical(pos())
+        else:
+            ppos = pos()
+        if ppos != self._ppos or text != self._ptext:
+            self._ppos = ppos
+            self.position = ppos
+
+            
+    def _touchAsset(self, self._pos):
+        self._newAsset()
+        
+    def setThumb(self):
+        self.thumb.pos = self.thumbXY()
+                
+    def step(self):
+        pass
+
+
 class Label(_MathVisual):
     
     def __init__(self, pos, text, positioning="logical", size=10, width=200, color=Color(0,1)):
@@ -645,9 +695,7 @@ class PointMass(ImagePoint):
         F = self.force
         return tuple(f/self.mass for f in F)
         
-    
 
-    
 
 
 # test code here
@@ -664,7 +712,7 @@ if __name__ == "__main__":
         index = index + 1
         return retval
         
-    pm1 = PointMass((0.1,0))
+    #pm1 = PointMass((0.1,0))
 
     p1 = Point((0,0))
     p1.movable = True
