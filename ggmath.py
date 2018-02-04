@@ -156,6 +156,13 @@ class Slider(_MathVisual):
             LineStyle(1, self.color), Color(0,0)), self._ppos)
         self.selectable = True  # must be after super init!
         self._thumbwidth = max(self._width/40, 1)
+        if self._leftctrl:
+            MathApp.listenKeyEvent("keydown", self._leftctrl, self.moveLeft)
+        if self._rightctrl:
+            MathApp.listenKeyEvent("keydown", self._rightctrl, self.moveRight)
+        if self._centerctrl:
+            MathApp.listenKeyEvent("keydown", self._centerctrl, self.moveCenter)
+
         self.thumb = Sprite(RectangleAsset(self._thumbwidth, 
             self._size-2, LineStyle(1, self.color), self.color), 
             self.thumbXY())
@@ -198,22 +205,27 @@ class Slider(_MathVisual):
         
     def select(self):
         super().select()
-        MathApp.listenKeyEvent("keydown", "left arrow", self.defaultLeft)
-        MathApp.listenKeyEvent("keydown", "right arrow", self.defaultRight)
+        MathApp.listenKeyEvent("keydown", "left arrow", self.moveLeft)
+        MathApp.listenKeyEvent("keydown", "right arrow", self.moveRight)
 
     def unselect(self):
         super().unselect()
         try:
-            MathApp.unlistenKeyEvent("keypress", "left arrow", self.defaultLeft)
-            MathApp.unlistenKeyEvent("keypress", "right arrow", self.defaultRight)
+            MathApp.unlistenKeyEvent("keydown", "left arrow", self.moveLeft)
+            MathApp.unlistenKeyEvent("keydown", "right arrow", self.moveRight)
         except ValueError:
             pass
 
-    def defaultLeft(self, event):
+    def moveLeft(self, event):
         self.increment(-self._step)
 
-    def defaultRight(self, event):
+    def moveRght(self, event):
         self.increment(self._step)
+        
+    def moveCenter(self, event):
+        self._val = (self._min + self._max)/2
+        self.setThumb()
+    
     
     def physicalPointTouching(self, ppos):
         return (ppos[0] >= self._ppos[0] and 
@@ -763,7 +775,8 @@ if __name__ == "__main__":
     p1 = Point((0,0))
     p1.movable = True
     
-    s1 = Slider((200, 400), 0, 10, 2, positioning='physical')
+    s1 = Slider((200, 400), 0, 10, 2, positioning='physical',
+        leftkey="a", rightkey="d", centerkey="s")
     
     p2 = Point((2,0))
     p2.movable = True
