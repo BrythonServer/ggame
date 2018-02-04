@@ -138,6 +138,8 @@ class Slider(_MathVisual):
         self.initial = initial
         self.value = initial
         
+        self._steps = kwargs.get('steps', 50)
+        self._step = (self._max-self._min)/self._steps
         self._leftctrl = kwargs.get('leftkey', None)
         self._rightctrl = kwargs.get('rightkey', None)
         self._centerctrl = kwargs.get('centerkey', None)
@@ -149,11 +151,20 @@ class Slider(_MathVisual):
             self._ppos = self._pos()
         else:
             self._ppos = MathApp.logicalToPhysical(self._pos())
+        
+        MathApp.listenKeyEvent("keypress", "left arrow", self.defaultLeft)
+        MathApp.listenKeyEvent("keypress", "right arrow", self.defaultRight)
+        self.selectable = True
+
         super().__init__(RectangleAsset(self._width, self._size,
             LineStyle(1, self.color), Color(0,0)), self._ppos)
         self.thumb = Sprite(RectangleAsset(max(self._width/40, 1), 
             self._size-2, LineStyle(1, self.color), self.color), 
             self.thumbXY())
+            
+            
+    def __call__(self):
+        return self.value
 
     def thumbXY(self):
         return (self._ppos[0]+(self.value-self._min)*self._width/(self._max-self._min),
@@ -167,17 +178,34 @@ class Slider(_MathVisual):
         if ppos != self._ppos:
             self._ppos = ppos
             self.position = ppos
-
+            self.setThumb()
             
     def _touchAsset(self):
         self._newAsset(self._pos)
         
     def setThumb(self):
-        self.thumb.pos = self.thumbXY()
+        self.thumb.position = self.thumbXY()
                 
     def step(self):
         pass
+    
+    def increment(self, step):
+        self.value = self.value + step
+        if self.value <= self._min:
+            self.value = self._min
+        elif self.value >= self._max:
+            self.value = self._max
+        self.setThumb()
+        
+    
+    def defaultLeft(self):
+        if self.selected:
+            self.increment(-self._step)
 
+    def defaultRight(self):
+        if self.selected:
+            self.increment(self._step)
+    
     def physicalPointTouching(self, ppos):
         return (ppos[0] >= self._ppos[0] and 
             ppos[0] <= self._ppos[0] + self._width and
@@ -726,7 +754,7 @@ if __name__ == "__main__":
     p1 = Point((0,0))
     p1.movable = True
     
-    s1 = Slider((2, -1), 0, 10, 2, positioning='logical')
+    s1 = Slider((200, 400), 0, 10, 2, positioning='physical')
     
     p2 = Point((2,0))
     p2.movable = True
