@@ -154,10 +154,10 @@ class Slider(_MathVisual):
         
         MathApp.listenKeyEvent("keypress", "a", self.defaultLeft)
         MathApp.listenKeyEvent("keypress", "d", self.defaultRight)
-        self.selectable = True
 
         super().__init__(RectangleAsset(self._width, self._size,
             LineStyle(1, self.color), Color(0,0)), self._ppos)
+        self.selectable = True  # must be after super init!
         self.thumb = Sprite(RectangleAsset(max(self._width/40, 1), 
             self._size-2, LineStyle(1, self.color), self.color), 
             self.thumbXY())
