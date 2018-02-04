@@ -155,7 +155,8 @@ class Slider(_MathVisual):
         super().__init__(RectangleAsset(self._width, self._size,
             LineStyle(1, self.color), Color(0,0)), self._ppos)
         self.selectable = True  # must be after super init!
-        self.thumb = Sprite(RectangleAsset(max(self._width/40, 1), 
+        self._thumbwidth = max(self._width/40, 1)
+        self.thumb = Sprite(RectangleAsset(self._thumbwidth, 
             self._size-2, LineStyle(1, self.color), self.color), 
             self.thumbXY())
             
@@ -164,7 +165,8 @@ class Slider(_MathVisual):
         return self._val
 
     def thumbXY(self):
-        return (self._ppos[0]+(self._val-self._min)*self._width/(self._max-self._min),
+        return (self._ppos[0]+(self._val-self._min)*
+                (self._width-self._thumbwidth)/(self._max-self._min),
                 self._ppos[1]+1)
             
     def _newAsset(self, pos):
@@ -195,30 +197,23 @@ class Slider(_MathVisual):
         self.setThumb()
         
     def select(self):
-        print("selecting slider")
         super().select()
-        MathApp.listenKeyEvent("keypress", "*", self.defaultLeft)
-        #MathApp.listenKeyEvent("keypress", "", self.defaultRight)
-        print("listening...")
+        MathApp.listenKeyEvent("keydown", "left arrow", self.defaultLeft)
+        MathApp.listenKeyEvent("keydown", "right arrow", self.defaultRight)
 
     def unselect(self):
-        print("unselecting slider")
         super().unselect()
         try:
-            MathApp.unlistenKeyEvent("keypress", "*", self.defaultLeft)
-            #MathApp.unlistenKeyEvent("keypress", "d", self.defaultRight)
-            print("unlistening...")
+            MathApp.unlistenKeyEvent("keypress", "left arrow", self.defaultLeft)
+            MathApp.unlistenKeyEvent("keypress", "right arrow", self.defaultRight)
         except ValueError:
             pass
 
     def defaultLeft(self, event):
-        print('left')
-        print(event.key)
-        #self.increment(-self._step)
+        self.increment(-self._step)
 
     def defaultRight(self, event):
-        print('right')
-        #self.increment(self._step)
+        self.increment(self._step)
     
     def physicalPointTouching(self, ppos):
         return (ppos[0] >= self._ppos[0] and 
