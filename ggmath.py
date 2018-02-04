@@ -1,7 +1,7 @@
 # ggmath - ggame extensions for geometry and mathematics in the browser
 
 from ggame import Color, LineStyle, LineAsset, CircleAsset, Sprite, App
-from ggame import TextAsset, ImageAsset, PolygonAsset
+from ggame import TextAsset, ImageAsset, PolygonAsset, RectangleAsset
 from abc import ABCMeta, abstractmethod
 from operator import add
 
@@ -131,10 +131,10 @@ class Timer(_MathDynamic):
 
 class Slider(_MathVisual):
     
-    def __init__(self, pos, min, max, initial, *args, **kwargs):
+    def __init__(self, pos, minval, maxval, initial, *args, **kwargs):
         self.pos = self.Eval(pos)
-        self._min = min
-        self._max = max
+        self._min = minval
+        self._max = maxval
         self.initial = initial
         self.value = initial
         
@@ -150,8 +150,8 @@ class Slider(_MathVisual):
         else:
             self._ppos = MathApp.logicalToPhysical(pos)
         super().__init__(RectangleAsset(self._width, self._size,
-            LineStle(1, self.color), Color(0,0)), self._ppos)
-        self.thumb = Sprite(RectangleAsset(max([self._width/40, 1]), 
+            LineStyle(1, self.color), Color(0,0)), self._ppos)
+        self.thumb = Sprite(RectangleAsset(max(self._width/40, 1), 
             self._size-2, LineStyle(1, self.color), self.color), 
             self.thumbXY)
 
