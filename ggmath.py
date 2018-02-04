@@ -132,31 +132,31 @@ class Timer(_MathDynamic):
 class Slider(_MathVisual):
     
     def __init__(self, pos, min, max, initial, *args, **kwargs):
-        self._pos = self.Eval(pos)
-        self.min = min
-        self.max = max
+        self.pos = self.Eval(pos)
+        self._min = min
+        self._max = max
         self.initial = initial
         self.value = initial
         
-        self.leftctrl = kwargs.get('leftkey', None)
-        self.rightctrl = kwargs.get('rightkey', None)
-        self.centerctrl = kwargs.get('centerkey', None)
+        self._leftctrl = kwargs.get('leftkey', None)
+        self._rightctrl = kwargs.get('rightkey', None)
+        self._centerctrl = kwargs.get('centerkey', None)
         self.positioning = kwargs.get('positioning', 'logical')
-        self.size = kwargs.get('size', 20)
-        self.width = kwargs.get('width', 200)
+        self._size = kwargs.get('size', 20)
+        self._width = kwargs.get('width', 200)
         self.color = kwargs.get('color', Color(0,1))
         if self._positioning == "physical":
             self._ppos = pos
         else:
             self._ppos = MathApp.logicalToPhysical(pos)
-        super().__init__(RectangleAsset(self.width, self.height,
+        super().__init__(RectangleAsset(self._width, self._size,
             LineStle(1, self.color), Color(0,0)), self._ppos)
-        self.thumb = Sprite(RectangleAsset(max([self.width/40, 1]), 
-            self.height-2, LineStyle(1, self.color), self.color), 
+        self.thumb = Sprite(RectangleAsset(max([self._width/40, 1]), 
+            self._size-2, LineStyle(1, self.color), self.color), 
             self.thumbXY)
 
     def thumbXY(self):
-        return (self._ppos[0]+(self.value-self.min)*self.width/(self.max-self.min),
+        return (self._ppos[0]+(self.value-self._min)*self._width/(self._max-self._min),
                 self._ppos[1]+1)
             
     def _newAsset(self, pos):
@@ -169,13 +169,22 @@ class Slider(_MathVisual):
             self.position = ppos
 
             
-    def _touchAsset(self, self._pos):
-        self._newAsset()
+    def _touchAsset(self):
+        self._newAsset(self._pos)
         
     def setThumb(self):
         self.thumb.pos = self.thumbXY()
                 
     def step(self):
+        pass
+
+    def physicalPointTouching(self, ppos):
+        return (ppos[0] >= self._ppos[0] and 
+            ppos[0] <= self._ppos[0] + self._width and
+            ppos[1] >= self._ppos[1] and 
+            ppos[1] <= self._ppos[1] + self._size)
+
+    def translate(self, pdisp):
         pass
 
 
@@ -716,6 +725,7 @@ if __name__ == "__main__":
 
     p1 = Point((0,0))
     p1.movable = True
+    s1 = Slider((0, 1))
     p2 = Point((2,0))
     p2.movable = True
     p3 = Point((3,0))
@@ -733,5 +743,5 @@ if __name__ == "__main__":
     
     
 
-    ap = MathApp((1,1))
+    ap = MathApp((100,100))
     ap.run()
