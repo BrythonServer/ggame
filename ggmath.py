@@ -143,7 +143,9 @@ class Timer(_MathDynamic):
     def callAfter(self, delay, callback, periodic=False):
         key = (self._start + delay, delay if periodic else 0)
         self.once.append(key)
-        self.callbacks[key] = self.callbacks.get(key, []).append(callback)
+        callbacklist = self.callbacks.get(key, [])
+        callbacklist.append(callback)
+        self.callbacks[key] = callbacklist
         self.once.sort()
         
     def callAt(self, time, callback):
@@ -846,9 +848,9 @@ if __name__ == "__main__":
     b1 = InputButton((200,350), "RESET", lambda: t.reset(), size=20, positioning="physical")
     
     
-    t.callAfter(1, one)
-    t.callAfter(2, two)
-    t.callAfter(3, three)
+    #t.callAfter(1, one)
+    #t.callAfter(2, two)
+    #t.callAfter(3, three)
     t.callEvery(1, tick)
     
 
