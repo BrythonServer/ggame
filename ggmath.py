@@ -119,6 +119,7 @@ class Timer(_MathDynamic):
     def __init__(self):
         super().__init__()
         self.once = []
+        self.callbacks = {}
         self.reset()
         self.step()
         self._start = self._reset  #first time
@@ -133,14 +134,16 @@ class Timer(_MathDynamic):
         self.time = MathApp.time - self._reset
         while self.once and self.once[0][0] <= MathApp.time:
             tickinfo = self.once.pop(0)
-            if tickinfo[2]:
-                nexttimers.append((tickinfo[2], tickinfo[1]))  # delay, callback
-            tickinfo[1](self)
+            if tickinfo[1]:
+                nexttimers.append((tickinfo[1], self.callbacks[tickinfo][0]))  # delay, callback
+            self.callbacks[tickinfo].pop()(self)
         for tickadd in nexttimers:
             self.callAfter(tickadd[0], tickadd[1], True)  # keep it going
 
     def callAfter(self, delay, callback, periodic=False):
-        self.once.append((self._start + delay, callback, delay if periodic else 0))
+        key = (self._start + delay, delay if periodic else 0)
+        self.once.append(key)
+        self.callbacks[key] = self.callbacks.get(key, []).append(callback)
         self.once.sort()
         
     def callAt(self, time, callback):
