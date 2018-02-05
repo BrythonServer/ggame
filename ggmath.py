@@ -135,18 +135,18 @@ class Timer(_MathDynamic):
         self.time = MathApp.time - self._reset
         while self.once and self.once[0][0] <= MathApp.time:
             tickinfo = self.once.pop(0)
-            if tickinfo[1]:
+            if tickinfo[1]:  # periodic?
                 nexttimers.append((tickinfo[1], self.callbacks[tickinfo][0]))  # delay, callback
-            calllist.append(self.callbacks[tickinfo].pop())
-            if not self.callbacks[tickinfo]:
-                del self.callbacks[tickinfo]
+            calllist.append(self.callbacks[tickinfo].pop()) # remove callback and queue it
+            if not self.callbacks[tickinfo]: # if the callback list is empty
+                del self.callbacks[tickinfo] # remove the dictionary entry altogether
         for tickadd in nexttimers:
             self.callAfter(tickadd[0], tickadd[1], True)  # keep it going
         for call in calllist:
-            call()
+            call(self)
 
     def callAfter(self, delay, callback, periodic=False):
-        key = (self._start + delay, delay if periodic else 0)
+        key = (self._start + self.time + delay, delay if periodic else 0)
         self.once.append(key)
         callbacklist = self.callbacks.get(key, [])
         callbacklist.append(callback)
@@ -829,6 +829,10 @@ if __name__ == "__main__":
         print("tick")
         
     #pm1 = PointMass((0.1,0))
+    
+    ip1 = ImagePoint((0.1,0), 'bunny.png')
+    t.callEvery(1, lambda: ip1.rotation += 0.1)
+
 
     p1 = Point((0,0))
     p1.movable = True
@@ -856,7 +860,8 @@ if __name__ == "__main__":
     #t.callAfter(1, one)
     #t.callAfter(2, two)
     #t.callAfter(3, three)
-    t.callEvery(1, tick)
+    #t.callAt(10, ten)
+    #t.callEvery(1, tick)
     
 
     ap = MathApp((100,100))
