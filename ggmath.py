@@ -142,7 +142,7 @@ class Timer(_MathDynamic):
                 del self.callbacks[tickinfo]
         for tickadd in nexttimers:
             self.callAfter(tickadd[0], tickadd[1], True)  # keep it going
-        for call in callist:
+        for call in calllist:
             call()
 
     def callAfter(self, delay, callback, periodic=False):
