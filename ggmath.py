@@ -118,12 +118,12 @@ class Timer(_MathDynamic):
     
     def __init__(self):
         super().__init__()
+        self.periodic = []
+        self.once = []
         self.reset()
         self.step()
         self._start = self._reset  #first time
         self.next = None
-        self.periodic = []
-        self.once = []
         MathApp._addDynamic(self)  # always dynamically defined
         
     def reset(self):
@@ -792,6 +792,15 @@ if __name__ == "__main__":
         index = index + 1
         return retval
         
+    def one():
+        print("one")
+        
+    def two():
+        print("two")
+        
+    def three():
+        print("three")
+        
     #pm1 = PointMass((0.1,0))
 
     p1 = Point((0,0))
@@ -817,6 +826,9 @@ if __name__ == "__main__":
     b1 = InputButton((200,350), "RESET", lambda: t.reset(), size=20, positioning="physical")
     
     
+    t.callAfter(1, one)
+    t.callAfter(2, two)
+    t.callAfter(3, two)
 
     ap = MathApp((100,100))
     ap.run()
