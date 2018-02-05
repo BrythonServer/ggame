@@ -120,6 +120,10 @@ class Timer(_MathDynamic):
         super().__init__()
         self.reset()
         self.step()
+        self._start = self._reset  #first time
+        self.next = None
+        self.periodic = []
+        self.once = []
         MathApp._addDynamic(self)  # always dynamically defined
         
     def reset(self):
@@ -127,7 +131,16 @@ class Timer(_MathDynamic):
         
     def step(self):
         self.time = MathApp.time - self._reset
+        while self.once and self.once[0][0] <= MathApp.time:
+            self.once.pop(0)[1]()
         
+    def callAfter(self, delay, callback):
+        self.once.append((self._start + delay, callback))
+        self.once.sort()
+        
+        
+    def __call__(self):
+        return self.time
 
 class Slider(_MathVisual):
     
