@@ -830,9 +830,9 @@ if __name__ == "__main__":
         
     #pm1 = PointMass((0.1,0))
     
-    ip1 = ImagePoint((0.1,0), 'bunny.png')
-    t.callEvery(1, lambda: ip1.rotation += 0.1)
-
+    def rotate(timer):
+        ip1.rotation += 0.1
+    
 
     p1 = Point((0,0))
     p1.movable = True
@@ -847,6 +847,11 @@ if __name__ == "__main__":
     p4 = Point(lambda :(3, (int(t.time*100) % 400)/100))
     
     #p5 = Point(lambda :nextcoord())
+
+    ip1 = ImagePoint((0.1,0), 'bunny.png')
+    t.callEvery(1, rotate)
+
+
     
     LineSegment(p1,p4)
 
