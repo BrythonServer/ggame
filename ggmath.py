@@ -530,6 +530,61 @@ class LineSegment(_MathVisual):
         pass
 
 
+class Circle(_MathVisual):
+    
+    def __init__(self, center, radius, style=LineStyle(1, Color(0,1))):
+        self._start = self.Eval(start)  # save function
+        self._end = self.Eval(end)
+        self._style = style
+        self._pstart = MathApp.logicalToPhysical(self._start())
+        self._pend = MathApp.logicalToPhysical(self._end())
+        super().__init__(LineAsset(self._pend[0]-self._pstart[0], 
+            self._pend[1]-self._pstart[1], style), self._pstart)
+
+    def _newAsset(self, start, end, style):
+        pstart = MathApp.logicalToPhysical(start())
+        pend = MathApp.logicalToPhysical(end())
+        if pstart != self._pstart or pend != self._pend:
+            self._pstart = pstart
+            self._pend = pend
+            self._updateAsset(LineAsset(pend[0]-pstart[0], pend[1]-pstart[1], style))
+            self.position = pstart
+
+    def _touchAsset(self):
+        self._newAsset(self._start, self._end, self._style)
+    
+    @property
+    def start(self):
+        return self._start()
+
+    @start.setter
+    def start(self, val):
+        newval = self.Eval(val)
+        if newval != self._start:
+            self._start = newval
+            self._touchAsset()
+
+    @property
+    def end(self):
+        return self._end()
+
+    @end.setter
+    def end(self, val):
+        newval = self.Eval(val)
+        if newval != self._end:
+            self._end = newval
+            self._touchAsset()
+        
+    def step(self):
+        self._touchAsset()
+
+    def physicalPointTouching(self, ppos):
+        return False
+        
+    def translate(self, pdisp):
+        pass
+
+
 
 
 class Bunny():
