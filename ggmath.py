@@ -609,7 +609,7 @@ class MathApp(App):
         self.listenMouseEvent("mousedown", self.handleMouseDown)
         self.listenMouseEvent("mouseup", self.handleMouseUp)
         self.listenMouseEvent("mousemove", self.handleMouseMove)
-        self.listenMouseEvent("mousewheel", self.handleMouseWheel)
+        self.listenMouseEvent("wheel", self.handleMouseWheel)
         self.mouseDown = False
         self.mouseCapturedObject = None
         self.mouseX = self.mouseY = None
@@ -711,7 +711,12 @@ class MathApp(App):
                         
 
     def handleMouseWheel(self, event):
-        pass
+        print(event.wheelDelta)
+        zoomfactor = event.wheelDelta/100
+        zoomfactor = 1+zoomfactor if zoomfactor > 0 else 1+zoomfactor
+        MathApp._xscale *= zoomfactor
+        MathApp._yscale *= zoomfactor
+        self._touchAllVisuals()
      
     @classmethod   
     def distance(cls, pos1, pos2):
