@@ -711,9 +711,12 @@ class MathApp(App):
                         
 
     def handleMouseWheel(self, event):
-        print(event.wheelDelta)
         zoomfactor = event.wheelDelta/100
         zoomfactor = 1+zoomfactor if zoomfactor > 0 else 1+zoomfactor
+        if zoomfactor > 1.2:
+            zoomfactor = 1.2
+        elif zoomfactor < 0.8:
+            zoomfactor = 0.8
         MathApp._xscale *= zoomfactor
         MathApp._yscale *= zoomfactor
         self._touchAllVisuals()
