@@ -131,14 +131,19 @@ class Timer(_MathDynamic):
         
     def step(self):
         nexttimers = []
+        calllist = []
         self.time = MathApp.time - self._reset
         while self.once and self.once[0][0] <= MathApp.time:
             tickinfo = self.once.pop(0)
             if tickinfo[1]:
                 nexttimers.append((tickinfo[1], self.callbacks[tickinfo][0]))  # delay, callback
-            self.callbacks[tickinfo].pop()(self)
+            calllist.append(self.callbacks[tickinfo].pop())
+            if not self.callbacks[tickinfo]:
+                del self.callbacks[tickinfo]
         for tickadd in nexttimers:
             self.callAfter(tickadd[0], tickadd[1], True)  # keep it going
+        for call in callist:
+            call()
 
     def callAfter(self, delay, callback, periodic=False):
         key = (self._start + delay, delay if periodic else 0)
