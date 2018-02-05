@@ -118,7 +118,6 @@ class Timer(_MathDynamic):
     
     def __init__(self):
         super().__init__()
-        self.periodic = []
         self.once = []
         self.reset()
         self.step()
@@ -130,15 +129,26 @@ class Timer(_MathDynamic):
         self._reset = MathApp.time
         
     def step(self):
+        nexttimers = []
         self.time = MathApp.time - self._reset
         while self.once and self.once[0][0] <= MathApp.time:
-            self.once.pop(0)[1]()
-        
-    def callAfter(self, delay, callback):
-        self.once.append((self._start + delay, callback))
+            tickinfo = self.once.pop(0)
+            if tickinfo[2]:
+                nexttimers.append((tickinfo[2], tickinfo[1]))  # delay, callback
+            tickinfo[1](self)
+        for tickadd in nexttimers:
+            self.callAfter(tickadd[0], tickadd[1], True)  # keep it going
+
+    def callAfter(self, delay, callback, periodic=False):
+        self.once.append((self._start + delay, callback, delay if periodic else 0))
         self.once.sort()
         
+    def callAt(self, time, callback):
+        self.callAfter(time-self.time, callback)
         
+    def callEvery(self, period, callback):
+        self.callAfter(period, callback, True)
+
     def __call__(self):
         return self.time
 
@@ -792,14 +802,21 @@ if __name__ == "__main__":
         index = index + 1
         return retval
         
-    def one():
+    def one(t):
         print("one")
         
-    def two():
+    def two(t):
         print("two")
         
-    def three():
+    def three(t):
+        t.callAt(10, ten)
         print("three")
+    
+    def ten(t):
+        print("ten")
+        
+    def tick(t):
+        print("tick")
         
     #pm1 = PointMass((0.1,0))
 
@@ -828,7 +845,9 @@ if __name__ == "__main__":
     
     t.callAfter(1, one)
     t.callAfter(2, two)
-    t.callAfter(3, two)
+    t.callAfter(3, three)
+    t.callEvery(1, tick)
+    
 
     ap = MathApp((100,100))
     ap.run()
