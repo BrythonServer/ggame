@@ -137,7 +137,7 @@ class Timer(_MathDynamic):
             tickinfo = self.once.pop(0)
             if tickinfo[1]:  # periodic?
                 nexttimers.append((tickinfo[1], self.callbacks[tickinfo][0]))  # delay, callback
-            calllist.append(self.callbacks[tickinfo].pop()) # remove callback and queue it
+            calllist.append(self.callbacks[tickinfo].pop(0)) # remove callback and queue it
             if not self.callbacks[tickinfo]: # if the callback list is empty
                 del self.callbacks[tickinfo] # remove the dictionary entry altogether
         for tickadd in nexttimers:
@@ -146,7 +146,7 @@ class Timer(_MathDynamic):
             call(self)
 
     def callAfter(self, delay, callback, periodic=False):
-        key = (self._start + self.time + delay, delay if periodic else 0)
+        key = (MathApp.time + delay, delay if periodic else 0)
         self.once.append(key)
         callbacklist = self.callbacks.get(key, [])
         callbacklist.append(callback)
@@ -849,7 +849,6 @@ if __name__ == "__main__":
     #p5 = Point(lambda :nextcoord())
 
     ip1 = ImagePoint((0.1,0), 'bunny.png')
-    t.callEvery(1, rotate)
 
 
     
@@ -862,11 +861,12 @@ if __name__ == "__main__":
     b1 = InputButton((200,350), "RESET", lambda: t.reset(), size=20, positioning="physical")
     
     
-    #t.callAfter(1, one)
+    t.callAfter(1, one)
     #t.callAfter(2, two)
     #t.callAfter(3, three)
     #t.callAt(10, ten)
-    #t.callEvery(1, tick)
+    t.callEvery(1, tick)
+    t.callEvery(1, rotate)
     
 
     ap = MathApp((100,100))
