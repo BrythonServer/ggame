@@ -831,7 +831,7 @@ if __name__ == "__main__":
     #pm1 = PointMass((0.1,0))
     
     def rotate(timer):
-        ip1.rotation += 0.1
+        ip1.rotation += 0.01
     
 
     p1 = Point((0,0))
@@ -866,7 +866,7 @@ if __name__ == "__main__":
     #t.callAfter(3, three)
     #t.callAt(10, ten)
     t.callEvery(1, tick)
-    t.callEvery(1, rotate)
+    t.callEvery(0.1, rotate)
     
 
     ap = MathApp((100,100))
