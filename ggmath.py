@@ -432,6 +432,14 @@ class _Point(_MathVisual, metaclass=ABCMeta):
         pos = self._pos()
         self._pos = self.Eval((pos[0] + ldisp[0], pos[1] + ldisp[1]))
         self._touchAsset()
+        
+    def distanceTo(self, otherpoint):
+        try:
+            pos = self._pos()
+            opos = otherpoint._pos()
+            return MathApp.distance(self._pos(), otherpoint._pos())
+        except AttributeError:
+            return otherpoint  # presumably a scalar - use this distance
 
 
 class Point(_Point):
@@ -529,17 +537,19 @@ class LineSegment(_MathVisual):
     def translate(self, pdisp):
         pass
 
-
 class Circle(_MathVisual):
     
     def __init__(self, center, radius, style=LineStyle(1, Color(0,1))):
-        self._start = self.Eval(start)  # save function
-        self._end = self.Eval(end)
+        """
+        Radius may be scalar or point
+        """
+        self._center = self.Eval(center)  # save function
+        self._radius = self.Eval(radius)
         self._style = style
-        self._pstart = MathApp.logicalToPhysical(self._start())
-        self._pend = MathApp.logicalToPhysical(self._end())
-        super().__init__(LineAsset(self._pend[0]-self._pstart[0], 
-            self._pend[1]-self._pstart[1], style), self._pstart)
+        self._pcenter = MathxApp.logicalToPhysical(self._start())
+        self._pradius = self._start().distanceTo(self._radius) * MathApp.scale
+        super().__init__(CircleAsset(self._pcenter, self._pradius, 
+            style), self._pcenter)
 
     def _newAsset(self, start, end, style):
         pstart = MathApp.logicalToPhysical(start())
@@ -583,7 +593,6 @@ class Circle(_MathVisual):
         
     def translate(self, pdisp):
         pass
-
 
 
 
@@ -645,8 +654,7 @@ class Bunny():
 
 class MathApp(App):
     
-    _xscale = 200   # pixels per unit
-    _yscale = 200
+    _scale = 200   # pixels per unit
     _xcenter = 0    # center of screen in units
     _ycenter = 0    
     _mathVisualList = [] #
@@ -655,10 +663,9 @@ class MathApp(App):
     _mathSelectableList = []
     time = time()
     
-    def __init__(self, scale=(_xscale, _yscale)):
+    def __init__(self, scale=_scale):
         super().__init__()
-        MathApp._xscale = scale[0]   # pixels per unit
-        MathApp._yscale = scale[1]
+        MathApp._scale = scale   # pixels per unit
         # register event callbacks
         self.listenMouseEvent("click", self.handleMouseClick)
         self.listenMouseEvent("mousedown", self.handleMouseDown)
@@ -688,8 +695,8 @@ class MathApp(App):
         yxform = lambda yvalue, yscale, ycenter, physheight: int(physheight/2 - (yvalue-ycenter)*yscale)
 
         try:
-            return (xxform(lp[0], cls._xscale, cls._xcenter, cls._win.width),
-                yxform(lp[1], cls._yscale, cls._ycenter, cls._win.height))
+            return (xxform(lp[0], cls._scale, cls._xcenter, cls._win.width),
+                yxform(lp[1], cls._scale, cls._ycenter, cls._win.height))
         except AttributeError:
             return lp
             
@@ -699,8 +706,8 @@ class MathApp(App):
         yxform = lambda yvalue, yscale, ycenter, physheight: (physheight/2 - yvalue)/yscale + ycenter
 
         try:
-            return (xxform(pp[0], cls._xscale, cls._xcenter, cls._win.width),
-                yxform(pp[1], cls._yscale, cls._ycenter, cls._win.height))
+            return (xxform(pp[0], cls._scale, cls._xcenter, cls._win.width),
+                yxform(pp[1], cls._scale, cls._ycenter, cls._win.height))
         except AttributeError:
             return pp
             
@@ -710,7 +717,7 @@ class MathApp(App):
         yxform = lambda yvalue, yscale: -yvalue/yscale
 
         try:
-            return (xxform(pp[0], cls._xscale), yxform(pp[1], cls._yscale))
+            return (xxform(pp[0], cls._scale), yxform(pp[1], cls._scale))
         except AttributeError:
             return pp
 
@@ -720,7 +727,7 @@ class MathApp(App):
         yxform = lambda yvalue, yscale: -yvalue*yscale
 
         try:
-            return (xxform(pp[0], cls._xscale), yxform(pp[1], cls._yscale))
+            return (xxform(pp[0], cls._scale), yxform(pp[1], cls._scale))
         except AttributeError:
             return pp
 
@@ -772,13 +779,17 @@ class MathApp(App):
             zoomfactor = 1.2
         elif zoomfactor < 0.8:
             zoomfactor = 0.8
-        MathApp._xscale *= zoomfactor
-        MathApp._yscale *= zoomfactor
+        MathApp._scale *= zoomfactor
         self._touchAllVisuals()
      
     @classmethod   
     def distance(cls, pos1, pos2):
         return sqrt((pos2[0]-pos1[0])**2 + (pos2[1]-pos1[1])**2)
+        
+    @classmethod
+    @property
+    def scale(cls):
+        return MathApp._scale
             
     @classmethod
     def _addVisual(cls, obj):
@@ -906,6 +917,7 @@ if __name__ == "__main__":
     p2 = Point((2,0))
     p2.movable = True
     p3 = Point((3,0))
+
     t = Timer()
     p4 = Point(lambda :(3, (int(t.time*100) % 400)/100))
     
