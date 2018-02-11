@@ -547,8 +547,12 @@ class Circle(_MathVisual):
         self._radius = self.Eval(radius)
         self._style = style
         self._color = fill
-        self._pcenter = MathApp.logicalToPhysical(self._start())
-        self._pradius = self._start().distanceTo(self._radius) * MathApp.scale
+        self._pcenter = MathApp.logicalToPhysical(self._center())
+        try:
+            self._pradius = MathApp.distance(self._center(), self._radius()) * MathApp.scale
+        except AttributeError:
+            self._pradius = self._radius()*MathApp.sclae
+            
         super().__init__(CircleAsset(self._pcenter, self._pradius, 
             style, fill), self._pcenter)
 
