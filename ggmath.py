@@ -553,7 +553,7 @@ class Circle(_MathVisual):
         except AttributeError:
             self._pradius = self._radius()*MathApp._scale
         super().__init__(CircleAsset(self._pradius, style, fill), self._pcenter)
-        self.xcenter = self.ycenter = 0.5
+        self.fxcenter = self.fycenter = 0.5
 
     def _newAsset(self, center, radius, fill, style):
         pcenter = MathApp.logicalToPhysical(center())
