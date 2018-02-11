@@ -204,6 +204,14 @@ class Slider(_MathVisual):
     def __call__(self):
         return self._val
 
+    @property
+    def value(self):
+        return self._val
+        
+    @value.setter
+    def value(self, val):
+        self._setval(val)
+
     def thumbXY(self):
         return (self._ppos[0]+(self._val-self._min)*
                 (self._width-self._thumbwidth)/(self._max-self._min),
@@ -228,13 +236,18 @@ class Slider(_MathVisual):
     def step(self):
         pass
     
-    def increment(self, step):
-        self._val = self._val + step
-        if self._val <= self._min:
+    def _setval(self, val):
+        if val <= self._min:
             self._val = self._min
-        elif self._val >= self._max:
+        elif val >= self._max:
             self._val = self._max
+        else:
+            self._val = val
         self.setThumb()
+        
+    
+    def increment(self, step):
+        self._setval(self._val + step)
         
     def select(self):
         super().select()
@@ -973,9 +986,11 @@ if __name__ == "__main__":
             y = 0
             vy = 0
         
-        
+    def velocitytext():
+        return "Velocity: ({0:2.4},{1:2.4})".format(vx,vy)
 
-
+    def getposition():
+        return (x,y)
     
     tick = 0.02
     x = 0
@@ -984,11 +999,11 @@ if __name__ == "__main__":
     mass = 1
     g = -9.81
     
-    sat = Point((lambda: (x,y)))
+    sat = Point(getposition)
 
-    thrust = Slider((100, 100), -50, 50, 0, positioning='physical',
+    thrust = Slider((100, 100), -50, 50, 0, positioning='physical', steps=200,
         leftkey="down arrow", rightkey="up arrow", centerkey="space")
-    Label((100,150), lambda: "Velocity: ({0:2.4},{1:2.4})".format(vx,vy), size=15, positioning="physical")
+    Label((100,150), velocitytext, size=15, positioning="physical")
     westp = Point((-1000,0))
     eastp = Point((1000,0))
     ground = LineSegment(westp, eastp)
