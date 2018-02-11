@@ -959,21 +959,34 @@ if __name__ == "__main__":
     #t.callEvery(0.1, rotate)
 
     def step(t):
-        print("tikk")
+        global vx, vy, x, y
+        fx = 0
+        fy = mass * g
+        ax = 0
+        ay = fy / mass
+        x = x + vx * tick + 0.5 * ax * tick**2
+        y = y + vy * tick + 0.5 * ay * tick**2
+        vx = vx + ax*tick
+        vy = vy + ay*tick
         
+        
+
 
     
     westp = Point((-1000,0))
     eastp = Point((1000,0))
     ground = LineSegment(westp, eastp)
     
+    tick = 0.1
     x = 0
     y = 100
-    
+    vx = vy = 0
+    mass = 1
+    g = -9.81
     
     sat = Point((lambda: (x,y)))
     t = Timer()
-    t.callEvery(0.1, step)
+    t.callEvery(tick, step)
     
     
     
