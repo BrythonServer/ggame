@@ -546,7 +546,7 @@ class Circle(_MathVisual):
         self._center = self.Eval(center)  # save function
         self._radius = self.Eval(radius)
         self._style = style
-        self._color = color
+        self._color = fill
         self._pcenter = MathxApp.logicalToPhysical(self._start())
         self._pradius = self._start().distanceTo(self._radius) * MathApp.scale
         super().__init__(CircleAsset(self._pcenter, self._pradius, 
@@ -914,6 +914,7 @@ if __name__ == "__main__":
 
     p1 = Point((0,0))
     p1.movable = True
+    c1 = Circle(p1, 1.5)
     
     s1 = Slider((200, 400), 0, 10, 2, positioning='physical',
         leftkey="a", rightkey="d", centerkey="s")
