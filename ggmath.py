@@ -553,8 +553,7 @@ class Circle(_MathVisual):
         except AttributeError:
             self._pradius = self._radius()*MathApp._scale
             
-        super().__init__(CircleAsset(self._pcenter, self._pradius, 
-            style, fill), self._pcenter)
+        super().__init__(CircleAsset(self._pradius, style, fill), self._pcenter)
 
     def _newAsset(self, center, radius, fill, style):
         pcenter = MathApp.logicalToPhysical(center())
@@ -565,7 +564,7 @@ class Circle(_MathVisual):
         if pcenter != self._pcenter or pradius != self._pradius:
             self._pcenter = pcenter
             self._pradius = pradius
-            self._updateAsset(CircleAsset(self._pcenter, self._pradius, style, fill))
+            self._updateAsset(CircleAsset(self._pradius, style, fill))
             self.position = pcenter
 
     def _touchAsset(self):
