@@ -551,46 +551,49 @@ class Circle(_MathVisual):
         super().__init__(CircleAsset(self._pcenter, self._pradius, 
             style), self._pcenter)
 
-    def _newAsset(self, start, end, style):
-        pstart = MathApp.logicalToPhysical(start())
-        pend = MathApp.logicalToPhysical(end())
-        if pstart != self._pstart or pend != self._pend:
-            self._pstart = pstart
-            self._pend = pend
-            self._updateAsset(LineAsset(pend[0]-pstart[0], pend[1]-pstart[1], style))
-            self.position = pstart
+    def _newAsset(self, center, radius, style):
+        pcenter = MathApp.logicalToPhysical(center())
+        pradius = center().distanceTo(radius) * MathApp.scale
+        if pcenter != self._pcenter or pradius != self._pradius:
+            self._pcenter = pcenter
+            self._pradius = pradius
+            self._updateAsset(CircleAsset(self._pcenter, self._pradius, style))
+            self.position = pcenter
 
     def _touchAsset(self):
-        self._newAsset(self._start, self._end, self._style)
+        self._newAsset(self._center, self._radius, self._style)
     
     @property
-    def start(self):
-        return self._start()
+    def center(self):
+        return self._center()
 
-    @start.setter
-    def start(self, val):
+    @center.setter
+    def center(self, val):
         newval = self.Eval(val)
-        if newval != self._start:
-            self._start = newval
+        if newval != self._center:
+            self._center = newval
             self._touchAsset()
 
     @property
-    def end(self):
-        return self._end()
+    def radius(self):
+        return self._radius()
 
-    @end.setter
-    def end(self, val):
+    @radius.setter
+    def radius(self, val):
         newval = self.Eval(val)
-        if newval != self._end:
-            self._end = newval
+        if newval != self._radius:
+            self._radius = newval
             self._touchAsset()
         
     def step(self):
         self._touchAsset()
 
     def physicalPointTouching(self, ppos):
-        return False
-        
+        r = MathApp.distance(self._pcenter, ppos)
+        inner = self._pradius - self.style.width/2
+        outer = self._pradius + self.style.width/2
+        return r <= outer and r >= inner:
+
     def translate(self, pdisp):
         pass
 
