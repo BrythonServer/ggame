@@ -592,7 +592,7 @@ class Circle(_MathVisual):
         r = MathApp.distance(self._pcenter, ppos)
         inner = self._pradius - self.style.width/2
         outer = self._pradius + self.style.width/2
-        return r <= outer and r >= inner:
+        return r <= outer and r >= inner
 
     def translate(self, pdisp):
         pass
