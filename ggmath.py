@@ -539,7 +539,7 @@ class LineSegment(_MathVisual):
 
 class Circle(_MathVisual):
     
-    def __init__(self, center, radius, style=LineStyle(1, Color(0,1)), fill=Color(0,1)):
+    def __init__(self, center, radius, style=LineStyle(1, Color(0,1)), fill=Color(0,0)):
         """
         Radius may be scalar or point
         """
@@ -552,8 +552,8 @@ class Circle(_MathVisual):
             self._pradius = MathApp.distance(self._center(), self._radius()) * MathApp.scale
         except AttributeError:
             self._pradius = self._radius()*MathApp._scale
-            
         super().__init__(CircleAsset(self._pradius, style, fill), self._pcenter)
+        self.xcenter = self.ycenter = 0.5
 
     def _newAsset(self, center, radius, fill, style):
         pcenter = MathApp.logicalToPhysical(center())
