@@ -547,7 +547,7 @@ class Circle(_MathVisual):
         self._radius = self.Eval(radius)
         self._style = style
         self._color = fill
-        self._pcenter = MathxApp.logicalToPhysical(self._start())
+        self._pcenter = MathApp.logicalToPhysical(self._start())
         self._pradius = self._start().distanceTo(self._radius) * MathApp.scale
         super().__init__(CircleAsset(self._pcenter, self._pradius, 
             style, fill), self._pcenter)
