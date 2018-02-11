@@ -976,11 +976,6 @@ if __name__ == "__main__":
         
 
 
-    thrust = Slider((100, 100), -50, 50, 0, positioning='physical',
-        leftkey="down arrow", rightkey="up arrow", centerkey="space")
-    westp = Point((-1000,0))
-    eastp = Point((1000,0))
-    ground = LineSegment(westp, eastp)
     
     tick = 0.02
     x = 0
@@ -990,6 +985,15 @@ if __name__ == "__main__":
     g = -9.81
     
     sat = Point((lambda: (x,y)))
+
+    thrust = Slider((100, 100), -50, 50, 0, positioning='physical',
+        leftkey="down arrow", rightkey="up arrow", centerkey="space")
+    Label((100,150), lambda: "Velocity: ({0:2.4},{1:2.4})".format(vx,vy), size=15, positioning="physical")
+    westp = Point((-1000,0))
+    eastp = Point((1000,0))
+    ground = LineSegment(westp, eastp)
+
+
     t = Timer()
     t.callEvery(tick, step)
     
