@@ -920,43 +920,62 @@ if __name__ == "__main__":
 
 
 
-    p1 = Point((0,0))
-    p1.movable = True
+    #p1 = Point((0,0))
+    #p1.movable = True
     #c1 = Circle(p1, 1.5, LineStyle(3, Color(0x0000ff,1)), Color(0x0000ff,0.3))
-    pcenter = Point((0, -5000000))
-    c1 = Circle(pcenter, 5000000, LineStyle(6, Color(0x0000ff,1)), Color(0x0000ff,0))
+    #pcenter = Point((0, -5000000))
+    #c1 = Circle(pcenter, 5000000, LineStyle(6, Color(0x0000ff,1)), Color(0x0000ff,0))
     
-    s1 = Slider((200, 400), 0, 10, 2, positioning='physical',
-        leftkey="a", rightkey="d", centerkey="s")
+    #s1 = Slider((200, 400), 0, 10, 2, positioning='physical',
+    #    leftkey="a", rightkey="d", centerkey="s")
     
-    p2 = Point((2,0))
-    p2.movable = True
-    p3 = Point((3,0))
+    #p2 = Point((2,0))
+    #p2.movable = True
+    #p3 = Point((3,0))
 
-    t = Timer()
-    p4 = Point(lambda :(3, (int(t.time*100) % 400)/100))
+    #t = Timer()
+    #p4 = Point(lambda :(3, (int(t.time*100) % 400)/100))
     
     #p5 = Point(lambda :nextcoord())
 
-    ip1 = ImagePoint((0.1,0), 'bunny.png')
+    #ip1 = ImagePoint((0.1,0), 'bunny.png')
 
 
     
-    LineSegment(p1,p4)
+    #LineSegment(p1,p4)
 
-    l1 = Label((-4,2), lambda: "Elapsed Time: {0:.0}".format(t.time), size=20, width=400, positioning="logical")
-    i1 = InputNumeric((200,300), 99.9, size=20, positioning="physical")
+    #l1 = Label((-4,2), lambda: "Elapsed Time: {0:.0}".format(t.time), size=20, width=400, positioning="logical")
+    #i1 = InputNumeric((200,300), 99.9, size=20, positioning="physical")
     #l2 = Label((-4,1), lambda: "{0}".format(i1()), size=20)
-    l3 = Label((-4,1), lambda: "{0:4.2f}".format(s1()), size=20)
-    b1 = InputButton((200,350), "RESET", lambda: t.reset(), size=20, positioning="physical")
+    #l3 = Label((-4,1), lambda: "{0:4.2f}".format(s1()), size=20)
+    #b1 = InputButton((200,350), "RESET", lambda: t.reset(), size=20, positioning="physical")
     
     
-    t.callAfter(1, one)
+    #t.callAfter(1, one)
     #t.callAfter(2, two)
     #t.callAfter(3, three)
     #t.callAt(10, ten)
-    t.callEvery(1, tick)
-    t.callEvery(0.1, rotate)
+    #t.callEvery(1, tick)
+    #t.callEvery(0.1, rotate)
+
+    def step(t):
+        print("tikk")
+        
+
     
-    ap = MathApp(0.0001)
+    westp = Point((-1000,0))
+    eastp = Point((1000,0))
+    ground = LineSegment(westp, eastp)
+    
+    x = 0
+    y = 100
+    
+    
+    sat = Point((lambda: (x,y)))
+    t = Timer()
+    t.callEvery(0.1, step)
+    
+    
+    
+    ap = MathApp(2)
     ap.run()
