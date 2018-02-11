@@ -539,29 +539,30 @@ class LineSegment(_MathVisual):
 
 class Circle(_MathVisual):
     
-    def __init__(self, center, radius, style=LineStyle(1, Color(0,1))):
+    def __init__(self, center, radius, style=LineStyle(1, Color(0,1)), fill=Color(0,1)):
         """
         Radius may be scalar or point
         """
         self._center = self.Eval(center)  # save function
         self._radius = self.Eval(radius)
         self._style = style
+        self._color = color
         self._pcenter = MathxApp.logicalToPhysical(self._start())
         self._pradius = self._start().distanceTo(self._radius) * MathApp.scale
         super().__init__(CircleAsset(self._pcenter, self._pradius, 
-            style), self._pcenter)
+            style, fill), self._pcenter)
 
-    def _newAsset(self, center, radius, style):
+    def _newAsset(self, center, radius, style, fill):
         pcenter = MathApp.logicalToPhysical(center())
         pradius = center().distanceTo(radius) * MathApp.scale
         if pcenter != self._pcenter or pradius != self._pradius:
             self._pcenter = pcenter
             self._pradius = pradius
-            self._updateAsset(CircleAsset(self._pcenter, self._pradius, style))
+            self._updateAsset(CircleAsset(self._pcenter, self._pradius, style, fill))
             self.position = pcenter
 
     def _touchAsset(self):
-        self._newAsset(self._center, self._radius, self._style)
+        self._newAsset(self._center, self._radius, self._style, self._color)
     
     @property
     def center(self):
