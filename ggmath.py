@@ -963,21 +963,26 @@ if __name__ == "__main__":
         fx = 0
         fy = mass * g
         ax = 0
-        ay = fy / mass
+        ay = fy / mass + thrust()
         x = x + vx * tick + 0.5 * ax * tick**2
         y = y + vy * tick + 0.5 * ay * tick**2
         vx = vx + ax*tick
         vy = vy + ay*tick
         
+        if y < 0:
+            y = 0
+            vy = 0
+        
         
 
 
-    
+    thrust = Slider((100, 100), -50, 50, 0, positioning='physical',
+        leftkey="down arrow", rightkey="up arrow", centerkey="space")
     westp = Point((-1000,0))
     eastp = Point((1000,0))
     ground = LineSegment(westp, eastp)
     
-    tick = 0.1
+    tick = 0.02
     x = 0
     y = 100
     vx = vy = 0
