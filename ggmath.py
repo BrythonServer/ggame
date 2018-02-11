@@ -948,5 +948,5 @@ if __name__ == "__main__":
     t.callEvery(0.1, rotate)
     
 
-    ap = MathApp((100,100))
+    ap = MathApp(100)
     ap.run()
