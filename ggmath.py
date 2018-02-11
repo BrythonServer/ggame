@@ -551,7 +551,7 @@ class Circle(_MathVisual):
         try:
             self._pradius = MathApp.distance(self._center(), self._radius()) * MathApp.scale
         except AttributeError:
-            self._pradius = self._radius()*MathApp.scale
+            self._pradius = self._radius()*MathApp._scale
         super().__init__(CircleAsset(self._pradius, style, fill), self._pcenter)
         self.fxcenter = self.fycenter = 0.5
 
@@ -560,7 +560,7 @@ class Circle(_MathVisual):
         try:
             pradius = center().distanceTo(radius) * MathApp.scale
         except AttributeError:
-            pradius = radius() * MathApp.scale
+            pradius = radius() * MathApp._scale
         if pcenter != self._pcenter or pradius != self._pradius:
             self._pcenter = pcenter
             self._pradius = pradius
