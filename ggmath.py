@@ -560,7 +560,7 @@ class Circle(_MathVisual):
         try:
             pradius = center().distanceTo(radius) * MathApp.scale
         except AttributeError:
-            pradius = radius * MathApp.scale
+            pradius = radius * MathApp._scale
         if pcenter != self._pcenter or pradius != self._pradius:
             self._pcenter = pcenter
             self._pradius = pradius
