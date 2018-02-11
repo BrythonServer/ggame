@@ -551,7 +551,7 @@ class Circle(_MathVisual):
         try:
             self._pradius = MathApp.distance(self._center(), self._radius()) * MathApp.scale
         except AttributeError:
-            self._pradius = self._radius()*MathApp.scale
+            self._pradius = self._radius()*MathApp._scale
             
         super().__init__(CircleAsset(self._pcenter, self._pradius, 
             style, fill), self._pcenter)
@@ -919,6 +919,9 @@ if __name__ == "__main__":
         ip1.rotation += 0.01
     
 
+    ap = MathApp(100)
+
+
     p1 = Point((0,0))
     p1.movable = True
     c1 = Circle(p1, 1.5)
@@ -956,5 +959,4 @@ if __name__ == "__main__":
     t.callEvery(0.1, rotate)
     
 
-    ap = MathApp(100)
     ap.run()
