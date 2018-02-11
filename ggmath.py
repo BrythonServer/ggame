@@ -552,7 +552,7 @@ class Circle(_MathVisual):
         super().__init__(CircleAsset(self._pcenter, self._pradius, 
             style, fill), self._pcenter)
 
-    def _newAsset(self, center, radius, style, fill):
+    def _newAsset(self, center, radius, fill, style):
         pcenter = MathApp.logicalToPhysical(center())
         pradius = center().distanceTo(radius) * MathApp.scale
         if pcenter != self._pcenter or pradius != self._pradius:
@@ -562,7 +562,7 @@ class Circle(_MathVisual):
             self.position = pcenter
 
     def _touchAsset(self):
-        self._newAsset(self._center, self._radius, self._style, self._color)
+        self._newAsset(self._center, self._radius, self._color, self._style)
     
     @property
     def center(self):
