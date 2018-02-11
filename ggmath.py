@@ -924,7 +924,7 @@ if __name__ == "__main__":
     p1 = Point((0,0))
     p1.movable = True
     #c1 = Circle(p1, 1.5, LineStyle(3, Color(0x0000ff,1)), Color(0x0000ff,0.3))
-    p1r = POint((1.5,0))
+    p1r = Point((1.5,0))
     p1r.movable = True
     c1 = Circle(p1, p1r, LineStyle(3, Color(0x0000ff,1)), Color(0x0000ff,0.3))
     
