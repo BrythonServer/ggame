@@ -794,7 +794,7 @@ class MathApp(App):
                 MathApp._xcenter -= lmove[0]
                 MathApp._ycenter -= lmove[1]
                 self._touchAllVisuals()
-                self._viewNotify()
+                self._viewNotify("translate")
                         
 
     def handleMouseWheel(self, event):
@@ -806,17 +806,19 @@ class MathApp(App):
             zoomfactor = 0.8
         MathApp._scale *= zoomfactor
         self._touchAllVisuals()
-        self._viewNotify()
+        self._viewNotify("zoom")
         
-    def addViewNotification(self, handler):
-        self._viewNotificationList.append(handler)
+    @classmethod   
+    def addViewNotification(cls, handler):
+        cls._viewNotificationList.append(handler)
         
-    def removeViewNotification(self, handler):
-        self._viewNotificationList.remove(handler)
+    @classmethod   
+    def removeViewNotification(cls, handler):
+        cls._viewNotificationList.remove(handler)
     
-    def _viewNotify(self):
+    def _viewNotify(self, viewchange):
         for handler in self._viewNotificationList:
-            handler(scale = self._scale, center = (self._xcenter, self._ycenter))
+            handler(viewchange = viewchange, scale = self._scale, center = (self._xcenter, self._ycenter))
         
      
     @classmethod   
@@ -1008,6 +1010,11 @@ if __name__ == "__main__":
     def getposition():
         return (x,y)
     
+    def zoomCheck(**kwargs):
+        viewtype = kwargs.get('viewtype')
+        scale = kwargs.get('scale')
+        if viewtype == "zoom":
+            print(scale)
 
     tick = 0.02
     x = 0
@@ -1030,7 +1037,7 @@ if __name__ == "__main__":
     t = Timer()
     t.callEvery(tick, step)
     
-    
+    MathApp.addViewNotification(zoomCheck)
     
     ap = MathApp(2)
     ap.run()
