@@ -1011,7 +1011,7 @@ if __name__ == "__main__":
         return (x,y)
     
     def zoomCheck(**kwargs):
-        viewtype = kwargs.get('viewtype')
+        viewtype = kwargs.get('viewchange')
         scale = kwargs.get('scale')
         if viewtype == "zoom":
             print(scale)
