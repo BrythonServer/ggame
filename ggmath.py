@@ -684,6 +684,7 @@ class MathApp(App):
     _mathDynamicList = []
     _mathMovableList = []
     _mathSelectableList = []
+    _viewNotificationList = []
     time = time()
     
     def __init__(self, scale=_scale):
@@ -793,6 +794,7 @@ class MathApp(App):
                 MathApp._xcenter -= lmove[0]
                 MathApp._ycenter -= lmove[1]
                 self._touchAllVisuals()
+                self._viewNotify()
                         
 
     def handleMouseWheel(self, event):
@@ -804,6 +806,18 @@ class MathApp(App):
             zoomfactor = 0.8
         MathApp._scale *= zoomfactor
         self._touchAllVisuals()
+        self._viewNotify()
+        
+    def addViewNotification(self, handler):
+        self._viewNotificationList.append(handler)
+        
+    def removeViewNotification(self, handler):
+        self._viewNotificationList.remove(handler)
+    
+    def _viewNotify(self):
+        for handler in self._viewNotificationList:
+            handler(scale = self._scale, center = (self._xcenter, self._ycenter))
+        
      
     @classmethod   
     def distance(cls, pos1, pos2):
@@ -1008,8 +1022,8 @@ if __name__ == "__main__":
         leftkey="down arrow", rightkey="up arrow", centerkey="space")
     vslider = Slider((100, 125), -50, 50, 0, positioning='physical')
     Label((100,150), velocitytext, size=15, positioning="physical")
-    westp = Point((-1000,0))
-    eastp = Point((1000,0))
+    westp = Point((-100000,0))
+    eastp = Point((100000,0))
     ground = LineSegment(westp, eastp)
 
 
