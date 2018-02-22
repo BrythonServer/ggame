@@ -1583,8 +1583,6 @@ if __name__ == '__main__':
         global scale
         
 
-        print(App.width)
-        
         scale = scale + xstep
         spr.fxcenter = xcenter
         spr.fycenter = xcenter
