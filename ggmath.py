@@ -5,7 +5,7 @@ from ggame import TextAsset, ImageAsset, PolygonAsset, RectangleAsset
 from abc import ABCMeta, abstractmethod
 from operator import add
 
-from math import sin, cos, sqrt, pi
+from math import sin, cos, sqrt, pi, abs
 from time import time
 
 
@@ -633,8 +633,9 @@ class Circle(_MathVisual):
         if disc <= 0:  # less than two solutions
             return []
         sdisc = sqrt(disc)
-        x = [(D*dy + dx*sdisc)/dr2 + c[0],  (D*dy - dx*sdisc)/dr2 + c[0]]
-        y = [(-D*dx - dy*sdisc)/dr2 + c[1], (-D*dx + dy*sdisc)/dr2 + c[1]]
+        sgn = lambda x : 1 if x >= 0 else -1
+        x = [(D*dy + sgn(dy)*dx*sdisc)/dr2 + c[0],  (D*dy - sgn(dy)*dx*sdisc)/dr2 + c[0]]
+        y = [(-D*dx - abs(dy)*sdisc)/dr2 + c[1], (-D*dx + abs(dy)*sdisc)/dr2 + c[1]]
         getcoords = lambda x, y, c: [(x-c[0],y-c[1])] if x>=0 and x<=MathApp.width and y>=0 and y<=MathApp.height else []
         #print("raw res", x[0]-c[0], y[0]-c[1], x[1]-c[0], y[1]-c[1])
         res = getcoords(x[0], y[0], c)
