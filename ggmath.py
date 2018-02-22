@@ -691,6 +691,8 @@ class MathApp(App):
     
     def __init__(self, scale=_scale):
         super().__init__()
+        MathApp.width = self.width
+        MathApp.height = self.height
         MathApp._scale = scale   # pixels per unit
         # register event callbacks
         self.listenMouseEvent("click", self.handleMouseClick)
@@ -831,6 +833,10 @@ class MathApp(App):
     @property
     def scale(cls):
         return MathApp._scale
+        
+    @property
+    def width(cls):
+        return App._win.width
             
     @classmethod
     def _addVisual(cls, obj):
@@ -1005,7 +1011,7 @@ if __name__ == "__main__":
             vy = 0
             
         vslider.value = vy
-        
+
     def velocitytext():
         return "Velocity: ({0:2.4},{1:2.4})".format(vx,vy)
 
