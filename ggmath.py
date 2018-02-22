@@ -586,7 +586,7 @@ class Circle(_MathVisual):
         xmin = pcenter[0]-pradius
         if ymin > MathApp.height or ymax < 0 or xmax < 0 or xmin > MathApp.width:
             return CircleAsset(pradius, style, fill)
-        elif pradius < MathApp.width*2:
+        elif pradius < MathApp.width:
             return CircleAsset(pradius, style, fill)
         else:
             poly = self._buildPolygon(pcenter, pradius)
@@ -616,7 +616,8 @@ class Circle(_MathVisual):
                     pcenter[0], pcenter[1], 
                     ilist[0][0] + xrange*(i+1)/(numpoints+1),
                     ilist[0][1] + yrange*(i+1)/(numpoints+1))
-                ilist.append(icepts[0])
+                if len(icepts):
+                    ilist.append(icepts[0])
             ilist.sort()
             ilist = ilist + ilist[:-1][::-1]
 
