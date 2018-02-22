@@ -576,7 +576,6 @@ class Circle(_MathVisual):
             self._pcenter = pcenter
             self._pradius = pradius
             asset = self._buildAsset(pcenter, pradius, style, fill)
-            print("asset built")
             self._updateAsset(asset)
             self.position = pcenter
 
@@ -591,6 +590,7 @@ class Circle(_MathVisual):
             return CircleAsset(pradius, style, fill)
         else:
             poly = self._buildPolygon(pcenter, pradius)
+            print(poly)
             return PolygonAsset(poly, style, fill)
 
     def _buildPolygon(self, pcenter, pradius):
@@ -598,8 +598,7 @@ class Circle(_MathVisual):
         right = self._findIntercepts(pcenter, pradius, MathApp.width,0,MathApp.width,MathApp.height)
         top = self._findIntercepts(pcenter, pradius, 0,0,MathApp.width,0)
         bottom = self._findIntercepts(pcenter, pradius, 0,MathApp.height, MathApp.width, MathApp.height)
-        print(pcenter, left, bottom, right, top, pcenter)
-        return [pcenter] + left + bottom + right + top + [pcenter]
+        return [(0, MathApp.height)] + left + bottom + right + top + [(0, MathApp.height)]
 
     def _findIntercepts(self, c, r, x1, y1, x2, y2):
         x1n = x1 - c[0]
@@ -615,10 +614,9 @@ class Circle(_MathVisual):
         if disc <= 0:  # less than two solutions
             return []
         sdisc = sqrt(disc)
-        x = [c[0] + (D*dy + dx*sdisc)/dr2,  c[0] + (D*dy - dx*sdisc)/dr2]
-        y = [c[1] + (-D*dx - dy*sdisc)/dr2, c[1] + (-D*dx + dy*sdisc)/dr2]
-        print(x,y)
-        getcoords = lambda x, y: [x,y] if x>=0 and x<=MathApp.width and y>=0 and y<=MathApp.width else []
+        x = [(D*dy + dx*sdisc)/dr2,  (D*dy - dx*sdisc)/dr2]
+        y = [(-D*dx - dy*sdisc)/dr2, (-D*dx + dy*sdisc)/dr2]
+        getcoords = lambda x, y: [(x,y)] if x>=0 and x<=MathApp.width and y>=0 and y<=MathApp.width else []
         res = getcoords(x[0], y[0])
         return res + getcoords(x[1], y[1])
 
