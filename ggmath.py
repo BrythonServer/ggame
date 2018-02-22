@@ -5,7 +5,7 @@ from ggame import TextAsset, ImageAsset, PolygonAsset, RectangleAsset
 from abc import ABCMeta, abstractmethod
 from operator import add
 
-from math import sin, cos, sqrt, pi, abs
+from math import sin, cos, sqrt, pi
 from time import time
 
 
