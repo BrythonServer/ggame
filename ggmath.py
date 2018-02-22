@@ -632,14 +632,30 @@ class Circle(_MathVisual):
         for p in range(3):
             cw = cw + (plist[p+1][0]-plist[p][0])*(plist[p+1][1]+plist[p+1][0])
         cw = self._sgn(cw)
+        cw = 0 if cw < 0 else cw
         vertices = ((0,0),(MathApp.width,0),(MathApp.width,MathApp.height),(0,MathApp.height))
-        vinsides = [MathApp.distance(pcenter, v) < pradius for v in verticese]
+        #vinsides = [MathApp.distance(pcenter, v) < pradius for v in verticese]
+        #nextvertex = [(vinsides[0],vinsides[1]),
+        #                (vinsides[1],vinsides[2]),
+        #                (vinsides[2],vinsides[3]),
+        #                (vinsides[3],vinsides[0])]
+        nextvertex = [(vertices[0],vertices[1]),
+                        (vertices[1],vertices[2]),
+                        (vertices[2],vertices[3]),
+                        (vertices[3],vertices[0])]
+        nextsides = [(3,1),(0,2),(1,3),(2,0)]
         edges = ((None,0),(MathApp.width,None),(None,MathApp.height),(0,None))
-        for side in range(4):
-            if edges[side][0] == plist[-1][0] or edges[side][1] == plist[-1][1]:
-                endside = side
-                break
-        print(endside)
+        endside = 0
+        startside = 1
+        while startside != endside:
+            for side in range(4):
+                if edges[side][0] == plist[-1][0] or edges[side][1] == plist[-1][1]:
+                    endside = side
+                if edges[side][0] == plist[0][0] or edges[side][1] == plist[0][1]:
+                    startside = side
+            if endside != startside:
+                plist.append(nextvertex[endside][cw])
+                endside = nextsides[endside][cw]
 
     def _sgn(self, x):
         return 1 if x >= 0 else -1
