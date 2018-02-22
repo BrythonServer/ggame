@@ -612,10 +612,10 @@ class Circle(_MathVisual):
         sdisc = sqrt(disc)
         if disc <= 0:  # less than two solutions
             return []
-        x[0] = c[0] + (D*dyn + dxn*sdisc)/dr2
-        x[1] = c[0] + (D*dyn - dxn*sdisc)/dr2
-        y[0] = c[1] + (-D*dxn - dyn*sdisc)/dr2
-        y[1] = c[1] + (-D*dxn + dyn*sdisc)/dr2
+        x[0] = c[0] + (D*dy + dx*sdisc)/dr2
+        x[1] = c[0] + (D*dy - dx*sdisc)/dr2
+        y[0] = c[1] + (-D*dx - dy*sdisc)/dr2
+        y[1] = c[1] + (-D*dx + dy*sdisc)/dr2
         getcoords = lambda x, y: x>0 and x<MathApp.width and y>0 and y<MathApp.width
         res = getcoords(x[0], y[0])
         res = res + getcoords(x[1], y[1])
