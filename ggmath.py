@@ -594,14 +594,16 @@ class Circle(_MathVisual):
             return PolygonAsset(poly, style, fill)
 
     def _buildPolygon(self, pcenter, pradius):
-        xcepts = [self._findIntercepts(pcenter, pradius, 0,0,0,794),
-            self._findIntercepts(pcenter, pradius, MathApp.width,0,MathApp.width,MathApp.height),
-            self._findIntercepts(pcenter, pradius, 0,0,MathApp.width,0),
-            self._findIntercepts(pcenter, pradius, 0,MathApp.height, MathApp.width, MathApp.height)]
+        xcepts = (self._findIntercepts(pcenter, pradius, 0,0,0,794) +
+            self._findIntercepts(pcenter, pradius, MathApp.width,0,MathApp.width,MathApp.height) +
+            self._findIntercepts(pcenter, pradius, 0,0,MathApp.width,0) +
+            self._findIntercepts(pcenter, pradius, 0,MathApp.height, MathApp.width, MathApp.height))
         ilist = []
+        print(xcepts)
         for x in xcepts:
             if x:
                 ilist.append(x)
+        print(ilist)
         if len(ilist) > 1:
             xrange = ilist[1][0] - ilist[0][0]
             yrange = ilist[1][1] - ilist[0][1]
@@ -610,7 +612,8 @@ class Circle(_MathVisual):
                 ilist.insert(i+1, self._findIntercepts(pcenter, pradius, 
                     pcenter[0], pcenter[1], 
                     ilist[0][0] + xrange*(i+1)/(numpoints+1) - pcenter[0],
-                    ilist[0][1] + yrange*(i+1)/(numpoints+1) - pcenter[1]))
+                    ilist[0][1] + yrange*(i+1)/(numpoints+1) - pcenter[1])[0])
+        print(ilist)
         return ilist
 
     def _findIntercepts(self, c, r, x1, y1, x2, y2):
