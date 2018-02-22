@@ -619,20 +619,30 @@ class Circle(_MathVisual):
                 if len(icepts):
                     ilist.insert(i+1, icepts[0])
             #ilist.append(ilist[0])
-        self._addBoundaryVertices(ilist)
+        self._addBoundaryVertices(ilist, pcenter, pradius)
         ilist = [(i[0] - pcenter[0], i[1] - pcenter[1]) for i in ilist]
         return ilist
         
-    def _addBoundaryVertices(self, plist):
+    def _addBoundaryVertices(self, plist, pcenter, pradius):
         """
         Sides 0=top, 1=right, 2=bottom, 3=left
         """
+        #figure out rotation in point sequence
+        cw = 0
+        for p in range(3):
+            cw = cw + (plist[p+1][0]-plist[p][0])*(plist[p+1][1]+plist[p+1][0])
+        cw = self._sgn(cw)
+        vertices = ((0,0),(MathApp.width,0),(MathApp.width,MathApp.height),(0,MathApp.height))
+        vinsides = [MathApp.distance(pcenter, v) < pradius for v in verticese]
         edges = ((None,0),(MathApp.width,None),(None,MathApp.height),(0,None))
         for side in range(4):
             if edges[side][0] == plist[-1][0] or edges[side][1] == plist[-1][1]:
                 endside = side
                 break
         print(endside)
+
+    def _sgn(self, x):
+        return 1 if x >= 0 else -1
 
     def _findIntercepts(self, c, r, x1, y1, x2, y2):
         """
@@ -652,8 +662,7 @@ class Circle(_MathVisual):
         if disc <= 0:  # less than two solutions
             return []
         sdisc = sqrt(disc)
-        sgn = lambda x : 1 if x >= 0 else -1
-        x = [(D*dy + sgn(dy)*dx*sdisc)/dr2 + c[0],  (D*dy - sgn(dy)*dx*sdisc)/dr2 + c[0]]
+        x = [(D*dy + self._sgn(dy)*dx*sdisc)/dr2 + c[0],  (D*dy - self._sgn(dy)*dx*sdisc)/dr2 + c[0]]
         y = [(-D*dx + abs(dy)*sdisc)/dr2 + c[1], (-D*dx - abs(dy)*sdisc)/dr2 + c[1]]
         getcoords = lambda x, y, c: [(x,y)] if x>=0 and x<=MathApp.width and y>=0 and y<=MathApp.height else []
         res = getcoords(x[0], y[0], c)
