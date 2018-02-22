@@ -594,12 +594,12 @@ class Circle(_MathVisual):
             return PolygonAsset(poly, style, fill)
 
     def _buildPolygon(self, pcenter, pradius):
-        print(MathApp.height)
         left = self._findIntercepts(pcenter, pradius, 0,0,0,794)
         right = self._findIntercepts(pcenter, pradius, MathApp.width,0,MathApp.width,MathApp.height)
         top = self._findIntercepts(pcenter, pradius, 0,0,MathApp.width,0)
         bottom = self._findIntercepts(pcenter, pradius, 0,MathApp.height, MathApp.width, MathApp.height)
-        return pcenter + left + bottom + right + top + pcenter
+        print(pcenter, left, bottom, right, top, pcenter)
+        return [pcenter] + left + bottom + right + top + [pcenter]
 
     def _findIntercepts(self, c, r, x1, y1, x2, y2):
         x1n = x1 - c[0]
@@ -617,7 +617,8 @@ class Circle(_MathVisual):
         sdisc = sqrt(disc)
         x = [c[0] + (D*dy + dx*sdisc)/dr2,  c[0] + (D*dy - dx*sdisc)/dr2]
         y = [c[1] + (-D*dx - dy*sdisc)/dr2, c[1] + (-D*dx + dy*sdisc)/dr2]
-        getcoords = lambda x, y: [x,y] if x>0 and x<MathApp.width and y>0 and y<MathApp.width else []
+        print(x,y)
+        getcoords = lambda x, y: [x,y] if x>=0 and x<=MathApp.width and y>=0 and y<=MathApp.width else []
         res = getcoords(x[0], y[0])
         return res + getcoords(x[1], y[1])
 
