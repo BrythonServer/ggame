@@ -633,7 +633,9 @@ class Circle(_MathVisual):
         y = [(-D*dx - dy*sdisc)/dr2 + c[1], (-D*dx + dy*sdisc)/dr2 + c[1]]
         getcoords = lambda x, y, c: [(x-c[0],y-c[1])] if x>=0 and x<=MathApp.width and y>=0 and y<=MathApp.width else []
         res = getcoords(x[0], y[0], c)
-        return res + getcoords(x[1], y[1], c)
+        res.extend(getcoords(x[1], y[1], c))
+        print(res)
+        return res
 
 
 
