@@ -606,7 +606,7 @@ class Circle(_MathVisual):
             if x:
                 ilist.append(x)
         #ilist is a list of boundary intercepts that are screen-relative
-        
+      
         if len(ilist) > 1:
             xrange = ilist[1][0] - ilist[0][0]
             yrange = ilist[1][1] - ilist[0][1]
@@ -617,9 +617,8 @@ class Circle(_MathVisual):
                     ilist[0][0] + xrange*(i+1)/(numpoints+1),
                     ilist[0][1] + yrange*(i+1)/(numpoints+1))
                 if len(icepts):
-                    ilist.append(icepts[0])
-            #ilist.sort()
-            ilist = ilist.append(ilist[0])
+                    ilist.insert(i+1, icepts[0])
+            ilist.append(ilist[0])
 
         ilist = [(i[0] - pcenter[0], i[1] - pcenter[1]) for i in ilist]
         return ilist
