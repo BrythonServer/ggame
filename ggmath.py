@@ -54,6 +54,7 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         visible = self.GFX.visible
         if App._win != None:
             App._win.remove(self.GFX)
+            self.GFX.destroy()
         self.asset = asset
         self.GFX = self.asset.GFX
         self.GFX.visible = visible        
@@ -576,9 +577,7 @@ class Circle(_MathVisual):
             self._pcenter = pcenter
             self._pradius = pradius
             asset = self._buildAsset(pcenter, pradius, style, fill)
-            print("updateasset in")
             self._updateAsset(asset)
-            print("updateasset out")
             self.position = pcenter
 
     def _buildAsset(self, pcenter, pradius, style, fill):
@@ -592,9 +591,7 @@ class Circle(_MathVisual):
             return CircleAsset(pradius, style, fill)
         else:
             poly = self._buildPolygon(pcenter, pradius)
-            print("polygonasset in")
             passet = PolygonAsset(poly, style, fill)
-            print("polygonasset out")
             return passet
 
     def _buildPolygon(self, pcenter, pradius):
