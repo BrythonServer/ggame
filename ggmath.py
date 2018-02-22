@@ -605,6 +605,7 @@ class Circle(_MathVisual):
         for x in xcepts:
             if x:
                 ilist.append(x)
+        print(ilist)
         #ilist is a list of boundary intercepts that are screen-relative
         
         if len(ilist) > 1:
@@ -614,8 +615,8 @@ class Circle(_MathVisual):
             for i in range(numpoints):
                 icepts =  self._findIntercepts(pcenter, pradius, 
                     pcenter[0], pcenter[1], 
-                    ilist[0][0] + xrange*(i+1)/(numpoints+1) - pcenter[0],
-                    ilist[0][1] + yrange*(i+1)/(numpoints+1) - pcenter[1])
+                    ilist[0][0] + xrange*(i+1)/(numpoints+1),
+                    ilist[0][1] + yrange*(i+1)/(numpoints+1))
                 ilist.insert(1,icepts[0])
                     
         #print("ilist afte", ilist)
