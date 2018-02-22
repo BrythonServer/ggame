@@ -576,7 +576,9 @@ class Circle(_MathVisual):
             self._pcenter = pcenter
             self._pradius = pradius
             asset = self._buildAsset(pcenter, pradius, style, fill)
+            print("updateasset in")
             self._updateAsset(asset)
+            print("updateasset out")
             self.position = pcenter
 
     def _buildAsset(self, pcenter, pradius, style, fill):
@@ -590,7 +592,10 @@ class Circle(_MathVisual):
             return CircleAsset(pradius, style, fill)
         else:
             poly = self._buildPolygon(pcenter, pradius)
-            return PolygonAsset(poly, style, fill)
+            print("polygonasset in")
+            passet = PolygonAsset(poly, style, fill)
+            print("polygonasset out")
+            return passet
 
     def _buildPolygon(self, pcenter, pradius):
         """
@@ -635,11 +640,6 @@ class Circle(_MathVisual):
         cw = self._sgn(cw)
         cw = 0 if cw < 0 else cw
         vertices = ((0,0),(MathApp.width,0),(MathApp.width,MathApp.height),(0,MathApp.height))
-        #vinsides = [MathApp.distance(pcenter, v) < pradius for v in verticese]
-        #nextvertex = [(vinsides[0],vinsides[1]),
-        #                (vinsides[1],vinsides[2]),
-        #                (vinsides[2],vinsides[3]),
-        #                (vinsides[3],vinsides[0])]
         nextvertex = [(vertices[0],vertices[1]),
                         (vertices[1],vertices[2]),
                         (vertices[2],vertices[3]),
@@ -648,10 +648,7 @@ class Circle(_MathVisual):
         edges = ((None,0),(MathApp.width,None),(None,MathApp.height),(0,None))
         endside = 0
         startside = 1
-        xx = 0
         while startside != endside:
-            xx = xx + 1
-            print(xx)
             for side in range(4):
                 if edges[side][0] == plist[-1][0] or edges[side][1] == plist[-1][1]:
                     endside = side
@@ -660,7 +657,6 @@ class Circle(_MathVisual):
             if endside != startside:
                 plist.append(nextvertex[endside][cw])
                 endside = nextsides[endside][cw]
-        print("exiting")
 
     def _sgn(self, x):
         return 1 if x >= 0 else -1
