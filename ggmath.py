@@ -605,7 +605,7 @@ class Circle(_MathVisual):
         y2n = y2 - c[1]
         dx = x2n-x1n
         dy = y2n-y1n
-        dr = sqrt(dxn*dxn + dyn*dyn)
+        dr = sqrt(dx*dx + dy*dy)
         D = x1n*y2n - x2n*y1n
         disc = r*r*dr*dr - D*D
         dr2 = dr*dr
@@ -962,6 +962,10 @@ class PointMass(ImagePoint):
 # test code here
 if __name__ == "__main__":
     
+    
+    ap = MathApp(2)
+
+    
     index = 0
     coordlist = [(1,1), (2,1), (2,0), (1,2), (1,1)]
     
@@ -1087,5 +1091,4 @@ if __name__ == "__main__":
     
     MathApp.addViewNotification(zoomCheck)
     
-    ap = MathApp(2)
     ap.run()
