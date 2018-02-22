@@ -610,7 +610,7 @@ class Circle(_MathVisual):
                 ilist.insert(i+1, self._findIntercepts(pcenter, pradius, 
                     pcenter[0], pcenter[1], 
                     ilist[0][0] + xrange*(i+1)/(numpoints+1) - pcenter[0],
-                    ilist[0][1] + yrange*(i+1)/(numpoints+1) - pcenter[1])
+                    ilist[0][1] + yrange*(i+1)/(numpoints+1) - pcenter[1]))
         return ilist
 
     def _findIntercepts(self, c, r, x1, y1, x2, y2):
