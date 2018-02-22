@@ -593,35 +593,39 @@ class Circle(_MathVisual):
             return PolygonAsset(poly, style, fill)
 
     def _buildPolygon(self, pcenter, pradius):
+        """
+        pcenter is in screen relative coordinates.
+        returns a coordinate list in circle relative coordinates
+        """
         xcepts = (self._findIntercepts(pcenter, pradius, 0,0,0,794) +
             self._findIntercepts(pcenter, pradius, MathApp.width,0,MathApp.width,MathApp.height) +
             self._findIntercepts(pcenter, pradius, 0,0,MathApp.width,0) +
             self._findIntercepts(pcenter, pradius, 0,MathApp.height, MathApp.width, MathApp.height))
         ilist = []
-        #print(xcepts)
         for x in xcepts:
             if x:
                 ilist.append(x)
-        #print('ilist before', ilist)
+        #ilist is a list of boundary intercepts that are screen-relative
         
         if len(ilist) > 1:
             xrange = ilist[1][0] - ilist[0][0]
             yrange = ilist[1][1] - ilist[0][1]
             numpoints = 10
             for i in range(numpoints):
-                print("findintercepts of ", ilist[0][0] + xrange*(i+1)/(numpoints+1) + pcenter[0],
-                    ilist[0][1] + yrange*(i+1)/(numpoints+1) + pcenter[1])
                 icepts =  self._findIntercepts(pcenter, pradius, 
                     pcenter[0], pcenter[1], 
-                    ilist[0][0] + xrange*(i+1)/(numpoints+1) + pcenter[0],
-                    ilist[0][1] + yrange*(i+1)/(numpoints+1) + pcenter[1])
-                print("resulting icepts ", icepts)
+                    ilist[0][0] + xrange*(i+1)/(numpoints+1) - pcenter[0],
+                    ilist[0][1] + yrange*(i+1)/(numpoints+1) - pcenter[1])
                 ilist.insert(1,icepts[0])
                     
         #print("ilist afte", ilist)
         return ilist
 
     def _findIntercepts(self, c, r, x1, y1, x2, y2):
+        """
+        c (center) and x and y values are physical, screen relative.
+        function returns coordinates in screen relative format
+        """
         x1n = x1 - c[0]
         x2n = x2 - c[0]
         y1n = y1 - c[1]
@@ -638,8 +642,7 @@ class Circle(_MathVisual):
         sgn = lambda x : 1 if x >= 0 else -1
         x = [(D*dy + sgn(dy)*dx*sdisc)/dr2 + c[0],  (D*dy - sgn(dy)*dx*sdisc)/dr2 + c[0]]
         y = [(-D*dx - abs(dy)*sdisc)/dr2 + c[1], (-D*dx + abs(dy)*sdisc)/dr2 + c[1]]
-        getcoords = lambda x, y, c: [(x-c[0],y-c[1])] if x>=0 and x<=MathApp.width and y>=0 and y<=MathApp.height else []
-        #print("raw res", x[0]-c[0], y[0]-c[1], x[1]-c[0], y[1]-c[1])
+        getcoords = lambda x, y, c: [(x,y)] if x>=0 and x<=MathApp.width and y>=0 and y<=MathApp.height else []
         res = getcoords(x[0], y[0], c)
         res.extend(getcoords(x[1], y[1], c))
         return res
