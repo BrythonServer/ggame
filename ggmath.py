@@ -602,17 +602,21 @@ class Circle(_MathVisual):
         for x in xcepts:
             if x:
                 ilist.append(x)
-        print('ilist before', ilist)
+        #print('ilist before', ilist)
+        
         if len(ilist) > 1:
             xrange = ilist[1][0] - ilist[0][0]
             yrange = ilist[1][1] - ilist[0][1]
             numpoints = 10
             for i in range(numpoints):
+                print("findintercepts of ", ilist[0][0] + xrange*(i+1)/(numpoints+1) + pcenter[0],
+                    ilist[0][1] + yrange*(i+1)/(numpoints+1) + pcenter[1])
                 ilist.insert(1, self._findIntercepts(pcenter, pradius, 
                     pcenter[0], pcenter[1], 
                     ilist[0][0] + xrange*(i+1)/(numpoints+1) + pcenter[0],
                     ilist[0][1] + yrange*(i+1)/(numpoints+1) + pcenter[1])[0])
-        print("ilist afte", ilist)
+                    
+        #print("ilist afte", ilist)
         return ilist
 
     def _findIntercepts(self, c, r, x1, y1, x2, y2):
@@ -632,10 +636,9 @@ class Circle(_MathVisual):
         x = [(D*dy + dx*sdisc)/dr2 + c[0],  (D*dy - dx*sdisc)/dr2 + c[0]]
         y = [(-D*dx - dy*sdisc)/dr2 + c[1], (-D*dx + dy*sdisc)/dr2 + c[1]]
         getcoords = lambda x, y, c: [(x-c[0],y-c[1])] if x>=0 and x<=MathApp.width and y>=0 and y<=MathApp.height else []
-        print("raw res", x[0]-c[0], y[0]-c[1], x[1]-c[0], y[1]-c[1])
+        #print("raw res", x[0]-c[0], y[0]-c[1], x[1]-c[0], y[1]-c[1])
         res = getcoords(x[0], y[0], c)
         res.extend(getcoords(x[1], y[1], c))
-        print("res", res)
         return res
 
 
