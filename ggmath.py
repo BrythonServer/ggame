@@ -594,11 +594,15 @@ class Circle(_MathVisual):
             return PolygonAsset(poly, style, fill)
 
     def _buildPolygon(self, pcenter, pradius):
-        left = self._findIntercepts(pcenter, pradius, 0,0,0,794)
-        right = self._findIntercepts(pcenter, pradius, MathApp.width,0,MathApp.width,MathApp.height)
-        top = self._findIntercepts(pcenter, pradius, 0,0,MathApp.width,0)
-        bottom = self._findIntercepts(pcenter, pradius, 0,MathApp.height, MathApp.width, MathApp.height)
-        return [pcenter] + left + bottom + right + top + [pcenter]
+        xcepts = [self._findIntercepts(pcenter, pradius, 0,0,0,794),
+            self._findIntercepts(pcenter, pradius, MathApp.width,0,MathApp.width,MathApp.height),
+            self._findIntercepts(pcenter, pradius, 0,0,MathApp.width,0),
+            self._findIntercepts(pcenter, pradius, 0,MathApp.height, MathApp.width, MathApp.height)]
+        ilist = []
+        for x in xcepts:
+            if x:
+                ilist.append(x)
+        return left + bottom + right + top
 
     def _findIntercepts(self, c, r, x1, y1, x2, y2):
         x1n = x1 - c[0]
