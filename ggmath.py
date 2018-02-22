@@ -614,6 +614,7 @@ class Circle(_MathVisual):
             numpoints = 1
             for i in range(numpoints):
                 print("intercept of: ", ilist[0][0] + xrange*(i+1)/(numpoints+1), ilist[0][1] + yrange*(i+1)/(numpoints+1))
+                print("pcenter x, y: ", pcenter[0], pcenter[1])
                 icepts =  self._findIntercepts(pcenter, pradius, 
                     pcenter[0], pcenter[1], 
                     ilist[0][0] + xrange*(i+1)/(numpoints+1),
