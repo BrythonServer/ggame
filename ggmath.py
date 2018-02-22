@@ -686,7 +686,9 @@ class Circle(_MathVisual):
 
 
     def _touchAsset(self):
+        print("preparing to newasset")
         self._newAsset(self._center, self._radius, self._color, self._style)
+        print("done with newasset")
     
     @property
     def center(self):
