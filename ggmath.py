@@ -618,10 +618,21 @@ class Circle(_MathVisual):
                     ilist[0][1] + yrange*(i+1)/(numpoints+1))
                 if len(icepts):
                     ilist.insert(i+1, icepts[0])
-            ilist.append(ilist[0])
-
+            #ilist.append(ilist[0])
+        self._addBoundaryVertices(ilist)
         ilist = [(i[0] - pcenter[0], i[1] - pcenter[1]) for i in ilist]
         return ilist
+        
+    def _addBoundaryVertices(self, plist):
+        """
+        Sides 0=top, 1=right, 2=bottom, 3=left
+        """
+        edges = ((None,0),(MathApp.width,None),(None,MathApp.height),(0,None))
+        for side in range(4):
+            if edges[side][0] == plist[-1][0] or edges[side][1] == plist[-1][1]:
+                endside = side
+                break
+        print(endside)
 
     def _findIntercepts(self, c, r, x1, y1, x2, y2):
         """
