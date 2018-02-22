@@ -647,7 +647,10 @@ class Circle(_MathVisual):
         edges = ((None,0),(MathApp.width,None),(None,MathApp.height),(0,None))
         endside = 0
         startside = 1
+        xx = 0
         while startside != endside:
+            x = x + 1
+            print(x)
             for side in range(4):
                 if edges[side][0] == plist[-1][0] or edges[side][1] == plist[-1][1]:
                     endside = side
