@@ -620,6 +620,7 @@ class Circle(_MathVisual):
                     ilist.insert(i+1, icepts[0])
             #ilist.append(ilist[0])
         self._addBoundaryVertices(ilist, pcenter, pradius)
+        ilist.append(ilist[0])
         ilist = [(i[0] - pcenter[0], i[1] - pcenter[1]) for i in ilist]
         return ilist
         
@@ -659,6 +660,7 @@ class Circle(_MathVisual):
             if endside != startside:
                 plist.append(nextvertex[endside][cw])
                 endside = nextsides[endside][cw]
+        print("exiting")
 
     def _sgn(self, x):
         return 1 if x >= 0 else -1
