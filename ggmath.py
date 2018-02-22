@@ -622,7 +622,7 @@ class Circle(_MathVisual):
                     ilist.insert(i+1, icepts[0])
         self._addBoundaryVertices(ilist, pcenter, pradius)
         ilist.append(ilist[0])
-        ilist = [(int(i[0] - pcenter[0]), int(i[1] - pcenter[1])) for i in ilist]
+        ilist = [(i[0] - pcenter[0], i[1] - pcenter[1]) for i in ilist]
         print(ilist)
         return ilist
         
