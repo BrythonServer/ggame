@@ -561,11 +561,9 @@ class Circle(_MathVisual):
         self._style = style
         self._color = fill
         self._pcenter = MathApp.logicalToPhysical(self._center())
-        try:
-            self._pradius = MathApp.distance(self._center(), self._radius()) * MathApp._scale
-        except AttributeError:
-            self._pradius = self._radius()*MathApp._scale
-        super().__init__(CircleAsset(self._pradius, style, fill), self._pcenter)
+        super().__init__(CircleAsset(0, style, fill), (0,0))
+        self._pradius = -1
+        self._touchAsset()
         self.fxcenter = self.fycenter = 0.5
 
     def _newAsset(self, center, radius, fill, style):
@@ -577,8 +575,12 @@ class Circle(_MathVisual):
         if pcenter != self._pcenter or pradius != self._pradius:
             self._pcenter = pcenter
             self._pradius = pradius
-            self._updateAsset(CircleAsset(self._pradius, style, fill))
+            asset = self._buildAsset(pcenter, pradius, style, fill)
+            self._updateAsset(asset)
             self.position = pcenter
+
+    def _buildAsset(self, pcenter, pradius, style, fill):
+        return CircleAsset(pradius, style, fill)
 
     def _touchAsset(self):
         self._newAsset(self._center, self._radius, self._color, self._style)
@@ -952,8 +954,8 @@ if __name__ == "__main__":
     #p1 = Point((0,0))
     #p1.movable = True
     #c1 = Circle(p1, 1.5, LineStyle(3, Color(0x0000ff,1)), Color(0x0000ff,0.3))
-    #pcenter = Point((0, -5000000))
-    #c1 = Circle(pcenter, 5000000, LineStyle(6, Color(0x0000ff,1)), Color(0x0000ff,0))
+    pcenter = Point((0, -5000000))
+    c1 = Circle((0,-5000000), 5000000, LineStyle(6, Color(0x0000ff,1)), Color(0x0000ff,0))
     
     #s1 = Slider((200, 400), 0, 10, 2, positioning='physical',
     #    leftkey="a", rightkey="d", centerkey="s")
