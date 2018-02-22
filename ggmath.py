@@ -586,7 +586,7 @@ class Circle(_MathVisual):
         xmin = pcenter[0]-pradius
         if ymin > MathApp.height or ymax < 0 or xmax < 0 or xmin > MathApp.width:
             return CircleAsset(pradius, style, fill)
-        elif pradius < MathApp.width*10:
+        elif pradius < MathApp.width*2:
             return CircleAsset(pradius, style, fill)
         else:
             poly = self._buildPolygon(pcenter, pradius)
@@ -610,13 +610,14 @@ class Circle(_MathVisual):
         if len(ilist) > 1:
             xrange = ilist[1][0] - ilist[0][0]
             yrange = ilist[1][1] - ilist[0][1]
-            numpoints = 1
+            numpoints = 10
             for i in range(numpoints):
                 icepts =  self._findIntercepts(pcenter, pradius, 
                     pcenter[0], pcenter[1], 
                     ilist[0][0] + xrange*(i+1)/(numpoints+1),
                     ilist[0][1] + yrange*(i+1)/(numpoints+1))
-                ilist.insert(1,icepts[0])
+                ilist.append(icepts[0])
+            ilist.sort()
                     
         ilist = [(i[0] - pcenter[0], i[1] - pcenter[1]) for i in ilist]
         return ilist
