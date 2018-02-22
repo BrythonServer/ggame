@@ -617,11 +617,10 @@ class Circle(_MathVisual):
             return []
         x = [c[0] + (D*dy + dx*sdisc)/dr2,  c[0] + (D*dy - dx*sdisc)/dr2]
         y = [c[1] + (-D*dx - dy*sdisc)/dr2, c[1] + (-D*dx + dy*sdisc)/dr2]
-        print("find intercept")
-        #getcoords = lambda x, y: x>0 and x<MathApp.width and y>0 and y<MathApp.width
-        #res = getcoords(x[0], y[0])
-        #res = res + getcoords(x[1], y[1])
-        return [(0,0)]
+        getcoords = lambda x, y: x>0 and x<MathApp.width and y>0 and y<MathApp.width
+        res = getcoords(x[0], y[0])
+        return res + getcoords(x[1], y[1])
+
 
 
     def _touchAsset(self):
