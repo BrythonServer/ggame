@@ -686,10 +686,8 @@ class Circle(_MathVisual):
 
 
     def _touchAsset(self):
-        print("preparing to newasset")
         self._newAsset(self._center, self._radius, self._color, self._style)
-        print("done with newasset")
-    
+
     @property
     def center(self):
         return self._center()
@@ -713,9 +711,7 @@ class Circle(_MathVisual):
             self._touchAsset()
         
     def step(self):
-        print("preparing to touch")
         self._touchAsset()
-        print("touched")
 
     def physicalPointTouching(self, ppos):
         r = MathApp.distance(self._pcenter, ppos)
@@ -816,10 +812,8 @@ class MathApp(App):
     def step(self):
         MathApp.time = time()
         for spr in self._mathDynamicList:
-            print("entering step")
             spr.step()
-            print("leaving step")
-        
+
     def _touchAllVisuals(self):
         # touch all visual object assets to use scaling
         for obj in self._mathVisualList:
@@ -1158,6 +1152,6 @@ if __name__ == "__main__":
     t = Timer()
     t.callEvery(tick, step)
     
-    MathApp.addViewNotification(zoomCheck)
+    #MathApp.addViewNotification(zoomCheck)
     
     ap.run()
