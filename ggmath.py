@@ -650,7 +650,7 @@ class Circle(_MathVisual):
         xx = 0
         while startside != endside:
             xx = xx + 1
-            print(x)
+            print(xx)
             for side in range(4):
                 if edges[side][0] == plist[-1][0] or edges[side][1] == plist[-1][1]:
                     endside = side
