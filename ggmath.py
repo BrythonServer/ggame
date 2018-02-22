@@ -605,7 +605,6 @@ class Circle(_MathVisual):
         for x in xcepts:
             if x:
                 ilist.append(x)
-        print(ilist)
         #ilist is a list of boundary intercepts that are screen-relative
         
         if len(ilist) > 1:
@@ -613,8 +612,6 @@ class Circle(_MathVisual):
             yrange = ilist[1][1] - ilist[0][1]
             numpoints = 1
             for i in range(numpoints):
-                print("intercept of: ", ilist[0][0] + xrange*(i+1)/(numpoints+1), ilist[0][1] + yrange*(i+1)/(numpoints+1))
-                print("pcenter x, y: ", pcenter[0], pcenter[1])
                 icepts =  self._findIntercepts(pcenter, pradius, 
                     pcenter[0], pcenter[1], 
                     ilist[0][0] + xrange*(i+1)/(numpoints+1),
@@ -622,7 +619,6 @@ class Circle(_MathVisual):
                 ilist.insert(1,icepts[0])
                     
         ilist = [(i[0] - pcenter[0], i[1] - pcenter[1]) for i in ilist]
-        print(ilist)
         return ilist
 
     def _findIntercepts(self, c, r, x1, y1, x2, y2):
@@ -645,7 +641,7 @@ class Circle(_MathVisual):
         sdisc = sqrt(disc)
         sgn = lambda x : 1 if x >= 0 else -1
         x = [(D*dy + sgn(dy)*dx*sdisc)/dr2 + c[0],  (D*dy - sgn(dy)*dx*sdisc)/dr2 + c[0]]
-        y = [(-D*dx - abs(dy)*sdisc)/dr2 + c[1], (-D*dx + abs(dy)*sdisc)/dr2 + c[1]]
+        y = [(-D*dx + abs(dy)*sdisc)/dr2 + c[1], (-D*dx - abs(dy)*sdisc)/dr2 + c[1]]
         getcoords = lambda x, y, c: [(x,y)] if x>=0 and x<=MathApp.width and y>=0 and y<=MathApp.height else []
         res = getcoords(x[0], y[0], c)
         res.extend(getcoords(x[1], y[1], c))
