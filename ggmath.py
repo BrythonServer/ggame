@@ -618,8 +618,7 @@ class Circle(_MathVisual):
                     ilist[0][1] + yrange*(i+1)/(numpoints+1))
                 ilist.append(icepts[0])
             ilist.sort()
-            ilist = ilist + ilist[::-1]
-            print(ilist)
+            ilist = ilist + ilist[:-1][::-1]
 
         ilist = [(i[0] - pcenter[0], i[1] - pcenter[1]) for i in ilist]
         return ilist
