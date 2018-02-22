@@ -580,7 +580,16 @@ class Circle(_MathVisual):
             self.position = pcenter
 
     def _buildAsset(self, pcenter, pradius, style, fill):
-        return CircleAsset(pradius, style, fill)
+        ymax = pcenter[1]+pradius
+        ymin = pcenter[1]-pradius
+        xmax = pcenter[0]+pradius
+        xmin = pcenter[0]-pradius
+        if ymin > MathApp.height or ymax < 0 or xmax < 0 or xmin > MathApp.width:
+            return CircleAsset(pradius, style, fill)
+        elif pradius < MathApp.width/2:
+            return CircleAsset(pradius, style, fill)
+        else:
+            return PolygonAsset([], style, fill)
 
     def _touchAsset(self):
         self._newAsset(self._center, self._radius, self._color, self._style)
