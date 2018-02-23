@@ -614,14 +614,16 @@ class Circle(_MathVisual):
             xrange = ilist[-1][0] - ilist[0][0]
             yrange = ilist[-1][1] - ilist[0][1]
             numpoints = 20
+            inx = 0
             for i in range(numpoints):
                 icepts =  self._findIntercepts(pcenter, pradius, 
                     pcenter[0], pcenter[1], 
                     ilist[0][0] + xrange*(i+1)/(numpoints+1),
                     ilist[0][1] + yrange*(i+1)/(numpoints+1))
-                print("an icepts ", icepts)
+                #print("an icepts ", icepts)
                 if len(icepts):
-                    ilist.insert(i+1, icepts[0])
+                    ilist.insert(inx+1, icepts[0])
+                    inx = inx + 1
             ##print("padded ilist ", ilist)
             self._addBoundaryVertices(ilist, pcenter, pradius)
             ilist.append(ilist[0])
