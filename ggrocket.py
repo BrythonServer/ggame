@@ -36,6 +36,7 @@ class Rocket(ImagePoint):
         self.timer = Timer()
         self.timer.callEvery(1/self.tickrate, self.dynamics)
         self.V = [initvel * cos(initdir), initvel * sin(initdir)]
+        print("hi1")
         
     
     # override recommended!
@@ -47,6 +48,8 @@ class Rocket(ImagePoint):
         return 1
 
     def dynamics(self, timer):
+        print("hi2")
+
         tick = 10**self.timezoom()/self.tickrate
 
         # 4th order runge-kutta method (https://sites.temple.edu/math5061/files/2016/12/final_project.pdf)
@@ -169,7 +172,10 @@ class Planet(MathApp):
             Color(self.color,0.5))
         r = self.radius + self.viewaltitude
         self.viewPosition = (r*cos(self.viewanomaly), r*sin(self.viewanomaly))
+        print("hi3")
+
         self.run()
+        print("hi4")
         
 
 # test code here
