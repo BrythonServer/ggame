@@ -648,9 +648,9 @@ class Circle(_MathVisual):
         iterations = 0
         while (not startside or not endside) and startside != endside:
             iterations = iterations + 1
-            if iterations > 10:
-                print("exhausting iterations")
-                break
+            #if iterations > 10:
+            #    print("exhausting iterations")
+            #    break
             for side in range(4):
                 if edges[side][0] == plist[-1][0] or edges[side][1] == plist[-1][1]:
                     endside = side
