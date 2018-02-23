@@ -660,12 +660,15 @@ class Circle(_MathVisual):
         iterations = 0
         while startside != endside:
             iterations = iterations + 1
-            if iterations > 10:
+            if iterations > 20:
                 print("exhausting iterations")
+                print("start end sides: ", startside, endside)
                 break
             if endside != None and startside != None:   #  and endside != startside
                 plist.append(nextvertex[endside][cw])
                 endside = nextsides[endside][cw]
+                if iterations > 10:
+                    print("endside: ", endside)
 
     def _sgn(self, x):
         return 1 if x >= 0 else -1
