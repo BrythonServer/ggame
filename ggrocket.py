@@ -183,5 +183,6 @@ if __name__ == "__main__":
 
     t = Timer()
     t.callEvery(1/10, tfunc)
-    
+    m = MathApp()
+    m.run()
     
