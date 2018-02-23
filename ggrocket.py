@@ -71,7 +71,6 @@ class Rocket(ImagePoint):
 
     # generic force as a function of position
     def fr(self, pos):
-        print("fr")
         self.rotation = self.heading()
         t = self.thrust()
         G = 6.674E-11
@@ -181,19 +180,6 @@ class Planet(MathApp):
 # test code here
 if __name__ == "__main__":
     
-    def getrot():
-        return r
+    Planet(Rocket, scale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
     
-    Planet(Rocket, heading=getrot, scale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
-    
-    r = 0
-    def rot(t):
-        print("rot")
-        global r
-        r += 0.05
-    
-    
-    
-    t = Timer()
-    t.callEvery(0.1, rot)
-    
+
