@@ -265,7 +265,7 @@ class Rocket(ImagePoint):
     def tanomaly(self, angle):
         r = self.r
         self.xyposition = (r*cos(angle), r*sin(angle))
-        self._touchAsset()
+        #self._touchAsset()
             
     @property
     def r(self):
