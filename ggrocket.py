@@ -5,6 +5,37 @@ from ggmath import MathApp, Circle, ImagePoint, Timer
 class Rocket(ImagePoint):
     
     def __init__(self, planet, **kwargs):
+        """
+        Initialize the Rocket object. 
+        Required parameters:
+        :planet:  Reference to a Planet object.
+        
+        Optional keyword parameters are supported:
+        :bitmap:  url of a suitable bitmap image for the rocket (png recommended)
+                    default is `rocket.png`
+        :bitmapscale:  scale factor for bitmap. Default is 0.1
+        :velocity:  initial rocket speed. default is zero.
+        :directiond:  initial rocket direction in degrees. Default is zero.
+        :direction:  initial rocket direction in radians. Default is zero.
+        :tanomalyd:  initial rocket true anomaly in degrees. Default is 90.
+        :tanomaly:  initial rocket true anomaly in radians. Default is pi/2.
+        :altitude:  initial rocket altitude in meters. Default is zero.
+        
+        Following parameters may be set as a constant value, or pass in the
+        name of a function that will return the value dynamically or the
+        name of a `ggmath` UI control that will return the value
+        :timezoom:  scale factor for time zoom. Factor = 10**timezoom
+        :heading:  direction to point the rocket in (must be radians)
+        :mass:  mass of the rocket (must be kg)
+        :thrust:  thrust of the rocket (must be N)
+
+        Animation related parameters may be ignored if no sprite animation:
+        :bitmapframe:  ((x1,y1),(x2,y2)) tuple defines a region in the bitmap
+        :bitmapqty:  number of bitmaps -- used for animation effects
+        :bitmapdir:  "horizontal" or "vertical" use with animation effects
+        :bitmapmargin:  pixels between successive animation frames
+        :tickrate:  frequency of spacecraft dynamics calculations (Hz)
+        """
         self._xy = (0,0)
         self.planet = planet
         self.bmurl = kwargs.get('bitmap', 'rocket.png') # default rocket png
@@ -161,6 +192,26 @@ class Rocket(ImagePoint):
 class Planet(MathApp):
     
     def __init__(self, rocket, **kwargs):
+        """
+        Initialize the Planet object. 
+        Required parameters:
+        :rocket:  Name of a Rocket-based class.
+
+        All of the Rocket optional keyword parameters are supported and will
+        be passed to the rocket class `__init__` function during instantiation.
+        
+        Optional keyword parameters are supported:
+        :scale:  pixels per meter in graphics display. Default is 10.
+        :radius:  radius of the planet in meters. Default is Earth radius.
+        :mass: mass of the planet in kg. Default is Earth mass.
+        :color: color of the planet. Default is greenish (0x008040).
+        :viewalt: altitude of initial viewpoint in meters. 
+            Default is rocket altitude.
+        :viewanom: true anomaly (angle) of initial viewpoint in radians. 
+            Default is the rocket anomaly.
+        :viewanomd: true anomaly (angle) of initial viewpoing in degrees.
+            Default is the rocket anomaly.
+        """
         self.scale = kwargs.get('scale', 10)  # 10 pixels per meter default
         self.radius = kwargs.get('radius', 6.371E6) # Earth - meters
         self.mass = kwargs.get('mass', 5.9722E24) # Earth - kg
