@@ -33,7 +33,7 @@ class Rocket(ImagePoint):
         r = altitude + self.planet.radius
         self.xyposition = (r*cos(tanomaly), r*sin(tanomaly))
         # default heading control if none provided by user
-        if self.heading() != None:
+        if self.heading() == None:
             MathApp.listenKeyEvent('keydown', 'left arrow', self.turn)
             MathApp.listenKeyEvent('keydown', 'right arrow', self.turn)
         self.timer = Timer()
