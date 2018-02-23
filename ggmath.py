@@ -669,6 +669,7 @@ class Circle(_MathVisual):
             if endside != None and startside != None:   #  and endside != startside
                 plist.append(nextvertex[endside][cw])
                 endside = nextsides[endside][cw]
+                print("next endside ", endside)
 
     def _sgn(self, x):
         return 1 if x >= 0 else -1
