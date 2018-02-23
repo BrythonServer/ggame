@@ -1055,7 +1055,7 @@ class Rocket(ImagePoint):
     @altitude.setter
     def altitude(self, alt):
         r = alt + self.planet.radius
-        print((r*cos(self.tanomaly), r*sin(self.tanomaly))
+        print((r*cos(self.tanomaly), r*sin(self.tanomaly)))
         self.xyposition = (r*cos(self.tanomaly), r*sin(self.tanomaly))
         self._touchAsset()
 
