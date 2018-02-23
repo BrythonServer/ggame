@@ -45,13 +45,18 @@ class Rocket(ImagePoint):
 
 
     
-    # override recommended!
+    # override or define externally!
     def getthrust(self):
         return 0
 
+    # override or define externally!
     def getmass(self):
         return 1
 
+    # override or define externally!
+    def getheading(self):
+        return self.localheading
+            
     def dynamics(self, timer):
         tick = 10**self.timezoom()/self.tickrate
         # 4th order runge-kutta method (https://sites.temple.edu/math5061/files/2016/12/final_project.pdf)
@@ -103,9 +108,6 @@ class Rocket(ImagePoint):
     def turn(self, event):
         increment = pi/50 * (1 if event.key == "left arrow" else -1)
         self.localheading += increment
-            
-    def getheading(self):
-        return self.localheading
             
     def _getposition(self):
         return self._xy
