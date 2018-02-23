@@ -85,7 +85,7 @@ class Rocket(ImagePoint):
                         self.thrustText,
                         self.massText,
                         self.trueAnomalyDegreesText,
-                        self.scaleText,
+            #            self.scaleText,
                         self.timeZoomText]
             for i in range(len(showparms)):
                 Label((10,10+i*25), showparms[i], size=15, positioning="physical")
@@ -323,7 +323,8 @@ class Planet(MathApp):
 if __name__ == "__main__":
     
     
-    Planet(Rocket, scale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
+    #Planet(Rocket, scale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
     
+    Planet(Rocket, scale=0.0001)
     
 
