@@ -1151,7 +1151,7 @@ if __name__ == "__main__":
     mass = 1
     g = -9.81
     
-    sat = Point(getposition)
+    sat = ImagePoint(getposition, 'bunny.png')
 
     thrust = Slider((100, 100), -50, 50, 0, positioning='physical', steps=200,
         leftkey="down arrow", rightkey="up arrow", centerkey="space")
