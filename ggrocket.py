@@ -47,30 +47,23 @@ class Rocket(ImagePoint):
         return 1
 
     def dynamics(self, timer):
-        print("dynamics")
         tick = 10**self.timezoom()/self.tickrate
         # 4th order runge-kutta method (https://sites.temple.edu/math5061/files/2016/12/final_project.pdf)
         # and http://spiff.rit.edu/richmond/nbody/OrbitRungeKutta4.pdf  (succinct, but with a typo)
         k1v = self.ar(self._xy)
         k1r = self.V
         k2v = self.ar(self.vadd(self._xy, self.vmul(tick/2, k1r)))
-        print("uhh1")
         k2r = self.vadd(self.V, self.vmul(tick/2, k1v))
         k3v = self.ar(self.vadd(self._xy, self.vmul(tick/2, k2r)))
         k3r = self.vadd(self.V, self.vmul(tick/2, k2v))
         k4v = self.ar(self.vadd(self._xy, self.vmul(tick, k3r)))
         k4r = self.vadd(self.V, self.vmul(tick, k3v))
-        print("uhh2")
         self.V = [self.V[i] + tick/6*(k1v[i] + 2*k2v[i] + 2*k3v[i] + k4v[i]) for i in (0,1)]
         self._xy = [self._xy[i] + tick/6*(k1r[i] + 2*k2r[i] + 2*k3r[i] + k4r[i]) for i in (0,1)]
-        print("uhh3")
-        #self._touchAsset()
-        print("uhh4")
         if self.altitude < 0:
             self.V = [0,0]
             self.altitude = 0
-        print("dynamics out")
-    
+
     # generic force as a function of position
     def fr(self, pos):
         t = self.thrust()
@@ -173,7 +166,6 @@ class Planet(MathApp):
         r = self.radius + self.viewaltitude
         self.viewPosition = (r*cos(self.viewanomaly), r*sin(self.viewanomaly))
         self.run()
-        print("run done")
 
 
 # test code here
@@ -181,11 +173,3 @@ if __name__ == "__main__":
     
     Planet(Rocket, scale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
     
-    def tfunc(t):
-        print('tick')
-
-#    m = MathApp()
-#    m.run()
-    
-    t = Timer()
-    t.callEvery(1/10, tfunc)
