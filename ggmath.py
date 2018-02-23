@@ -609,7 +609,7 @@ class Circle(_MathVisual):
             if x and len(x) < 2:
                 ilist.extend(x)
         #ilist is a list of boundary intercepts that are screen-relative
-        print("ilist: ", ilist)
+        ##print("ilist: ", ilist)
         if len(ilist) > 1:
             xrange = ilist[-1][0] - ilist[0][0]
             yrange = ilist[-1][1] - ilist[0][1]
