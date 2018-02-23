@@ -2,7 +2,7 @@
 
 from math import pi, degrees, radians, atan2, sin, cos, sqrt
 from ggame import LineStyle, Color
-from ggmath import MathApp, Circle, ImagePoint, Timer
+from ggmath import MathApp, Circle, ImagePoint, Timer, Label
 
 class Rocket(ImagePoint):
 
@@ -304,7 +304,6 @@ class Planet(MathApp):
 # test code here
 if __name__ == "__main__":
     
-    from ggmath import Label, Slider
     
     Planet(Rocket, scale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
     
