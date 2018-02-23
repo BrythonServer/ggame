@@ -1046,6 +1046,7 @@ class Rocket(ImagePoint):
         return 1
 
     def dynamics(self):
+        print("tick!")
         tick = 1/self.tickrate
         g = self.fgrav()
         t = self.thrust()
@@ -1150,7 +1151,7 @@ if __name__ == "__main__":
     
     
     
-    Planet(Rocket)
+    Planet(Rocket, altitude=10)
     
     """
     
