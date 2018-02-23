@@ -634,6 +634,7 @@ class Circle(_MathVisual):
         cw = 0
         for p in range(3):
             cw = cw + (plist[p+1][0]-plist[p][0])*(plist[p+1][1]+plist[p][1])
+        print("raw cw ", cw)
         cw = self._sgn(cw)
         cw = 1 if cw > 0 else 0
         print("cw ",cw)
