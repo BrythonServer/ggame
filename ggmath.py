@@ -643,8 +643,7 @@ class Circle(_MathVisual):
                         (vertices[3],vertices[0])]
         nextsides = [(3,1),(0,2),(1,3),(2,0)]
         edges = ((None,0),(MathApp.width,None),(None,MathApp.height),(0,None))
-        endside = None
-        startside = None
+        endside = startside = None
         iterations = 0
         while not startside or not endside or startside != endside:
             iterations = iterations + 1
@@ -653,9 +652,9 @@ class Circle(_MathVisual):
                 print(plist)
                 break
             for side in range(4):
-                if not endside and (edges[side][0] == plist[-1][0] or edges[side][1] == plist[-1][1]):
+                if endside is None and (edges[side][0] == plist[-1][0] or edges[side][1] == plist[-1][1]):
                     endside = side
-                if not startside and (edges[side][0] == plist[0][0] or edges[side][1] == plist[0][1]):
+                if startside is None and (edges[side][0] == plist[0][0] or edges[side][1] == plist[0][1]):
                     startside = side
             if endside != startside:
                 plist.append(nextvertex[endside][cw])
