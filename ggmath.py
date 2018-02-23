@@ -606,7 +606,7 @@ class Circle(_MathVisual):
             self._findIntercepts(pcenter, pradius, 0,MathApp.height, MathApp.width, MathApp.height)]
         ilist = []
         for x in xcepts:
-            if x:
+            if x and len(x) < 2:
                 ilist.extend(x)
         #ilist is a list of boundary intercepts that are screen-relative
         print("ilist: ", ilist)
