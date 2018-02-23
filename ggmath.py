@@ -609,7 +609,6 @@ class Circle(_MathVisual):
             if x and len(x) < 2:
                 ilist.extend(x)
         #ilist is a list of boundary intercepts that are screen-relative
-        ##print("ilist: ", ilist)
         if len(ilist) > 1:
             xrange = ilist[-1][0] - ilist[0][0]
             yrange = ilist[-1][1] - ilist[0][1]
@@ -620,11 +619,9 @@ class Circle(_MathVisual):
                     pcenter[0], pcenter[1], 
                     ilist[0][0] + xrange*(i+1)/(numpoints+1),
                     ilist[0][1] + yrange*(i+1)/(numpoints+1))
-                #print("an icepts ", icepts)
                 if len(icepts):
                     ilist.insert(inx+1, icepts[0])
                     inx = inx + 1
-            ##print("padded ilist ", ilist)
             self._addBoundaryVertices(ilist, pcenter, pradius)
             ilist.append(ilist[0])
             ilist = [(i[0] - pcenter[0], i[1] - pcenter[1]) for i in ilist]
@@ -641,7 +638,7 @@ class Circle(_MathVisual):
             for p in range(3):
                 cw = cw + (rtst[p+1][0]-rtst[p][0])*(rtst[p+1][1]+rtst[p][1])
         except IndexError:
-            print(plist)
+            #print(plist)
             return
         cw = self._sgn(cw)
         cw = 1 if cw < 0 else 0
@@ -661,21 +658,15 @@ class Circle(_MathVisual):
                 endside = side
             if startside is None and (edges[side][0] == round(plist[0][0]) or edges[side][1] == round(plist[0][1])):
                 startside = side
-        if startside == None or endside == None:
-            print("missing start or end side: ", plist)
-            print("right side: ", edges[1][0])
         iterations = 0
         while startside != endside:
             iterations = iterations + 1
             if iterations > 20:
                 print("exhausting iterations")
-                print("start end sides: ", startside, endside)
                 break
             if endside != None and startside != None:   #  and endside != startside
                 plist.append(nextvertex[endside][cw])
                 endside = nextsides[endside][cw]
-                if iterations > 10:
-                    print("endside: ", endside)
 
     def _sgn(self, x):
         return 1 if x >= 0 else -1
