@@ -587,12 +587,12 @@ class Circle(_MathVisual):
         xmin = pcenter[0]-pradius
         if ymin > MathApp.height or ymax < 0 or xmax < 0 or xmin > MathApp.width:
             return CircleAsset(pradius, style, fill)
-        elif pradius < MathApp.width:
-            return CircleAsset(pradius, style, fill)
-        else:
+        elif pradius > MathApp.width:
             poly = self._buildPolygon(pcenter, pradius)
-            passet = PolygonAsset(poly, style, fill)
-            return passet
+            if len(poly):
+                passet = PolygonAsset(poly, style, fill)
+                return passet
+        return CircleAsset(pradius, style, fill)
 
     def _buildPolygon(self, pcenter, pradius):
         """
