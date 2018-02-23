@@ -613,7 +613,7 @@ class Circle(_MathVisual):
         if len(ilist) > 1:
             xrange = ilist[1][0] - ilist[0][0]
             yrange = ilist[1][1] - ilist[0][1]
-            numpoints = 2
+            numpoints = 20
             for i in range(numpoints):
                 icepts =  self._findIntercepts(pcenter, pradius, 
                     pcenter[0], pcenter[1], 
@@ -662,14 +662,10 @@ class Circle(_MathVisual):
             iterations = iterations + 1
             if iterations > 10:
                 print("exhausting iterations")
-                print(plist)
-                print(cw)
-                print("startside, endside ", startside, endside)
                 break
             if endside != None and startside != None:   #  and endside != startside
                 plist.append(nextvertex[endside][cw])
                 endside = nextsides[endside][cw]
-                print("next endside ", endside)
 
     def _sgn(self, x):
         return 1 if x >= 0 else -1
