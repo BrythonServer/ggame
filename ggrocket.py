@@ -89,7 +89,7 @@ class Rocket(ImagePoint):
                         self.timeZoomText]
             for i in range(len(showparms)):
                 Label((10,10+i*25), showparms[i], size=15, positioning="physical")
-
+        print("rocket init")
 
     
     # override or define externally!
@@ -317,6 +317,7 @@ class Planet(MathApp):
         r = self.radius + self.viewaltitude
         self.viewPosition = (r*cos(self.viewanomaly), r*sin(self.viewanomaly))
         self.run()
+        print("planet init")
 
 
 # test code here
