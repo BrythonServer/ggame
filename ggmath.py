@@ -613,7 +613,7 @@ class Circle(_MathVisual):
         if len(ilist) > 1:
             xrange = ilist[1][0] - ilist[0][0]
             yrange = ilist[1][1] - ilist[0][1]
-            numpoints = 20
+            numpoints = 2
             for i in range(numpoints):
                 icepts =  self._findIntercepts(pcenter, pradius, 
                     pcenter[0], pcenter[1], 
