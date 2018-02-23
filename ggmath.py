@@ -1004,7 +1004,7 @@ class MathApp(App):
             cls._mathSelectableList.remove(obj)
 
 
-from math import pi, degrees, radians, atanxy
+from math import pi, degrees, radians, atan2
 
 class Rocket(ImagePoint):
     
