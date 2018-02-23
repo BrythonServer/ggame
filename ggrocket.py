@@ -292,6 +292,13 @@ class Planet(MathApp):
 # test code here
 if __name__ == "__main__":
     
-    Planet(Rocket, scale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
+    from ggmath import Label, Slider
+    
+    p = Planet(Rocket, scale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
+    
+    r = p.rocket
+    
+    Label((100,100), r.velocityText, size=15, positioning="physical")
+    Label((100,150), r.altitudeText, size=15, positioning="physical")
     
 
