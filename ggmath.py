@@ -652,9 +652,9 @@ class Circle(_MathVisual):
                 print("exhausting iterations")
                 break
             for side in range(4):
-                if edges[side][0] == plist[-1][0] or edges[side][1] == plist[-1][1]:
+                if not endside and (edges[side][0] == plist[-1][0] or edges[side][1] == plist[-1][1]):
                     endside = side
-                if edges[side][0] == plist[0][0] or edges[side][1] == plist[0][1]:
+                if not startside and (edges[side][0] == plist[0][0] or edges[side][1] == plist[0][1]):
                     startside = side
             if endside != startside:
                 print("endside != startside")
