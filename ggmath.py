@@ -957,7 +957,7 @@ class MathApp(App):
     @classmethod
     @property
     def scale(cls):
-        return MathApp._scale
+        return cls._scale
         
     @property
     def width(cls):
