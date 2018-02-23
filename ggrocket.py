@@ -39,7 +39,7 @@ class Rocket(ImagePoint):
         :bitmapmargin:  pixels between successive animation frames
         :tickrate:  frequency of spacecraft dynamics calculations (Hz)
         """
-        self._xy = (0,0)
+        self._xy = (1000000,1000000)
         self.planet = planet
         self.bmurl = kwargs.get('bitmap', 'rocket.png') # default rocket png
         self.bitmapframe = kwargs.get('bitmapframe', None) #
