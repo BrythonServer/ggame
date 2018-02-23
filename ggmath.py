@@ -1052,7 +1052,7 @@ class Rocket(ImagePoint):
         return 1
 
     def dynamics(self, timer):
-        tick = 10**self.timezoom/self.tickrate
+        tick = 10**self.timezoom()/self.tickrate
         g = self.fgrav()
         t = self.thrust()
         m = self.mass()
