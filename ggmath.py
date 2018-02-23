@@ -611,8 +611,8 @@ class Circle(_MathVisual):
         #ilist is a list of boundary intercepts that are screen-relative
       
         if len(ilist) > 1:
-            xrange = ilist[1][0] - ilist[0][0]
-            yrange = ilist[1][1] - ilist[0][1]
+            xrange = ilist[-1][0] - ilist[0][0]
+            yrange = ilist[-1][1] - ilist[0][1]
             numpoints = 20
             for i in range(numpoints):
                 icepts =  self._findIntercepts(pcenter, pradius, 
