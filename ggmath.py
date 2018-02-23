@@ -631,7 +631,11 @@ class Circle(_MathVisual):
         """
         #figure out rotation in point sequence
         cw = 0
-        rtst = plist[0:3]+[plist[0]]
+        try:
+            rtst = plist[0:3]+[plist[0]]
+        except IndexError:
+            print(plist)
+            return
         for p in range(3):
             cw = cw + (rtst[p+1][0]-rtst[p][0])*(rtst[p+1][1]+rtst[p][1])
         cw = self._sgn(cw)
