@@ -1011,7 +1011,7 @@ class Rocket(ImagePoint):
             self.bitmapframe, 
             self.bitmapqty, 
             self.bitmapdir,
-            self.bitmapmargin):
+            self.bitmapmargin)
     
 
 
