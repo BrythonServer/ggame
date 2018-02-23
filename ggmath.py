@@ -666,7 +666,7 @@ class Circle(_MathVisual):
                 print(cw)
                 print("startside, endside ", startside, endside)
                 break
-            if endside and startside:   #  and endside != startside
+            if endside != None and startside != None:   #  and endside != startside
                 plist.append(nextvertex[endside][cw])
                 endside = nextsides[endside][cw]
 
