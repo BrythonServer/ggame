@@ -995,23 +995,66 @@ class MathApp(App):
             cls._mathSelectableList.remove(obj)
 
 
-from math import pi, degrees, radians
+from math import pi, degrees, radians, atanxy
 
 class Rocket(ImagePoint):
     
-    def __init__(self, pos, **kwargs):
+    def __init__(self, planet, **kwargs):
+        self._xy = (0,0)
+        self.planet = planet
         self.bmurl = kwargs.get('bitmap', 'rocket.png') # default rocket png
         self.bitmapscale = kwargs.get('bitmapscale', 0.1) # small
         self.bitmapframe = kwargs.get('bitmapframe', None) #
         self.bitmapqty = kwargs.get('bitmapqty', 1) # Number of images in bitmap
         self.bitmapdir = kwargs.get('bitmapdir', 'horizontal') # animation orientation
         self.bitmapmargin = kwargs.get('bitmapmargin', 0) # bitmap spacing
-        super().__init__(pos, 
+        super().__init__(self._getposition, 
             self.bmurl, 
             self.bitmapframe, 
             self.bitmapqty, 
             self.bitmapdir,
             self.bitmapmargin)
+        self.tanomaly = kwargs.get('tanomaly', pi/2) # position angle
+        self.tanomalyd = kwargs.get('tanomalyd', degrees(self.tanomaly)) 
+        self.altitude = kwargs.get('altitude', 0) #
+            
+            
+        def _getposition(self):
+            return self._xy
+        
+        @property
+        def xyposition(self):
+            return self._xy
+            
+        @xyposition.setter
+        def xyposition(self, pos):
+            self._xy = pos
+            self._touchAsset()
+
+        @property
+        def tanomalyd(self):
+            return degrees(self.tanomaly)
+            
+        @tanomalyd.setter
+        def tanomalyd(self, angle):
+            self.tanomaly = radians(angle)
+
+        @property
+        def altitude(self):
+            return MathApp.distance(self._pos(), (0,0)) - self.planet.radius
+            
+        @altitude.setter
+        def altitude(self, alt):
+            self.xyposition = (alt*cos(self.tanomaly), alt*sin(self.tanomaly))
+            self._touchAsset()
+
+        @property
+        def tanomaly(self):
+            pos = self._pos()
+            return atan2(pos[1],pos[0])
+            
+        
+        
     
 
 
@@ -1019,6 +1062,8 @@ class Planet(MathApp):
     
     def __init__(self, **kwargs):
         self.scale = kwargs.get('scale', 10)  # 10 pixels per meter default
+        self.radius = kwargs.get('radius', 6.371E6) # Earth - meters
+        self.mass = kwargs.get('mass', 5.9722E24) # Earth - kg
         super().__init__(self.scale)
 
 
