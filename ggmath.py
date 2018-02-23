@@ -1017,7 +1017,7 @@ class Rocket(ImagePoint):
         self.bitmapqty = kwargs.get('bitmapqty', 1) # Number of images in bitmap
         self.bitmapdir = kwargs.get('bitmapdir', 'horizontal') # animation orientation
         self.bitmapmargin = kwargs.get('bitmapmargin', 0) # bitmap spacing
-        self.tickrate = kwargs.get('tickrate', 10) # dynamics calcs per sec
+        self.tickrate = kwargs.get('tickrate', 30) # dynamics calcs per sec
         super().__init__(self._getposition, 
             self.bmurl, 
             self.bitmapframe, 
@@ -1052,7 +1052,6 @@ class Rocket(ImagePoint):
         m = self.mass()
         F = (g[0] + t*cos(self.rotation), g[1] + t*sin(self.rotation))
         A = [F[i]/m for i in (0,1)]
-        print("tick!")
         self._xy = [self._xy[i] + self.V[i] * tick + 0.5 * A[i] * tick**2 for i in range(2)]
         self.V = [self.V[i] + A[i] * tick for i in range(2)]
         self._touchAsset()
@@ -1099,6 +1098,7 @@ class Rocket(ImagePoint):
     @altitude.setter
     def altitude(self, alt):
         r = alt + self.planet.radius
+        print(r)
         print((r*cos(self.tanomaly), r*sin(self.tanomaly)))
         self.xyposition = (r*cos(self.tanomaly), r*sin(self.tanomaly))
         self._touchAsset()
