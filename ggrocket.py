@@ -1,5 +1,5 @@
 from math import pi, degrees, radians, atan2, sin, cos
-from ggmath import MathApp, Circle, ImagePoint
+from ggmath import MathApp, Circle, ImagePoint, Timer
 
 class Rocket(ImagePoint):
     
