@@ -1028,7 +1028,13 @@ class Rocket(ImagePoint):
         altitude = kwargs.get('altitude', 0) #
         r = altitude + self.planet.radius
         self.xyposition = (r*cos(tanomaly), r*sin(tanomaly))
-            
+        MathApp.listenKeyEvent('keydown', 'left arrow', self.turn)
+        MathApp.listenKeyEvent('keydown', 'right arrow', self.turn)
+
+        
+    def turn(self, event):
+        increment = pi/50 * 1 if event.key == "left arrow" else -1
+        self.rotation += increment
             
     def _getposition(self):
         return self._xy
