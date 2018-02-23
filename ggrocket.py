@@ -174,7 +174,7 @@ class Rocket(ImagePoint):
             
     def dynamics(self, timer):
         print("dynamics")
-        #print("dynamics self.tickrate", self.tickrate)
+        print("dynamics self.tickrate", self.tickrate)
         print("what up?")
         tick = 10**self.timezoom()/self.tickrate
         # 4th order runge-kutta method (https://sites.temple.edu/math5061/files/2016/12/final_project.pdf)
