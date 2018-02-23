@@ -17,6 +17,8 @@ class Rocket(ImagePoint):
         # dynamic parameters
         self.timezoom = self.Eval(kwargs.get('timezoom', 0)) # 1,2,3 faster, -1, slower
         self.heading = self.Eval(kwargs.get('heading', self.getheading)) # must be radians
+        self.mass = self.Eval(kwargs.get('mass', self.getmass)) # kg
+        self.thrust = self.Eval(kwargs.get('thrust', self.getthrust)) # N
         # end dynamic 
         super().__init__(self._getposition, 
             self.bmurl, 
@@ -44,11 +46,10 @@ class Rocket(ImagePoint):
 
     
     # override recommended!
-    def thrust(self):
+    def getthrust(self):
         return 0
 
-    # override recommended!
-    def mass(self):
+    def getmass(self):
         return 1
 
     def dynamics(self, timer):
