@@ -174,6 +174,7 @@ class Rocket(ImagePoint):
             
     def dynamics(self, timer):
         print("dynamics")
+        print("dynamics self.tickrate", self.tickrate)
         tick = 10**self.timezoom()/self.tickrate
         # 4th order runge-kutta method (https://sites.temple.edu/math5061/files/2016/12/final_project.pdf)
         # and http://spiff.rit.edu/richmond/nbody/OrbitRungeKutta4.pdf  (succinct, but with a typo)
@@ -197,6 +198,7 @@ class Rocket(ImagePoint):
         t = self.thrust()
         G = 6.674E-11
         r = MathApp.distance((0,0), pos)
+        print("fr r", r)
         uvec = (-pos[0]/r, -pos[1]/r)
         fg = G*self.mass()*self.planet.mass/r**2
         F = [x*fg for x in uvec]
@@ -205,6 +207,7 @@ class Rocket(ImagePoint):
     # geric acceleration as a function of position
     def ar(self, pos):
         m = self.mass()
+        print("ar m", m)
         F = self.fr(pos)
         return [F[i]/m for i in (0,1)]
         
@@ -220,6 +223,7 @@ class Rocket(ImagePoint):
     def fgrav(self):
         G = 6.674E-11
         r = self.r
+        print("fgrav r", r)
         uvec = (-self._xy[0]/r, -self._xy[1]/r)
         F = G*self.mass()*self.planet.mass/r**2
         return [x*F for x in uvec]
