@@ -1145,6 +1145,12 @@ if __name__ == "__main__":
         scale = kwargs.get('scale')
         if viewtype == "zoom":
             print(scale)
+            
+    def turnleft(event):
+        sat.rotation += 0.01
+        
+    def turnright(event):
+        sat.rotation -= 0.01
 
     tick = 0.02
     x = 0
@@ -1154,6 +1160,8 @@ if __name__ == "__main__":
     g = -9.81
     
     sat = ImagePoint(getposition, 'bunny.png')
+    MathApp.listenKeyEvent('left arrow', turnleft)
+    MathApp.listenKeyEvent('right arrow', turnright)
 
     thrust = Slider((100, 100), -50, 50, 0, positioning='physical', steps=200,
         leftkey="down arrow", rightkey="up arrow", centerkey="space")
