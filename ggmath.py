@@ -1017,7 +1017,7 @@ class Rocket(ImagePoint):
         self.bitmapqty = kwargs.get('bitmapqty', 1) # Number of images in bitmap
         self.bitmapdir = kwargs.get('bitmapdir', 'horizontal') # animation orientation
         self.bitmapmargin = kwargs.get('bitmapmargin', 0) # bitmap spacing
-        self.tickrate = kwargs.get('tickrate', 30) # dynamics calcs per sec
+        self.tickrate = kwargs.get('tickrate', 15) # dynamics calcs per sec
         # dynamic parameters
         self.timezoom = self.Eval(kwargs.get('timezoom', 0)) # 1,2,3 faster, -1, slower
         # end dynamic 
