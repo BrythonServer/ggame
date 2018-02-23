@@ -1023,9 +1023,11 @@ class Rocket(ImagePoint):
             self.bitmapqty, 
             self.bitmapdir,
             self.bitmapmargin)
-        self.tanomaly = kwargs.get('tanomaly', pi/2) # position angle
-        self.tanomalyd = kwargs.get('tanomalyd', degrees(self.tanomaly)) 
-        self.altitude = kwargs.get('altitude', 0) #
+        tanomaly = kwargs.get('tanomaly', pi/2) # position angle
+        tanomaly = radians(kwargs.get('tanomalyd', degrees(tanomaly))) 
+        altitude = kwargs.get('altitude', 0) #
+        r = altitude + self.planet.radius
+        self.xyposition = (r*cos(tanomaly), r*sin(tanomaly))
             
             
     def _getposition(self):
