@@ -1119,8 +1119,8 @@ if __name__ == "__main__":
         global vx, vy, x, y
         fx = 0
         fy = mass * g
-        ax = 0
-        ay = fy / mass + thrust()
+        ax = thrust()*cos(sat.rotation)
+        ay = fy / mass + thrust()*sin(sat.rotation)
         x = x + vx * tick + 0.5 * ax * tick**2
         y = y + vy * tick + 0.5 * ay * tick**2
         vx = vx + ax*tick
