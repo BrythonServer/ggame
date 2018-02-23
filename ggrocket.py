@@ -15,6 +15,7 @@ class Rocket(ImagePoint):
         self.tickrate = kwargs.get('tickrate', 30) # dynamics calcs per sec
         # dynamic parameters
         self.timezoom = self.Eval(kwargs.get('timezoom', 0)) # 1,2,3 faster, -1, slower
+        self.heading = self.Eval(kwargs.get('heading', None)) # must be radians
         # end dynamic 
         super().__init__(self._getposition, 
             self.bmurl, 
@@ -31,11 +32,14 @@ class Rocket(ImagePoint):
         altitude = kwargs.get('altitude', 0) #
         r = altitude + self.planet.radius
         self.xyposition = (r*cos(tanomaly), r*sin(tanomaly))
-        MathApp.listenKeyEvent('keydown', 'left arrow', self.turn)
-        MathApp.listenKeyEvent('keydown', 'right arrow', self.turn)
+        # default heading control if none provided by user
+        if self.heading() != None:
+            MathApp.listenKeyEvent('keydown', 'left arrow', self.turn)
+            MathApp.listenKeyEvent('keydown', 'right arrow', self.turn)
         self.timer = Timer()
         self.timer.callEvery(1/self.tickrate, self.dynamics)
         self.V = [initvel * cos(initdir), initvel * sin(initdir)]
+
 
     
     # override recommended!
@@ -66,6 +70,9 @@ class Rocket(ImagePoint):
 
     # generic force as a function of position
     def fr(self, pos):
+        heading = self.heading()
+        if heading != None:
+            self.rotation = heading
         t = self.thrust()
         G = 6.674E-11
         r = MathApp.distance((0,0), pos)
