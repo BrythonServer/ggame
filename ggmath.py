@@ -1053,6 +1053,13 @@ class Rocket(ImagePoint):
 
     def dynamics(self, timer):
         tick = 10**self.timezoom()/self.tickrate
+
+        k1v = self.ar(self._xy)
+        k1r = self.V
+        k2v = self.ar(self.vadd(self._xy, self.vmul(tick/2, k1r)))
+        k2r = 
+        
+
         g = self.fgrav()
         t = self.thrust()
         m = self.mass()
@@ -1066,6 +1073,28 @@ class Rocket(ImagePoint):
             self.V = [0,0]
             self.altitude = 0
 
+    
+    # generic force as a function of position
+    def fr(self, pos):
+        t = self.thrust()
+        G = 6.674E-11
+        r = MathApp.distance((0,0), pos)
+        uvec = (-pos[0]/r, -pos[1]/r)
+        fg = G*self.mass()*self.planet.mass/r**2
+        F = [x*F for x in uvec]
+        return [F[0] + t*cos(self.rotation), F[1] + t*sin(self.rotation)]
+
+    # geric acceleration as a function of position
+    def ar(self, pos):
+        m = self.mass()
+        return [F[i]/m for i in (0,1)]
+        
+    def vadd(self, v1, v2):
+        return [v1[i]+v2[i] for i in (0,1)]
+    
+    def vmul(self, s, v):
+        return [s*v[i] for i in (0,1)]
+    
     def fgrav(self):
         G = 6.674E-11
         r = self.r
