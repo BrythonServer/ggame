@@ -1046,6 +1046,7 @@ class Rocket(ImagePoint):
         
     @tanomalyd.setter
     def tanomalyd(self, angle):
+        print("tanomalyd set", angle)
         self.tanomaly = radians(angle)
 
     @property
