@@ -1131,6 +1131,8 @@ if __name__ == "__main__":
             vy = 0
             
         vslider.value = vy
+        
+        sat.rotation += 0.01
 
     def velocitytext():
         return "Velocity: ({0:2.4},{1:2.4})".format(vx,vy)
