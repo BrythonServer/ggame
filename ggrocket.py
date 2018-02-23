@@ -2,7 +2,7 @@
 
 from math import pi, degrees, radians, atan2, sin, cos, sqrt
 from ggame import LineStyle, Color
-from ggmath import Circle, ImagePoint, Timer, Label
+from ggmath import MathApp, Circle, ImagePoint, Timer, Label
 
 class Rocket(ImagePoint):
 
@@ -72,8 +72,8 @@ class Rocket(ImagePoint):
         self.xyposition = (r*cos(tanomaly), r*sin(tanomaly))
         # default heading control if none provided by user
         if self.heading == self.getheading:
-            MathApp.listenKeyEvent('keydown', 'left arrow', self.turn)
-            MathApp.listenKeyEvent('keydown', 'right arrow', self.turn)
+            Planet.listenKeyEvent('keydown', 'left arrow', self.turn)
+            Planet.listenKeyEvent('keydown', 'right arrow', self.turn)
         self.timer = Timer()
         self.timer.callEvery(1/self.tickrate, self.dynamics)
         self.V = [initvel * cos(initdir), initvel * sin(initdir)]
@@ -194,7 +194,7 @@ class Rocket(ImagePoint):
         self.rotation = self.heading()
         t = self.thrust()
         G = 6.674E-11
-        r = MathApp.distance((0,0), pos)
+        r = Planet.distance((0,0), pos)
         uvec = (-pos[0]/r, -pos[1]/r)
         fg = G*self.mass()*self.planet.mass/r**2
         F = [x*fg for x in uvec]
@@ -248,7 +248,7 @@ class Rocket(ImagePoint):
 
     @property
     def altitude(self):
-        return MathApp.distance(self._pos(), (0,0)) - self.planet.radius
+        return Planet.distance(self._pos(), (0,0)) - self.planet.radius
         
     @altitude.setter
     def altitude(self, alt):
