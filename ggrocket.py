@@ -50,7 +50,7 @@ class Rocket(ImagePoint):
         self.showstatus = kwargs.get('showstatus', True) # show stats
         self.localheading = 0
         # dynamic parameters
-        self.timezoom = self.Eval(kwargs.get('timezoom', 0)) # 1,2,3 faster, -1, slower
+        self.timezoom = self.Eval(kwargs.get('timezoom', self.gettimezoom)) # 1,2,3 faster, -1, slower
         self.heading = self.Eval(kwargs.get('heading', self.getheading)) # must be radians
         self.mass = self.Eval(kwargs.get('mass', self.getmass)) # kg
         self.thrust = self.Eval(kwargs.get('thrust', self.getthrust)) # N
@@ -84,7 +84,9 @@ class Rocket(ImagePoint):
                         self.altitudeText,
                         self.thrustText,
                         self.massText,
-                        self.trueAnomalyDegreesText]
+                        self.trueAnomalyDegreesText,
+                        self.scaleText,
+                        self.timeZoomText]
             for i in range(len(showparms)):
                 Label((10,10+i*25), showparms[i], size=15, positioning="physical")
 
@@ -101,6 +103,10 @@ class Rocket(ImagePoint):
     # override or define externally!
     def getheading(self):
         return self.localheading
+        
+    # override or define externally!
+    def gettimezoom(self):
+        return 0
 
     # functions available for reporting flight parameters to UI
     def velocityText(self):
@@ -150,6 +156,18 @@ class Rocket(ImagePoint):
         Report the radius (distance to planet center) in meters
         """
         return "Radius: {0:4.6} m".format(self.r)
+        
+    def scaleText(self):
+        """
+        Report the view scale (pixels/meter)
+        """
+        return "View Scale: {0:4.6} px/m".format(self.planet.scale)
+    
+    def timeZoomText(self):
+        """
+        Report the time acceleration
+        """
+        return "Time Zoom: {0:4.6}".format(float(self.timezoom()))
     
 
 
