@@ -619,6 +619,7 @@ class Circle(_MathVisual):
                     pcenter[0], pcenter[1], 
                     ilist[0][0] + xrange*(i+1)/(numpoints+1),
                     ilist[0][1] + yrange*(i+1)/(numpoints+1))
+                print("an icepts ", icepts)
                 if len(icepts):
                     ilist.insert(i+1, icepts[0])
             print("padded ilist ", ilist)
