@@ -1033,7 +1033,7 @@ class Rocket(ImagePoint):
 
         
     def turn(self, event):
-        increment = pi/50 * 1 if event.key == "left arrow" else -1
+        increment = pi/50 * (1 if event.key == "left arrow" else -1)
         self.rotation += increment
             
     def _getposition(self):
@@ -1085,13 +1085,13 @@ class Rocket(ImagePoint):
 
 class Planet(MathApp):
     
-    def __init__(self, rocketclass, **kwargs):
+    def __init__(self, rocket, **kwargs):
         self.scale = kwargs.get('scale', 10)  # 10 pixels per meter default
         self.radius = kwargs.get('radius', 6.371E6) # Earth - meters
         self.mass = kwargs.get('mass', 5.9722E24) # Earth - kg
         self.color = kwargs.get('color', 0x008040)  # greenish
         super().__init__(self.scale)
-        self.rocket = rocketclass(self, **kwargs)  
+        self.rocket = rocket(self, **kwargs)  
         self.viewaltitude = kwargs.get('viewalt', self.rocket.altitude) # how high to look
         self.viewanomaly = kwargs.get('viewanom', self.rocket.tanomaly)  # where to look
         self.viewanomalyd = kwargs.get('viewanomd', degrees(self.viewanomaly))
@@ -1111,8 +1111,7 @@ class Planet(MathApp):
 if __name__ == "__main__":
     
     
-    #ap = MathApp(2)
-
+    
     Planet(Rocket)
     
     """
