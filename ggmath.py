@@ -1152,7 +1152,8 @@ if __name__ == "__main__":
     
     
     
-    Planet(Rocket, altitude=10, direction=0, velocity=8000)
+    Planet(Rocket, altitude=804672, direction=0, velocity=7599.68)  # 500 miles, orbital velocity
+    
     
     """
     
