@@ -1006,6 +1006,7 @@ class MathApp(App):
 
 from math import pi, degrees, radians, atan2
 
+
 class Rocket(ImagePoint):
     
     def __init__(self, planet, **kwargs):
@@ -1016,6 +1017,7 @@ class Rocket(ImagePoint):
         self.bitmapqty = kwargs.get('bitmapqty', 1) # Number of images in bitmap
         self.bitmapdir = kwargs.get('bitmapdir', 'horizontal') # animation orientation
         self.bitmapmargin = kwargs.get('bitmapmargin', 0) # bitmap spacing
+        self.tickrate = kwargs.get('tickrate', 10) # dynamics calcs per sec
         super().__init__(self._getposition, 
             self.bmurl, 
             self.bitmapframe, 
@@ -1030,8 +1032,41 @@ class Rocket(ImagePoint):
         self.xyposition = (r*cos(tanomaly), r*sin(tanomaly))
         MathApp.listenKeyEvent('keydown', 'left arrow', self.turn)
         MathApp.listenKeyEvent('keydown', 'right arrow', self.turn)
-
+        self.timer = Timer()
+        self.timer.callEvery(1/self.tickrate, self.dynamics)
+        self.V = (0,0)  # change!
         
+    
+    # override recommended!
+    def thrust(self):
+        return 0
+
+    # override recommended!
+    def mass(self):
+        return 1
+
+    def dynamics(self):
+        tick = 1/self.tickrate
+        g = self.fgrav()
+        t = self.thrust()
+        m = self.mass()
+        F = (g[0] + t*cos(self.rotation), g[1] + t*sin(self.rotation))
+        A = (f[0]/m, f[1]/m)
+        self._xy = [self._xy[i] + self.V[i] * tick + 0.5 * A[i] * tick**2 for i in range(2)]
+        self.V = [self.V[i] + A[i] * tick for i in range(2)]
+        self._touchAsset()
+
+        if self.altitude < 0:
+            self.V = [0,0]
+            self.altitude = self.planet.radius
+
+    def fgrav(self):
+        G = 6.674E-11
+        r = self.r
+        uvec = (-self._xy[0]/r, -self._xy[1]/r)
+        F = G*self.mass()*self.planet.mass/r**2
+        return [x*F for x in uvec]
+    
     def turn(self, event):
         increment = pi/50 * (1 if event.key == "left arrow" else -1)
         self.rotation += increment
@@ -1074,10 +1109,13 @@ class Rocket(ImagePoint):
         
     @tanomaly.setter
     def tanomaly(self, angle):
-        r = self.altitude + self.planet.radius
+        r = self.r
         self.xyposition = (r*cos(angle), r*sin(angle))
         self._touchAsset()
             
+    @property
+    def r(self):
+        return self.altitude + self.planet.radius
         
         
     
