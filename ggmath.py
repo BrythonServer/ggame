@@ -638,11 +638,11 @@ class Circle(_MathVisual):
         cw = 0
         try:
             rtst = plist[0:3]+[plist[0]]
+            for p in range(3):
+                cw = cw + (rtst[p+1][0]-rtst[p][0])*(rtst[p+1][1]+rtst[p][1])
         except IndexError:
             print(plist)
             return
-        for p in range(3):
-            cw = cw + (rtst[p+1][0]-rtst[p][0])*(rtst[p+1][1]+rtst[p][1])
         cw = self._sgn(cw)
         cw = 1 if cw < 0 else 0
         vertices = ((-100,-100),
