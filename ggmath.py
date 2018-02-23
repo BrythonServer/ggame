@@ -1103,7 +1103,9 @@ if __name__ == "__main__":
     
     #ap = MathApp(2)
 
-    Planet(Rocket)
+    Planet(Rocket)1
+    
+    print("shouldn't get here!")
     
     index = 0
     coordlist = [(1,1), (2,1), (2,0), (1,2), (1,1)]
