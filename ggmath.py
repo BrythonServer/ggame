@@ -1066,11 +1066,24 @@ class Rocket(ImagePoint):
 
 class Planet(MathApp):
     
-    def __init__(self, **kwargs):
+    def __init__(self, rocketclass, **kwargs):
         self.scale = kwargs.get('scale', 10)  # 10 pixels per meter default
         self.radius = kwargs.get('radius', 6.371E6) # Earth - meters
         self.mass = kwargs.get('mass', 5.9722E24) # Earth - kg
+        self.color = kwargs.get('color', 0x008040)  # greenish
+        self.viewanomaly = kwargs.get('viewanom', pi/2)  # where to look
+        self.viewanomalyd = kwargs.get('viewanomd', degrees(self.viewanomaly))
+        self.viewaltitude = kwargs.get('viewalt', 0) # how high to look
         super().__init__(self.scale)
+        self.rocket = rocketclass(self, **kwargs)  
+        self.planetcircle = Circle(
+            (0,0), 
+            self.radius, 
+            LineStyle(1, Color(self.color,1)), 
+            Color(self.color,0.5))
+        
+        self.run()
+        
 
 
 
