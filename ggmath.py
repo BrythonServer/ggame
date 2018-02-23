@@ -1028,45 +1028,45 @@ class Rocket(ImagePoint):
         self.altitude = kwargs.get('altitude', 0) #
             
             
-        def _getposition(self):
-            return self._xy
+    def _getposition(self):
+        return self._xy
+    
+    @property
+    def xyposition(self):
+        return self._xy
         
-        @property
-        def xyposition(self):
-            return self._xy
-            
-        @xyposition.setter
-        def xyposition(self, pos):
-            self._xy = pos
-            self._touchAsset()
+    @xyposition.setter
+    def xyposition(self, pos):
+        self._xy = pos
+        self._touchAsset()
 
-        @property
-        def tanomalyd(self):
-            return degrees(self.tanomaly)
-            
-        @tanomalyd.setter
-        def tanomalyd(self, angle):
-            self.tanomaly = radians(angle)
+    @property
+    def tanomalyd(self):
+        return degrees(self.tanomaly)
+        
+    @tanomalyd.setter
+    def tanomalyd(self, angle):
+        self.tanomaly = radians(angle)
 
-        @property
-        def altitude(self):
-            return MathApp.distance(self._pos(), (0,0)) - self.planet.radius
-            
-        @altitude.setter
-        def altitude(self, alt):
-            r = alt + self.planet.radius
-            self.xyposition = (r*cos(self.tanomaly), r*sin(self.tanomaly))
-            self._touchAsset()
+    @property
+    def altitude(self):
+        return MathApp.distance(self._pos(), (0,0)) - self.planet.radius
+        
+    @altitude.setter
+    def altitude(self, alt):
+        r = alt + self.planet.radius
+        self.xyposition = (r*cos(self.tanomaly), r*sin(self.tanomaly))
+        self._touchAsset()
 
-        @property
-        def tanomaly(self):
-            pos = self._pos()
-            return atan2(pos[1],pos[0])
-            
-        @tanomaly.setter
-        def tanomaly(self, angle):
-            self.xyposition = (self.altitude*cos(angle), self.altitude*sin(angle))
-            self._touchAsset()
+    @property
+    def tanomaly(self):
+        pos = self._pos()
+        return atan2(pos[1],pos[0])
+        
+    @tanomaly.setter
+    def tanomaly(self, angle):
+        self.xyposition = (self.altitude*cos(angle), self.altitude*sin(angle))
+        self._touchAsset()
             
         
         
