@@ -1037,6 +1037,7 @@ class Rocket(ImagePoint):
         
     @xyposition.setter
     def xyposition(self, pos):
+        print(pos)
         self._xy = pos
         self._touchAsset()
 
