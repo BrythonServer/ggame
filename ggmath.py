@@ -650,6 +650,7 @@ class Circle(_MathVisual):
             iterations = iterations + 1
             if iterations > 10:
                 print("exhausting iterations")
+                print(plist)
                 break
             for side in range(4):
                 if not endside and (edges[side][0] == plist[-1][0] or edges[side][1] == plist[-1][1]):
@@ -657,10 +658,8 @@ class Circle(_MathVisual):
                 if not startside and (edges[side][0] == plist[0][0] or edges[side][1] == plist[0][1]):
                     startside = side
             if endside != startside:
-                print("endside != startside")
                 plist.append(nextvertex[endside][cw])
                 endside = nextsides[endside][cw]
-            print("startside, endside: ", startside, endside)
 
     def _sgn(self, x):
         return 1 if x >= 0 else -1
