@@ -609,9 +609,10 @@ class Circle(_MathVisual):
         if len(xcepts[-1]) > 1:
             xcepts[-2], xcepts[-1] = xcepts[-1], xcepts[-2]
         ilist = []
-        for x in xcepts:
-            if x:
-                ilist.extend(x)
+        ilist = [xcepts[0], xcepts[-1]]
+        #for x in xcepts:
+        #    if x:
+        #        ilist.extend(x)
         #ilist is a list of boundary intercepts that are screen-relative
         print("ilist: ", ilist)
         if len(ilist) > 1:
