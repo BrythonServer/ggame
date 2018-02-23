@@ -1012,7 +1012,6 @@ class Rocket(ImagePoint):
         self._xy = (0,0)
         self.planet = planet
         self.bmurl = kwargs.get('bitmap', 'rocket.png') # default rocket png
-        self.bitmapscale = kwargs.get('bitmapscale', 0.1) # small
         self.bitmapframe = kwargs.get('bitmapframe', None) #
         self.bitmapqty = kwargs.get('bitmapqty', 1) # Number of images in bitmap
         self.bitmapdir = kwargs.get('bitmapdir', 'horizontal') # animation orientation
@@ -1023,6 +1022,7 @@ class Rocket(ImagePoint):
             self.bitmapqty, 
             self.bitmapdir,
             self.bitmapmargin)
+        self.scale = kwargs.get('bitmapscale', 0.1) # small
         tanomaly = kwargs.get('tanomaly', pi/2) # position angle
         tanomaly = radians(kwargs.get('tanomalyd', degrees(tanomaly))) 
         altitude = kwargs.get('altitude', 0) #
@@ -1048,7 +1048,6 @@ class Rocket(ImagePoint):
         
     @tanomalyd.setter
     def tanomalyd(self, angle):
-        print("tanomalyd set", angle)
         self.tanomaly = radians(angle)
 
     @property
@@ -1069,7 +1068,6 @@ class Rocket(ImagePoint):
         
     @tanomaly.setter
     def tanomaly(self, angle):
-        print("tanomaly set", angle)
         r = self.altitude + self.planet.radius
         self.xyposition = (r*cos(angle), r*sin(angle))
         self._touchAsset()
