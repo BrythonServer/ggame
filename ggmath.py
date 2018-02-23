@@ -604,18 +604,13 @@ class Circle(_MathVisual):
             self._findIntercepts(pcenter, pradius, 0,0,MathApp.width,0),
             self._findIntercepts(pcenter, pradius, MathApp.width,0,MathApp.width,MathApp.height),
             self._findIntercepts(pcenter, pradius, 0,MathApp.height, MathApp.width, MathApp.height)]
-        if len(xcepts[0]) > 1:
-            xcepts[0], xcepts[1] = xcepts[1], xcepts[0]
-        if len(xcepts[-1]) > 1:
-            xcepts[-2], xcepts[-1] = xcepts[-1], xcepts[-2]
-        #ilist = []
-        #ilist = [xcepts[0], xcepts[-1]]
-        #for x in xcepts:
-        #    if x:
-        #        ilist.extend(x)
+        ilist = []
+        for x in xcepts:
+            if x:
+                ilist.extend(x)
         #ilist is a list of boundary intercepts that are screen-relative
-        #print("ilist: ", ilist)
-        if len(xcepts) > 1:
+        print("ilist: ", ilist)
+        if len(ilist) > 1:
             print("xcepts ", xcepts)
             ilist = [xcepts[0], xcepts[-1]]
             print("ilist ", ilist)
