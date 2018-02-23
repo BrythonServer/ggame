@@ -635,7 +635,7 @@ class Circle(_MathVisual):
         for p in range(3):
             cw = cw + (plist[p+1][0]-plist[p][0])*(plist[p+1][1]+plist[p+1][0])
         cw = self._sgn(cw)
-        cw = 0 if cw > 0 else 1
+        cw = 1 if cw > 0 else 0
         print("cw ",cw)
         vertices = ((0,0),(MathApp.width,0),(MathApp.width,MathApp.height),(0,MathApp.height))
         nextvertex = [(vertices[0],vertices[1]),
