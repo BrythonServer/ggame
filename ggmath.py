@@ -1018,6 +1018,9 @@ class Rocket(ImagePoint):
         self.bitmapdir = kwargs.get('bitmapdir', 'horizontal') # animation orientation
         self.bitmapmargin = kwargs.get('bitmapmargin', 0) # bitmap spacing
         self.tickrate = kwargs.get('tickrate', 30) # dynamics calcs per sec
+        # dynamic parameters
+        self.timezoom = self.Eval(kwargs.get('timezoom', 0)) # 1,2,3 faster, -1, slower
+        # end dynamic 
         super().__init__(self._getposition, 
             self.bmurl, 
             self.bitmapframe, 
@@ -1049,7 +1052,7 @@ class Rocket(ImagePoint):
         return 1
 
     def dynamics(self, timer):
-        tick = 1/self.tickrate
+        tick = 10**self.timezoom/self.tickrate
         g = self.fgrav()
         t = self.thrust()
         m = self.mass()
@@ -1152,7 +1155,7 @@ if __name__ == "__main__":
     
     
     
-    Planet(Rocket, altitude=804672, direction=0, velocity=7599.68)  # 500 miles, orbital velocity
+    Planet(Rocket, timezoom=1, altitude=804672, direction=0, velocity=7599.68)  # 500 miles, orbital velocity
     
     
     """
