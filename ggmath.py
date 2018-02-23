@@ -664,6 +664,7 @@ class Circle(_MathVisual):
                 print("exhausting iterations")
                 print(plist)
                 print(cw)
+                print("startside, endside ", startside, endside)
                 break
             if endside and startside:   #  and endside != startside
                 plist.append(nextvertex[endside][cw])
