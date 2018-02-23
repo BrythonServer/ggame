@@ -1045,13 +1045,19 @@ class Rocket(ImagePoint):
             
         @altitude.setter
         def altitude(self, alt):
-            self.xyposition = (alt*cos(self.tanomaly), alt*sin(self.tanomaly))
+            r = alt + self.planet.radius
+            self.xyposition = (r*cos(self.tanomaly), r*sin(self.tanomaly))
             self._touchAsset()
 
         @property
         def tanomaly(self):
             pos = self._pos()
             return atan2(pos[1],pos[0])
+            
+        @tanomaly.setter
+        def tanomaly(self, angle):
+            self.xyposition = (self.altitude*cos(angle), self.altitude*sin(angle))
+            self._touchAsset()
             
         
         
