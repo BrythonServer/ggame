@@ -632,11 +632,12 @@ class Circle(_MathVisual):
         """
         #figure out rotation in point sequence
         cw = 0
-        for p in range(3):
-            cw = cw + (plist[p+1][0]-plist[p][0])*(plist[p+1][1]+plist[p][1])
+        rtst = plist[0:3]+[plist[0]]
+        for p in range(4):
+            cw = cw + (rtst[p+1][0]-rtst[p][0])*(rtst[p+1][1]+rtst[p][1])
         print("raw cw ", cw)
         cw = self._sgn(cw)
-        cw = 1 if cw > 0 else 0
+        cw = 1 if cw < 0 else 0
         print("cw ",cw)
         vertices = ((0,0),(MathApp.width,0),(MathApp.width,MathApp.height),(0,MathApp.height))
         nextvertex = [(vertices[0],vertices[1]),
