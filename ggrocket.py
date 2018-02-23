@@ -13,6 +13,7 @@ class Rocket(ImagePoint):
         self.bitmapdir = kwargs.get('bitmapdir', 'horizontal') # animation orientation
         self.bitmapmargin = kwargs.get('bitmapmargin', 0) # bitmap spacing
         self.tickrate = kwargs.get('tickrate', 30) # dynamics calcs per sec
+        self.localheading = 0
         # dynamic parameters
         self.timezoom = self.Eval(kwargs.get('timezoom', 0)) # 1,2,3 faster, -1, slower
         self.heading = self.Eval(kwargs.get('heading', self.getheading)) # must be radians
@@ -33,7 +34,6 @@ class Rocket(ImagePoint):
         r = altitude + self.planet.radius
         self.xyposition = (r*cos(tanomaly), r*sin(tanomaly))
         # default heading control if none provided by user
-        self.localheading = 0
         if self.heading == self.getheading:
             MathApp.listenKeyEvent('keydown', 'left arrow', self.turn)
             MathApp.listenKeyEvent('keydown', 'right arrow', self.turn)
@@ -71,6 +71,7 @@ class Rocket(ImagePoint):
 
     # generic force as a function of position
     def fr(self, pos):
+        print("fr")
         self.rotation = self.heading()
         t = self.thrust()
         G = 6.674E-11
@@ -187,6 +188,8 @@ if __name__ == "__main__":
     
     r = 0
     def rot(t):
+        print("rot")
+        global r
         r += 0.05
     
     
