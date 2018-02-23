@@ -1075,7 +1075,7 @@ if __name__ == "__main__":
     #p1.movable = True
     #c1 = Circle(p1, 1.5, LineStyle(3, Color(0x0000ff,1)), Color(0x0000ff,0.3))
     pcenter = Point((0, -5000000))
-    c1 = Circle((0,-5000000), 5000000, LineStyle(6, Color(0x0000ff,1)), Color(0x0000ff,0.5))
+    c1 = Circle((0,-5000000), 5000000, LineStyle(0, Color(0x00ff00,1)), Color(0x00ff00,0.5))
     
     #s1 = Slider((200, 400), 0, 10, 2, positioning='physical',
     #    leftkey="a", rightkey="d", centerkey="s")
