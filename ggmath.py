@@ -600,14 +600,18 @@ class Circle(_MathVisual):
         pcenter is in screen relative coordinates.
         returns a coordinate list in circle relative coordinates
         """
-        xcepts = (self._findIntercepts(pcenter, pradius, 0,0,0,MathApp.height) +
-            self._findIntercepts(pcenter, pradius, 0,0,MathApp.width,0) +
-            self._findIntercepts(pcenter, pradius, MathApp.width,0,MathApp.width,MathApp.height) +
-            self._findIntercepts(pcenter, pradius, 0,MathApp.height, MathApp.width, MathApp.height))
+        xcepts = [self._findIntercepts(pcenter, pradius, 0,0,0,MathApp.height),
+            self._findIntercepts(pcenter, pradius, 0,0,MathApp.width,0),
+            self._findIntercepts(pcenter, pradius, MathApp.width,0,MathApp.width,MathApp.height),
+            self._findIntercepts(pcenter, pradius, 0,MathApp.height, MathApp.width, MathApp.height)]
+        if len(xcepts[0]) > 1:
+            xcepts[0], xcepts[1] = xcepts[1], xcepts[0]
+        if len(xcepts[-1]) > 1:
+            xcepts[-2], xcepts[-1] = xcepts[-1], xcepts[-2]
         ilist = []
         for x in xcepts:
             if x:
-                ilist.append(x)
+                ilist.extend(x)
         #ilist is a list of boundary intercepts that are screen-relative
       
         if len(ilist) > 1:
