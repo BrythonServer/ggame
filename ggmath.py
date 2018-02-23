@@ -1025,6 +1025,9 @@ class Rocket(ImagePoint):
             self.bitmapdir,
             self.bitmapmargin)
         self.scale = kwargs.get('bitmapscale', 0.1) # small
+        initvel = kwargs.get('velocity', 0) # initial velocity
+        initdird = kwargs.get('directiond', 0) # initial direction, degrees
+        initdir = kwargs.get('direction', radians(initdird))
         tanomaly = kwargs.get('tanomaly', pi/2) # position angle
         tanomaly = radians(kwargs.get('tanomalyd', degrees(tanomaly))) 
         altitude = kwargs.get('altitude', 0) #
@@ -1034,7 +1037,7 @@ class Rocket(ImagePoint):
         MathApp.listenKeyEvent('keydown', 'right arrow', self.turn)
         self.timer = Timer()
         self.timer.callEvery(1/self.tickrate, self.dynamics)
-        self.V = (0,0)  # change!
+        self.V = [initvel * cos(initdir), initvel * sin(initdir)]
         
     
     # override recommended!
@@ -1149,7 +1152,7 @@ if __name__ == "__main__":
     
     
     
-    Planet(Rocket, altitude=10)
+    Planet(Rocket, altitude=10, direction=0, velocity=7600)
     
     """
     
