@@ -1080,17 +1080,18 @@ class Planet(MathApp):
         self.radius = kwargs.get('radius', 6.371E6) # Earth - meters
         self.mass = kwargs.get('mass', 5.9722E24) # Earth - kg
         self.color = kwargs.get('color', 0x008040)  # greenish
-        self.viewanomaly = kwargs.get('viewanom', pi/2)  # where to look
-        self.viewanomalyd = kwargs.get('viewanomd', degrees(self.viewanomaly))
-        self.viewaltitude = kwargs.get('viewalt', 0) # how high to look
         super().__init__(self.scale)
         self.rocket = rocketclass(self, **kwargs)  
+        self.viewaltitude = kwargs.get('viewalt', self.rocket.altitude) # how high to look
+        self.viewanomaly = kwargs.get('viewanom', self.rocket.tanomaly)  # where to look
+        self.viewanomalyd = kwargs.get('viewanomd', degrees(self.viewanomaly))
         self.planetcircle = Circle(
             (0,0), 
             self.radius, 
             LineStyle(1, Color(self.color,1)), 
             Color(self.color,0.5))
-        
+        r = self.radius + self.viewaltitude
+        self.viewPosition = (r*cos(self.viewanomaly), r*sin(self.viewanomaly))
         self.run()
         
 
