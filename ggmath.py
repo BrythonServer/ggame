@@ -915,8 +915,17 @@ class MathApp(App):
                 MathApp._ycenter -= lmove[1]
                 self._touchAllVisuals()
                 self._viewNotify("translate")
-                        
-
+    
+    @property
+    def viewPosition(self):
+        return (MathApp._xcenter, MathApp._ycenter)
+        
+    @viewPosition.setter
+    def viewPosition(self, pos):
+        MathApp._xcenter, MathApp._ycenter = pos
+        self._touchAllVisuals()
+        self._viewNotify("translate")
+        
     def handleMouseWheel(self, event):
         zoomfactor = event.wheelDelta/100
         zoomfactor = 1+zoomfactor if zoomfactor > 0 else 1+zoomfactor
