@@ -176,6 +176,11 @@ class Planet(MathApp):
 # test code here
 if __name__ == "__main__":
     
-    Planet(Rocket, scale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
-    print("here")
+    #Planet(Rocket, scale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
     
+    t = Timer()
+    t.callEvery(1/10, tfunc)
+    
+    
+    def tfunc(t):
+        print('tick')
