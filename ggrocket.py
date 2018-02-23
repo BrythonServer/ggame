@@ -22,6 +22,7 @@ class Rocket(ImagePoint):
         :tanomalyd:  initial rocket true anomaly in degrees. Default is 90.
         :tanomaly:  initial rocket true anomaly in radians. Default is pi/2.
         :altitude:  initial rocket altitude in meters. Default is zero.
+        :showstatus:  boolean displays flight parameters on screen. Default is True.
         
         Following parameters may be set as a constant value, or pass in the
         name of a function that will return the value dynamically or the
@@ -46,6 +47,7 @@ class Rocket(ImagePoint):
         self.bitmapdir = kwargs.get('bitmapdir', 'horizontal') # animation orientation
         self.bitmapmargin = kwargs.get('bitmapmargin', 0) # bitmap spacing
         self.tickrate = kwargs.get('tickrate', 30) # dynamics calcs per sec
+        self.showstatus = kwargs.get('showstatus', True) # show stats
         self.localheading = 0
         # dynamic parameters
         self.timezoom = self.Eval(kwargs.get('timezoom', 0)) # 1,2,3 faster, -1, slower
@@ -75,6 +77,16 @@ class Rocket(ImagePoint):
         self.timer = Timer()
         self.timer.callEvery(1/self.tickrate, self.dynamics)
         self.V = [initvel * cos(initdir), initvel * sin(initdir)]
+        # set up status display
+        if self.showstatus:
+            showparms = [self.velocityText,
+                        self.courseDegreesText,
+                        self.altitudeText,
+                        self.thrustText,
+                        self.massText,
+                        self.trueAnomalyDegreesText]
+            for i in range(len(showparms)):
+                Label((10,10+i*25), showparms[i], size=15, positioning="physical")
 
 
     
@@ -294,11 +306,7 @@ if __name__ == "__main__":
     
     from ggmath import Label, Slider
     
-    p = Planet(Rocket, scale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
+    Planet(Rocket, scale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
     
-    r = p.rocket
-    
-    Label((100,100), r.velocityText, size=15, positioning="physical")
-    Label((100,150), r.altitudeText, size=15, positioning="physical")
     
 
