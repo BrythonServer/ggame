@@ -954,10 +954,9 @@ class MathApp(App):
     def distance(cls, pos1, pos2):
         return sqrt((pos2[0]-pos1[0])**2 + (pos2[1]-pos1[1])**2)
         
-    @classmethod
     @property
-    def scale(cls):
-        return cls._scale
+    def scale(self):
+        return self._scale
         
     @property
     def width(cls):
