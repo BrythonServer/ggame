@@ -1057,6 +1057,7 @@ class Rocket(ImagePoint):
         # 4th order runge-kutta method (https://sites.temple.edu/math5061/files/2016/12/final_project.pdf)
         # and http://spiff.rit.edu/richmond/nbody/OrbitRungeKutta4.pdf  (succinct, but with a typo)
         k1v = self.ar(self._xy)
+        print("boom")
         k1r = self.V
         k2v = self.ar(self.vadd(self._xy, self.vmul(tick/2, k1r)))
         k2r = self.vadd(self.V, self.vmul(tick/2, k1v))
@@ -1096,6 +1097,7 @@ class Rocket(ImagePoint):
     # geric acceleration as a function of position
     def ar(self, pos):
         m = self.mass()
+        F = self.fr(pos)
         return [F[i]/m for i in (0,1)]
         
     def vadd(self, v1, v2):
