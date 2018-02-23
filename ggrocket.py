@@ -2,7 +2,7 @@
 
 from math import pi, degrees, radians, atan2, sin, cos, sqrt
 from ggame import LineStyle, Color
-from ggmath import MathApp, Circle, ImagePoint, Timer, Label
+from ggmath import Circle, ImagePoint, Timer, Label
 
 class Rocket(ImagePoint):
 
@@ -85,7 +85,7 @@ class Rocket(ImagePoint):
                         self.thrustText,
                         self.massText,
                         self.trueAnomalyDegreesText,
-            #            self.scaleText,
+                        self.scaleText,
                         self.timeZoomText]
             for i in range(len(showparms)):
                 Label((10,10+i*25), showparms[i], size=15, positioning="physical")
