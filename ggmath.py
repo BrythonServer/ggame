@@ -659,6 +659,7 @@ class Circle(_MathVisual):
                 startside = side
         if startside == None or endside == None:
             print("missing start or end side: ", plist)
+            print("right side: ", edges[1][0])
         iterations = 0
         while startside != endside:
             iterations = iterations + 1
