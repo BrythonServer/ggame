@@ -1,3 +1,5 @@
+# ggrocket - ggmath extensions for modeling spacecraft in planetary orbit
+
 from math import pi, degrees, radians, atan2, sin, cos, sqrt
 from ggame import LineStyle, Color
 from ggmath import MathApp, Circle, ImagePoint, Timer
