@@ -621,6 +621,7 @@ class Circle(_MathVisual):
                     ilist[0][1] + yrange*(i+1)/(numpoints+1))
                 if len(icepts):
                     ilist.insert(i+1, icepts[0])
+            print("padded ilist ", ilist)
             self._addBoundaryVertices(ilist, pcenter, pradius)
             ilist.append(ilist[0])
             ilist = [(i[0] - pcenter[0], i[1] - pcenter[1]) for i in ilist]
