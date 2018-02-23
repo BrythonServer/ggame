@@ -1108,11 +1108,6 @@ if __name__ == "__main__":
     def getposition():
         return (x,y)
     
-    def zoomCheck(**kwargs):
-        viewtype = kwargs.get('viewchange')
-        scale = kwargs.get('scale')
-        if viewtype == "zoom":
-            print(scale)
             
     def turnleft(event):
         sat.rotation += 0.01
@@ -1147,5 +1142,15 @@ if __name__ == "__main__":
     
     #MathApp.addViewNotification(zoomCheck)
     
-    #ap.run()
+    def zoomCheck(**kwargs):
+        viewtype = kwargs.get('viewchange')
+        scale = kwargs.get('scale')
+        print(ap.scale)
+    
+    ap = MathApp()
+    ap.addViewNotification(zoomCheck)
+    ap.run()
+    
+    print(ap.scale)
     """
+    
