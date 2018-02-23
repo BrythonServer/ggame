@@ -601,8 +601,8 @@ class Circle(_MathVisual):
         returns a coordinate list in circle relative coordinates
         """
         xcepts = (self._findIntercepts(pcenter, pradius, 0,0,0,MathApp.height) +
-            self._findIntercepts(pcenter, pradius, MathApp.width,0,MathApp.width,MathApp.height) +
             self._findIntercepts(pcenter, pradius, 0,0,MathApp.width,0) +
+            self._findIntercepts(pcenter, pradius, MathApp.width,0,MathApp.width,MathApp.height) +
             self._findIntercepts(pcenter, pradius, 0,MathApp.height, MathApp.width, MathApp.height))
         ilist = []
         for x in xcepts:
