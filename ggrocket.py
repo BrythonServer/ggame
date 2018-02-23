@@ -65,7 +65,7 @@ class Rocket(ImagePoint):
         self._xy = [self._xy[i] + tick/6*(k1r[i] + 2*k2r[i] + 2*k3r[i] + k4r[i]) for i in (0,1)]
         print("uhh3")
         self._touchAsset()
-
+        print("uhh4")
         if self.altitude < 0:
             self.V = [0,0]
             self.altitude = 0
