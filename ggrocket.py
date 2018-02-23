@@ -1,9 +1,9 @@
-from math import pi, degrees, radians, atan2, sin, cos
+from math import pi, degrees, radians, atan2, sin, cos, sqrt
 from ggame import LineStyle, Color
 from ggmath import MathApp, Circle, ImagePoint, Timer
 
 class Rocket(ImagePoint):
-    
+
     def __init__(self, planet, **kwargs):
         """
         Initialize the Rocket object. 
@@ -87,6 +87,58 @@ class Rocket(ImagePoint):
     # override or define externally!
     def getheading(self):
         return self.localheading
+
+    # functions available for reporting flight parameters to UI
+    def velocityText(self):
+        """
+        Report the velocity in m/s
+        """
+        return "Velocity: {0:4.6} m/s".format(self.vmag(self.V))
+        
+    def courseDegreesText(self):
+        """
+        Report the heading in degrees (zero to the right)
+        """
+        return "Course: {0:4.6}°".format(degrees(atan2(self.V[1], self.V[0])))
+
+    def thrustText(self):
+        """
+        Report the thrust level in Newtons
+        """
+        return "Thrust: {0:4.6} N".format(self.thrust())
+        
+    def massText(self):
+        """
+        Report the spacecraft mass in kilograms
+        """
+        return "Mass: {0:4.6} kg".format(self.mass())
+        
+    def trueAnomalyDegreesText(self):
+        """
+        Report the true anomaly in degrees
+        """
+        return "True Anomaly: {0:4.6}°".format(self.tanomalyd)
+        
+    def trueAnomalyRadiansText(self):
+        """
+        Report the true anomaly in radians
+        """
+        return "True Anomaly: {0:4.6}".format(self.tanomaly)
+        
+    def altitudeText(self):
+        """
+        Report the altitude in meters
+        """
+        return "Altitude: {0:4.6} m".format(self.altitude)
+        
+    def radiusText(self):
+        """
+        Report the radius (distance to planet center) in meters
+        """
+        return "Radius: {0:4.6} m".format(self.r)
+    
+
+
             
     def dynamics(self, timer):
         tick = 10**self.timezoom()/self.tickrate
@@ -128,6 +180,9 @@ class Rocket(ImagePoint):
     
     def vmul(self, s, v):
         return [s*v[i] for i in (0,1)]
+        
+    def vmag(self, v):
+        return sqrt(v[0]**2 + v[1]**2)
     
     def fgrav(self):
         G = 6.674E-11
@@ -184,6 +239,7 @@ class Rocket(ImagePoint):
     @property
     def r(self):
         return self.altitude + self.planet.radius
+
         
         
     
