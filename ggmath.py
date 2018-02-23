@@ -612,7 +612,7 @@ class Circle(_MathVisual):
         if len(ilist) > 1:
             xrange = ilist[1][0] - ilist[0][0]
             yrange = ilist[1][1] - ilist[0][1]
-            numpoints = 2
+            numpoints = 20
             for i in range(numpoints):
                 icepts =  self._findIntercepts(pcenter, pradius, 
                     pcenter[0], pcenter[1], 
@@ -1151,9 +1151,9 @@ if __name__ == "__main__":
         leftkey="down arrow", rightkey="up arrow", centerkey="space")
     vslider = Slider((100, 125), -50, 50, 0, positioning='physical')
     Label((100,150), velocitytext, size=15, positioning="physical")
-    westp = Point((-100000,0))
-    eastp = Point((100000,0))
-    ground = LineSegment(westp, eastp)
+    #westp = Point((-100000,0))
+    #eastp = Point((100000,0))
+    #ground = LineSegment(westp, eastp)
 
 
     t = Timer()
