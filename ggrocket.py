@@ -180,5 +180,17 @@ class Planet(MathApp):
 # test code here
 if __name__ == "__main__":
     
-    Planet(Rocket, scale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
+    def getrot():
+        return r
+    
+    Planet(Rocket, heading=getrot, scale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
+    
+    r = 0
+    def rot(t):
+        r += 0.05
+    
+    
+    
+    t = Timer()
+    t.callEvery(0.1, rot)
     
