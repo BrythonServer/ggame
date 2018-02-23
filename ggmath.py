@@ -995,43 +995,31 @@ class MathApp(App):
             cls._mathSelectableList.remove(obj)
 
 
-class PointMass(ImagePoint):
+from math import pi, degrees, radians
 
-    def __init__(self, pos):
-        super().__init__(pos, 'bunny.png')
-        self.mass = 1
-        self.lastTime = MathApp.time
-        self.V = (0,0)
-        self.g = -9.81   #0
-        self._setDynamic() # always dynamic
-
-    def step(self):
-        dt = MathApp.time - self.lastTime
-        self.lastTime = MathApp.time
-        A = self.acceleration
-        dV = tuple(a*dt for a in A)
-        A = tuple(v*dt for v in self.V)
-        B = tuple(a*0.5*dt*dt for a in A)
-        dP = tuple(map(add, A, B))
-        self.V = tuple(map(add, self.V, dV))
-        self._pos = self.Eval(tuple(map(add, self._pos(), dP)))
-        super().step()
-
-    @property
-    def force(self):
-        return self.forceAt(self._pos)
+class Rocket(ImagePoint):
     
-    def forceAt(self, pos):
-        return self.forceGrav(pos)
+    def __init__(self, pos, **kwargs):
+        self.bmurl = kwargs.get('bitmap', 'rocket.png') # default rocket png
+        self.bitmapscale = kwargs.get('bitmapscale', 0.1) # small
+        self.bitmapframe = kwargs.get('bitmapframe', None) #
+        self.bitmapqty = kwargs.get('bitmapqty', 1) # Number of images in bitmap
+        self.bitmapdir = kwargs.get('bitmapdir', 'horizontal') # animation orientation
+        self.bitmapmargin = kwargs.get('bitmapmargin', 0) # bitmap spacing
+        super().__init__(pos, 
+            self.bmurl, 
+            self.bitmapframe, 
+            self.bitmapqty, 
+            self.bitmapdir,
+            self.bitmapmargin):
     
-    def forceGrav(self, pos):
-        return (0,self.mass*self.g)
-      
-    @property
-    def acceleration(self):
-        F = self.force
-        return tuple(f/self.mass for f in F)
-        
+
+
+class Planet(MathApp):
+    
+    def __init__(self, **kwargs):
+        self.scale = kwargs.get('scale', 10)  # 10 pixels per meter default
+        super().__init__(self.scale)
 
 
 
@@ -1039,7 +1027,7 @@ class PointMass(ImagePoint):
 if __name__ == "__main__":
     
     
-    ap = MathApp(2)
+    #ap = MathApp(2)
 
     
     index = 0
@@ -1158,7 +1146,7 @@ if __name__ == "__main__":
     mass = 1
     g = -9.81
     
-    sat = ImagePoint(getposition, 'rocket.png')
+    sat = Rocket(getposition)
     sat.rotation = pi/2
     sat.scale = 0.1
     MathApp.listenKeyEvent('keydown', 'left arrow', turnleft)
@@ -1178,4 +1166,4 @@ if __name__ == "__main__":
     
     #MathApp.addViewNotification(zoomCheck)
     
-    ap.run()
+    #ap.run()
