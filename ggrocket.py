@@ -48,8 +48,8 @@ class Rocket(ImagePoint):
 
     def dynamics(self, timer):
         print("dynamics")
-        print("uhh")
         tick = 10**self.timezoom()/self.tickrate
+        print("uhh")
         # 4th order runge-kutta method (https://sites.temple.edu/math5061/files/2016/12/final_project.pdf)
         # and http://spiff.rit.edu/richmond/nbody/OrbitRungeKutta4.pdf  (succinct, but with a typo)
         k1v = self.ar(self._xy)
