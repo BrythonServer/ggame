@@ -653,9 +653,9 @@ class Circle(_MathVisual):
         edges = ((None,0),(MathApp.width,None),(None,MathApp.height),(0,None))
         endside = startside = None
         for side in range(4):
-            if endside is None and (edges[side][0] == plist[-1][0] or edges[side][1] == plist[-1][1]):
+            if endside is None and (edges[side][0] == round(plist[-1][0]) or edges[side][1] == round(plist[-1][1])):
                 endside = side
-            if startside is None and (edges[side][0] == plist[0][0] or edges[side][1] == plist[0][1]):
+            if startside is None and (edges[side][0] == round(plist[0][0]) or edges[side][1] == round(plist[0][1])):
                 startside = side
         if startside == None or endside == None:
             print("missing start or end side: ", plist)
