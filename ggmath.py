@@ -1046,13 +1046,13 @@ class Rocket(ImagePoint):
         return 1
 
     def dynamics(self, timer):
-        print("tick!")
         tick = 1/self.tickrate
         g = self.fgrav()
         t = self.thrust()
         m = self.mass()
         F = (g[0] + t*cos(self.rotation), g[1] + t*sin(self.rotation))
-        A = (f[0]/m, f[1]/m)
+        A = [F[i]/m for i in (0,1)]
+        print("tick!")
         self._xy = [self._xy[i] + self.V[i] * tick + 0.5 * A[i] * tick**2 for i in range(2)]
         self.V = [self.V[i] + A[i] * tick for i in range(2)]
         self._touchAsset()
