@@ -606,7 +606,7 @@ class Circle(_MathVisual):
         ilist = []
         for x in xcepts:
             if x:
-                ilist.append(tuple(map(round,x)))
+                ilist.append(x)
         #ilist is a list of boundary intercepts that are screen-relative
       
         if len(ilist) > 1:
@@ -619,7 +619,7 @@ class Circle(_MathVisual):
                     ilist[0][0] + xrange*(i+1)/(numpoints+1),
                     ilist[0][1] + yrange*(i+1)/(numpoints+1))
                 if len(icepts):
-                    ilist.insert(i+1, tuple(map(round,icepts[0])))
+                    ilist.insert(i+1, icepts[0])
         self._addBoundaryVertices(ilist, pcenter, pradius)
         ilist.append(ilist[0])
         ilist = [(i[0] - pcenter[0], i[1] - pcenter[1]) for i in ilist]
@@ -633,14 +633,14 @@ class Circle(_MathVisual):
         #figure out rotation in point sequence
         cw = 0
         rtst = plist[0:3]+[plist[0]]
-        print(rtst)
         for p in range(3):
             cw = cw + (rtst[p+1][0]-rtst[p][0])*(rtst[p+1][1]+rtst[p][1])
-        print("raw cw ", cw)
         cw = self._sgn(cw)
         cw = 1 if cw < 0 else 0
-        print("cw ",cw)
-        vertices = ((0,0),(MathApp.width,0),(MathApp.width,MathApp.height),(0,MathApp.height))
+        vertices = ((-100,-100),
+            (MathApp.width+100,-100),
+            (MathApp.width+100,MathApp.height+100),
+            (-100,MathApp.height+100))
         nextvertex = [(vertices[0],vertices[1]),
                         (vertices[1],vertices[2]),
                         (vertices[2],vertices[3]),
