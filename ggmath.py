@@ -657,6 +657,7 @@ class Circle(_MathVisual):
                 if edges[side][0] == plist[0][0] or edges[side][1] == plist[0][1]:
                     startside = side
             if endside != startside:
+                print("endside != startside")
                 plist.append(nextvertex[endside][cw])
                 endside = nextsides[endside][cw]
 
