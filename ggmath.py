@@ -1045,7 +1045,7 @@ class Rocket(ImagePoint):
     def mass(self):
         return 1
 
-    def dynamics(self):
+    def dynamics(self, timer):
         print("tick!")
         tick = 1/self.tickrate
         g = self.fgrav()
