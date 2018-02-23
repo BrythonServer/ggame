@@ -1091,7 +1091,7 @@ class Rocket(ImagePoint):
         r = MathApp.distance((0,0), pos)
         uvec = (-pos[0]/r, -pos[1]/r)
         fg = G*self.mass()*self.planet.mass/r**2
-        F = [x*F for x in uvec]
+        F = [x*fg for x in uvec]
         return [F[0] + t*cos(self.rotation), F[1] + t*sin(self.rotation)]
 
     # geric acceleration as a function of position
