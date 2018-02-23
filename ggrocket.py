@@ -39,7 +39,7 @@ class Rocket(ImagePoint):
         :bitmapmargin:  pixels between successive animation frames
         :tickrate:  frequency of spacecraft dynamics calculations (Hz)
         """
-        self._xy = (0,0)
+        self._xy = (1000000,1000000)
         self.planet = planet
         self.bmurl = kwargs.get('bitmap', 'rocket.png') # default rocket png
         self.bitmapframe = kwargs.get('bitmapframe', None) #
@@ -72,8 +72,8 @@ class Rocket(ImagePoint):
         self.xyposition = (r*cos(tanomaly), r*sin(tanomaly))
         # default heading control if none provided by user
         if self.heading == self.getheading:
-            MathApp.listenKeyEvent('keydown', 'left arrow', self.turn)
-            MathApp.listenKeyEvent('keydown', 'right arrow', self.turn)
+            Planet.listenKeyEvent('keydown', 'left arrow', self.turn)
+            Planet.listenKeyEvent('keydown', 'right arrow', self.turn)
         self.timer = Timer()
         self.timer.callEvery(1/self.tickrate, self.dynamics)
         self.V = [initvel * cos(initdir), initvel * sin(initdir)]
@@ -89,7 +89,6 @@ class Rocket(ImagePoint):
                         self.timeZoomText]
             for i in range(len(showparms)):
                 Label((10,10+i*25), showparms[i], size=15, positioning="physical")
-
 
     
     # override or define externally!
@@ -195,7 +194,7 @@ class Rocket(ImagePoint):
         self.rotation = self.heading()
         t = self.thrust()
         G = 6.674E-11
-        r = MathApp.distance((0,0), pos)
+        r = Planet.distance((0,0), pos)
         uvec = (-pos[0]/r, -pos[1]/r)
         fg = G*self.mass()*self.planet.mass/r**2
         F = [x*fg for x in uvec]
@@ -249,7 +248,7 @@ class Rocket(ImagePoint):
 
     @property
     def altitude(self):
-        return MathApp.distance(self._pos(), (0,0)) - self.planet.radius
+        return Planet.distance(self._pos(), (0,0)) - self.planet.radius
         
     @altitude.setter
     def altitude(self, alt):
@@ -325,5 +324,5 @@ if __name__ == "__main__":
     
     Planet(Rocket, scale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
     
-    
+
 
