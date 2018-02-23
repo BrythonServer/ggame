@@ -1,8 +1,9 @@
 # ggmath - ggame extensions for geometry and mathematics in the browser
 
 from ggame import Color, LineStyle, LineAsset, CircleAsset, Sprite, App
-from ggame import TextAsset, ImageAsset, PolygonAsset
+from ggame import TextAsset, ImageAsset, PolygonAsset, RectangleAsset
 from abc import ABCMeta, abstractmethod
+from operator import add
 
 from math import sin, cos, sqrt, pi
 from time import time
@@ -53,6 +54,7 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         visible = self.GFX.visible
         if App._win != None:
             App._win.remove(self.GFX)
+            self.GFX.destroy()
         self.asset = asset
         self.GFX = self.asset.GFX
         self.GFX.visible = visible        
@@ -117,16 +119,179 @@ class Timer(_MathDynamic):
     
     def __init__(self):
         super().__init__()
+        self.once = []
+        self.callbacks = {}
         self.reset()
         self.step()
+        self._start = self._reset  #first time
+        self.next = None
         MathApp._addDynamic(self)  # always dynamically defined
         
     def reset(self):
         self._reset = MathApp.time
         
     def step(self):
+        nexttimers = []
+        calllist = []
         self.time = MathApp.time - self._reset
+        while self.once and self.once[0][0] <= MathApp.time:
+            tickinfo = self.once.pop(0)
+            if tickinfo[1]:  # periodic?
+                nexttimers.append((tickinfo[1], self.callbacks[tickinfo][0]))  # delay, callback
+            calllist.append(self.callbacks[tickinfo].pop(0)) # remove callback and queue it
+            if not self.callbacks[tickinfo]: # if the callback list is empty
+                del self.callbacks[tickinfo] # remove the dictionary entry altogether
+        for tickadd in nexttimers:
+            self.callAfter(tickadd[0], tickadd[1], True)  # keep it going
+        for call in calllist:
+            call(self)
+
+    def callAfter(self, delay, callback, periodic=False):
+        key = (MathApp.time + delay, delay if periodic else 0)
+        self.once.append(key)
+        callbacklist = self.callbacks.get(key, [])
+        callbacklist.append(callback)
+        self.callbacks[key] = callbacklist
+        self.once.sort()
         
+    def callAt(self, time, callback):
+        self.callAfter(time-self.time, callback)
+        
+    def callEvery(self, period, callback):
+        self.callAfter(period, callback, True)
+
+    def __call__(self):
+        return self.time
+
+class Slider(_MathVisual):
+    
+    def __init__(self, pos, minval, maxval, initial, *args, **kwargs):
+        self._pos = self.Eval(pos)
+        self._min = minval
+        self._max = maxval
+        self.initial = initial
+        self._val = initial
+        
+        self._steps = kwargs.get('steps', 50)
+        self._step = (self._max-self._min)/self._steps
+        self._leftctrl = kwargs.get('leftkey', None)
+        self._rightctrl = kwargs.get('rightkey', None)
+        self._centerctrl = kwargs.get('centerkey', None)
+        self._positioning = kwargs.get('positioning', 'logical')
+        self._size = kwargs.get('size', 20)
+        self._width = kwargs.get('width', 200)
+        self.color = kwargs.get('color', Color(0,1))
+        if self._positioning == "physical":
+            self._ppos = self._pos()
+        else:
+            self._ppos = MathApp.logicalToPhysical(self._pos())
+        
+        super().__init__(RectangleAsset(self._width, self._size,
+            LineStyle(1, self.color), Color(0,0)), self._ppos)
+        self.selectable = True  # must be after super init!
+        self._thumbwidth = max(self._width/40, 1)
+        if self._leftctrl:
+            MathApp.listenKeyEvent("keydown", self._leftctrl, self.moveLeft)
+        if self._rightctrl:
+            MathApp.listenKeyEvent("keydown", self._rightctrl, self.moveRight)
+        if self._centerctrl:
+            MathApp.listenKeyEvent("keydown", self._centerctrl, self.moveCenter)
+
+        self.thumb = Sprite(RectangleAsset(self._thumbwidth, 
+            self._size-2, LineStyle(1, self.color), self.color), 
+            self.thumbXY())
+            
+            
+    def __call__(self):
+        return self._val
+
+    @property
+    def value(self):
+        return self._val
+        
+    @value.setter
+    def value(self, val):
+        self._setval(val)
+
+    def thumbXY(self):
+        return (self._ppos[0]+(self._val-self._min)*
+                (self._width-self._thumbwidth)/(self._max-self._min),
+                self._ppos[1]+1)
+            
+    def _newAsset(self, pos):
+        if self._positioning != "physical":
+            ppos = MathApp.logicalToPhysical(pos())
+        else:
+            ppos = pos()
+        if ppos != self._ppos:
+            self._ppos = ppos
+            self.position = ppos
+            self.setThumb()
+            
+    def _touchAsset(self):
+        self._newAsset(self._pos)
+        
+    def setThumb(self):
+        self.thumb.position = self.thumbXY()
+                
+    def step(self):
+        pass
+    
+    def _setval(self, val):
+        if val <= self._min:
+            self._val = self._min
+        elif val >= self._max:
+            self._val = self._max
+        else:
+            self._val = val
+        self.setThumb()
+        
+    
+    def increment(self, step):
+        self._setval(self._val + step)
+        
+    def select(self):
+        super().select()
+        MathApp.listenKeyEvent("keydown", "left arrow", self.moveLeft)
+        MathApp.listenKeyEvent("keydown", "right arrow", self.moveRight)
+        MathApp.listenMouseEvent("click", self.mouseClick)
+
+    def unselect(self):
+        super().unselect()
+        try:
+            MathApp.unlistenKeyEvent("keydown", "left arrow", self.moveLeft)
+            MathApp.unlistenKeyEvent("keydown", "right arrow", self.moveRight)
+            MathApp.unlistenMouseEvent("click", self.mouseClick)
+        except ValueError:
+            pass
+
+    def mouseClick(self, event):
+        if self.physicalPointTouching((event.x, event.y)):
+            if event.x > self.thumb.x + self._thumbwidth:
+                self.moveRight(event)
+            elif event.x < self.thumb.x:
+                self.moveLeft(event)
+
+    def moveLeft(self, event):
+        self.increment(-self._step)
+
+    def moveRight(self, event):
+        self.increment(self._step)
+        
+    def moveCenter(self, event):
+        self._val = (self._min + self._max)/2
+        self.setThumb()
+    
+    
+    def physicalPointTouching(self, ppos):
+        return (ppos[0] >= self._ppos[0] and 
+            ppos[0] <= self._ppos[0] + self._width and
+            ppos[1] >= self._ppos[1] and 
+            ppos[1] <= self._ppos[1] + self._size)
+
+    def translate(self, pdisp):
+        pass
+
 
 class Label(_MathVisual):
     
@@ -259,20 +424,45 @@ class InputNumeric(Label):
         return self._val
 
 
-
-class Point(_MathVisual):
+class _Point(_MathVisual, metaclass=ABCMeta):
     
-    def __init__(self, pos, size=5, color=Color(0,1), style=LineStyle(0, Color(0,1))):
+    def __init__(self, pos, asset):
         self._pos = self.Eval(pos)  # create a *callable* position function
         self._ppos = MathApp.logicalToPhysical(self._pos()) # physical position
-        self._size = size
-        self._color = color
-        self._style = style
-        super().__init__(CircleAsset(size, style, color), self._ppos)
+        super().__init__(asset, self._ppos)
         self.center = (0.5, 0.5)
         
     def __call__(self):
         return self._pos()
+
+    def step(self):
+        self._touchAsset()
+
+    def physicalPointTouching(self, ppos):
+        return MathApp.distance(ppos, self._ppos) < self._size
+        
+    def translate(self, pdisp):
+        ldisp = MathApp.translatePhysicalToLogical(pdisp)
+        pos = self._pos()
+        self._pos = self.Eval((pos[0] + ldisp[0], pos[1] + ldisp[1]))
+        self._touchAsset()
+        
+    def distanceTo(self, otherpoint):
+        try:
+            pos = self._pos()
+            opos = otherpoint._pos()
+            return MathApp.distance(self._pos(), otherpoint._pos())
+        except AttributeError:
+            return otherpoint  # presumably a scalar - use this distance
+
+
+class Point(_Point):
+
+    def __init__(self, pos, size=5, color=Color(0,1), style=LineStyle(0, Color(0,1))):
+        self._size = size
+        self._color = color
+        self._style = style
+        super().__init__(pos, CircleAsset(size, style, color))
 
     def _newAsset(self, pos, size, color, style):
         ppos = MathApp.logicalToPhysical(pos())
@@ -289,18 +479,23 @@ class Point(_MathVisual):
     def _touchAsset(self):
         self._newAsset(self._pos, self._size, self._color, self._style)
 
-    def step(self):
-        self._touchAsset()
 
-    def physicalPointTouching(self, ppos):
-        return MathApp.distance(ppos, self._ppos) < self._size
-        
-    def translate(self, pdisp):
-        ldisp = MathApp.translatePhysicalToLogical(pdisp)
-        pos = self._pos()
-        self._pos = self.Eval((pos[0] + ldisp[0], pos[1] + ldisp[1]))
-        self._touchAsset()
 
+class ImagePoint(_Point):
+    def __init__(self, pos, url, frame=None, qty=1, direction='horizontal', margin=0):
+        super().__init__(pos, ImageAsset(url, frame, qty, direction, margin))
+
+    def _newAsset(self, pos):
+        ppos = MathApp.logicalToPhysical(pos())
+        if ppos != self._ppos:
+            self._ppos = ppos
+            self.position = ppos
+
+    def _touchAsset(self):
+        self._newAsset(self._pos)
+
+
+    
 
 class LineSegment(_MathVisual):
     
@@ -356,6 +551,189 @@ class LineSegment(_MathVisual):
     def translate(self, pdisp):
         pass
 
+class Circle(_MathVisual):
+    
+    def __init__(self, center, radius, style=LineStyle(1, Color(0,1)), fill=Color(0,0)):
+        """
+        Radius may be scalar or point
+        """
+        self._center = self.Eval(center)  # save function
+        self._radius = self.Eval(radius)
+        self._style = style
+        self._color = fill
+        self._pcenter = MathApp.logicalToPhysical(self._center())
+        super().__init__(CircleAsset(0, style, fill), (0,0))
+        self._pradius = -1
+        self._touchAsset()
+        self.fxcenter = self.fycenter = 0.5
+
+    def _newAsset(self, center, radius, fill, style):
+        pcenter = MathApp.logicalToPhysical(center())
+        try:
+            pradius = MathApp.distance(center(), radius()) * MathApp._scale
+        except AttributeError:
+            pradius = radius() * MathApp._scale
+        if pcenter != self._pcenter or pradius != self._pradius:
+            self._pcenter = pcenter
+            self._pradius = pradius
+            asset = self._buildAsset(pcenter, pradius, style, fill)
+            self._updateAsset(asset)
+            self.position = pcenter
+
+    def _buildAsset(self, pcenter, pradius, style, fill):
+        ymax = pcenter[1]+pradius
+        ymin = pcenter[1]-pradius
+        xmax = pcenter[0]+pradius
+        xmin = pcenter[0]-pradius
+        if ymin > MathApp.height or ymax < 0 or xmax < 0 or xmin > MathApp.width:
+            return CircleAsset(pradius, style, fill)
+        elif pradius > 2*MathApp.width:
+            # here begins unpleasant hack to overcome crappy circles
+            poly = self._buildPolygon(pcenter, pradius)
+            if len(poly):
+                passet = PolygonAsset(poly, style, fill)
+                return passet
+        return CircleAsset(pradius, style, fill)
+
+    def _buildPolygon(self, pcenter, pradius):
+        """
+        pcenter is in screen relative coordinates.
+        returns a coordinate list in circle relative coordinates
+        """
+        xcepts = [self._findIntercepts(pcenter, pradius, 0,0,0,MathApp.height),
+            self._findIntercepts(pcenter, pradius, 0,0,MathApp.width,0),
+            self._findIntercepts(pcenter, pradius, MathApp.width,0,MathApp.width,MathApp.height),
+            self._findIntercepts(pcenter, pradius, 0,MathApp.height, MathApp.width, MathApp.height)]
+        ilist = []
+        for x in xcepts:
+            if x and len(x) < 2:
+                ilist.extend(x)
+        #ilist is a list of boundary intercepts that are screen-relative
+        if len(ilist) > 1:
+            xrange = ilist[-1][0] - ilist[0][0]
+            yrange = ilist[-1][1] - ilist[0][1]
+            numpoints = 20
+            inx = 0
+            for i in range(numpoints):
+                icepts =  self._findIntercepts(pcenter, pradius, 
+                    pcenter[0], pcenter[1], 
+                    ilist[0][0] + xrange*(i+1)/(numpoints+1),
+                    ilist[0][1] + yrange*(i+1)/(numpoints+1))
+                if len(icepts):
+                    ilist.insert(inx+1, icepts[0])
+                    inx = inx + 1
+            self._addBoundaryVertices(ilist, pcenter, pradius)
+            ilist.append(ilist[0])
+            ilist = [(i[0] - pcenter[0], i[1] - pcenter[1]) for i in ilist]
+        return ilist
+        
+    def _addBoundaryVertices(self, plist, pcenter, pradius):
+        """
+        Sides 0=top, 1=right, 2=bottom, 3=left
+        """
+        #figure out rotation in point sequence
+        cw = 0
+        try:
+            rtst = plist[0:3]+[plist[0]]
+            for p in range(3):
+                cw = cw + (rtst[p+1][0]-rtst[p][0])*(rtst[p+1][1]+rtst[p][1])
+        except IndexError:
+            #print(plist)
+            return
+        cw = self._sgn(cw)
+        cw = 1 if cw < 0 else 0
+        vertices = ((-100,-100),
+            (MathApp.width+100,-100),
+            (MathApp.width+100,MathApp.height+100),
+            (-100,MathApp.height+100))
+        nextvertex = [(vertices[0],vertices[1]),
+                        (vertices[1],vertices[2]),
+                        (vertices[2],vertices[3]),
+                        (vertices[3],vertices[0])]
+        nextsides = [(3,1),(0,2),(1,3),(2,0)]
+        edges = ((None,0),(MathApp.width,None),(None,MathApp.height),(0,None))
+        endside = startside = None
+        for side in range(4):
+            if endside is None and (edges[side][0] == round(plist[-1][0]) or edges[side][1] == round(plist[-1][1])):
+                endside = side
+            if startside is None and (edges[side][0] == round(plist[0][0]) or edges[side][1] == round(plist[0][1])):
+                startside = side
+        iterations = 0
+        while startside != endside:
+            iterations = iterations + 1
+            if iterations > 20:
+                print("exhausting iterations")
+                break
+            if endside != None and startside != None:   #  and endside != startside
+                plist.append(nextvertex[endside][cw])
+                endside = nextsides[endside][cw]
+
+    def _sgn(self, x):
+        return 1 if x >= 0 else -1
+
+    def _findIntercepts(self, c, r, x1, y1, x2, y2):
+        """
+        c (center) and x and y values are physical, screen relative.
+        function returns coordinates in screen relative format
+        """
+        x1n = x1 - c[0]
+        x2n = x2 - c[0]
+        y1n = y1 - c[1]
+        y2n = y2 - c[1]
+        dx = x2n-x1n
+        dy = y2n-y1n
+        dr = sqrt(dx*dx + dy*dy)
+        D = x1n*y2n - x2n*y1n
+        disc = r*r*dr*dr - D*D
+        dr2 = dr*dr
+        if disc <= 0:  # less than two solutions
+            return []
+        sdisc = sqrt(disc)
+        x = [(D*dy + self._sgn(dy)*dx*sdisc)/dr2 + c[0],  (D*dy - self._sgn(dy)*dx*sdisc)/dr2 + c[0]]
+        y = [(-D*dx + abs(dy)*sdisc)/dr2 + c[1], (-D*dx - abs(dy)*sdisc)/dr2 + c[1]]
+        getcoords = lambda x, y, c: [(x,y)] if x>=0 and x<=MathApp.width and y>=0 and y<=MathApp.height else []
+        res = getcoords(x[0], y[0], c)
+        res.extend(getcoords(x[1], y[1], c))
+        return res
+
+
+
+    def _touchAsset(self):
+        self._newAsset(self._center, self._radius, self._color, self._style)
+
+    @property
+    def center(self):
+        return self._center()
+
+    @center.setter
+    def center(self, val):
+        newval = self.Eval(val)
+        if newval != self._center:
+            self._center = newval
+            self._touchAsset()
+
+    @property
+    def radius(self):
+        return self._radius()
+
+    @radius.setter
+    def radius(self, val):
+        newval = self.Eval(val)
+        if newval != self._radius:
+            self._radius = newval
+            self._touchAsset()
+        
+    def step(self):
+        self._touchAsset()
+
+    def physicalPointTouching(self, ppos):
+        r = MathApp.distance(self._pcenter, ppos)
+        inner = self._pradius - self.style.width/2
+        outer = self._pradius + self.style.width/2
+        return r <= outer and r >= inner
+
+    def translate(self, pdisp):
+        pass
 
 
 
@@ -417,26 +795,27 @@ class Bunny():
 
 class MathApp(App):
     
-    _xscale = 200   # pixels per unit
-    _yscale = 200
+    _scale = 200   # pixels per unit
     _xcenter = 0    # center of screen in units
     _ycenter = 0    
     _mathVisualList = [] #
     _mathDynamicList = []
     _mathMovableList = []
     _mathSelectableList = []
+    _viewNotificationList = []
     time = time()
     
-    def __init__(self, scale=(_xscale, _yscale)):
+    def __init__(self, scale=_scale):
         super().__init__()
-        MathApp._xscale = scale[0]   # pixels per unit
-        MathApp._yscale = scale[1]
+        MathApp.width = self.width
+        MathApp.height = self.height
+        MathApp._scale = scale   # pixels per unit
         # register event callbacks
         self.listenMouseEvent("click", self.handleMouseClick)
         self.listenMouseEvent("mousedown", self.handleMouseDown)
         self.listenMouseEvent("mouseup", self.handleMouseUp)
         self.listenMouseEvent("mousemove", self.handleMouseMove)
-        self.listenMouseEvent("mousewheel", self.handleMouseWheel)
+        self.listenMouseEvent("wheel", self.handleMouseWheel)
         self.mouseDown = False
         self.mouseCapturedObject = None
         self.mouseX = self.mouseY = None
@@ -447,7 +826,7 @@ class MathApp(App):
         MathApp.time = time()
         for spr in self._mathDynamicList:
             spr.step()
-        
+
     def _touchAllVisuals(self):
         # touch all visual object assets to use scaling
         for obj in self._mathVisualList:
@@ -460,8 +839,8 @@ class MathApp(App):
         yxform = lambda yvalue, yscale, ycenter, physheight: int(physheight/2 - (yvalue-ycenter)*yscale)
 
         try:
-            return (xxform(lp[0], cls._xscale, cls._xcenter, cls._win.width),
-                yxform(lp[1], cls._yscale, cls._ycenter, cls._win.height))
+            return (xxform(lp[0], cls._scale, cls._xcenter, cls._win.width),
+                yxform(lp[1], cls._scale, cls._ycenter, cls._win.height))
         except AttributeError:
             return lp
             
@@ -471,8 +850,8 @@ class MathApp(App):
         yxform = lambda yvalue, yscale, ycenter, physheight: (physheight/2 - yvalue)/yscale + ycenter
 
         try:
-            return (xxform(pp[0], cls._xscale, cls._xcenter, cls._win.width),
-                yxform(pp[1], cls._yscale, cls._ycenter, cls._win.height))
+            return (xxform(pp[0], cls._scale, cls._xcenter, cls._win.width),
+                yxform(pp[1], cls._scale, cls._ycenter, cls._win.height))
         except AttributeError:
             return pp
             
@@ -482,7 +861,7 @@ class MathApp(App):
         yxform = lambda yvalue, yscale: -yvalue/yscale
 
         try:
-            return (xxform(pp[0], cls._xscale), yxform(pp[1], cls._yscale))
+            return (xxform(pp[0], cls._scale), yxform(pp[1], cls._scale))
         except AttributeError:
             return pp
 
@@ -492,7 +871,7 @@ class MathApp(App):
         yxform = lambda yvalue, yscale: -yvalue*yscale
 
         try:
-            return (xxform(pp[0], cls._xscale), yxform(pp[1], cls._yscale))
+            return (xxform(pp[0], cls._scale), yxform(pp[1], cls._scale))
         except AttributeError:
             return pp
 
@@ -535,14 +914,54 @@ class MathApp(App):
                 MathApp._xcenter -= lmove[0]
                 MathApp._ycenter -= lmove[1]
                 self._touchAllVisuals()
-                        
-
+                self._viewNotify("translate")
+    
+    @property
+    def viewPosition(self):
+        return (MathApp._xcenter, MathApp._ycenter)
+        
+    @viewPosition.setter
+    def viewPosition(self, pos):
+        MathApp._xcenter, MathApp._ycenter = pos
+        self._touchAllVisuals()
+        self._viewNotify("translate")
+        
     def handleMouseWheel(self, event):
-        pass
+        zoomfactor = event.wheelDelta/100
+        zoomfactor = 1+zoomfactor if zoomfactor > 0 else 1+zoomfactor
+        if zoomfactor > 1.2:
+            zoomfactor = 1.2
+        elif zoomfactor < 0.8:
+            zoomfactor = 0.8
+        MathApp._scale *= zoomfactor
+        self._touchAllVisuals()
+        self._viewNotify("zoom")
+        
+    @classmethod   
+    def addViewNotification(cls, handler):
+        cls._viewNotificationList.append(handler)
+        
+    @classmethod   
+    def removeViewNotification(cls, handler):
+        cls._viewNotificationList.remove(handler)
+    
+    def _viewNotify(self, viewchange):
+        for handler in self._viewNotificationList:
+            handler(viewchange = viewchange, scale = self._scale, center = (self._xcenter, self._ycenter))
+        
      
     @classmethod   
     def distance(cls, pos1, pos2):
         return sqrt((pos2[0]-pos1[0])**2 + (pos2[1]-pos1[1])**2)
+        
+    @classmethod
+    @property
+    def scale(cls):
+        return MathApp._scale
+        
+    @property
+    def width(cls):
+        return App._win.width
             
     @classmethod
     def _addVisual(cls, obj):
@@ -585,8 +1004,12 @@ class MathApp(App):
             cls._mathSelectableList.remove(obj)
 
 
+
 # test code here
 if __name__ == "__main__":
+    
+    
+    """
     
     index = 0
     coordlist = [(1,1), (2,1), (2,0), (1,2), (1,1)]
@@ -599,25 +1022,130 @@ if __name__ == "__main__":
         index = index + 1
         return retval
         
+    def one(t):
+        print("one")
+        
+    def two(t):
+        print("two")
+        
+    def three(t):
+        t.callAt(10, ten)
+        print("three")
     
-    p1 = Point((0,0))
-    p1.movable = True
-    p2 = Point((2,0))
-    p2.movable = True
-    p3 = Point((3,0))
-    t = Timer()
-    p4 = Point(lambda :(3, (int(t.time*100) % 400)/100))
+    def ten(t):
+        print("ten")
+        
+    def tick(t):
+        print("tick")
+        
+    #pm1 = PointMass((0.1,0))
+    
+    def rotate(timer):
+        ip1.rotation += 0.01
+    
+
+
+
+    #p1 = Point((0,0))
+    #p1.movable = True
+    #c1 = Circle(p1, 1.5, LineStyle(3, Color(0x0000ff,1)), Color(0x0000ff,0.3))
+    pcenter = Point((0, -5000000))
+    c1 = Circle((0,-5000000), 5000000, LineStyle(1, Color(0x008040,1)), Color(0x008400,0.5))
+    
+    #s1 = Slider((200, 400), 0, 10, 2, positioning='physical',
+    #    leftkey="a", rightkey="d", centerkey="s")
+    
+    #p2 = Point((2,0))
+    #p2.movable = True
+    #p3 = Point((3,0))
+
+    #t = Timer()
+    #p4 = Point(lambda :(3, (int(t.time*100) % 400)/100))
     
     #p5 = Point(lambda :nextcoord())
-    
-    LineSegment(p1,p4)
 
-    l1 = Label((-4,2), lambda: "Elapsed Time: {0:.0}".format(t.time), size=20, width=400, positioning="logical")
-    i1 = InputNumeric((200,300), 99.9, size=20, positioning="physical")
-    l2 = Label((-4,1), lambda: "{0}".format(i1()), size=20)
-    b1 = InputButton((200,350), "RESET", lambda: t.reset(), size=20, positioning="physical")
-    
-    
+    #ip1 = ImagePoint((0.1,0), 'bunny.png')
 
-    ap = MathApp((100,100))
-    ap.run()
+
+    
+    #LineSegment(p1,p4)
+
+    #l1 = Label((-4,2), lambda: "Elapsed Time: {0:.0}".format(t.time), size=20, width=400, positioning="logical")
+    #i1 = InputNumeric((200,300), 99.9, size=20, positioning="physical")
+    #l2 = Label((-4,1), lambda: "{0}".format(i1()), size=20)
+    #l3 = Label((-4,1), lambda: "{0:4.2f}".format(s1()), size=20)
+    #b1 = InputButton((200,350), "RESET", lambda: t.reset(), size=20, positioning="physical")
+    
+    
+    #t.callAfter(1, one)
+    #t.callAfter(2, two)
+    #t.callAfter(3, three)
+    #t.callAt(10, ten)
+    #t.callEvery(1, tick)
+    #t.callEvery(0.1, rotate)
+
+    def step(t):
+        global vx, vy, x, y
+        fx = 0
+        fy = mass * g
+        ax = thrust()*cos(sat.rotation)
+        ay = fy / mass + thrust()*sin(sat.rotation)
+        x = x + vx * tick + 0.5 * ax * tick**2
+        y = y + vy * tick + 0.5 * ay * tick**2
+        vx = vx + ax*tick
+        vy = vy + ay*tick
+        
+        if y < 0:
+            y = 0
+            vy = 0
+            
+        vslider.value = vy
+        
+
+    def velocitytext():
+        return "Velocity: ({0:2.4},{1:2.4})".format(vx,vy)
+
+    def getposition():
+        return (x,y)
+    
+    def zoomCheck(**kwargs):
+        viewtype = kwargs.get('viewchange')
+        scale = kwargs.get('scale')
+        if viewtype == "zoom":
+            print(scale)
+            
+    def turnleft(event):
+        sat.rotation += 0.01
+        
+    def turnright(event):
+        sat.rotation -= 0.01
+
+    tick = 0.02
+    x = 0
+    y = 100
+    vx = vy = 0
+    mass = 1
+    g = -9.81
+    
+    sat = Rocket(getposition)
+    sat.rotation = pi/2
+    sat.scale = 0.1
+    MathApp.listenKeyEvent('keydown', 'left arrow', turnleft)
+    MathApp.listenKeyEvent('keydown', 'right arrow', turnright)
+
+    thrust = Slider((100, 100), -50, 50, 0, positioning='physical', steps=200,
+        leftkey="down arrow", rightkey="up arrow", centerkey="space")
+    vslider = Slider((100, 125), -50, 50, 0, positioning='physical')
+    Label((100,150), velocitytext, size=15, positioning="physical")
+    #westp = Point((-100000,0))
+    #eastp = Point((100000,0))
+    #ground = LineSegment(westp, eastp)
+
+
+    t = Timer()
+    t.callEvery(tick, step)
+    
+    #MathApp.addViewNotification(zoomCheck)
+    
+    #ap.run()
+    """

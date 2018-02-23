@@ -1505,7 +1505,7 @@ class App(object):
         Returns a list of all active sprites of a given class.
         """
         return App._spritesdict.get(sclass, [])
-        
+    
     def step(self):
         """
         The `ggame.App.step` method is called once per animation frame. Override
@@ -1582,6 +1582,7 @@ if __name__ == '__main__':
         global vv2
         global scale
         
+
         scale = scale + xstep
         spr.fxcenter = xcenter
         spr.fycenter = xcenter
