@@ -643,9 +643,14 @@ class Circle(_MathVisual):
                         (vertices[3],vertices[0])]
         nextsides = [(3,1),(0,2),(1,3),(2,0)]
         edges = ((None,0),(MathApp.width,None),(None,MathApp.height),(0,None))
-        endside = 0
-        startside = 1
-        while startside != endside:
+        endside = None
+        startside = None
+        iterations = 0
+        while (not startside or not endside) and startside != endside:
+            iterations = iterations + 1
+            if iterations > 10:
+                print("exhausting iterations")
+                break
             for side in range(4):
                 if edges[side][0] == plist[-1][0] or edges[side][1] == plist[-1][1]:
                     endside = side
