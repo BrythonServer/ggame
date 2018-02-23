@@ -1,6 +1,6 @@
 from math import pi, degrees, radians, atan2, sin, cos
-from ggmath import MathApp, Circle, ImagePoint, Timer
 from ggame import LineStyle, Color
+from ggmath import MathApp, Circle, ImagePoint, Timer
 
 class Rocket(ImagePoint):
     
