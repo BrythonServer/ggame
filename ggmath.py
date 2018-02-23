@@ -1058,7 +1058,7 @@ class Rocket(ImagePoint):
 
         if self.altitude < 0:
             self.V = [0,0]
-            self.altitude = self.planet.radius
+            self.altitude = 0
 
     def fgrav(self):
         G = 6.674E-11
@@ -1098,8 +1098,6 @@ class Rocket(ImagePoint):
     @altitude.setter
     def altitude(self, alt):
         r = alt + self.planet.radius
-        print(r)
-        print((r*cos(self.tanomaly), r*sin(self.tanomaly)))
         self.xyposition = (r*cos(self.tanomaly), r*sin(self.tanomaly))
         self._touchAsset()
 
