@@ -167,7 +167,7 @@ class Rocket(ImagePoint):
         """
         Report the time acceleration
         """
-        return "Time Zoom: {0:4.6]".format(float(self.timezoom()))
+        return "Time Zoom: {0:4.6}".format(float(self.timezoom()))
     
 
 
