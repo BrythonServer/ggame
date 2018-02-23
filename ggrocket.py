@@ -161,7 +161,7 @@ class Rocket(ImagePoint):
         """
         Report the view scale (pixels/meter)
         """
-        return "View Scale: {0:4.6} px/m".format(self.planet._scale)
+        return "View Scale: {0:4.6} px/m".format(self.planet.scale)
     
     def timeZoomText(self):
         """
