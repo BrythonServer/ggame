@@ -86,7 +86,7 @@ class Rocket(ImagePoint):
                         self.massText,
                         self.trueAnomalyDegreesText,
                         self.scaleText,
-                        timeZoomText]
+                        self.timeZoomText]
             for i in range(len(showparms)):
                 Label((10,10+i*25), showparms[i], size=15, positioning="physical")
 
