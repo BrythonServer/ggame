@@ -259,8 +259,8 @@ class Rocket(ImagePoint):
 
     @property
     def tanomaly(self):
-        pos = self._pos()
-        return atan2(pos[1],pos[0])
+        #pos = self._pos()
+        return atan2(self.xyposition[1],self.xyposition[0])
         
     @tanomaly.setter
     def tanomaly(self, angle):
