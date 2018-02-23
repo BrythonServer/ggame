@@ -1159,7 +1159,8 @@ if __name__ == "__main__":
     g = -9.81
     
     sat = ImagePoint(getposition, 'rocket.png')
-    sat.rotation = pi
+    sat.rotation = pi/2
+    sat.scale = 0.1
     MathApp.listenKeyEvent('keydown', 'left arrow', turnleft)
     MathApp.listenKeyEvent('keydown', 'right arrow', turnright)
 
