@@ -1158,9 +1158,10 @@ if __name__ == "__main__":
     mass = 1
     g = -9.81
     
-    sat = ImagePoint(getposition, 'bunny.png')
-    MathApp.listenKeyEvent('left arrow', turnleft)
-    MathApp.listenKeyEvent('right arrow', turnright)
+    sat = ImagePoint(getposition, 'rocket.png')
+    sat.rotation = pi
+    MathApp.listenKeyEvent('keydown', 'left arrow', turnleft)
+    MathApp.listenKeyEvent('keydown', 'right arrow', turnright)
 
     thrust = Slider((100, 100), -50, 50, 0, positioning='physical', steps=200,
         leftkey="down arrow", rightkey="up arrow", centerkey="space")
