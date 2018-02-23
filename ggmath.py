@@ -652,18 +652,18 @@ class Circle(_MathVisual):
         nextsides = [(3,1),(0,2),(1,3),(2,0)]
         edges = ((None,0),(MathApp.width,None),(None,MathApp.height),(0,None))
         endside = startside = None
+        for side in range(4):
+            if endside is None and (edges[side][0] == plist[-1][0] or edges[side][1] == plist[-1][1]):
+                endside = side
+            if startside is None and (edges[side][0] == plist[0][0] or edges[side][1] == plist[0][1]):
+                startside = side
         iterations = 0
         while not startside or not endside or startside != endside:
             iterations = iterations + 1
             if iterations > 10:
                 print("exhausting iterations")
                 break
-            for side in range(4):
-                if endside is None and (edges[side][0] == plist[-1][0] or edges[side][1] == plist[-1][1]):
-                    endside = side
-                if startside is None and (edges[side][0] == plist[0][0] or edges[side][1] == plist[0][1]):
-                    startside = side
-            if endside and startside and endside != startside:
+            if endside and startside:   #  and endside != startside
                 plist.append(nextvertex[endside][cw])
                 endside = nextsides[endside][cw]
 
