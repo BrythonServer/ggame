@@ -328,7 +328,16 @@ if __name__ == "__main__":
     
     
     #Planet(Rocket, scale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
-    Planet(Rocket, altitude = 100)  # 500 miles, orbital velocity
+    #Planet(Rocket, altitude = 100)  # 500 miles, orbital velocity
     #Planet(Rocket)
 
+    def timehandler(t):
+        print(id(t))
+
+    app = MathApp()
+    app.run()
+    
+    t = Timer()
+    t.callEvery(0.02, timehandler)
+    
 
