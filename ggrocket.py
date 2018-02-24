@@ -77,9 +77,11 @@ class Rocket(ImagePoint):
         self.timer = Timer()
         self.timer.callEvery(1/self.tickrate, self.dynamics)
         self.V = [initvel * cos(initdir), initvel * sin(initdir)]
+        self.A = [0,0]
         # set up status display
         if self.showstatus:
             showparms = [self.velocityText,
+                        self.accelerationText,
                         self.courseDegreesText,
                         self.altitudeText,
                         self.thrustText,
@@ -112,7 +114,13 @@ class Rocket(ImagePoint):
         """
         Report the velocity in m/s
         """
-        return "Velocity: {0:4.6} m/s".format(self.vmag(self.V))
+        return "Velocity: {0:4.6} m/s".format(self.velocity)
+        
+    def accelerationText(self):
+        """
+        Report the acceleration in m/s
+        """
+        return "Acceleration: {0:4.6} m/s²".format(self.acceleration)
         
     def courseDegreesText(self):
         """
@@ -175,7 +183,7 @@ class Rocket(ImagePoint):
         tick = 10**self.timezoom()/self.tickrate
         # 4th order runge-kutta method (https://sites.temple.edu/math5061/files/2016/12/final_project.pdf)
         # and http://spiff.rit.edu/richmond/nbody/OrbitRungeKutta4.pdf  (succinct, but with a typo)
-        k1v = self.ar(self._xy)
+        self.A = k1v = self.ar(self._xy)
         k1r = self.V
         k2v = self.ar(self.vadd(self._xy, self.vmul(tick/2, k1r)))
         k2r = self.vadd(self.V, self.vmul(tick/2, k1v))
@@ -257,6 +265,14 @@ class Rocket(ImagePoint):
         self._xy = (r*cos(self.tanomaly), r*sin(self.tanomaly))
 
     @property
+    def velocity(self):
+        return self.vmag(self.V)
+    
+    @property
+    def acceleration(self):
+        return self.vmag(self.A)
+        
+    @property
     def tanomaly(self):
         #pos = self._pos()
         return atan2(self._xy[1],self._xy[0])
@@ -288,9 +304,9 @@ class Planet(MathApp):
         be passed to the rocket class `__init__` function during instantiation.
         
         Optional keyword parameters are supported:
-        :scale:  pixels per meter in graphics display. Default is 10.
+        :viewscale:  pixels per meter in graphics display. Default is 10.
         :radius:  radius of the planet in meters. Default is Earth radius.
-        :mass: mass of the planet in kg. Default is Earth mass.
+        :planetmass: mass of the planet in kg. Default is Earth mass.
         :color: color of the planet. Default is greenish (0x008040).
         :viewalt: altitude of initial viewpoint in meters. 
             Default is rocket altitude.
@@ -299,9 +315,9 @@ class Planet(MathApp):
         :viewanomd: true anomaly (angle) of initial viewpoing in degrees.
             Default is the rocket anomaly.
         """
-        self.scale = kwargs.get('scale', 10)  # 10 pixels per meter default
+        self.scale = kwargs.get('viewscale', 10)  # 10 pixels per meter default
         self.radius = kwargs.get('radius', 6.371E6) # Earth - meters
-        self.mass = kwargs.get('mass', 5.9722E24) # Earth - kg
+        self.mass = kwargs.get('planetmass', 5.9722E24) # Earth - kg
         self.color = kwargs.get('color', 0x008040)  # greenish
         super().__init__(self.scale)
         self.rocket = rocket(self, **kwargs)  
