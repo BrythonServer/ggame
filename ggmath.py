@@ -974,7 +974,7 @@ class MathApp(App):
 
     @classmethod
     def _addDynamic(cls, obj):
-        if isinstance(obj, _MathDynamic) and obj not in cls._mathDynamicList:
+        if isinstance(obj, _MathDynamic) and not obj in cls._mathDynamicList:
             cls._mathDynamicList.append(obj)
             
     @classmethod
@@ -984,7 +984,7 @@ class MathApp(App):
 
     @classmethod
     def _addMovable(cls, obj):
-        if isinstance(obj, _MathVisual) and obj not in cls._mathMovableList:
+        if isinstance(obj, _MathVisual) and not obj in cls._mathMovableList:
             cls._mathMovableList.append(obj)
             
     @classmethod
@@ -994,7 +994,7 @@ class MathApp(App):
 
     @classmethod
     def _addSelectable(cls, obj):
-        if isinstance(obj, _MathVisual) and obj not in cls._mathSelectableList:
+        if isinstance(obj, _MathVisual) and not obj in cls._mathSelectableList:
             cls._mathSelectableList.append(obj)
             
     @classmethod
