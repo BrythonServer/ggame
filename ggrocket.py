@@ -339,7 +339,7 @@ class Planet(MathApp):
 if __name__ == "__main__":
     
     
-    #Planet(Rocket, viewscale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
-    Planet(Rocket)
+    Planet(Rocket, viewscale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
+    #Planet(Rocket, altitude = 100)
 
 
