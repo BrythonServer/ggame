@@ -69,7 +69,7 @@ class Rocket(ImagePoint):
         tanomaly = radians(kwargs.get('tanomalyd', degrees(tanomaly))) 
         altitude = kwargs.get('altitude', 0) #
         r = altitude + self.planet.radius
-        self.xyposition = (r*cos(tanomaly), r*sin(tanomaly))
+        self._xy = (r*cos(tanomaly), r*sin(tanomaly))
         # default heading control if none provided by user
         if self.heading == self.getheading:
             Planet.listenKeyEvent('keydown', 'left arrow', self.turn)
@@ -236,7 +236,7 @@ class Rocket(ImagePoint):
     @xyposition.setter
     def xyposition(self, pos):
         self._xy = pos
-        self._touchAsset()
+        #self._touchAsset()
 
     @property
     def tanomalyd(self):
@@ -248,23 +248,23 @@ class Rocket(ImagePoint):
 
     @property
     def altitude(self):
-        return Planet.distance(self._pos(), (0,0)) - self.planet.radius
+        alt = Planet.distance(self._xy, (0,0)) - self.planet.radius
+        return alt
         
     @altitude.setter
     def altitude(self, alt):
         r = alt + self.planet.radius
-        self.xyposition = (r*cos(self.tanomaly), r*sin(self.tanomaly))
-        self._touchAsset()
+        self._xy = (r*cos(self.tanomaly), r*sin(self.tanomaly))
 
     @property
     def tanomaly(self):
-        pos = self._pos()
-        return atan2(pos[1],pos[0])
+        #pos = self._pos()
+        return atan2(self._xy[1],self._xy[0])
         
     @tanomaly.setter
     def tanomaly(self, angle):
         r = self.r
-        self.xyposition = (r*cos(angle), r*sin(angle))
+        self._xy = (r*cos(angle), r*sin(angle))
         self._touchAsset()
             
     @property
@@ -323,6 +323,6 @@ if __name__ == "__main__":
     
     
     Planet(Rocket, scale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
-    
+
 
 
