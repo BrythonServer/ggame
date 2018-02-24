@@ -195,6 +195,7 @@ class Rocket(ImagePoint):
         self._xy = [self._xy[i] + tick/6*(k1r[i] + 2*k2r[i] + 2*k3r[i] + k4r[i]) for i in (0,1)]
         if self.altitude < 0:
             self.V = [0,0]
+            self.A = [0,0]
             self.altitude = 0
 
     # generic force as a function of position
@@ -338,7 +339,7 @@ class Planet(MathApp):
 if __name__ == "__main__":
     
     
-    Planet(Rocket, viewscale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
-
+    #Planet(Rocket, viewscale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
+    Planet(Rocket)
 
 
