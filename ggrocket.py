@@ -250,7 +250,9 @@ class Rocket(ImagePoint):
 
     @property
     def altitude(self):
-        return Planet.distance(self._xy, (0,0)) - self.planet.radius
+        alt = Planet.distance(self._xy, (0,0)) - self.planet.radius
+        print("alt ", alt)
+        return alt
         
     @altitude.setter
     def altitude(self, alt):
