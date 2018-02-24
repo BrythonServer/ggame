@@ -188,8 +188,6 @@ class Rocket(ImagePoint):
         if self.altitude < 0:
             self.V = [0,0]
             self.altitude = 0
-            
-        print(self._xy[1])
 
     # generic force as a function of position
     def fr(self, pos):
@@ -251,15 +249,12 @@ class Rocket(ImagePoint):
     @property
     def altitude(self):
         alt = Planet.distance(self._xy, (0,0)) - self.planet.radius
-        print("alt ", id(self), alt)
         return alt
         
     @altitude.setter
     def altitude(self, alt):
         r = alt + self.planet.radius
-        print("altitude.set ", r, self.tanomaly)
         self._xy = (r*cos(self.tanomaly), r*sin(self.tanomaly))
-        #self._touchAsset()
 
     @property
     def tanomaly(self):
@@ -328,7 +323,7 @@ if __name__ == "__main__":
     
     
     #Planet(Rocket, scale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
-    Planet(Rocket, altitude = 100)  # 500 miles, orbital velocity
+    Planet(Rocket)  # 500 miles, orbital velocity
     #Planet(Rocket)
 
 
