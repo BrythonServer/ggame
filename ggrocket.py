@@ -189,7 +189,7 @@ class Rocket(ImagePoint):
             self.V = [0,0]
             self.altitude = 0
             
-        print(
+        print(self._xy[1])
 
     # generic force as a function of position
     def fr(self, pos):
