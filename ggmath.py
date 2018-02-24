@@ -821,6 +821,11 @@ class MathApp(App):
         self.mouseX = self.mouseY = None
         self._touchAllVisuals()
         self.selectedObj = None
+        MathApp._mathVisualList = [] #
+        MathApp._mathDynamicList = []
+        MathApp._mathMovableList = []
+        MathApp._mathSelectableList = []
+        MathApp._viewNotificationList = []
 
     def step(self):
         MathApp.time = time()
