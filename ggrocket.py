@@ -295,11 +295,9 @@ class Rocket(ImagePoint):
 
 class Planet(MathApp):
     
-    def __init__(self, rocket, **kwargs):
+    def __init__(self, **kwargs):
         """
         Initialize the Planet object. 
-        Required parameters:
-        :rocket:  Name of a Rocket-based class.
 
         All of the Rocket optional keyword parameters are supported and will
         be passed to the rocket class `__init__` function during instantiation.
@@ -320,11 +318,20 @@ class Planet(MathApp):
         self.radius = kwargs.get('radius', 6.371E6) # Earth - meters
         self.mass = kwargs.get('planetmass', 5.9722E24) # Earth - kg
         self.color = kwargs.get('color', 0x008040)  # greenish
+        self.kwargs = kwargs # save it for later..
         super().__init__(self.scale)
-        self.rocket = rocket(self, **kwargs)  
-        self.viewaltitude = kwargs.get('viewalt', self.rocket.altitude) # how high to look
-        self.viewanomaly = kwargs.get('viewanom', self.rocket.tanomaly)  # where to look
-        self.viewanomalyd = kwargs.get('viewanomd', degrees(self.viewanomaly))
+
+    def run(self, rocket):
+        """
+        Execute the Planet (and Rocket) simulation.
+
+        Required parameters:
+        :rocket:  Reference to a Rocket object
+        """
+        self.rocket = rocket
+        self.viewaltitude = self.kwargs.get('viewalt', self.rocket.altitude) # how high to look
+        self.viewanomaly = self.kwargs.get('viewanom', self.rocket.tanomaly)  # where to look
+        self.viewanomalyd = self.kwargs.get('viewanomd', degrees(self.viewanomaly))
         self.planetcircle = Circle(
             (0,0), 
             self.radius, 
@@ -332,14 +339,14 @@ class Planet(MathApp):
             Color(self.color,0.5))
         r = self.radius + self.viewaltitude
         self.viewPosition = (r*cos(self.viewanomaly), r*sin(self.viewanomaly))
-        self.run()
-
+        super().run()
 
 # test code here
 if __name__ == "__main__":
     
     
-    Planet(Rocket, viewscale=0.0001, timezoom=2.2, altitude=804672, direction=0, velocity=8000)  # 500 miles, orbital velocity
+    p = Planet(viewscale=0.0001)  
+    r = Rocket(p, timezoom=2.2, altitude=804672, direction=0, velocity=8000) # 500 miles, orbital velocity
     #Planet(Rocket, altitude = 100)
-
+    p.run(r)
 
