@@ -76,6 +76,7 @@ class Rocket(ImagePoint):
             Planet.listenKeyEvent('keydown', 'right arrow', self.turn)
         self.timer = Timer()
         self.timer.callEvery(1/self.tickrate, self.dynamics)
+        self.lasttime = self.timer.time
         self.V = [initvel * cos(initdir), initvel * sin(initdir)]
         self.A = [0,0]
         # set up status display
@@ -180,7 +181,9 @@ class Rocket(ImagePoint):
 
             
     def dynamics(self, timer):
-        tick = 10**self.timezoom()/self.tickrate
+        # set time duration equal to time since last execution
+        tick = 10**self.timezoom()*(timer.time - self.lasttime)
+        self.lasttime = timer.time
         # 4th order runge-kutta method (https://sites.temple.edu/math5061/files/2016/12/final_project.pdf)
         # and http://spiff.rit.edu/richmond/nbody/OrbitRungeKutta4.pdf  (succinct, but with a typo)
         self.A = k1v = self.ar(self._xy)
