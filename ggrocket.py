@@ -117,61 +117,61 @@ class Rocket(ImagePoint):
         """
         Report the velocity in m/s
         """
-        return "Velocity: {0:4.6} m/s".format(self.velocity)
+        return "Velocity: {0:8.1f} m/s".format(self.velocity)
         
     def accelerationText(self):
         """
         Report the acceleration in m/s
         """
-        return "Acceleration: {0:4.6} m/s²".format(self.acceleration)
+        return "Acceleration: {0:4.1f} m/s²".format(self.acceleration)
         
     def courseDegreesText(self):
         """
         Report the heading in degrees (zero to the right)
         """
-        return "Course: {0:4.6}°".format(degrees(atan2(self.V[1], self.V[0])))
+        return "Course: {0:6.4f}°".format(degrees(atan2(self.V[1], self.V[0])))
 
     def thrustText(self):
         """
         Report the thrust level in Newtons
         """
-        return "Thrust: {0:4.6} N".format(self.thrust())
+        return "Thrust: {0:8f} N".format(self.thrust())
         
     def massText(self):
         """
         Report the spacecraft mass in kilograms
         """
-        return "Mass: {0:4.6} kg".format(self.mass())
+        return "Mass: {0:8f} kg".format(self.mass())
         
     def trueAnomalyDegreesText(self):
         """
         Report the true anomaly in degrees
         """
-        return "True Anomaly: {0:4.6}°".format(self.tanomalyd)
+        return "True Anomaly: {0:6.4f}°".format(self.tanomalyd)
         
     def trueAnomalyRadiansText(self):
         """
         Report the true anomaly in radians
         """
-        return "True Anomaly: {0:4.6}".format(self.tanomaly)
+        return "True Anomaly: {0:6.4f}".format(self.tanomaly)
         
     def altitudeText(self):
         """
         Report the altitude in meters
         """
-        return "Altitude: {0:4.6} m".format(self.altitude)
+        return "Altitude: {0:8.1f} m".format(self.altitude)
         
     def radiusText(self):
         """
         Report the radius (distance to planet center) in meters
         """
-        return "Radius: {0:4.6} m".format(self.r)
+        return "Radius: {0:8} m".format(self.r)
         
     def scaleText(self):
         """
         Report the view scale (pixels/meter)
         """
-        return "View Scale: {0:.4f} px/m".format(self.planet._scale)
+        return "View Scale: {0:10.6f} px/m".format(self.planet._scale)
     
     def timeZoomText(self):
         """
