@@ -183,7 +183,7 @@ class Rocket(ImagePoint):
         """
         Report the elapsed time
         """
-        return "Elapsed Time: {0:.1f}".format(float(self.shiptime))
+        return "Elapsed Time: {0:.1f} s".format(float(self.shiptime))
     
 
 
