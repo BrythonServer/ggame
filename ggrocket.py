@@ -75,6 +75,7 @@ class Rocket(ImagePoint):
             Planet.listenKeyEvent('keydown', 'left arrow', self.turn)
             Planet.listenKeyEvent('keydown', 'right arrow', self.turn)
         self.timer = Timer()
+        self.shiptime = 0  # track time on shipboard
         self.timer.callEvery(1/self.tickrate, self.dynamics)
         self.lasttime = self.timer.time
         self.V = [initvel * cos(initdir), initvel * sin(initdir)]
@@ -89,7 +90,8 @@ class Rocket(ImagePoint):
                         self.massText,
                         self.trueAnomalyDegreesText,
                         self.scaleText,
-                        self.timeZoomText]
+                        self.timeZoomText,
+                        self.shipTime]
             for i in range(len(showparms)):
                 Label((10,10+i*25), showparms[i], size=15, positioning="physical")
 
@@ -176,6 +178,12 @@ class Rocket(ImagePoint):
         Report the time acceleration
         """
         return "Time Zoom: {0:4.6}".format(float(self.timezoom()))
+        
+    def shipTimeText(self):
+        """
+        Report the elapsed time
+        """
+        return "Elapsed Time: {0:4.6}".format(float(self.shiptime))
     
 
 
@@ -183,6 +191,7 @@ class Rocket(ImagePoint):
     def dynamics(self, timer):
         # set time duration equal to time since last execution
         tick = 10**self.timezoom()*(timer.time - self.lasttime)
+        self.shiptime = self.shiptime + tick
         self.lasttime = timer.time
         # 4th order runge-kutta method (https://sites.temple.edu/math5061/files/2016/12/final_project.pdf)
         # and http://spiff.rit.edu/richmond/nbody/OrbitRungeKutta4.pdf  (succinct, but with a typo)
