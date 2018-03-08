@@ -171,19 +171,19 @@ class Rocket(ImagePoint):
         """
         Report the view scale (pixels/meter)
         """
-        return "View Scale: {0:6.4} px/m".format(self.planet._scale)
+        return "View Scale: {0:.4f} px/m".format(self.planet._scale)
     
     def timeZoomText(self):
         """
         Report the time acceleration
         """
-        return "Time Zoom: {0:4.6}".format(float(self.timezoom()))
+        return "Time Zoom: {0:.1f}".format(float(self.timezoom()))
         
     def shipTimeText(self):
         """
         Report the elapsed time
         """
-        return "Elapsed Time: {0:4.6}".format(float(self.shiptime))
+        return "Elapsed Time: {0:.1f}".format(float(self.shiptime))
     
 
 
