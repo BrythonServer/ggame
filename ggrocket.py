@@ -135,13 +135,13 @@ class Rocket(ImagePoint):
         """
         Report the thrust level in Newtons
         """
-        return "Thrust: {0:8f} N".format(self.thrust())
+        return "Thrust: {0:.1f} N".format(self.thrust())
         
     def massText(self):
         """
         Report the spacecraft mass in kilograms
         """
-        return "Mass: {0:8f} kg".format(self.mass())
+        return "Mass: {0:.1f} kg".format(self.mass())
         
     def trueAnomalyDegreesText(self):
         """
