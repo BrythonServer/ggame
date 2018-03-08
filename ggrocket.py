@@ -75,6 +75,7 @@ class Rocket(ImagePoint):
             Planet.listenKeyEvent('keydown', 'left arrow', self.turn)
             Planet.listenKeyEvent('keydown', 'right arrow', self.turn)
         self.timer = Timer()
+        self.shiptime = 0  # track time on shipboard
         self.timer.callEvery(1/self.tickrate, self.dynamics)
         self.lasttime = self.timer.time
         self.V = [initvel * cos(initdir), initvel * sin(initdir)]
@@ -89,7 +90,8 @@ class Rocket(ImagePoint):
                         self.massText,
                         self.trueAnomalyDegreesText,
                         self.scaleText,
-                        self.timeZoomText]
+                        self.timeZoomText,
+                        self.shipTimeText]
             for i in range(len(showparms)):
                 Label((10,10+i*25), showparms[i], size=15, positioning="physical")
 
@@ -115,67 +117,73 @@ class Rocket(ImagePoint):
         """
         Report the velocity in m/s
         """
-        return "Velocity: {0:4.6} m/s".format(self.velocity)
+        return "Velocity: {0:8.1f} m/s".format(self.velocity)
         
     def accelerationText(self):
         """
         Report the acceleration in m/s
         """
-        return "Acceleration: {0:4.6} m/s²".format(self.acceleration)
+        return "Acceleration: {0:4.1f} m/s²".format(self.acceleration)
         
     def courseDegreesText(self):
         """
         Report the heading in degrees (zero to the right)
         """
-        return "Course: {0:4.6}°".format(degrees(atan2(self.V[1], self.V[0])))
+        return "Course: {0:6.4f}°".format(degrees(atan2(self.V[1], self.V[0])))
 
     def thrustText(self):
         """
         Report the thrust level in Newtons
         """
-        return "Thrust: {0:4.6} N".format(self.thrust())
+        return "Thrust: {0:8f} N".format(self.thrust())
         
     def massText(self):
         """
         Report the spacecraft mass in kilograms
         """
-        return "Mass: {0:4.6} kg".format(self.mass())
+        return "Mass: {0:8f} kg".format(self.mass())
         
     def trueAnomalyDegreesText(self):
         """
         Report the true anomaly in degrees
         """
-        return "True Anomaly: {0:4.6}°".format(self.tanomalyd)
+        return "True Anomaly: {0:6.4f}°".format(self.tanomalyd)
         
     def trueAnomalyRadiansText(self):
         """
         Report the true anomaly in radians
         """
-        return "True Anomaly: {0:4.6}".format(self.tanomaly)
+        return "True Anomaly: {0:6.4f}".format(self.tanomaly)
         
     def altitudeText(self):
         """
         Report the altitude in meters
         """
-        return "Altitude: {0:4.6} m".format(self.altitude)
+        return "Altitude: {0:8.1f} m".format(self.altitude)
         
     def radiusText(self):
         """
         Report the radius (distance to planet center) in meters
         """
-        return "Radius: {0:4.6} m".format(self.r)
+        return "Radius: {0:8} m".format(self.r)
         
     def scaleText(self):
         """
         Report the view scale (pixels/meter)
         """
-        return "View Scale: {0:6.4} px/m".format(self.planet._scale)
+        return "View Scale: {0:10.6f} px/m".format(self.planet._scale)
     
     def timeZoomText(self):
         """
         Report the time acceleration
         """
-        return "Time Zoom: {0:4.6}".format(float(self.timezoom()))
+        return "Time Zoom: {0:.1f}".format(float(self.timezoom()))
+        
+    def shipTimeText(self):
+        """
+        Report the elapsed time
+        """
+        return "Elapsed Time: {0:.1f} s".format(float(self.shiptime))
     
 
 
@@ -183,6 +191,7 @@ class Rocket(ImagePoint):
     def dynamics(self, timer):
         # set time duration equal to time since last execution
         tick = 10**self.timezoom()*(timer.time - self.lasttime)
+        self.shiptime = self.shiptime + tick
         self.lasttime = timer.time
         # 4th order runge-kutta method (https://sites.temple.edu/math5061/files/2016/12/final_project.pdf)
         # and http://spiff.rit.edu/richmond/nbody/OrbitRungeKutta4.pdf  (succinct, but with a typo)
