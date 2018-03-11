@@ -191,7 +191,6 @@ class Rocket(ImagePoint):
     def dynamics(self, timer):
         # set time duration equal to time since last execution
         tick = 10**self.timezoom()*(timer.time - self.lasttime)
-        print(timer.time, self.lasttime, tick)
         self.shiptime = self.shiptime + tick
         self.lasttime = timer.time
         # 4th order runge-kutta method (https://sites.temple.edu/math5061/files/2016/12/final_project.pdf)
