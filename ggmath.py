@@ -826,6 +826,7 @@ class MathApp(App):
         MathApp._mathMovableList = []
         MathApp._mathSelectableList = []
         MathApp._viewNotificationList = []
+        MathApp.time = time()
 
     def step(self):
         MathApp.time = time()
