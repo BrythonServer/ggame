@@ -191,6 +191,7 @@ class Rocket(ImagePoint):
     def dynamics(self, timer):
         # set time duration equal to time since last execution
         tick = 10**self.timezoom()*(timer.time - self.lasttime)
+        print(timer.time, self.lasttime, tick)
         self.shiptime = self.shiptime + tick
         self.lasttime = timer.time
         # 4th order runge-kutta method (https://sites.temple.edu/math5061/files/2016/12/final_project.pdf)
@@ -356,9 +357,6 @@ class Planet(MathApp):
 # test code here
 if __name__ == "__main__":
     
-    
-    p = Planet(viewscale=0.0001)  
-    r = Rocket(p, timezoom=2.2, altitude=804672, direction=0, velocity=8000) # 500 miles, orbital velocity
-    #Planet(Rocket, altitude = 100)
-    p.run(r)
-
+    earth = Planet(viewscale=0.00005)
+    rocket = Rocket(earth, altitude=400000, velocity=7670, timezoom=2)
+    earth.run(rocket)
