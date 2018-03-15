@@ -356,7 +356,7 @@ class Planet(MathApp):
 # test code here
 if __name__ == "__main__":
     
-    earth = Planet(viewscale=0.005)
-    rocket1 = Rocket(earth, altitude=400000, velocity=7670, timezoom=2)
-    rocket2 = Rocket(earth, altitude=440000, velocity=7670, timezoom=2)
+    earth = Planet(viewscale=0.00005)
+    rocket1 = Rocket(earth, altitude=400000, velocity=7670, timezoom=0)
+    rocket2 = Rocket(earth, altitude=440000, velocity=7670, timezoom=0)
     earth.run(rocket1, rocket2)
