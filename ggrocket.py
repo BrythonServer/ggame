@@ -333,16 +333,21 @@ class Planet(MathApp):
         self.kwargs = kwargs # save it for later..
         super().__init__(self.scale)
 
-    def run(self, *rockets):
+    def run(self, rocket=None):
         """
         Execute the Planet (and Rocket) simulation.
 
         Required parameters:
-        :rocket:  Reference to a Rocket object
+        :rocket:  [Optional] reference to a Rocket object - sets initial view
         """
-        self.rockets = rockets
-        self.viewaltitude = self.kwargs.get('viewalt', self.rockets[0].altitude) # how high to look
-        self.viewanomaly = self.kwargs.get('viewanom', self.rockets[0].tanomaly)  # where to look
+        if rocket:
+            viewalt = rocket.altitude
+            viewanom = rocket.tanomaly
+        else:
+            viewalt = 0
+            viewanom = pi/2
+        self.viewaltitude = self.kwargs.get('viewalt', viewalt) # how high to look
+        self.viewanomaly = self.kwargs.get('viewanom', viewanom)  # where to look
         self.viewanomalyd = self.kwargs.get('viewanomd', degrees(self.viewanomaly))
         self.planetcircle = Circle(
             (0,0), 
