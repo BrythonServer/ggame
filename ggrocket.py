@@ -63,7 +63,7 @@ class Rocket(ImagePoint):
                         "shiptime": self.shipTimeText}
         self.showstatus = kwargs.get('showstatus', True) # show stats
         self.statuspos = kwargs.get('statuspos', [10,10])  # position of stats
-        self.statuslist = kwargs.get('statuslist', self.statudict.keys)
+        self.statuslist = kwargs.get('statuslist', self.statusdict.keys)
         self.localheading = 0
         # dynamic parameters
         self.timezoom = self.Eval(kwargs.get('timezoom', self.gettimezoom)) # 1,2,3 faster, -1, slower
@@ -97,8 +97,9 @@ class Rocket(ImagePoint):
         self.V = [initvel * cos(initdir), initvel * sin(initdir)]
         self.A = [0,0]
         # set up status display
-        for name in self.statuslist:
-            self.addStatusReport(name, statusdict)
+        if self.showstatus:
+            for name in self.statuslist:
+                self.addStatusReport(name, statusdict)
         """
         if self.showstatus:
             showparms = [self.velocityText,
