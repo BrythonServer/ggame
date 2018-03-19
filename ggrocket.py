@@ -137,6 +137,7 @@ class Rocket(ImagePoint):
         if name in associationdict:
             Label(self.statuspos, associationdict[name], size=15, positioning='physical')
             self.statuspos[1] += 25
+            print(self.statuspos)
 
     # functions available for reporting flight parameters to UI
     def velocityText(self):
