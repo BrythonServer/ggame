@@ -51,7 +51,7 @@ class Rocket(ImagePoint):
         self.bitmapmargin = kwargs.get('bitmapmargin', 0) # bitmap spacing
         self.tickrate = kwargs.get('tickrate', 30) # dynamics calcs per sec
         # status display
-        statusdict = [  "velocity": self.velocityText,
+        statusdict = {  "velocity": self.velocityText,
                         "acceleration": self.accelerationText,
                         "course": self.courseDegreesText,
                         "altitude": self.altitudeText,
@@ -60,7 +60,7 @@ class Rocket(ImagePoint):
                         "trueanomaly": self.trueAnomalyDegreesText,
                         "scale": self.scaleText,
                         "timezoom": self.timeZoomText,
-                        "shiptime": self.shipTimeText]
+                        "shiptime": self.shipTimeText}
         self.showstatus = kwargs.get('showstatus', True) # show stats
         self.statuspos = kwargs.get('statuspos', [10,10])  # position of stats
         self.statuslist = kwargs.get('statuslist', self.statudict.keys)
