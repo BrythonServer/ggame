@@ -63,7 +63,7 @@ class Rocket(ImagePoint):
                         "shiptime": self.shipTimeText}
         self.showstatus = kwargs.get('showstatus', True) # show stats
         self.statuspos = kwargs.get('statuspos', [10,10])  # position of stats
-        self.statuslist = kwargs.get('statuslist', self.statusdict.keys)
+        self.statuslist = kwargs.get('statuslist', statusdict.keys)
         self.localheading = 0
         # dynamic parameters
         self.timezoom = self.Eval(kwargs.get('timezoom', self.gettimezoom)) # 1,2,3 faster, -1, slower
@@ -389,5 +389,5 @@ if __name__ == "__main__":
     
     earth = Planet(viewscale=0.00005)
     rocket1 = Rocket(earth, altitude=400000, velocity=7670, timezoom=2)
-    rocket2 = Rocket(earth, altitude=440000, velocity=7670, timezoom=2)
+    rocket2 = Rocket(earth, altitude=440000, velocity=7670, timezoom=2, statuspos=[10,200])
     earth.run()
