@@ -6,16 +6,6 @@ from ggmath import MathApp, Circle, ImagePoint, Timer, Label
 
 class Rocket(ImagePoint):
 
-    allstatusnames = [  'velocity', 
-                        'acceleration', 
-                        'course', 
-                        'altitude', 
-                        'thrust', 
-                        'mass',
-                        'trueanomaly',
-                        'scale',
-                        'timezoom',
-                        'shiptime']
 
     def __init__(self, planet, **kwargs):
         """
@@ -60,8 +50,30 @@ class Rocket(ImagePoint):
         self.bitmapdir = kwargs.get('bitmapdir', 'horizontal') # animation orientation
         self.bitmapmargin = kwargs.get('bitmapmargin', 0) # bitmap spacing
         self.tickrate = kwargs.get('tickrate', 30) # dynamics calcs per sec
+        # status display
+    allstatusnames = [  'velocity', 
+                        'acceleration', 
+                        'course', 
+                        'altitude', 
+                        'thrust', 
+                        'mass',
+                        'trueanomaly',
+                        'scale',
+                        'timezoom',
+                        'shiptime']
+
+        statusdict = [  "velocity": self.velocityText,
+                        "acceleration": self.accelerationText,
+                        "course": self.courseDegreesText,
+                        "altitude": self.altitudeText,
+                        "thrust": self.thrustText,
+                        "mass": self.massText,
+                        "trueanomaly": self.trueAnomalyDegreesText,
+                        "scale": self.scaleText,
+                        "timezoom": self.timeZoomText,
+                        "shiptime": self.shipTimeText]
         self.showstatus = kwargs.get('showstatus', True) # show stats
-        self.statuspos = kwargs.get('statuspos', (10,10))  # position of stats
+        self.statuspos = kwargs.get('statuspos', [10,10])  # position of stats
         self.statuslist = kwargs.get('statuslist', class(self).allstatusnames)
         self.localheading = 0
         # dynamic parameters
@@ -96,6 +108,7 @@ class Rocket(ImagePoint):
         self.V = [initvel * cos(initdir), initvel * sin(initdir)]
         self.A = [0,0]
         # set up status display
+        self.statusspos = [10,10]
         if self.showstatus:
             showparms = [self.velocityText,
                         self.accelerationText,
@@ -126,6 +139,12 @@ class Rocket(ImagePoint):
     # override or define externally!
     def gettimezoom(self):
         return 0
+
+    # add a status reporting function to status display
+    def addStatusReport(self, name, associationdict):
+        if name in associationdict:
+            Label(self.statuspos, associationdict[name], size=15, positioning='physical')
+            self.statuspos[1] += 25
 
     # functions available for reporting flight parameters to UI
     def velocityText(self):
