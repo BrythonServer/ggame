@@ -390,5 +390,5 @@ if __name__ == "__main__":
     
     earth = Planet(viewscale=0.00005)
     rocket1 = Rocket(earth, altitude=400000, velocity=7670, timezoom=2)
-    rocket2 = Rocket(earth, altitude=440000, velocity=7670, timezoom=2, statuspos=[10,200])
+    rocket2 = Rocket(earth, altitude=440000, velocity=7670, timezoom=2, statuspos=[10,300])
     earth.run()
