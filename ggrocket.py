@@ -337,8 +337,8 @@ class Planet(MathApp):
         """
         Execute the Planet (and Rocket) simulation.
 
-        Required parameters:
-        :rocket:  [Optional] reference to a Rocket object - sets initial view
+        Optional parameters:
+        :rocket: Reference to a Rocket object - sets the initial view
         """
         if rocket:
             viewalt = rocket.altitude
@@ -362,6 +362,6 @@ class Planet(MathApp):
 if __name__ == "__main__":
     
     earth = Planet(viewscale=0.00005)
-    rocket1 = Rocket(earth, altitude=400000, velocity=7670, timezoom=0)
-    rocket2 = Rocket(earth, altitude=440000, velocity=7670, timezoom=0)
-    earth.run(rocket1, rocket2)
+    rocket1 = Rocket(earth, altitude=400000, velocity=7670, timezoom=2)
+    rocket2 = Rocket(earth, altitude=440000, velocity=7670, timezoom=2)
+    earth.run()
