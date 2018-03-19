@@ -51,17 +51,6 @@ class Rocket(ImagePoint):
         self.bitmapmargin = kwargs.get('bitmapmargin', 0) # bitmap spacing
         self.tickrate = kwargs.get('tickrate', 30) # dynamics calcs per sec
         # status display
-    allstatusnames = [  'velocity', 
-                        'acceleration', 
-                        'course', 
-                        'altitude', 
-                        'thrust', 
-                        'mass',
-                        'trueanomaly',
-                        'scale',
-                        'timezoom',
-                        'shiptime']
-
         statusdict = [  "velocity": self.velocityText,
                         "acceleration": self.accelerationText,
                         "course": self.courseDegreesText,
@@ -74,7 +63,7 @@ class Rocket(ImagePoint):
                         "shiptime": self.shipTimeText]
         self.showstatus = kwargs.get('showstatus', True) # show stats
         self.statuspos = kwargs.get('statuspos', [10,10])  # position of stats
-        self.statuslist = kwargs.get('statuslist', class(self).allstatusnames)
+        self.statuslist = kwargs.get('statuslist', self.statudict.keys)
         self.localheading = 0
         # dynamic parameters
         self.timezoom = self.Eval(kwargs.get('timezoom', self.gettimezoom)) # 1,2,3 faster, -1, slower
@@ -108,7 +97,9 @@ class Rocket(ImagePoint):
         self.V = [initvel * cos(initdir), initvel * sin(initdir)]
         self.A = [0,0]
         # set up status display
-        self.statusspos = [10,10]
+        for name in self.statuslist:
+            self.addStatusReport(name, statusdict)
+        """
         if self.showstatus:
             showparms = [self.velocityText,
                         self.accelerationText,
@@ -122,7 +113,7 @@ class Rocket(ImagePoint):
                         self.shipTimeText]
             for i in range(len(showparms)):
                 Label((10,10+i*25), showparms[i], size=15, positioning="physical")
-
+        """
     
     # override or define externally!
     def getthrust(self):
