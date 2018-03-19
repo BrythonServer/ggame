@@ -6,6 +6,17 @@ from ggmath import MathApp, Circle, ImagePoint, Timer, Label
 
 class Rocket(ImagePoint):
 
+    allstatusnames = [  'velocity', 
+                        'acceleration', 
+                        'course', 
+                        'altitude', 
+                        'thrust', 
+                        'mass',
+                        'trueanomaly',
+                        'scale',
+                        'timezoom',
+                        'shiptime']
+
     def __init__(self, planet, **kwargs):
         """
         Initialize the Rocket object. 
@@ -23,6 +34,8 @@ class Rocket(ImagePoint):
         :tanomaly:  initial rocket true anomaly in radians. Default is pi/2.
         :altitude:  initial rocket altitude in meters. Default is zero.
         :showstatus:  boolean displays flight parameters on screen. Default is True.
+        :statuspos:  tuple with x,y coordinates of flight parameters. Default is upper left.
+        :statuslist: list of status names to include in flight parameters. Default is all.
         
         Following parameters may be set as a constant value, or pass in the
         name of a function that will return the value dynamically or the
@@ -48,6 +61,8 @@ class Rocket(ImagePoint):
         self.bitmapmargin = kwargs.get('bitmapmargin', 0) # bitmap spacing
         self.tickrate = kwargs.get('tickrate', 30) # dynamics calcs per sec
         self.showstatus = kwargs.get('showstatus', True) # show stats
+        self.statuspos = kwargs.get('statuspos', (10,10))  # position of stats
+        self.statuslist = kwargs.get('statuslist', class(self).allstatusnames)
         self.localheading = 0
         # dynamic parameters
         self.timezoom = self.Eval(kwargs.get('timezoom', self.gettimezoom)) # 1,2,3 faster, -1, slower
