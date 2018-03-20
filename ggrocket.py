@@ -23,11 +23,13 @@ class Rocket(ImagePoint):
             rocket1 = Rocket(earth, altitude=400000, velocity=7670, timezoom=2)
        
         Required parameters:
+        
         * **planet**:  Reference to a `Planet` object.
         
         Optional keyword parameters are supported:
+        
         * **bitmap**:  url of a suitable bitmap image for the rocket (png recommended)
-        default is `rocket.png`
+          default is `rocket.png`
         * **bitmapscale**:  scale factor for bitmap. Default is 0.1
         * **velocity**:  initial rocket speed. default is zero.
         * **directiond**:  initial rocket direction in degrees. Default is zero.
@@ -36,32 +38,35 @@ class Rocket(ImagePoint):
         * **tanomaly**:  initial rocket true anomaly in radians. Default is pi/2.
         * **altitude**:  initial rocket altitude in meters. Default is zero.
         * **showstatus**:  boolean displays flight parameters on screen. Default
-        is True.
+          is True.
         * **statuspos**:  tuple with x,y coordinates of flight parameters. 
-        Default is upper left.
+          Default is upper left.
         * **statuslist**: list of status names to include in flight parameters. 
-        Default is all, consisting of: "velocity", "acceleration", "course",
-        "altitude", "thrust", "mass", "trueanomaly", "scale", "timezoom",
-        "shiptime"
+          Default is all, consisting of: "velocity", "acceleration", "course",
+          "altitude", "thrust", "mass", "trueanomaly", "scale", "timezoom",
+          "shiptime"
         * **leftkey**: a `ggame` key identifier that will serve as the 
-        "rotate left" key while controlling the ship. Default is 'left arrow'.
+          "rotate left" key while controlling the ship. Default is 'left arrow'.
         * **rightkey**: a `ggame` key identifier that will serve as the 
-        "rotate right" key while controlling the ship. Default is 'right arrow'.
+          "rotate right" key while controlling the ship. Default is 'right arrow'.
         
         Following parameters may be set as a constant value, or pass in the
         name of a function that will return the value dynamically or the
-        name of a `ggmath` UI control that will return the value
+        name of a `ggmath` UI control that will return the value.
+        
         * **timezoom**  scale factor for time zoom. Factor = 10^timezoom
         * **heading**  direction to point the rocket in (must be radians)
         * **mass**  mass of the rocket (must be kg)
         * **thrust**  thrust of the rocket (must be N)
 
         Animation related parameters may be ignored if no sprite animation:
+        
         * **bitmapframe**  ((x1,y1),(x2,y2)) tuple defines a region in the bitmap
         * **bitmapqty**  number of bitmaps -- used for animation effects
         * **bitmapdir**  "horizontal" or "vertical" use with animation effects
         * **bitmapmargin**  pixels between successive animation frames
         * **tickrate**  frequency of spacecraft dynamics calculations (Hz)
+        
         """
         self._xy = (1000000,1000000)
         self.planet = planet
