@@ -6,6 +6,7 @@ from ggmath import MathApp, Circle, ImagePoint, Timer, Label
 
 class Rocket(ImagePoint):
 
+
     def __init__(self, planet, **kwargs):
         """
         Initialize the Rocket object. 
@@ -23,6 +24,8 @@ class Rocket(ImagePoint):
         :tanomaly:  initial rocket true anomaly in radians. Default is pi/2.
         :altitude:  initial rocket altitude in meters. Default is zero.
         :showstatus:  boolean displays flight parameters on screen. Default is True.
+        :statuspos:  tuple with x,y coordinates of flight parameters. Default is upper left.
+        :statuslist: list of status names to include in flight parameters. Default is all.
         
         Following parameters may be set as a constant value, or pass in the
         name of a function that will return the value dynamically or the
@@ -47,7 +50,32 @@ class Rocket(ImagePoint):
         self.bitmapdir = kwargs.get('bitmapdir', 'horizontal') # animation orientation
         self.bitmapmargin = kwargs.get('bitmapmargin', 0) # bitmap spacing
         self.tickrate = kwargs.get('tickrate', 30) # dynamics calcs per sec
+        # status display
+        statusfuncs = [ self.velocityText,
+                        self.accelerationText,
+                        self.courseDegreesText,
+                        self.altitudeText,
+                        self.thrustText,
+                        self.massText,
+                        self.trueAnomalyDegreesText,
+                        self.scaleText,
+                        self.timeZoomText,
+                        self.shipTimeText]
+        statuslist = [  "velocity",
+                        "acceleration",
+                        "course",
+                        "altitude",
+                        "thrust",
+                        "mass",
+                        "trueanomaly",
+                        "scale",
+                        "timezoom",
+                        "shiptime"]
+        statusdict = {n:f for n, f in zip(statuslist, statusfuncs)}
+        
         self.showstatus = kwargs.get('showstatus', True) # show stats
+        self.statuspos = kwargs.get('statuspos', [10,10])  # position of stats
+        self.statuslist = kwargs.get('statuslist', statuslist)
         self.localheading = 0
         # dynamic parameters
         self.timezoom = self.Eval(kwargs.get('timezoom', self.gettimezoom)) # 1,2,3 faster, -1, slower
@@ -82,6 +110,10 @@ class Rocket(ImagePoint):
         self.A = [0,0]
         # set up status display
         if self.showstatus:
+            for name in self.statuslist:
+                self.addStatusReport(name, statusdict)
+        """
+        if self.showstatus:
             showparms = [self.velocityText,
                         self.accelerationText,
                         self.courseDegreesText,
@@ -94,7 +126,7 @@ class Rocket(ImagePoint):
                         self.shipTimeText]
             for i in range(len(showparms)):
                 Label((10,10+i*25), showparms[i], size=15, positioning="physical")
-
+        """
     
     # override or define externally!
     def getthrust(self):
@@ -112,78 +144,84 @@ class Rocket(ImagePoint):
     def gettimezoom(self):
         return 0
 
+    # add a status reporting function to status display
+    def addStatusReport(self, name, associationdict):
+        if name in associationdict:
+            Label(self.statuspos[:], associationdict[name], size=15, positioning='physical', width=250)
+            self.statuspos[1] += 25
+
     # functions available for reporting flight parameters to UI
     def velocityText(self):
         """
         Report the velocity in m/s
         """
-        return "Velocity: {0:8.1f} m/s".format(self.velocity)
+        return "Velocity:     {0:8.1f} m/s".format(self.velocity)
         
     def accelerationText(self):
         """
         Report the acceleration in m/s
         """
-        return "Acceleration: {0:4.1f} m/s²".format(self.acceleration)
+        return "Acceleration: {0:8.1f} m/s²".format(self.acceleration)
         
     def courseDegreesText(self):
         """
         Report the heading in degrees (zero to the right)
         """
-        return "Course: {0:6.4f}°".format(degrees(atan2(self.V[1], self.V[0])))
+        return "Course:       {0:8.1f}°".format(degrees(atan2(self.V[1], self.V[0])))
 
     def thrustText(self):
         """
         Report the thrust level in Newtons
         """
-        return "Thrust: {0:.1f} N".format(self.thrust())
+        return "Thrust:       {0:8.1f} N".format(self.thrust())
         
     def massText(self):
         """
         Report the spacecraft mass in kilograms
         """
-        return "Mass: {0:.1f} kg".format(self.mass())
+        return "Mass:         {0:8.1f} kg".format(self.mass())
         
     def trueAnomalyDegreesText(self):
         """
         Report the true anomaly in degrees
         """
-        return "True Anomaly: {0:6.4f}°".format(self.tanomalyd)
+        return "True Anomaly: {0:8.1f}°".format(self.tanomalyd)
         
     def trueAnomalyRadiansText(self):
         """
         Report the true anomaly in radians
         """
-        return "True Anomaly: {0:6.4f}".format(self.tanomaly)
+        return "True Anomaly: {0:8.4f}".format(self.tanomaly)
         
     def altitudeText(self):
         """
         Report the altitude in meters
         """
-        return "Altitude: {0:8.1f} m".format(self.altitude)
+        return "Altitude:     {0:8.1f} m".format(self.altitude)
         
     def radiusText(self):
         """
         Report the radius (distance to planet center) in meters
         """
-        return "Radius: {0:8} m".format(self.r)
+        return "Radius:       {0:8.1f} m".format(self.r)
         
     def scaleText(self):
         """
         Report the view scale (pixels/meter)
         """
-        return "View Scale: {0:10.6f} px/m".format(self.planet._scale)
+        return "View Scale:   {0:8.6f} px/m".format(self.planet._scale)
     
     def timeZoomText(self):
         """
         Report the time acceleration
         """
-        return "Time Zoom: {0:.1f}".format(float(self.timezoom()))
+        return "Time Zoom:    {0:8.1f}".format(float(self.timezoom()))
         
     def shipTimeText(self):
         """
         Report the elapsed time
         """
-        return "Elapsed Time: {0:.1f} s".format(float(self.shiptime))
+        return "Elapsed Time: {0:8.1f} s".format(float(self.shiptime))
     
 
 
@@ -333,16 +371,21 @@ class Planet(MathApp):
         self.kwargs = kwargs # save it for later..
         super().__init__(self.scale)
 
-    def run(self, rocket):
+    def run(self, rocket=None):
         """
         Execute the Planet (and Rocket) simulation.
 
-        Required parameters:
-        :rocket:  Reference to a Rocket object
+        Optional parameters:
+        :rocket: Reference to a Rocket object - sets the initial view
         """
-        self.rocket = rocket
-        self.viewaltitude = self.kwargs.get('viewalt', self.rocket.altitude) # how high to look
-        self.viewanomaly = self.kwargs.get('viewanom', self.rocket.tanomaly)  # where to look
+        if rocket:
+            viewalt = rocket.altitude
+            viewanom = rocket.tanomaly
+        else:
+            viewalt = 0
+            viewanom = pi/2
+        self.viewaltitude = self.kwargs.get('viewalt', viewalt) # how high to look
+        self.viewanomaly = self.kwargs.get('viewanom', viewanom)  # where to look
         self.viewanomalyd = self.kwargs.get('viewanomd', degrees(self.viewanomaly))
         self.planetcircle = Circle(
             (0,0), 
@@ -357,5 +400,6 @@ class Planet(MathApp):
 if __name__ == "__main__":
     
     earth = Planet(viewscale=0.00005)
-    rocket = Rocket(earth, altitude=400000, velocity=7670, timezoom=2)
-    earth.run(rocket)
+    rocket1 = Rocket(earth, altitude=400000, velocity=7670, timezoom=2)
+    rocket2 = Rocket(earth, altitude=440000, velocity=7670, timezoom=2, statuspos=[300,10])
+    earth.run()
