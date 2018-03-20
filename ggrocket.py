@@ -71,11 +71,10 @@ class Rocket(ImagePoint):
                         "scale",
                         "timezoom",
                         "shiptime"]
-        statusdict = {n:f for n, f in zip(statuslist, statusfuncs)}
         
         self.showstatus = kwargs.get('showstatus', True) # show stats
         self.statuspos = kwargs.get('statuspos', [10,10])  # position of stats
-        self.statuslist = kwargs.get('statuslist', statuslist)
+        self.statusselect = kwargs.get('statuslist', statuslist)
         self.localheading = 0
         # dynamic parameters
         self.timezoom = self.Eval(kwargs.get('timezoom', self.gettimezoom)) # 1,2,3 faster, -1, slower
@@ -110,8 +109,7 @@ class Rocket(ImagePoint):
         self.A = [0,0]
         # set up status display
         if self.showstatus:
-            for name in self.statuslist:
-                self.addStatusReport(name, statusdict)
+            self.addStatusReport(statuslist, statusfuncs, self.statusselect)
         """
         if self.showstatus:
             showparms = [self.velocityText,
@@ -145,10 +143,16 @@ class Rocket(ImagePoint):
         return 0
 
     # add a status reporting function to status display
-    def addStatusReport(self, name, associationdict):
-        if name in associationdict:
-            Label(self.statuspos[:], associationdict[name], size=15, positioning='physical', width=250)
-            self.statuspos[1] += 25
+    def addStatusReport(self, statuslist, statusfuncs, statusselect):
+        """
+        Accept list of all status names, all status text functions, and
+        the list of status names that have been selected for display.
+        """
+        statusdict = {n:f for n, f in zip(statuslist, statusfuncs)}
+        for name in statusselect:
+            if name in statusdict:
+                Label(self.statuspos[:], statusdict[name], size=15, positioning='physical', width=250)
+                self.statuspos[1] += 25
 
     # functions available for reporting flight parameters to UI
     def velocityText(self):
