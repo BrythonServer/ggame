@@ -255,6 +255,9 @@ class Slider(_MathVisual):
         MathApp.listenKeyEvent("keydown", "left arrow", self.moveLeft)
         MathApp.listenKeyEvent("keydown", "right arrow", self.moveRight)
         MathApp.listenMouseEvent("click", self.mouseClick)
+        MathApp.listenMouseEvent("mousedown", self.mouseDown)
+        MathApp.listenMouseEvent("mousemove", self.mouseMove)
+        MathApp.listenMouseEvent("mouseup", self.mouseUp)
 
     def unselect(self):
         super().unselect()
@@ -262,6 +265,9 @@ class Slider(_MathVisual):
             MathApp.unlistenKeyEvent("keydown", "left arrow", self.moveLeft)
             MathApp.unlistenKeyEvent("keydown", "right arrow", self.moveRight)
             MathApp.unlistenMouseEvent("click", self.mouseClick)
+            MathApp.unlistenMouseEvent("mousedown", self.mouseDown)
+            MathApp.unlistenMouseEvent("mousemove", self.mouseMove)
+            MathApp.unlistenMouseEvent("mouseup", self.mouseUp)
         except ValueError:
             pass
 
