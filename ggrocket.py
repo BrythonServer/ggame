@@ -1,39 +1,56 @@
-# ggrocket - ggmath extensions for modeling spacecraft in planetary orbit
+"""
+# ggrocket 
+## A ggmath extensions for modeling spacecraft in planetary orbit
+"""
 
 from math import pi, degrees, radians, atan2, sin, cos, sqrt
 from ggame import LineStyle, Color
 from ggmath import MathApp, Circle, ImagePoint, Timer, Label
 
 class Rocket(ImagePoint):
-
+    """
+    Rocket is a class for simulating the motion of a projectile through space, 
+    acted upon by arbitrary forces (thrust) and by gravitaitonal 
+    attraction to a single planetary object.
+    """
 
     def __init__(self, planet, **kwargs):
         """
         Initialize the Rocket object. 
+        
+        Example:
+        
+            rocket1 = Rocket(earth, altitude=400000, velocity=7670, timezoom=2)
+       
         Required parameters:
-        :planet:  Reference to a Planet object.
+        * **planet**:  Reference to a `Planet` object.
         
         Optional keyword parameters are supported:
-        :bitmap:  url of a suitable bitmap image for the rocket (png recommended)
-                    default is `rocket.png`
-        :bitmapscale:  scale factor for bitmap. Default is 0.1
-        :velocity:  initial rocket speed. default is zero.
-        :directiond:  initial rocket direction in degrees. Default is zero.
-        :direction:  initial rocket direction in radians. Default is zero.
-        :tanomalyd:  initial rocket true anomaly in degrees. Default is 90.
-        :tanomaly:  initial rocket true anomaly in radians. Default is pi/2.
-        :altitude:  initial rocket altitude in meters. Default is zero.
-        :showstatus:  boolean displays flight parameters on screen. Default is True.
-        :statuspos:  tuple with x,y coordinates of flight parameters. Default is upper left.
-        :statuslist: list of status names to include in flight parameters. Default is all.
+        * **bitmap**:  url of a suitable bitmap image for the rocket (png recommended)
+        default is `rocket.png`
+        * **bitmapscale**:  scale factor for bitmap. Default is 0.1
+        * **velocity**:  initial rocket speed. default is zero.
+        * **directiond**:  initial rocket direction in degrees. Default is zero.
+        * **direction**:  initial rocket direction in radians. Default is zero.
+        * **tanomalyd**:  initial rocket true anomaly in degrees. Default is 90.
+        * **tanomaly**:  initial rocket true anomaly in radians. Default is pi/2.
+        * **altitude**:  initial rocket altitude in meters. Default is zero.
+        * **showstatus**:  boolean displays flight parameters on screen. Default
+        is True.
+        * **statuspos**:  tuple with x,y coordinates of flight parameters. 
+        Default is upper left.
+        * **statuslist**: list of status names to include in flight parameters. 
+        Default is all, consisting of: "velocity", "acceleration", "course",
+        "altitude", "thrust", "mass", "trueanomaly", "scale", "timezoom",
+        "shiptime"
         
         Following parameters may be set as a constant value, or pass in the
         name of a function that will return the value dynamically or the
         name of a `ggmath` UI control that will return the value
-        :timezoom:  scale factor for time zoom. Factor = 10**timezoom
-        :heading:  direction to point the rocket in (must be radians)
-        :mass:  mass of the rocket (must be kg)
-        :thrust:  thrust of the rocket (must be N)
+        * **timezoom**  scale factor for time zoom. Factor = 10^timezoom
+        * **heading**  direction to point the rocket in (must be radians)
+        * **mass**  mass of the rocket (must be kg)
+        * **thrust**  thrust of the rocket (must be N)
 
         Animation related parameters may be ignored if no sprite animation:
         :bitmapframe:  ((x1,y1),(x2,y2)) tuple defines a region in the bitmap
