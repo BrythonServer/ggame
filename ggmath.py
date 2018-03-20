@@ -331,10 +331,6 @@ class Slider(_MathVisual):
     def translate(self, pdisp):
         pass
     
-    # destroy our client sprite (not necessary??)
-    def destroy(self):
-        self.thumb.destroy()
-        super().destroy()
 
 
 class Label(_MathVisual):
@@ -944,11 +940,13 @@ class MathApp(App):
         for obj in self._mathMovableList:
             if obj.physicalPointTouching((event.x, event.y)) and not (obj.strokeable and obj.canstroke((event.x,event.y))):
                 self.mouseCapturedObject = obj
+                print("capture")
                 break
         if not self.mouseCapturedObject:
             for obj in self._mathStrokeableList:
                 if obj.canstroke((event.x, event.y)):
                     self.mouseStrokedObject = obj
+                    print("to stroke")
                     break
 
     def handleMouseUp(self, event):
