@@ -309,7 +309,7 @@ class Label(_MathVisual):
             self._ppos = MathApp.logicalToPhysical(self._pos())
             
         super().__init__(TextAsset(self._ptext, 
-                style="{0}px Arial".format(self._size), 
+                style="{0}px Courier".format(self._size), 
                 width=self._width,
                 color=self._color), 
             self._ppos)
