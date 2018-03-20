@@ -1417,6 +1417,7 @@ class App(object):
         application could be instantiated.
         """ 
         if App._win:
+            print("Unbinding key and mouse events")
             App._win.unbind(KeyEvent.keydown)
             App._win.unbind(KeyEvent.keyup)
             App._win.unbind(KeyEvent.keypress)
