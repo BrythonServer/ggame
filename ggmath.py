@@ -821,11 +821,6 @@ class MathApp(App):
         self.mouseX = self.mouseY = None
         self._touchAllVisuals()
         self.selectedObj = None
-        MathApp._mathVisualList = [] #
-        MathApp._mathDynamicList = []
-        MathApp._mathMovableList = []
-        MathApp._mathSelectableList = []
-        MathApp._viewNotificationList = []
         MathApp.time = time()
 
     def step(self):
@@ -1007,6 +1002,19 @@ class MathApp(App):
     def _removeSelectable(cls, obj):
         if isinstance(obj, _MathVisual) and obj in cls._mathSelectableList:
             cls._mathSelectableList.remove(obj)
+
+    @classmethod
+    def _destroy(cls, *args):
+        """
+        This will clean up any class level storage.
+        """ 
+        super(cls)._destroy(*args)  # hit the parent class first
+        MathApp._mathVisualList = [] 
+        MathApp._mathDynamicList = []
+        MathApp._mathMovableList = []
+        MathApp._mathSelectableList = []
+        MathApp._viewNotificationList = []
+        
 
 
 
