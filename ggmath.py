@@ -585,14 +585,17 @@ class Circle(_MathVisual):
         ymin = pcenter[1]-pradius
         xmax = pcenter[0]+pradius
         xmin = pcenter[0]-pradius
-        if ymin > MathApp.height or ymax < 0 or xmax < 0 or xmin > MathApp.width:
+        try:
+            if ymin > MathApp.height or ymax < 0 or xmax < 0 or xmin > MathApp.width:
+                return CircleAsset(pradius, style, fill)
+            elif pradius > 2*MathApp.width:
+                # here begins unpleasant hack to overcome crappy circles
+                poly = self._buildPolygon(pcenter, pradius)
+                if len(poly):
+                    passet = PolygonAsset(poly, style, fill)
+                    return passet
+        except AttributeError:
             return CircleAsset(pradius, style, fill)
-        elif pradius > 2*MathApp.width:
-            # here begins unpleasant hack to overcome crappy circles
-            poly = self._buildPolygon(pcenter, pradius)
-            if len(poly):
-                passet = PolygonAsset(poly, style, fill)
-                return passet
         return CircleAsset(pradius, style, fill)
 
     def _buildPolygon(self, pcenter, pradius):
@@ -1148,12 +1151,19 @@ if __name__ == "__main__":
     #ground = LineSegment(westp, eastp)
 
 
-    t = Timer()
-    t.callEvery(tick, step)
     
     #MathApp.addViewNotification(zoomCheck)
     """
+
+
+    def step(timer):
+        print(id(timer))
+
+ 
+    t = Timer()
+    t.callEvery(0.1, step)
     
+   
     def zoomCheck(**kwargs):
         viewtype = kwargs.get('viewchange')
         scale = kwargs.get('scale')
