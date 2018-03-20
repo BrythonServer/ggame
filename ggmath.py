@@ -1054,8 +1054,6 @@ if __name__ == "__main__":
     #p1 = Point((0,0))
     #p1.movable = True
     #c1 = Circle(p1, 1.5, LineStyle(3, Color(0x0000ff,1)), Color(0x0000ff,0.3))
-    pcenter = Point((0, -5000000))
-    c1 = Circle((0,-5000000), 5000000, LineStyle(1, Color(0x008040,1)), Color(0x008400,0.5))
     
     #s1 = Slider((200, 400), 0, 10, 2, positioning='physical',
     #    leftkey="a", rightkey="d", centerkey="s")
@@ -1146,16 +1144,21 @@ if __name__ == "__main__":
     t.callEvery(tick, step)
     
     #MathApp.addViewNotification(zoomCheck)
+    """
     
     def zoomCheck(**kwargs):
         viewtype = kwargs.get('viewchange')
         scale = kwargs.get('scale')
         print(ap.scale)
     
+    pcenter = Point((0, -5000000))
+    c1 = Circle((0,-5000000), 5000000, LineStyle(1, Color(0x008040,1)), Color(0x008400,0.5))
     ap = MathApp()
+
     ap.addViewNotification(zoomCheck)
     ap.run()
     
     print(ap.scale)
+    """
     """
     
