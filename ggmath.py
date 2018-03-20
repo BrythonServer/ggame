@@ -939,7 +939,7 @@ class MathApp(App):
         self.mouseCapturedObject = None
         self.mouseStrokedObject = None
         for obj in self._mathMovableList:
-            if obj.physicalPointTouching((event.x, event.y)) and not (obj.strokeable and obj.canstroke((event.x,event.y)):
+            if obj.physicalPointTouching((event.x, event.y)) and not (obj.strokeable and obj.canstroke((event.x,event.y))):
                 self.mouseCapturedObject = obj
                 break
         if not self.mouseCapturedObject:
