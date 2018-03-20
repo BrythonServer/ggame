@@ -314,10 +314,8 @@ class Slider(_MathVisual):
         return self.physicalPointTouchingThumb(ppos)
         
     def stroke(self, ppos, pdisp):
-        #print("stroking: ", ppos, pdisp)
         xpos = ppos[0] + pdisp[0]
-        self.val = (xpos - self._ppos[0])*(self._max-self._min)/self._width + self._min
-        print(self.val)
+        self.value = (xpos - self._ppos[0])*(self._max-self._min)/self._width + self._min
 
     def physicalPointTouching(self, ppos):
         return (ppos[0] >= self._ppos[0] and 
@@ -1237,10 +1235,10 @@ if __name__ == "__main__":
     c1 = Circle((0,-5000000), 5000000, LineStyle(1, Color(0x008040,1)), Color(0x008400,0.5))
     ap = MathApp()
 
-    ap.addViewNotification(zoomCheck)
+    #ap.addViewNotification(zoomCheck)
     ap.run()
     
-    print(ap.scale)
+    
     """
     """
     
