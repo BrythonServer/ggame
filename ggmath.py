@@ -48,6 +48,7 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     def destroy(self):
         MathApp._removeVisual(self)
         MathApp._removeMovable(self)
+        MathApp._removeStrokeable(self)
         _MathDynamic.destroy(self)
         Sprite.destroy(self)
 
