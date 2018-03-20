@@ -1,46 +1,67 @@
-# ggrocket - ggmath extensions for modeling spacecraft in planetary orbit
+"""
+# ggrocket 
+## A ggmath extensions for modeling spacecraft in planetary orbit
+"""
 
 from math import pi, degrees, radians, atan2, sin, cos, sqrt
 from ggame import LineStyle, Color
 from ggmath import MathApp, Circle, ImagePoint, Timer, Label
 
 class Rocket(ImagePoint):
-
+    """
+    Rocket is a class for simulating the motion of a projectile through space, 
+    acted upon by arbitrary forces (thrust) and by gravitaitonal 
+    attraction to a single planetary object.
+    """
 
     def __init__(self, planet, **kwargs):
         """
         Initialize the Rocket object. 
+        
+        Example:
+        
+            rocket1 = Rocket(earth, altitude=400000, velocity=7670, timezoom=2)
+       
         Required parameters:
-        :planet:  Reference to a Planet object.
+        * **planet**:  Reference to a `Planet` object.
         
         Optional keyword parameters are supported:
-        :bitmap:  url of a suitable bitmap image for the rocket (png recommended)
-                    default is `rocket.png`
-        :bitmapscale:  scale factor for bitmap. Default is 0.1
-        :velocity:  initial rocket speed. default is zero.
-        :directiond:  initial rocket direction in degrees. Default is zero.
-        :direction:  initial rocket direction in radians. Default is zero.
-        :tanomalyd:  initial rocket true anomaly in degrees. Default is 90.
-        :tanomaly:  initial rocket true anomaly in radians. Default is pi/2.
-        :altitude:  initial rocket altitude in meters. Default is zero.
-        :showstatus:  boolean displays flight parameters on screen. Default is True.
-        :statuspos:  tuple with x,y coordinates of flight parameters. Default is upper left.
-        :statuslist: list of status names to include in flight parameters. Default is all.
+        * **bitmap**:  url of a suitable bitmap image for the rocket (png recommended)
+        default is `rocket.png`
+        * **bitmapscale**:  scale factor for bitmap. Default is 0.1
+        * **velocity**:  initial rocket speed. default is zero.
+        * **directiond**:  initial rocket direction in degrees. Default is zero.
+        * **direction**:  initial rocket direction in radians. Default is zero.
+        * **tanomalyd**:  initial rocket true anomaly in degrees. Default is 90.
+        * **tanomaly**:  initial rocket true anomaly in radians. Default is pi/2.
+        * **altitude**:  initial rocket altitude in meters. Default is zero.
+        * **showstatus**:  boolean displays flight parameters on screen. Default
+        is True.
+        * **statuspos**:  tuple with x,y coordinates of flight parameters. 
+        Default is upper left.
+        * **statuslist**: list of status names to include in flight parameters. 
+        Default is all, consisting of: "velocity", "acceleration", "course",
+        "altitude", "thrust", "mass", "trueanomaly", "scale", "timezoom",
+        "shiptime"
+        * **leftkey**: a `ggame` key identifier that will serve as the 
+        "rotate left" key while controlling the ship. Default is 'left arrow'.
+        * **rightkey**: a `ggame` key identifier that will serve as the 
+        "rotate right" key while controlling the ship. Default is 'right arrow'.
         
         Following parameters may be set as a constant value, or pass in the
         name of a function that will return the value dynamically or the
         name of a `ggmath` UI control that will return the value
-        :timezoom:  scale factor for time zoom. Factor = 10**timezoom
-        :heading:  direction to point the rocket in (must be radians)
-        :mass:  mass of the rocket (must be kg)
-        :thrust:  thrust of the rocket (must be N)
+        * **timezoom**  scale factor for time zoom. Factor = 10^timezoom
+        * **heading**  direction to point the rocket in (must be radians)
+        * **mass**  mass of the rocket (must be kg)
+        * **thrust**  thrust of the rocket (must be N)
 
         Animation related parameters may be ignored if no sprite animation:
-        :bitmapframe:  ((x1,y1),(x2,y2)) tuple defines a region in the bitmap
-        :bitmapqty:  number of bitmaps -- used for animation effects
-        :bitmapdir:  "horizontal" or "vertical" use with animation effects
-        :bitmapmargin:  pixels between successive animation frames
-        :tickrate:  frequency of spacecraft dynamics calculations (Hz)
+        * **bitmapframe**  ((x1,y1),(x2,y2)) tuple defines a region in the bitmap
+        * **bitmapqty**  number of bitmaps -- used for animation effects
+        * **bitmapdir**  "horizontal" or "vertical" use with animation effects
+        * **bitmapmargin**  pixels between successive animation frames
+        * **tickrate**  frequency of spacecraft dynamics calculations (Hz)
         """
         self._xy = (1000000,1000000)
         self.planet = planet
@@ -98,9 +119,11 @@ class Rocket(ImagePoint):
         r = altitude + self.planet.radius
         self._xy = (r*cos(tanomaly), r*sin(tanomaly))
         # default heading control if none provided by user
+        leftkey = kwargs.get('leftkey', 'left arrow')
+        rightkey = kwargs.get('rightkey', 'right arrow')
         if self.heading == self.getheading:
-            Planet.listenKeyEvent('keydown', 'left arrow', self.turn)
-            Planet.listenKeyEvent('keydown', 'right arrow', self.turn)
+            Planet.listenKeyEvent('keydown', leftkey, self.turn)
+            Planet.listenKeyEvent('keydown', rightkey, self.turn)
         self.timer = Timer()
         self.shiptime = 0  # track time on shipboard
         self.timer.callEvery(1/self.tickrate, self.dynamics)
@@ -110,36 +133,33 @@ class Rocket(ImagePoint):
         # set up status display
         if self.showstatus:
             self.addStatusReport(statuslist, statusfuncs, self.statusselect)
-        """
-        if self.showstatus:
-            showparms = [self.velocityText,
-                        self.accelerationText,
-                        self.courseDegreesText,
-                        self.altitudeText,
-                        self.thrustText,
-                        self.massText,
-                        self.trueAnomalyDegreesText,
-                        self.scaleText,
-                        self.timeZoomText,
-                        self.shipTimeText]
-            for i in range(len(showparms)):
-                Label((10,10+i*25), showparms[i], size=15, positioning="physical")
-        """
-    
+
     # override or define externally!
     def getthrust(self):
+        """
+        User override function for dynamically determining thrust force.
+        """
         return 0
 
     # override or define externally!
     def getmass(self):
+        """
+        User override function for dynamically determining rocket mass.
+        """
         return 1
 
     # override or define externally!
     def getheading(self):
+        """
+        User override function for dynamically determining the heading.
+        """
         return self.localheading
         
     # override or define externally!
     def gettimezoom(self):
+        """
+        User override function for dynamically determining the timezoom.
+        """
         return 0
 
     # add a status reporting function to status display
@@ -157,73 +177,73 @@ class Rocket(ImagePoint):
     # functions available for reporting flight parameters to UI
     def velocityText(self):
         """
-        Report the velocity in m/s
+        Report the velocity in m/s as a text string.
         """
         return "Velocity:     {0:8.1f} m/s".format(self.velocity)
         
     def accelerationText(self):
         """
-        Report the acceleration in m/s
+        Report the acceleration in m/s as a text string.
         """
         return "Acceleration: {0:8.1f} m/s²".format(self.acceleration)
         
     def courseDegreesText(self):
         """
-        Report the heading in degrees (zero to the right)
+        Report the heading in degrees (zero to the right) as a text string.
         """
         return "Course:       {0:8.1f}°".format(degrees(atan2(self.V[1], self.V[0])))
 
     def thrustText(self):
         """
-        Report the thrust level in Newtons
+        Report the thrust level in Newtons as a text string.
         """
         return "Thrust:       {0:8.1f} N".format(self.thrust())
         
     def massText(self):
         """
-        Report the spacecraft mass in kilograms
+        Report the spacecraft mass in kilograms as a text string.
         """
         return "Mass:         {0:8.1f} kg".format(self.mass())
         
     def trueAnomalyDegreesText(self):
         """
-        Report the true anomaly in degrees
+        Report the true anomaly in degrees as a text string.
         """
         return "True Anomaly: {0:8.1f}°".format(self.tanomalyd)
         
     def trueAnomalyRadiansText(self):
         """
-        Report the true anomaly in radians
+        Report the true anomaly in radians as a text string.
         """
         return "True Anomaly: {0:8.4f}".format(self.tanomaly)
         
     def altitudeText(self):
         """
-        Report the altitude in meters
+        Report the altitude in meters as a text string.
         """
         return "Altitude:     {0:8.1f} m".format(self.altitude)
         
     def radiusText(self):
         """
-        Report the radius (distance to planet center) in meters
+        Report the radius (distance to planet center) in meters as a text string.
         """
         return "Radius:       {0:8.1f} m".format(self.r)
         
     def scaleText(self):
         """
-        Report the view scale (pixels/meter)
+        Report the view scale (pixels/meter) as a text string.
         """
         return "View Scale:   {0:8.6f} px/m".format(self.planet._scale)
     
     def timeZoomText(self):
         """
-        Report the time acceleration
+        Report the time acceleration as a text string.
         """
         return "Time Zoom:    {0:8.1f}".format(float(self.timezoom()))
         
     def shipTimeText(self):
         """
-        Report the elapsed time
+        Report the elapsed time as a text string.
         """
         return "Elapsed Time: {0:8.1f} s".format(float(self.shiptime))
     
@@ -231,6 +251,9 @@ class Rocket(ImagePoint):
 
             
     def dynamics(self, timer):
+        """
+        Perform one iteration of the simulation.
+        """
         # set time duration equal to time since last execution
         tick = 10**self.timezoom()*(timer.time - self.lasttime)
         self.shiptime = self.shiptime + tick
@@ -254,6 +277,10 @@ class Rocket(ImagePoint):
 
     # generic force as a function of position
     def fr(self, pos):
+        """
+        Compute the net force vector on the rocket, as a function of the 
+        position vector.
+        """
         self.rotation = self.heading()
         t = self.thrust()
         G = 6.674E-11
@@ -265,20 +292,36 @@ class Rocket(ImagePoint):
 
     # geric acceleration as a function of position
     def ar(self, pos):
+        """
+        Compute the acceleration vector of the rocket, as a function of the 
+        position vector.
+        """
         m = self.mass()
         F = self.fr(pos)
         return [F[i]/m for i in (0,1)]
         
     def vadd(self, v1, v2):
+        """
+        Vector add utility.
+        """
         return [v1[i]+v2[i] for i in (0,1)]
     
     def vmul(self, s, v):
+        """
+        Scalar vector multiplication utility.
+        """
         return [s*v[i] for i in (0,1)]
         
     def vmag(self, v):
+        """
+        Vector magnitude function.
+        """
         return sqrt(v[0]**2 + v[1]**2)
     
     def fgrav(self):
+        """
+        Vector force due to gravity, at current position.
+        """
         G = 6.674E-11
         r = self.r
         uvec = (-self._xy[0]/r, -self._xy[1]/r)
@@ -286,6 +329,9 @@ class Rocket(ImagePoint):
         return [x*F for x in uvec]
     
     def turn(self, event):
+        """
+        Respond to left/right turning key events.
+        """
         increment = pi/50 * (1 if event.key == "left arrow" else -1)
         self.localheading += increment
             
@@ -353,20 +399,17 @@ class Planet(MathApp):
         """
         Initialize the Planet object. 
 
-        All of the Rocket optional keyword parameters are supported and will
-        be passed to the rocket class `__init__` function during instantiation.
-        
         Optional keyword parameters are supported:
-        :viewscale:  pixels per meter in graphics display. Default is 10.
-        :radius:  radius of the planet in meters. Default is Earth radius.
-        :planetmass: mass of the planet in kg. Default is Earth mass.
-        :color: color of the planet. Default is greenish (0x008040).
-        :viewalt: altitude of initial viewpoint in meters. 
-            Default is rocket altitude.
-        :viewanom: true anomaly (angle) of initial viewpoint in radians. 
-            Default is the rocket anomaly.
-        :viewanomd: true anomaly (angle) of initial viewpoing in degrees.
-            Default is the rocket anomaly.
+        * **viewscale**  pixels per meter in graphics display. Default is 10.
+        * **radius*  radius of the planet in meters. Default is Earth radius.
+        * **planetmass* mass of the planet in kg. Default is Earth mass.
+        * **color* color of the planet. Default is greenish (0x008040).
+        * **viewalt* altitude of initial viewpoint in meters. Default is rocket 
+        altitude.
+        * **viewanom* true anomaly (angle) of initial viewpoint in radians. 
+        Default is the rocket anomaly.
+        * **viewanomd* true anomaly (angle) of initial viewpoing in degrees.
+        Default is the rocket anomaly.
         """
         self.scale = kwargs.get('viewscale', 10)  # 10 pixels per meter default
         self.radius = kwargs.get('radius', 6.371E6) # Earth - meters
@@ -404,6 +447,7 @@ class Planet(MathApp):
 if __name__ == "__main__":
     
     earth = Planet(viewscale=0.00005)
+    earth.run()
+
     rocket1 = Rocket(earth, altitude=400000, velocity=7670, timezoom=2)
     rocket2 = Rocket(earth, altitude=440000, velocity=7670, timezoom=2, statuspos=[300,10])
-    earth.run()

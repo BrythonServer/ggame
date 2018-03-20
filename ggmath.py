@@ -585,14 +585,17 @@ class Circle(_MathVisual):
         ymin = pcenter[1]-pradius
         xmax = pcenter[0]+pradius
         xmin = pcenter[0]-pradius
-        if ymin > MathApp.height or ymax < 0 or xmax < 0 or xmin > MathApp.width:
+        try:
+            if ymin > MathApp.height or ymax < 0 or xmax < 0 or xmin > MathApp.width:
+                return CircleAsset(pradius, style, fill)
+            elif pradius > 2*MathApp.width:
+                # here begins unpleasant hack to overcome crappy circles
+                poly = self._buildPolygon(pcenter, pradius)
+                if len(poly):
+                    passet = PolygonAsset(poly, style, fill)
+                    return passet
+        except AttributeError:
             return CircleAsset(pradius, style, fill)
-        elif pradius > 2*MathApp.width:
-            # here begins unpleasant hack to overcome crappy circles
-            poly = self._buildPolygon(pcenter, pradius)
-            if len(poly):
-                passet = PolygonAsset(poly, style, fill)
-                return passet
         return CircleAsset(pradius, style, fill)
 
     def _buildPolygon(self, pcenter, pradius):
@@ -821,11 +824,6 @@ class MathApp(App):
         self.mouseX = self.mouseY = None
         self._touchAllVisuals()
         self.selectedObj = None
-        MathApp._mathVisualList = [] #
-        MathApp._mathDynamicList = []
-        MathApp._mathMovableList = []
-        MathApp._mathSelectableList = []
-        MathApp._viewNotificationList = []
         MathApp.time = time()
 
     def step(self):
@@ -1008,6 +1006,19 @@ class MathApp(App):
         if isinstance(obj, _MathVisual) and obj in cls._mathSelectableList:
             cls._mathSelectableList.remove(obj)
 
+    @classmethod
+    def _destroy(cls, *args):
+        """
+        This will clean up any class level storage.
+        """ 
+        App._destroy(*args)  # hit the App class first
+        MathApp._mathVisualList = [] 
+        MathApp._mathDynamicList = []
+        MathApp._mathMovableList = []
+        MathApp._mathSelectableList = []
+        MathApp._viewNotificationList = []
+        
+
 
 
 # test code here
@@ -1054,8 +1065,6 @@ if __name__ == "__main__":
     #p1 = Point((0,0))
     #p1.movable = True
     #c1 = Circle(p1, 1.5, LineStyle(3, Color(0x0000ff,1)), Color(0x0000ff,0.3))
-    pcenter = Point((0, -5000000))
-    c1 = Circle((0,-5000000), 5000000, LineStyle(1, Color(0x008040,1)), Color(0x008400,0.5))
     
     #s1 = Slider((200, 400), 0, 10, 2, positioning='physical',
     #    leftkey="a", rightkey="d", centerkey="s")
@@ -1142,20 +1151,32 @@ if __name__ == "__main__":
     #ground = LineSegment(westp, eastp)
 
 
-    t = Timer()
-    t.callEvery(tick, step)
     
     #MathApp.addViewNotification(zoomCheck)
+    """
+
+
+    def step(timer):
+        print(id(timer))
+
+ 
+    t = Timer()
+    t.callEvery(0.1, step)
     
+   
     def zoomCheck(**kwargs):
         viewtype = kwargs.get('viewchange')
         scale = kwargs.get('scale')
         print(ap.scale)
     
+    pcenter = Point((0, -5000000))
+    c1 = Circle((0,-5000000), 5000000, LineStyle(1, Color(0x008040,1)), Color(0x008400,0.5))
     ap = MathApp()
+
     ap.addViewNotification(zoomCheck)
     ap.run()
     
     print(ap.scale)
+    """
     """
     
