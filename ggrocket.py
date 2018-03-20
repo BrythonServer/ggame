@@ -110,22 +110,7 @@ class Rocket(ImagePoint):
         # set up status display
         if self.showstatus:
             self.addStatusReport(statuslist, statusfuncs, self.statusselect)
-        """
-        if self.showstatus:
-            showparms = [self.velocityText,
-                        self.accelerationText,
-                        self.courseDegreesText,
-                        self.altitudeText,
-                        self.thrustText,
-                        self.massText,
-                        self.trueAnomalyDegreesText,
-                        self.scaleText,
-                        self.timeZoomText,
-                        self.shipTimeText]
-            for i in range(len(showparms)):
-                Label((10,10+i*25), showparms[i], size=15, positioning="physical")
-        """
-    
+
     # override or define externally!
     def getthrust(self):
         return 0
