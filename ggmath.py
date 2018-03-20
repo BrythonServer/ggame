@@ -943,7 +943,7 @@ class MathApp(App):
                 self.mouseCapturedObject = obj
                 break
         if not self.mouseCapturedObject:
-            obj in self._mathStrokeableList:
+            for obj in self._mathStrokeableList:
                 if obj.canstroke((event.x, event.y)):
                     self.mouseStrokedObject = obj
                     break
