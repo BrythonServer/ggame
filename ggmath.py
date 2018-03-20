@@ -1223,7 +1223,7 @@ if __name__ == "__main__":
     def step(timer):
         print(id(timer))
 
-    vslider = Slider((100, 125), -50, 50, 0, positioning='physical')
+    vslider = Slider((100, 125), -50, 50, 0, positioning='physical', steps=10)
 
    
     def zoomCheck(**kwargs):
