@@ -330,6 +330,11 @@ class Slider(_MathVisual):
 
     def translate(self, pdisp):
         pass
+    
+    # destroy our client sprite (not necessary??)
+    def destroy(self):
+        self.thumb.destroy()
+        super().destroy()
 
 
 class Label(_MathVisual):
