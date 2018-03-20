@@ -317,7 +317,7 @@ class Slider(_MathVisual):
     def physicalPointTouchingThumb(self, ppos):
         thumbpos = self.thumbXY()
         return (ppos[0] >= thumbpos[0] and 
-            ppos[0] <= thumpos[0] + self._thumbwidth and
+            ppos[0] <= thumbpos[0] + self._thumbwidth and
             ppos[1] >= thumbpos[1] and 
             ppos[1] <= thumbpos[1] + self._size - 2)
 
