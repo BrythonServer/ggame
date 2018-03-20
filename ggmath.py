@@ -265,7 +265,8 @@ class Slider(_MathVisual):
         elif val >= self._max:
             self._val = self._max
         else:
-            self._val = val
+            #self._val = val
+            self._val = round((val - self._min)*self._steps/(self._max-self._min))*self._step + self._min
         self.setThumb()
         
     
@@ -313,8 +314,10 @@ class Slider(_MathVisual):
         return self.physicalPointTouchingThumb(ppos)
         
     def stroke(self, ppos, pdisp):
-        print(ppos, pdisp)
-    
+        print("stroking: ", ppos, pdisp)
+        xpos = ppos[0] + pdisp[0]
+        self.val = (xpos - self._ppos)*(self._max-self._min)/self._width + self._min
+
     def physicalPointTouching(self, ppos):
         return (ppos[0] >= self._ppos[0] and 
             ppos[0] <= self._ppos[0] + self._width and
@@ -324,7 +327,7 @@ class Slider(_MathVisual):
     def physicalPointTouchingThumb(self, ppos):
         thumbpos = self.thumbXY()
         return (ppos[0] >= thumbpos[0] and 
-            ppos[0] <= thumbpos[0] + self._thumbwidth and
+            ppos[0] <= thumbpos[0] + self._thumbwidth + 2 and
             ppos[1] >= thumbpos[1] and 
             ppos[1] <= thumbpos[1] + self._size - 2)
 
@@ -705,7 +708,6 @@ class Circle(_MathVisual):
         while startside != endside:
             iterations = iterations + 1
             if iterations > 20:
-                print("exhausting iterations")
                 break
             if endside != None and startside != None:   #  and endside != startside
                 plist.append(nextvertex[endside][cw])
@@ -940,13 +942,11 @@ class MathApp(App):
         for obj in self._mathMovableList:
             if obj.physicalPointTouching((event.x, event.y)) and not (obj.strokeable and obj.canstroke((event.x,event.y))):
                 self.mouseCapturedObject = obj
-                print("capture")
                 break
         if not self.mouseCapturedObject:
             for obj in self._mathStrokeableList:
                 if obj.canstroke((event.x, event.y)):
                     self.mouseStrokedObject = obj
-                    print("to stroke")
                     break
 
     def handleMouseUp(self, event):
