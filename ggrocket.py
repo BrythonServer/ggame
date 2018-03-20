@@ -147,7 +147,7 @@ class Rocket(ImagePoint):
     # add a status reporting function to status display
     def addStatusReport(self, name, associationdict):
         if name in associationdict:
-            Label(self.statuspos[:], associationdict[name], size=15, positioning='physical')
+            Label(self.statuspos[:], associationdict[name], size=15, positioning='physical', width=250)
             self.statuspos[1] += 25
 
     # functions available for reporting flight parameters to UI
@@ -401,5 +401,5 @@ if __name__ == "__main__":
     
     earth = Planet(viewscale=0.00005)
     rocket1 = Rocket(earth, altitude=400000, velocity=7670, timezoom=2)
-    rocket2 = Rocket(earth, altitude=440000, velocity=7670, timezoom=2, statuspos=[200,10])
+    rocket2 = Rocket(earth, altitude=440000, velocity=7670, timezoom=2, statuspos=[300,10])
     earth.run()
