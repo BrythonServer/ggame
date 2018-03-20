@@ -324,7 +324,7 @@ class Label(_MathVisual):
             self._ppos = ppos
             self._ptext = text
             self._updateAsset(TextAsset(text, 
-                style="{0}px Arial".format(size),
+                style="{0}px Courier".format(size),
                 width=width,
                 color=color))
             self.position = ppos
