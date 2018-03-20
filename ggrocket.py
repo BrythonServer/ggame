@@ -147,82 +147,81 @@ class Rocket(ImagePoint):
     # add a status reporting function to status display
     def addStatusReport(self, name, associationdict):
         if name in associationdict:
-            Label(self.statuspos, associationdict[name], size=15, positioning='physical')
+            Label(self.statuspos[:], associationdict[name], size=15, positioning='physical')
             self.statuspos[1] += 25
-            print(self.statuspos)
 
     # functions available for reporting flight parameters to UI
     def velocityText(self):
         """
         Report the velocity in m/s
         """
-        return "Velocity: {0:8.1f} m/s".format(self.velocity)
+        return "Velocity:     {0:8.1f} m/s".format(self.velocity)
         
     def accelerationText(self):
         """
         Report the acceleration in m/s
         """
-        return "Acceleration: {0:4.1f} m/s²".format(self.acceleration)
+        return "Acceleration: {0:8.1f} m/s²".format(self.acceleration)
         
     def courseDegreesText(self):
         """
         Report the heading in degrees (zero to the right)
         """
-        return "Course: {0:6.4f}°".format(degrees(atan2(self.V[1], self.V[0])))
+        return "Course:       {0:8.1f}°".format(degrees(atan2(self.V[1], self.V[0])))
 
     def thrustText(self):
         """
         Report the thrust level in Newtons
         """
-        return "Thrust: {0:.1f} N".format(self.thrust())
+        return "Thrust:       {0:8.1f} N".format(self.thrust())
         
     def massText(self):
         """
         Report the spacecraft mass in kilograms
         """
-        return "Mass: {0:.1f} kg".format(self.mass())
+        return "Mass:         {0:8.1f} kg".format(self.mass())
         
     def trueAnomalyDegreesText(self):
         """
         Report the true anomaly in degrees
         """
-        return "True Anomaly: {0:6.4f}°".format(self.tanomalyd)
+        return "True Anomaly: {0:8.1f}°".format(self.tanomalyd)
         
     def trueAnomalyRadiansText(self):
         """
         Report the true anomaly in radians
         """
-        return "True Anomaly: {0:6.4f}".format(self.tanomaly)
+        return "True Anomaly: {0:8.4f}".format(self.tanomaly)
         
     def altitudeText(self):
         """
         Report the altitude in meters
         """
-        return "Altitude: {0:8.1f} m".format(self.altitude)
+        return "Altitude:     {0:8.1f} m".format(self.altitude)
         
     def radiusText(self):
         """
         Report the radius (distance to planet center) in meters
         """
-        return "Radius: {0:8} m".format(self.r)
+        return "Radius:       {0:8.1f} m".format(self.r)
         
     def scaleText(self):
         """
         Report the view scale (pixels/meter)
         """
-        return "View Scale: {0:10.6f} px/m".format(self.planet._scale)
+        return "View Scale:   {0:8.6f} px/m".format(self.planet._scale)
     
     def timeZoomText(self):
         """
         Report the time acceleration
         """
-        return "Time Zoom: {0:.1f}".format(float(self.timezoom()))
+        return "Time Zoom:    {0:8.1f}".format(float(self.timezoom()))
         
     def shipTimeText(self):
         """
         Report the elapsed time
         """
-        return "Elapsed Time: {0:.1f} s".format(float(self.shiptime))
+        return "Elapsed Time: {0:8.1f} s".format(float(self.shiptime))
     
 
 
@@ -402,5 +401,5 @@ if __name__ == "__main__":
     
     earth = Planet(viewscale=0.00005)
     rocket1 = Rocket(earth, altitude=400000, velocity=7670, timezoom=2)
-    #rocket2 = Rocket(earth, altitude=440000, velocity=7670, timezoom=2, statuspos=[10,300])
+    rocket2 = Rocket(earth, altitude=440000, velocity=7670, timezoom=2, statuspos=[200,10])
     earth.run()
