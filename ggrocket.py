@@ -257,7 +257,7 @@ class Rocket(ImagePoint):
             
     def dynamics(self, timer):
         """
-        Perform one iteration of the simulation.
+        Perform one iteration of the simulation using runge-kutta 4th order method.
         """
         # set time duration equal to time since last execution
         tick = 10**self.timezoom()*(timer.time - self.lasttime)
@@ -405,16 +405,18 @@ class Planet(MathApp):
         Initialize the Planet object. 
 
         Optional keyword parameters are supported:
+        
         * **viewscale**  pixels per meter in graphics display. Default is 10.
         * **radius*  radius of the planet in meters. Default is Earth radius.
         * **planetmass* mass of the planet in kg. Default is Earth mass.
         * **color* color of the planet. Default is greenish (0x008040).
         * **viewalt* altitude of initial viewpoint in meters. Default is rocket 
-        altitude.
+          altitude.
         * **viewanom* true anomaly (angle) of initial viewpoint in radians. 
-        Default is the rocket anomaly.
+          Default is the rocket anomaly.
         * **viewanomd* true anomaly (angle) of initial viewpoing in degrees.
-        Default is the rocket anomaly.
+          Default is the rocket anomaly.
+        
         """
         self.scale = kwargs.get('viewscale', 10)  # 10 pixels per meter default
         self.radius = kwargs.get('radius', 6.371E6) # Earth - meters
@@ -428,7 +430,8 @@ class Planet(MathApp):
         Execute the Planet (and Rocket) simulation.
 
         Optional parameters:
-        :rocket: Reference to a Rocket object - sets the initial view
+        
+        * **rocket** Reference to a Rocket object - sets the initial view
         """
         if rocket:
             viewalt = rocket.altitude
