@@ -407,14 +407,14 @@ class Planet(MathApp):
         Optional keyword parameters are supported:
         
         * **viewscale**  pixels per meter in graphics display. Default is 10.
-        * **radius*  radius of the planet in meters. Default is Earth radius.
-        * **planetmass* mass of the planet in kg. Default is Earth mass.
-        * **color* color of the planet. Default is greenish (0x008040).
-        * **viewalt* altitude of initial viewpoint in meters. Default is rocket 
+        * **radius**  radius of the planet in meters. Default is Earth radius.
+        * **planetmass** mass of the planet in kg. Default is Earth mass.
+        * **color** color of the planet. Default is greenish (0x008040).
+        * **viewalt** altitude of initial viewpoint in meters. Default is rocket 
           altitude.
-        * **viewanom* true anomaly (angle) of initial viewpoint in radians. 
+        * **viewanom** true anomaly (angle) of initial viewpoint in radians. 
           Default is the rocket anomaly.
-        * **viewanomd* true anomaly (angle) of initial viewpoing in degrees.
+        * **viewanomd** true anomaly (angle) of initial viewpoing in degrees.
           Default is the rocket anomaly.
         
         """
