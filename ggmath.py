@@ -314,9 +314,10 @@ class Slider(_MathVisual):
         return self.physicalPointTouchingThumb(ppos)
         
     def stroke(self, ppos, pdisp):
-        print("stroking: ", ppos, pdisp)
+        #print("stroking: ", ppos, pdisp)
         xpos = ppos[0] + pdisp[0]
-        self.val = (xpos - self._ppos)*(self._max-self._min)/self._width + self._min
+        self.val = (xpos - self._ppos[0])*(self._max-self._min)/self._width + self._min
+        print(self.val)
 
     def physicalPointTouching(self, ppos):
         return (ppos[0] >= self._ppos[0] and 
