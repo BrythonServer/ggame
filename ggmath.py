@@ -201,6 +201,7 @@ class Slider(_MathVisual):
             self._size-2, LineStyle(1, self.color), self.color), 
             self.thumbXY())
             
+        self.thumbcaptured = False
             
     def __call__(self):
         return self._val
@@ -283,13 +284,18 @@ class Slider(_MathVisual):
                 self.moveLeft(event)
                 
     def mouseDown(self, event):
-        pass
-    
+        if self.physicalPointTouchingThumb((event.x, event.y)):
+            self.thumbcaptured = True
+            print("on thumb")
+
     def mouseMove(self, event):
-        pass
-    
+        if self.thumbcaptured:
+            print("move")
+
     def mouseUp(self, event):
-        pass
+        if self.thumbcaptured:
+            print("thumb done")
+            self.thumbcaptured = False
 
     def moveLeft(self, event):
         self.increment(-self._step)
@@ -307,6 +313,13 @@ class Slider(_MathVisual):
             ppos[0] <= self._ppos[0] + self._width and
             ppos[1] >= self._ppos[1] and 
             ppos[1] <= self._ppos[1] + self._size)
+
+    def physicalPointTouchingThumb(self, ppos):
+        thumbpos = self.thumbXY()
+        return (ppos[0] >= thumbpos[0] and 
+            ppos[0] <= thumpos[0] + self._thumbwidth and
+            ppos[1] >= thumbpos[1] and 
+            ppos[1] <= thumbpos[1] + self._size - 2)
 
     def translate(self, pdisp):
         pass
@@ -1178,10 +1191,8 @@ if __name__ == "__main__":
     def step(timer):
         print(id(timer))
 
- 
-    t = Timer()
-    t.callEvery(0.1, step)
-    
+    vslider = Slider((100, 125), -50, 50, 0, positioning='physical')
+
    
     def zoomCheck(**kwargs):
         viewtype = kwargs.get('viewchange')
