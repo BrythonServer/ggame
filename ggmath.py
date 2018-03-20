@@ -252,8 +252,10 @@ class Slider(_MathVisual):
         
     def select(self):
         super().select()
-        MathApp.listenKeyEvent("keydown", "left arrow", self.moveLeft)
-        MathApp.listenKeyEvent("keydown", "right arrow", self.moveRight)
+        if not self._leftctrl:
+            MathApp.listenKeyEvent("keydown", "left arrow", self.moveLeft)
+        if not self._rightctrl:
+            MathApp.listenKeyEvent("keydown", "right arrow", self.moveRight)
         MathApp.listenMouseEvent("click", self.mouseClick)
         MathApp.listenMouseEvent("mousedown", self.mouseDown)
         MathApp.listenMouseEvent("mousemove", self.mouseMove)
@@ -262,8 +264,10 @@ class Slider(_MathVisual):
     def unselect(self):
         super().unselect()
         try:
-            MathApp.unlistenKeyEvent("keydown", "left arrow", self.moveLeft)
-            MathApp.unlistenKeyEvent("keydown", "right arrow", self.moveRight)
+            if not self._leftctrl:
+                MathApp.unlistenKeyEvent("keydown", "left arrow", self.moveLeft)
+            if not self._rightctrl:
+                MathApp.unlistenKeyEvent("keydown", "right arrow", self.moveRight)
             MathApp.unlistenMouseEvent("click", self.mouseClick)
             MathApp.unlistenMouseEvent("mousedown", self.mouseDown)
             MathApp.unlistenMouseEvent("mousemove", self.mouseMove)
@@ -277,6 +281,15 @@ class Slider(_MathVisual):
                 self.moveRight(event)
             elif event.x < self.thumb.x:
                 self.moveLeft(event)
+                
+    def mouseDown(self, event):
+        pass
+    
+    def mouseMove(self, event):
+        pass
+    
+    def mouseUp(self, event):
+        pass
 
     def moveLeft(self, event):
         self.increment(-self._step)
