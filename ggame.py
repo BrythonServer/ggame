@@ -27,8 +27,8 @@ The ggame library is intended to be trivially easy to use. For example:
     
 ## Extensions
 
-The `ggame` library has been extended with [ggmath](/ggmath.html) for geometry
-exploration in a manner reminiscent of Geogebra, and [ggrocket](/ggrocket.html)
+The `ggame` library has been extended with [ggmath](/ggame/ggmath.html) for geometry
+exploration in a manner reminiscent of Geogebra, and [ggrocket](/ggame/ggrocket.html)
 for tools and classes to use with rocket and orbital simulations.
 
 ## Overview
