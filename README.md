@@ -13,7 +13,8 @@ to create engaging and interactive games is a powerful motivator for many progam
 Accordingly, any functional or performance enhancements that *can* be reasonably implemented 
 by the user are left as an exercise. 
 
-Please visit the [detailed documentation page](http://brythonserver.github.io/ggame/) for ggame. This is generated automatically from the ggame sources.
+Please visit the [detailed documentation page for ggame](http://brythonserver.github.io/ggame/). 
+This is generated automatically from the ggame sources. 
 
 ## Functionality Goals
 
@@ -105,25 +106,6 @@ app.run()
 
 ## Installing ggame
 
-Before using ggame with your Python source repository on Github, you should add the ggame source
-tree to your repository. You can, of course, just clone the project in to your project, but you
-will probably find the following method to be easier to maintain and keep up-to-date with the 
-latest ggame sources: add ggame as a git subtree.
-
-### Adding as Subtree
-
-From the same directory as your own python sources (note: you **must** have an existing git repository
-with committed files in order for the following to work properly), execute the following terminal 
-commands:
-
-    git remote add -f ggame https://github.com/BrythonServer/ggame.git
-    git merge -s ours --no-commit ggame/minimal
-    mkdir ggame
-    git read-tree --prefix=ggame/ -u ggame/minimal
-    git commit -m "Merge ggame project as our subdirectory"
-    
-If you want to pull in updates from ggame in the future:
-    
-    git pull -s subtree ggame minimal
-    
-You can see an example of how a ggame subtree is used by examining the [brython-server-testing](https://github.com/tiggerntatie/brython-server-testing) repo on Github. In particular, the s.py, a.py and trivial.py python programs are using the ggame subtree in this way.
+Before using ggame with your Python source repository on Github, you may add the ggame source
+tree to your repository. If you are executing your code in http://runpython.com, then the current 
+ggame repository is already added to your import search path and no installation is required.
