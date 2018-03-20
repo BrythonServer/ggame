@@ -1011,7 +1011,7 @@ class MathApp(App):
         """
         This will clean up any class level storage.
         """ 
-        super(cls)._destroy(*args)  # hit the parent class first
+        App._destroy(*args)  # hit the App class first
         MathApp._mathVisualList = [] 
         MathApp._mathDynamicList = []
         MathApp._mathMovableList = []
