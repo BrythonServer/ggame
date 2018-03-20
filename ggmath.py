@@ -42,6 +42,7 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         _MathDynamic.__init__(self)
         self._movable = False
         self._selectable = False
+        self._strokeable = False
         self.selected = False
     
     def destroy(self):
@@ -86,7 +87,18 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         else:
             MathApp._removeSelectable(self)
 
-    
+    @property
+    def strokeable(self):
+        return self._strokeable
+        
+    @strokeable.setter
+    def strokeable(self, val):
+        self._strokeable = val
+        if val:
+            MathApp._addStrokeable(self)
+        else:
+            MathApp._removeStrokeable(self)
+
     def select(self):
         self.selected = True
 
@@ -106,7 +118,17 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     @abstractmethod
     def translate(self, pdisp):
         pass
-            
+    
+    # define how your class responds to being stroked (physical units)
+    @abstractmethod
+    def stroke(self, ppos, pdisp):
+        pass
+    
+    # is the mousedown in a place that will result in a stroke?
+    @abstractmethod
+    def canstroke(self, ppos):
+        return False
+    
     @abstractmethod
     def _newAsset(self):    
         pass
@@ -189,6 +211,7 @@ class Slider(_MathVisual):
         super().__init__(RectangleAsset(self._width, self._size,
             LineStyle(1, self.color), Color(0,0)), self._ppos)
         self.selectable = True  # must be after super init!
+        self.strokeable = True  # this enables grabbing/slideing the thumb
         self._thumbwidth = max(self._width/40, 1)
         if self._leftctrl:
             MathApp.listenKeyEvent("keydown", self._leftctrl, self.moveLeft)
@@ -258,9 +281,6 @@ class Slider(_MathVisual):
         if not self._rightctrl:
             MathApp.listenKeyEvent("keydown", "right arrow", self.moveRight)
         MathApp.listenMouseEvent("click", self.mouseClick)
-        MathApp.listenMouseEvent("mousedown", self.mouseDown)
-        MathApp.listenMouseEvent("mousemove", self.mouseMove)
-        MathApp.listenMouseEvent("mouseup", self.mouseUp)
 
     def unselect(self):
         super().unselect()
@@ -270,9 +290,6 @@ class Slider(_MathVisual):
             if not self._rightctrl:
                 MathApp.unlistenKeyEvent("keydown", "right arrow", self.moveRight)
             MathApp.unlistenMouseEvent("click", self.mouseClick)
-            MathApp.unlistenMouseEvent("mousedown", self.mouseDown)
-            MathApp.unlistenMouseEvent("mousemove", self.mouseMove)
-            MathApp.unlistenMouseEvent("mouseup", self.mouseUp)
         except ValueError:
             pass
 
@@ -283,19 +300,6 @@ class Slider(_MathVisual):
             elif event.x < self.thumb.x:
                 self.moveLeft(event)
                 
-    def mouseDown(self, event):
-        if self.physicalPointTouchingThumb((event.x, event.y)):
-            self.thumbcaptured = True
-            print("on thumb")
-
-    def mouseMove(self, event):
-        if self.thumbcaptured:
-            print("move")
-
-    def mouseUp(self, event):
-        if self.thumbcaptured:
-            print("thumb done")
-            self.thumbcaptured = False
 
     def moveLeft(self, event):
         self.increment(-self._step)
@@ -306,7 +310,12 @@ class Slider(_MathVisual):
     def moveCenter(self, event):
         self._val = (self._min + self._max)/2
         self.setThumb()
-    
+        
+    def canstroke(self, ppos):
+        return self.physicalPointTouchingThumb(ppos)
+        
+    def stroke(self, ppos, pdisp):
+        print(ppos, pdisp)
     
     def physicalPointTouching(self, ppos):
         return (ppos[0] >= self._ppos[0] and 
@@ -837,6 +846,7 @@ class MathApp(App):
     _mathDynamicList = []
     _mathMovableList = []
     _mathSelectableList = []
+    _mathStrokeableList = []
     _viewNotificationList = []
     time = time()
     
@@ -853,6 +863,7 @@ class MathApp(App):
         self.listenMouseEvent("wheel", self.handleMouseWheel)
         self.mouseDown = False
         self.mouseCapturedObject = None
+        self.mouseStrokedObject = None
         self.mouseX = self.mouseY = None
         self._touchAllVisuals()
         self.selectedObj = None
@@ -925,14 +936,22 @@ class MathApp(App):
 
     def handleMouseDown(self, event):
         self.mouseDown = True
+        self.mouseCapturedObject = None
+        self.mouseStrokedObject = None
         for obj in self._mathMovableList:
-            if obj.physicalPointTouching((event.x, event.y)):
+            if obj.physicalPointTouching((event.x, event.y)) and not (obj.strokeable and obj.canstroke((event.x,event.y)):
                 self.mouseCapturedObject = obj
                 break
+        if not self.mouseCapturedObject:
+            obj in self._mathStrokeableList:
+                if obj.canstroke((event.x, event.y)):
+                    self.mouseStrokedObject = obj
+                    break
 
     def handleMouseUp(self, event):
         self.mouseDown = False
         self.mouseCapturedObject = None
+        self.mouseStrokedObject = None
 
     def handleMouseMove(self, event):
         if not self.mouseX:
@@ -945,6 +964,8 @@ class MathApp(App):
         if self.mouseDown:
             if self.mouseCapturedObject:
                 self.mouseCapturedObject.translate((dx, dy))
+            elif self.mouseStrokedObject:
+                self.mouseStrokedObject.stroke((self.mouseX,self.mouseY), (dx,dy))
             else:
                 lmove = self.translatePhysicalToLogical((dx, dy))
                 MathApp._xcenter -= lmove[0]
@@ -1039,6 +1060,16 @@ class MathApp(App):
             cls._mathSelectableList.remove(obj)
 
     @classmethod
+    def _addStrokeable(cls, obj):
+        if isinstance(obj, _MathVisual) and not obj in cls._mathStrokeableList:
+            cls._mathStrokeableList.append(obj)
+            
+    @classmethod
+    def _removeStrokeable(cls, obj):
+        if isinstance(obj, _MathVisual) and obj in cls._mathStrokeableList:
+            cls._mathStrokeableList.remove(obj)
+
+    @classmethod
     def _destroy(cls, *args):
         """
         This will clean up any class level storage.
@@ -1048,6 +1079,7 @@ class MathApp(App):
         MathApp._mathDynamicList = []
         MathApp._mathMovableList = []
         MathApp._mathSelectableList = []
+        MathApp._mathStrokeableList = []
         MathApp._viewNotificationList = []
         
 
