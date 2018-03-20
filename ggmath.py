@@ -120,12 +120,10 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         pass
     
     # define how your class responds to being stroked (physical units)
-    @abstractmethod
     def stroke(self, ppos, pdisp):
         pass
     
     # is the mousedown in a place that will result in a stroke?
-    @abstractmethod
     def canstroke(self, ppos):
         return False
     
