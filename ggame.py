@@ -24,10 +24,16 @@ The ggame library is intended to be trivially easy to use. For example:
     app = App(500,500)  
     # Run the app
     app.run()
+    
+## Extensions
+
+The `ggame` library has been extended with [ggmath](/ggmath.html) for geometry
+exploration in a manner reminiscent of Geogebra, and [ggrocket](/ggrocket.html)
+for tools and classes to use with rocket and orbital simulations.
 
 ## Overview
 
-There are three major components to the `ggame` system: Assets, Sprites and the App.e
+There are three major components to the `ggame` system: Assets, Sprites and the App.
 
 ### Assets
 
@@ -65,30 +71,12 @@ Ggame is designed to be executed in a web browser using [Brython](http://brython
 way to do this is by executing from [runpython](http://runpython.com), with source
 code residing on [github](http://github.com).
 
-When using [runpython](http://runpython.com), you will have to configure your browser
-to allow popup windows.
-
-To use Ggame in your own application, you will minimally need to create a folder called
+To use Ggame in your own application, you may create a folder called
 `ggame` in your project. Within `ggame`, copy the `ggame.py`, `sysdeps.py` and 
 `__init__.py` files from the [ggame project](https://github.com/BrythonServer/ggame).
 
-### Include Ggame as a Git Subtree
-
-From the same directory as your own python sources (note: you must have an existing git 
-repository with committed files in order for the following to work properly), 
-execute the following terminal commands:
-
-    git remote add -f ggame https://github.com/BrythonServer/ggame.git
-    git merge -s ours --no-commit ggame/master
-    mkdir ggame
-    git read-tree --prefix=ggame/ -u ggame/master
-    git commit -m "Merge ggame project as our subdirectory"
-    If you want to pull in updates from ggame in the future:
-    
-    git pull -s subtree ggame master
-
-You can see an example of how a ggame subtree is used by examining the 
-[Brython Server Spacewar](https://github.com/BrythonServer/Spacewar) repo on Github. 
+When using `ggame` from within [runpython](http://runpython.com), the Github
+`ggame` repository is automatically placed on the import search path.
 
 ## Geometry
 
