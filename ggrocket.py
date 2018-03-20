@@ -51,19 +51,31 @@ class Rocket(ImagePoint):
         self.bitmapmargin = kwargs.get('bitmapmargin', 0) # bitmap spacing
         self.tickrate = kwargs.get('tickrate', 30) # dynamics calcs per sec
         # status display
-        statusdict = {  "velocity": self.velocityText,
-                        "acceleration": self.accelerationText,
-                        "course": self.courseDegreesText,
-                        "altitude": self.altitudeText,
-                        "thrust": self.thrustText,
-                        "mass": self.massText,
-                        "trueanomaly": self.trueAnomalyDegreesText,
-                        "scale": self.scaleText,
-                        "timezoom": self.timeZoomText,
-                        "shiptime": self.shipTimeText}
+        statusfuncs = [ self.velocityText,
+                        self.accelerationText,
+                        self.courseDegreesText,
+                        self.altitudeText,
+                        self.thrustText,
+                        self.massText,
+                        self.trueAnomalyDegreesText,
+                        self.scaleText,
+                        self.timeZoomText,
+                        self.shipTimeText]
+        statuslist = [  "velocity",
+                        "acceleration",
+                        "course",
+                        "altitude",
+                        "thrust",
+                        "mass",
+                        "trueanomaly",
+                        "scale",
+                        "timezoom",
+                        "shiptime"]
+        statusdict = {n:f for n, f in zip(statuslist, statusfuncs)}
+        
         self.showstatus = kwargs.get('showstatus', True) # show stats
         self.statuspos = kwargs.get('statuspos', [10,10])  # position of stats
-        self.statuslist = kwargs.get('statuslist', statusdict.keys())
+        self.statuslist = kwargs.get('statuslist', statuslist)
         self.localheading = 0
         # dynamic parameters
         self.timezoom = self.Eval(kwargs.get('timezoom', self.gettimezoom)) # 1,2,3 faster, -1, slower
@@ -390,5 +402,5 @@ if __name__ == "__main__":
     
     earth = Planet(viewscale=0.00005)
     rocket1 = Rocket(earth, altitude=400000, velocity=7670, timezoom=2)
-    rocket2 = Rocket(earth, altitude=440000, velocity=7670, timezoom=2, statuspos=[10,300])
+    #rocket2 = Rocket(earth, altitude=440000, velocity=7670, timezoom=2, statuspos=[10,300])
     earth.run()
