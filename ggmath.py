@@ -1432,6 +1432,7 @@ if __name__ == "__main__":
 
     label = Label2((100,150), lambda : "{0}".format(vslider.value), size=15, positioning="physical")
     label.movable = True
+    print(vslider())
     print(label())
 
    
