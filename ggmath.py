@@ -178,17 +178,17 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         self.pposinputs = self._getPhysicalInputs()
         # generated named tuple of functions from nonpositional inputs
         self.nposinputs = self.NPI(*[self.Eval(p) for p in args][len(nonposinputs):])
-        self.stdinputs = self.SI(*len(standardargs)*[0])
-        self.stdinputs.size = self.Eval(kwargs.get('size', 15))
-        self.stdinputs.width = self.Eval(kwargs.get('width', 200))
-        self.stdinputs.color = self.Eval(kwargs.get('color', Color(0, 1)))
-        self.stdinputs.style = self.Eval(kwargs.get('style', LineStyle(1, Color(0, 1))))
+        self.stdinputs = self.SI(self.Eval(kwargs.get('size', 15)),
+                                    self.Eval(kwargs.get('width', 200)),
+                                    self.Eval(kwargs.get('color', Color(0, 1))),
+                                    self.Eval(kwargs.get('style', LineStyle(1, Color(0, 1)))))
         self._saveInputs()
         
     def _saveInputs(self):
         self.sposinputs = self.PI(*[p() for p in self.posinputs])
         self.spposinputs = self.PI(*self.pposinputs)
         self.snposinputs = self.NPI(*[p() for p in self.nposinputs])
+        print(self.stdinputs)
         self.sstdinputs = self.SI(*[p() for p in self.stdinputs])
     
     def _getPhysicalInputs(self):
