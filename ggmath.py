@@ -19,7 +19,6 @@ class _MathDynamic(metaclass=ABCMeta):
     def destroy(self):
         MathApp._removeDynamic(self)
 
-    @abstractmethod
     def step(self):
         pass
     
