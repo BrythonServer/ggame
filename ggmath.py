@@ -151,7 +151,7 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         """
         
         MathApp._addVisual(self)
-        Sprite.__init__(self, asset, args[0])
+        #Sprite.__init__(self, asset, args[0])
         _MathDynamic.__init__(self)
         self._movable = False
         self._selectable = False
@@ -173,6 +173,8 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         # generated named tuple of functions from positional inputs
         self.posinputs = self.PI(*[self.Eval(p) for p in args][:len(posinputs)])
         self.pposinputs = self._getPhysicalInputs()
+        # first positional argument must be a sprite position!
+        Sprite.__init__(self, asset, self.pposinputs[0])
         # generated named tuple of functions from nonpositional inputs
         self.nposinputs = self.NPI(*[self.Eval(p) for p in args][len(nonposinputs):])
         self.stdinputs = self.SI(self.Eval(kwargs.get('size', 15)),
@@ -330,6 +332,7 @@ class Label2(_MathVisual2):
 
     def physicalPointTouching(self, ppos):
         _ppos = self.spposinputs.pos
+        print(ppos, _ppos)
         return (ppos[0] >= _ppos[0] and 
             ppos[0] <= _ppos[0] + self.sstdinputs.width and
             ppos[1] >= _ppos[1] and 
@@ -1428,10 +1431,13 @@ if __name__ == "__main__":
     def step(timer):
         print(id(timer))
 
+    def labelcoords():
+        return (100+vslider(), 150)
+
     vslider = Slider((100, 125), -50, 50, 0, positioning='physical', steps=10)
 
-    label = Label2((100,150), lambda : "{0}".format(vslider.value), size=15, positioning="physical")
-    label.movable = True
+    label = Label2(labelcoords, lambda : "{0}".format(vslider.value), size=15, positioning="physical")
+    
 
    
     def zoomCheck(**kwargs):
