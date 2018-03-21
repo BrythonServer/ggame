@@ -195,7 +195,7 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         Translate all positional inputs to physical
         """
         pplist = []
-        if self.positional == 'logical':
+        if self.positioning == 'logical':
             for p in self.posinputs:
                 pval = p()
                 try:
