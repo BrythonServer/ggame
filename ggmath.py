@@ -327,7 +327,7 @@ class Label2(_MathVisual2):
         return TextAsset(self.nposinputs.text(), 
                             style="{0}px Courier".format(self.stdinputs.size()),
                             width=self.stdinputs.width(),
-                            color=self.stdinputs.color())
+                            fill=self.stdinputs.color())
 
     def __call__(self):
         return self.nposinputs.text()
@@ -1442,7 +1442,7 @@ if __name__ == "__main__":
 
     vslider = Slider((100, 125), -50, 50, 0, positioning='physical', steps=10)
 
-    label = Label2(labelcoords, lambda : "{0}".format(vslider.value), size=15, positioning="physical", color=Color(0xff0000,1))
+    label = Label2(labelcoords, lambda : "{0}".format(vslider.value), size=15, positioning="physical", color=labelcolor)
     
 
    
