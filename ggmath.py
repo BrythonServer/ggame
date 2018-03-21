@@ -309,7 +309,7 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
     def _touchAsset(self):
         inputs = self._getInputs()
         if self._inputsChanged(inputs):
-            self._saveInputs()
+            self._saveInputs(inputs)
             self._updateAsset(self._buildAsset())
     
     @abstractmethod
