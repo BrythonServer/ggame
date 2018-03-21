@@ -189,11 +189,15 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
     def step(self):
         self._touchAsset()
         
-    def _saveInputs(self):
-        self.sposinputs = self.PI(*[p() for p in self.posinputs])
-        self.spposinputs = self.PI(*self.pposinputs)
-        self.snposinputs = self.NPI(*[p() for p in self.nposinputs])
-        self.sstdinputs = self.SI(*[p() for p in self.stdinputs])
+    def _saveInputs(self, inputs):
+        self.sposinputs, self.spposinputs, self.snposinputs, self.sstdinputs = *inputs
+        
+    def _getInputs(self):
+        return (self.PI(*[p() for p in self.posinputs]),
+            self.PI(*self.pposinputs),
+            self.NPI(*[p() for p in self.nposinputs]),
+            self.SI(*[p() for p in self.stdinputs]))
+
     
     def _getPhysicalInputs(self):
         """
@@ -213,15 +217,8 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
             pplist = [p() for p in self.posinputs]
         return self.PI(*pplist)
     
-    def _inputsChanged(self):
-        ppos = self._getPhysicalInputs()
-        npos = self.NPI(*[p() for p in self.nposinputs])
-        stdinputs = self.SI(*[p() for p in self.stdinputs])
-        print ("ppos: ", ppos, self.spposinputs)
-        print("npos: ", npos, self.snposinputs)
-        print("std: ", stdinputs, self.sstdinputs)
-        return ppos != self.spposinputs or npos != self.snposinputs or stdinputs != self.sstdinputs
-            
+    def _inputsChanged(self, saved):
+        return self.spposinputs != saved[1] or self.snposinputs != saved[2] or self.sstdinputs != saved[3]
         
     
     def destroy(self):
@@ -310,7 +307,8 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         return False
     
     def _touchAsset(self):
-        if self._inputsChanged():
+        inputs = self._getInputs()
+        if self._inputsChanged(inputs):
             self._saveInputs()
             self._updateAsset(self._buildAsset())
     
