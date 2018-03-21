@@ -193,6 +193,7 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         self.sposinputs, self.spposinputs, self.snposinputs, self.sstdinputs = *inputs
         
     def _getInputs(self):
+        self._getPhysicalInputs()
         return (self.PI(*[p() for p in self.posinputs]),
             self.PI(*self.pposinputs),
             self.NPI(*[p() for p in self.nposinputs]),
@@ -238,7 +239,7 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         self.GFX.visible = visible        
         if App._win != None:
             App._win.add(self.GFX)
-        #print(self.pposinputs.pos)
+        print(self.pposinputs.pos)
         self.position = self.pposinputs.pos
             
     @property
