@@ -42,11 +42,13 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         _MathDynamic.__init__(self)
         self._movable = False
         self._selectable = False
+        self._strokable = False
         self.selected = False
     
     def destroy(self):
         MathApp._removeVisual(self)
         MathApp._removeMovable(self)
+        MathApp._removeStrokable(self)
         _MathDynamic.destroy(self)
         Sprite.destroy(self)
 
@@ -86,7 +88,18 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         else:
             MathApp._removeSelectable(self)
 
-    
+    @property
+    def strokable(self):
+        return self._strokable
+        
+    @strokable.setter
+    def strokable(self, val):
+        self._strokable = val
+        if val:
+            MathApp._addStrokable(self)
+        else:
+            MathApp._removeStrokable(self)
+
     def select(self):
         self.selected = True
 
@@ -106,7 +119,15 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     @abstractmethod
     def translate(self, pdisp):
         pass
-            
+    
+    # define how your class responds to being stroked (physical units)
+    def stroke(self, ppos, pdisp):
+        pass
+    
+    # is the mousedown in a place that will result in a stroke?
+    def canstroke(self, ppos):
+        return False
+    
     @abstractmethod
     def _newAsset(self):    
         pass
@@ -189,6 +210,7 @@ class Slider(_MathVisual):
         super().__init__(RectangleAsset(self._width, self._size,
             LineStyle(1, self.color), Color(0,0)), self._ppos)
         self.selectable = True  # must be after super init!
+        self.strokable = True  # this enables grabbing/slideing the thumb
         self._thumbwidth = max(self._width/40, 1)
         if self._leftctrl:
             MathApp.listenKeyEvent("keydown", self._leftctrl, self.moveLeft)
@@ -201,6 +223,7 @@ class Slider(_MathVisual):
             self._size-2, LineStyle(1, self.color), self.color), 
             self.thumbXY())
             
+        self.thumbcaptured = False
             
     def __call__(self):
         return self._val
@@ -243,7 +266,8 @@ class Slider(_MathVisual):
         elif val >= self._max:
             self._val = self._max
         else:
-            self._val = val
+            #self._val = val
+            self._val = round((val - self._min)*self._steps/(self._max-self._min))*self._step + self._min
         self.setThumb()
         
     
@@ -252,15 +276,19 @@ class Slider(_MathVisual):
         
     def select(self):
         super().select()
-        MathApp.listenKeyEvent("keydown", "left arrow", self.moveLeft)
-        MathApp.listenKeyEvent("keydown", "right arrow", self.moveRight)
+        if not self._leftctrl:
+            MathApp.listenKeyEvent("keydown", "left arrow", self.moveLeft)
+        if not self._rightctrl:
+            MathApp.listenKeyEvent("keydown", "right arrow", self.moveRight)
         MathApp.listenMouseEvent("click", self.mouseClick)
 
     def unselect(self):
         super().unselect()
         try:
-            MathApp.unlistenKeyEvent("keydown", "left arrow", self.moveLeft)
-            MathApp.unlistenKeyEvent("keydown", "right arrow", self.moveRight)
+            if not self._leftctrl:
+                MathApp.unlistenKeyEvent("keydown", "left arrow", self.moveLeft)
+            if not self._rightctrl:
+                MathApp.unlistenKeyEvent("keydown", "right arrow", self.moveRight)
             MathApp.unlistenMouseEvent("click", self.mouseClick)
         except ValueError:
             pass
@@ -271,6 +299,7 @@ class Slider(_MathVisual):
                 self.moveRight(event)
             elif event.x < self.thumb.x:
                 self.moveLeft(event)
+                
 
     def moveLeft(self, event):
         self.increment(-self._step)
@@ -281,16 +310,30 @@ class Slider(_MathVisual):
     def moveCenter(self, event):
         self._val = (self._min + self._max)/2
         self.setThumb()
-    
-    
+        
+    def canstroke(self, ppos):
+        return self.physicalPointTouchingThumb(ppos)
+        
+    def stroke(self, ppos, pdisp):
+        xpos = ppos[0] + pdisp[0]
+        self.value = (xpos - self._ppos[0])*(self._max-self._min)/self._width + self._min
+
     def physicalPointTouching(self, ppos):
         return (ppos[0] >= self._ppos[0] and 
             ppos[0] <= self._ppos[0] + self._width and
             ppos[1] >= self._ppos[1] and 
             ppos[1] <= self._ppos[1] + self._size)
 
+    def physicalPointTouchingThumb(self, ppos):
+        thumbpos = self.thumbXY()
+        return (ppos[0] >= thumbpos[0] and 
+            ppos[0] <= thumbpos[0] + self._thumbwidth + 2 and
+            ppos[1] >= thumbpos[1] and 
+            ppos[1] <= thumbpos[1] + self._size - 2)
+
     def translate(self, pdisp):
         pass
+    
 
 
 class Label(_MathVisual):
@@ -665,7 +708,6 @@ class Circle(_MathVisual):
         while startside != endside:
             iterations = iterations + 1
             if iterations > 20:
-                print("exhausting iterations")
                 break
             if endside != None and startside != None:   #  and endside != startside
                 plist.append(nextvertex[endside][cw])
@@ -805,6 +847,7 @@ class MathApp(App):
     _mathDynamicList = []
     _mathMovableList = []
     _mathSelectableList = []
+    _mathStrokableList = []
     _viewNotificationList = []
     time = time()
     
@@ -821,6 +864,7 @@ class MathApp(App):
         self.listenMouseEvent("wheel", self.handleMouseWheel)
         self.mouseDown = False
         self.mouseCapturedObject = None
+        self.mouseStrokedObject = None
         self.mouseX = self.mouseY = None
         self._touchAllVisuals()
         self.selectedObj = None
@@ -893,14 +937,22 @@ class MathApp(App):
 
     def handleMouseDown(self, event):
         self.mouseDown = True
+        self.mouseCapturedObject = None
+        self.mouseStrokedObject = None
         for obj in self._mathMovableList:
-            if obj.physicalPointTouching((event.x, event.y)):
+            if obj.physicalPointTouching((event.x, event.y)) and not (obj.strokable and obj.canstroke((event.x,event.y))):
                 self.mouseCapturedObject = obj
                 break
+        if not self.mouseCapturedObject:
+            for obj in self._mathStrokableList:
+                if obj.canstroke((event.x, event.y)):
+                    self.mouseStrokedObject = obj
+                    break
 
     def handleMouseUp(self, event):
         self.mouseDown = False
         self.mouseCapturedObject = None
+        self.mouseStrokedObject = None
 
     def handleMouseMove(self, event):
         if not self.mouseX:
@@ -913,6 +965,8 @@ class MathApp(App):
         if self.mouseDown:
             if self.mouseCapturedObject:
                 self.mouseCapturedObject.translate((dx, dy))
+            elif self.mouseStrokedObject:
+                self.mouseStrokedObject.stroke((self.mouseX,self.mouseY), (dx,dy))
             else:
                 lmove = self.translatePhysicalToLogical((dx, dy))
                 MathApp._xcenter -= lmove[0]
@@ -1007,6 +1061,16 @@ class MathApp(App):
             cls._mathSelectableList.remove(obj)
 
     @classmethod
+    def _addStrokable(cls, obj):
+        if isinstance(obj, _MathVisual) and not obj in cls._mathStrokableList:
+            cls._mathStrokableList.append(obj)
+            
+    @classmethod
+    def _removeStrokable(cls, obj):
+        if isinstance(obj, _MathVisual) and obj in cls._mathStrokableList:
+            cls._mathStrokableList.remove(obj)
+
+    @classmethod
     def _destroy(cls, *args):
         """
         This will clean up any class level storage.
@@ -1016,6 +1080,7 @@ class MathApp(App):
         MathApp._mathDynamicList = []
         MathApp._mathMovableList = []
         MathApp._mathSelectableList = []
+        MathApp._mathStrokableList = []
         MathApp._viewNotificationList = []
         
 
@@ -1159,10 +1224,8 @@ if __name__ == "__main__":
     def step(timer):
         print(id(timer))
 
- 
-    t = Timer()
-    t.callEvery(0.1, step)
-    
+    vslider = Slider((100, 125), -50, 50, 0, positioning='physical', steps=10)
+
    
     def zoomCheck(**kwargs):
         viewtype = kwargs.get('viewchange')
@@ -1173,10 +1236,10 @@ if __name__ == "__main__":
     c1 = Circle((0,-5000000), 5000000, LineStyle(1, Color(0x008040,1)), Color(0x008400,0.5))
     ap = MathApp()
 
-    ap.addViewNotification(zoomCheck)
+    #ap.addViewNotification(zoomCheck)
     ap.run()
     
-    print(ap.scale)
+    
     """
     """
     
