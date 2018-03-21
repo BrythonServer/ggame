@@ -219,7 +219,7 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         stdinputs = self.SI(*[p() for p in self.stdinputs])
         print ("ppos: ", ppos, self.spposinputs)
         print("npos: ", npos, self.snposinputs)
-        print("std" ", stdinputs, self.sstdinputs)
+        print("std: ", stdinputs, self.sstdinputs)
         return ppos != self.spposinputs or npos != self.snposinputs or stdinputs != self.sstdinputs
             
         
