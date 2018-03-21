@@ -312,7 +312,8 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
 class Label2(_MathVisual2):
     
     def __init__(self, *args, **kwargs):
-        super().__init__(self._buildAsset(), ['pos'], ['text'], *args, **kwargs)
+        super().__init__(TextAsset(""), ['pos'], ['text'], *args, **kwargs)
+        self._touchAsset()
 
     def _buildAsset(self):
         return TextAsset(self.nposinputs.text(), 
