@@ -160,6 +160,8 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         self._selectable = False
         self._strokable = False
         self.selected = False
+        # 
+        self.positioning = kwargs.get('positioning', 'logical')
         # positional inputs
         self.PI = namedtuple('PI', posinputs)
         # nonpositional inputs
@@ -182,7 +184,6 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         self.stdinputs.color = kwargs.get('color', Color(0, 1))
         self.stdinputs.style = kwargs.get('style', LineStyle(1, Color(0, 1)))
         self.saveInputs()
-        self.positioning = kwargs.get('positioning', 'logical')
         
     def _saveInputs(self):
         self.sposinputs = self.PI(*[p() for p in self.posinputs])
