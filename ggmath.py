@@ -45,9 +45,6 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         self._strokable = False
         self.selected = False
     
-    def step(self):
-        self._touchAsset()
-    
     def destroy(self):
         MathApp._removeVisual(self)
         MathApp._removeMovable(self)
@@ -186,6 +183,9 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         self.spposinputs = self.PI(*self.pposinputs)
         self.snposinputs = self.NPI(*[self.Eval(0)]*len(self.nposinputs))
         self.sstdinputs = self.SI(*[self.Eval(0)]*len(self.stdinputs))
+
+    def step(self):
+        self._touchAsset()
         
     def _saveInputs(self):
         self.sposinputs = self.PI(*[p() for p in self.posinputs])
