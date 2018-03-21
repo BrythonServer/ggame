@@ -182,7 +182,10 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
                                     self.Eval(kwargs.get('width', 200)),
                                     self.Eval(kwargs.get('color', Color(0, 1))),
                                     self.Eval(kwargs.get('style', LineStyle(1, Color(0, 1)))))
-        self._saveInputs()
+        self.sposinputs = self.PI(*[self.Eval(0)]*len(self.posinputs))
+        self.spposinputs = self.PI(*self.pposinputs)
+        self.snposinputs = self.NPI(*[self.Eval(0)]*len(self.nposinputs))
+        self.sstdinputs = self.SI(*[self.Eval(0)]*len(self.stdinputs))
         
     def _saveInputs(self):
         self.sposinputs = self.PI(*[p() for p in self.posinputs])
