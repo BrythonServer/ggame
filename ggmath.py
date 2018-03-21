@@ -188,7 +188,6 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         self.sposinputs = self.PI(*[p() for p in self.posinputs])
         self.spposinputs = self.PI(*self.pposinputs)
         self.snposinputs = self.NPI(*[p() for p in self.nposinputs])
-        print(self.stdinputs)
         self.sstdinputs = self.SI(*[p() for p in self.stdinputs])
     
     def _getPhysicalInputs(self):
