@@ -1437,11 +1437,12 @@ if __name__ == "__main__":
         return (100+vslider(), 150)
         
     def labelcolor():
-        return Color(100+vslider(),1)
+        i = 100+vslider()
+        return Color(i + 256*i + 256*256*i,1)
 
     vslider = Slider((100, 125), -50, 50, 0, positioning='physical', steps=10)
 
-    label = Label2(labelcoords, lambda : "{0}".format(vslider.value), size=15, positioning="physical", color=labelcolor)
+    label = Label2(labelcoords, lambda : "{0}".format(vslider.value), size=15, positioning="physical", color=Color(0xff0000,1)
     
 
    
