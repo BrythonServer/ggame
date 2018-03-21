@@ -4,6 +4,7 @@ from ggame import Color, LineStyle, LineAsset, CircleAsset, Sprite, App
 from ggame import TextAsset, ImageAsset, PolygonAsset, RectangleAsset
 from abc import ABCMeta, abstractmethod
 from operator import add
+from collections import namedtuple
 
 from math import sin, cos, sqrt, pi
 from time import time
@@ -44,6 +45,9 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         self._selectable = False
         self._strokable = False
         self.selected = False
+    
+    def step(self):
+        self._touchAsset()
     
     def destroy(self):
         MathApp._removeVisual(self)
@@ -136,6 +140,202 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     def _touchAsset(self):
         pass
 
+class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
+    
+    def __init__(self, asset, posinputs, nonposinputs, *args, **kwargs):
+        """
+        Required inputs
+        
+        * **asset** a ggame asset
+        * **posinputs** a list of names (string) of required positional inputs
+        * **nonposinputs** a list of names (string) of required non positional inputs
+        * **args** the list of required positional and nonpositional arguments
+        * **kwargs** all other optional keyword arguments
+        
+        """
+        
+        MathApp._addVisual(self)
+        Sprite.__init__(self, asset, args[0])
+        _MathDynamic.__init__(self)
+        self._movable = False
+        self._selectable = False
+        self._strokable = False
+        self.selected = False
+        # positional inputs
+        self.PI = namedtuple(posinputs)
+        # nonpositional inputs
+        self.NPI = namedtuple(nonposinputs)
+        # standard inputs (not positional)
+        standardargs = ['size','width','color','style']
+        self.SI = namedtuple(standardargs)
+        # correct number of args?
+        if len(args) != len(posinputs) + len(nonposinputs):
+            raise TypeError("Incorrect number of parameters provided")
+        self.args = args
+        # generated named tuple of functions from positional inputs
+        self.posinputs = self.PI(*[self.Eval(p) for p in args][:len(posinputs)])
+        self.pposinputs = self._getPhysicalInputs()
+        # generated named tuple of functions from nonpositional inputs
+        self.nposinputs = self.NPI(*[self.Eval(p) for p in args][len(nonposinputs):])
+        self.stdinputs = self.SI(*len(standardargs)*[0])
+        self.stdinputs.size = kwargs.get('size', 15)
+        self.stdinputs.width = kwargs.get('width', 200)
+        self.stdinputs.color = kwargs.get('color', Color(0, 1))
+        self.stdinputs.style = kwargs.get('style', LineStyle(1, Color(0, 1)))
+        self.saveInputs()
+        self.positioning = kwargs.get('positioning', 'logical')
+        
+    def _saveInputs(self):
+        self.sposinputs = self.PI(*[p() for p in self.posinputs])
+        self.spposinputs = self.PI(*self.pposinputs)
+        self.snposinputs = self.NPI(*[p() for p in self.nposinputs])
+        self.sstdinputs = self.SI(*[p() for p in self.stdinputs])
+    
+    def _getPhysicalInputs(self):
+        """
+        Translate all positional inputs to physical
+        """
+        pplist = []
+        if self.positional == 'logical':
+            for p in self.posinputs:
+                pval = p()
+                try:
+                    pp = MathApp.logicalToPhysical(pval)
+                except AttributeError:
+                    pp = MathApp._scale * pval
+                pplist.append(pp)
+        else:
+            # already physical
+            pplist = [p() for p in self.posinputs]
+        return self.PI(*pplist)
+    
+    def _inputsChanged(self):
+        ppos = self._getPhysicalInputs()
+        npos = self.NPI(*[p() for p in self.nposinputs])
+        stdinputs = self.SI(*[p() for p in self.stdinputs])
+        return ppos != self.spposinputs or npos != self.snposinputs or stdinputs != self.sstdinputs
+            
+        
+    
+    def destroy(self):
+        MathApp._removeVisual(self)
+        MathApp._removeMovable(self)
+        MathApp._removeStrokable(self)
+        _MathDynamic.destroy(self)
+        Sprite.destroy(self)
+
+    def _updateAsset(self, asset):
+        visible = self.GFX.visible
+        if App._win != None:
+            App._win.remove(self.GFX)
+            self.GFX.destroy()
+        self.asset = asset
+        self.GFX = self.asset.GFX
+        self.GFX.visible = visible        
+        if App._win != None:
+            App._win.add(self.GFX)
+            
+    @property
+    def movable(self):
+        return self._movable
+        
+    @movable.setter
+    def movable(self, val):
+        if not self._dynamic:
+            self._movable = val
+            if val:
+                MathApp._addMovable(self)
+            else:
+                MathApp._removeMovable(self)
+
+    @property
+    def selectable(self):
+        return self._selectable
+        
+    @selectable.setter
+    def selectable(self, val):
+        self._selectable = val
+        if val:
+            MathApp._addSelectable(self)
+        else:
+            MathApp._removeSelectable(self)
+
+    @property
+    def strokable(self):
+        return self._strokable
+        
+    @strokable.setter
+    def strokable(self, val):
+        self._strokable = val
+        if val:
+            MathApp._addStrokable(self)
+        else:
+            MathApp._removeStrokable(self)
+
+    def select(self):
+        self.selected = True
+
+
+    def unselect(self):
+        self.selected = False
+
+    def processEvent(self, event):
+        pass
+
+    # define how your class responds to mouse clicks - returns True/False
+    @abstractmethod
+    def physicalPointTouching(self, ppos):
+        pass
+    
+    # define how your class responds to being moved (physical units)
+    @abstractmethod
+    def translate(self, pdisp):
+        pass
+    
+    # define how your class responds to being stroked (physical units)
+    def stroke(self, ppos, pdisp):
+        pass
+    
+    # is the mousedown in a place that will result in a stroke?
+    def canstroke(self, ppos):
+        return False
+    
+    def _touchAsset(self):
+        if self._inputsChanged():
+            self._saveInputs()
+            self._updateAsset(self._buildAsset())
+    
+    @abstractmethod
+    def _buildAsset(self):
+        pass
+    
+
+class Label2(_MathVisual2):
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(['pos'], ['text'], *args, **kwargs)
+
+    def _buildAsset(self):
+        return TextAsset(self.nposinputs.text(), 
+                            style="{0}px Courier".format(self.stdinputs.size()),
+                            width=self.stdinputs.width(),
+                            color=self.stdinputs.color())
+
+    def __call__(self):
+        return self.nposinputs.text()
+
+    def physicalPointTouching(self, ppos):
+        _ppos = self.spposinputs.pos
+        return (ppos[0] >= _ppos[0] and 
+            ppos[0] <= _ppos[0] + self.sstdinputs.width and
+            ppos[1] >= _ppos[1] and 
+            ppos[1] <= _ppos[1] + self.sstdinputs.size)
+
+    def translate(self, pdisp):
+        pass
+
+
+    
 class Timer(_MathDynamic):
     
     def __init__(self):
