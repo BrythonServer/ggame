@@ -172,7 +172,7 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         self.args = args
         # generated named tuple of functions from positional inputs
         self.posinputs = self.PI(*[self.Eval(p) for p in args][:len(posinputs)])
-        self.pposinputs = self._getPhysicalInputs()
+        self._getPhysicalInputs()
         # first positional argument must be a sprite position!
         Sprite.__init__(self, asset, self.pposinputs[0])
         # generated named tuple of functions from nonpositional inputs
@@ -216,7 +216,7 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         else:
             # already physical
             pplist = [p() for p in self.posinputs]
-        return self.PI(*pplist)
+        self.pposinputs = self.PI(*pplist)
     
     def _inputsChanged(self, saved):
         return self.spposinputs != saved[1] or self.snposinputs != saved[2] or self.sstdinputs != saved[3]
@@ -239,7 +239,6 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         self.GFX.visible = visible        
         if App._win != None:
             App._win.add(self.GFX)
-        print(self.pposinputs.pos)
         self.position = self.pposinputs.pos
             
     @property
