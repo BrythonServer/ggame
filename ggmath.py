@@ -161,12 +161,12 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         self._strokable = False
         self.selected = False
         # positional inputs
-        self.PI = namedtuple(posinputs)
+        self.PI = namedtuple('PI', posinputs)
         # nonpositional inputs
-        self.NPI = namedtuple(nonposinputs)
+        self.NPI = namedtuple('NPI', nonposinputs)
         # standard inputs (not positional)
         standardargs = ['size','width','color','style']
-        self.SI = namedtuple(standardargs)
+        self.SI = namedtuple('SI', standardargs)
         # correct number of args?
         if len(args) != len(posinputs) + len(nonposinputs):
             raise TypeError("Incorrect number of parameters provided")
