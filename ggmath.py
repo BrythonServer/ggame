@@ -1426,6 +1426,8 @@ if __name__ == "__main__":
 
     vslider = Slider((100, 125), -50, 50, 0, positioning='physical', steps=10)
 
+    label = Label2((100,150), "A label", size=15, positioning="physical")
+
    
     def zoomCheck(**kwargs):
         viewtype = kwargs.get('viewchange')
