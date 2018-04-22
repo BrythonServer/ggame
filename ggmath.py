@@ -176,7 +176,7 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         # first positional argument must be a sprite position!
         Sprite.__init__(self, asset, self.pposinputs[0])
         # generated named tuple of functions from nonpositional inputs
-        self.nposinputs = self.NPI(*[self.Eval(p) for p in args][len(nonposinputs):])
+        self.nposinputs = self.NPI(*[self.Eval(p) for p in args][-len(nonposinputs):])
         self.stdinputs = self.SI(self.Eval(kwargs.get('size', 15)),
                                     self.Eval(kwargs.get('width', 200)),
                                     self.Eval(kwargs.get('color', Color(0, 1))),
@@ -1569,7 +1569,7 @@ if __name__ == "__main__":
         i = 100+vslider()
         return Color(i + 256*i + 256*256*i,1)
 
-    vslider = Slider((100, 125), -50, 50, 0, positioning='physical', steps=10)
+    vslider = Slider2((100, 125), -50, 50, 0, positioning='physical', steps=10)
 
     label = Label2(labelcoords, lambda : "{0}".format(vslider.value), size=15, positioning="physical", color=labelcolor)
     
