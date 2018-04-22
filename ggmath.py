@@ -176,7 +176,6 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         # first positional argument must be a sprite position!
         Sprite.__init__(self, asset, self.pposinputs[0])
         # generated named tuple of functions from nonpositional inputs
-        print(-len(nonposinputs))
         self.nposinputs = self.NPI(*[self.Eval(p) for p in args][(-1*len(nonposinputs)):])
         self.stdinputs = self.SI(self.Eval(kwargs.get('size', 15)),
                                     self.Eval(kwargs.get('width', 200)),
@@ -358,7 +357,10 @@ class Slider2(_MathVisual2):
         self.selectable = True  # must be after super init!
         self.strokable = True  # this enables grabbing/slideing the thumb
         self.thumbcaptured = False
-        self._thumbwidth = max(self.sstdinputs.width/40, 1)
+        self._thumbwidth = max(self.sstdinputs.width()/40, 1)
+        self.thumb = Sprite(RectangleAsset(self._thumbwidth, 
+            self.sstdinputs.size()-2, LineStyle(1, self.stdinputs.color()), self.stdinputs.color()), 
+            self.spposinputs.pos)
         self._touchAsset()
         if self._leftctrl:
             MathApp.listenKeyEvent("keydown", self._leftctrl, self.moveLeft)
@@ -366,15 +368,12 @@ class Slider2(_MathVisual2):
             MathApp.listenKeyEvent("keydown", self._rightctrl, self.moveRight)
         if self._centerctrl:
             MathApp.listenKeyEvent("keydown", self._centerctrl, self.moveCenter)
-        self.thumb = Sprite(RectangleAsset(self._thumbwidth, 
-            self.sstdinputs.size-2, LineStyle(1, self.stdinputs.color()), self.stdinputs.color()), 
-            self.thumbXY())
         
     def thumbXY(self):
         minval = self.nposinputs.minval()
         maxval = self.nposinputs.maxval()
         return (self.spposinputs.pos[0]+(self._val-minval)*
-                (self.sstdinputs.width-self._thumbwidth)/(maxval-minval),
+                (self.sstdinputs.width()-self._thumbwidth)/(maxval-minval),
                 self.spposinputs.pos[1]+1)
             
     def __call__(self):
