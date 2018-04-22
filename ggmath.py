@@ -334,7 +334,6 @@ class Label2(_MathVisual2):
 
     def physicalPointTouching(self, ppos):
         _ppos = self.spposinputs.pos
-        print(ppos, _ppos)
         return (ppos[0] >= _ppos[0] and 
             ppos[0] <= _ppos[0] + self.sstdinputs.width and
             ppos[1] >= _ppos[1] and 
@@ -343,6 +342,136 @@ class Label2(_MathVisual2):
     def translate(self, pdisp):
         pass
 
+class Slider2(_MathVisual2):
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(
+            RectangleAsset(1, 1), 
+            ['pos'], ['minval','maxval','initial'], *args, **kwargs)
+        self._val = initial
+        self._steps = kwargs.get('steps', 50)
+        self._step = (self._max-self._min)/self._steps
+        self._leftctrl = kwargs.get('leftkey', None)
+        self._rightctrl = kwargs.get('rightkey', None)
+        self._centerctrl = kwargs.get('centerkey', None)
+        self.selectable = True  # must be after super init!
+        self.strokable = True  # this enables grabbing/slideing the thumb
+        self.thumbcaptured = False
+        self._thumbwidth = max(self.sstdinputs.width/40, 1)
+        self._touchAsset()
+        if self._leftctrl:
+            MathApp.listenKeyEvent("keydown", self._leftctrl, self.moveLeft)
+        if self._rightctrl:
+            MathApp.listenKeyEvent("keydown", self._rightctrl, self.moveRight)
+        if self._centerctrl:
+            MathApp.listenKeyEvent("keydown", self._centerctrl, self.moveCenter)
+        self.thumb = Sprite(RectangleAsset(self._thumbwidth, 
+            self.sstdinputs.size-2, LineStyle(1, self.stdinputs.color()), self.stdinputs.color()), 
+            self.thumbXY())
+        
+    def thumbXY(self):
+        minval = self.nposinputs.minval()
+        maxval = self.nposinputs.maxval()
+        return (self.spposinputs.pos[0]+(self._val-minval)*
+                (self.sstdinputs.width-self._thumbwidth)/(maxval-minval),
+                self.spposinputs.pos[1]+1)
+            
+    def __call__(self):
+        return self._val
+
+    @property
+    def value(self):
+        return self._val
+        
+    @value.setter
+    def value(self, val):
+        self._setval(val)
+
+    def _buildAsset(self):
+        self.setThumb()
+        return RectangleAsset(
+            self.sstdinputs.width, self.sstdinputs.size, 
+            line=self.stdinputs.style, fill=self.stdinputs.color)
+
+    def setThumb(self):
+        self.thumb.position = self.thumbXY()
+                
+    def step(self):
+        pass
+    
+    def _setval(self, val):
+        minval = self.nposinputs.minval()
+        maxval = self.nposinputs.maxval()
+        if val <= minval:
+            self._val = minval
+        elif val >= maxval:
+            self._val = maxval
+        else:
+            self._val = round((val - minval)*self._steps/(maxval-minval))*self._step + minval
+        self.setThumb()
+        
+    def increment(self, step):
+        self._setval(self._val + step)
+        
+    def select(self):
+        super().select()
+        if not self._leftctrl:
+            MathApp.listenKeyEvent("keydown", "left arrow", self.moveLeft)
+        if not self._rightctrl:
+            MathApp.listenKeyEvent("keydown", "right arrow", self.moveRight)
+        MathApp.listenMouseEvent("click", self.mouseClick)
+
+    def unselect(self):
+        super().unselect()
+        try:
+            if not self._leftctrl:
+                MathApp.unlistenKeyEvent("keydown", "left arrow", self.moveLeft)
+            if not self._rightctrl:
+                MathApp.unlistenKeyEvent("keydown", "right arrow", self.moveRight)
+            MathApp.unlistenMouseEvent("click", self.mouseClick)
+        except ValueError:
+            pass
+
+    def mouseClick(self, event):
+        if self.physicalPointTouching((event.x, event.y)):
+            if event.x > self.thumb.x + self._thumbwidth:
+                self.moveRight(event)
+            elif event.x < self.thumb.x:
+                self.moveLeft(event)
+                
+    def moveLeft(self, event):
+        self.increment(-self._step)
+
+    def moveRight(self, event):
+        self.increment(self._step)
+        
+    def moveCenter(self, event):
+        self._val = (self.nposinputs.minval() + self.nposinputs.maxval())/2
+        self.setThumb()
+        
+    def canstroke(self, ppos):
+        return self.physicalPointTouchingThumb(ppos)
+        
+    def stroke(self, ppos, pdisp):
+        xpos = ppos[0] + pdisp[0]
+        self.value = (xpos - self._ppos[0])*(self._max-self._min)/self.sstdinputs.width + self._min
+
+    def physicalPointTouching(self, ppos):
+        _ppos = self.spposinputs.pos
+        return (ppos[0] >= _ppos[0] and 
+            ppos[0] <= _ppos[0] + self.sstdinputs.width and
+            ppos[1] >= _ppos[1] and 
+            ppos[1] <= _ppos[1] + self.sstdinputs.size)
+
+    def physicalPointTouchingThumb(self, ppos):
+        thumbpos = self.thumbXY()
+        return (ppos[0] >= thumbpos[0] and 
+            ppos[0] <= thumbpos[0] + self._thumbwidth + 2 and
+            ppos[1] >= thumbpos[1] and 
+            ppos[1] <= thumbpos[1] + self.sstdinputs.size - 2)
+
+    def translate(self, pdisp):
+        pass
 
     
 class Timer(_MathDynamic):
