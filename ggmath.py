@@ -176,7 +176,8 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         # first positional argument must be a sprite position!
         Sprite.__init__(self, asset, self.pposinputs[0])
         # generated named tuple of functions from nonpositional inputs
-        self.nposinputs = self.NPI(*[self.Eval(p) for p in args][-len(nonposinputs):])
+        print(-len(nonposinputs))
+        self.nposinputs = self.NPI(*[self.Eval(p) for p in args][(-1*len(nonposinputs)):])
         self.stdinputs = self.SI(self.Eval(kwargs.get('size', 15)),
                                     self.Eval(kwargs.get('width', 200)),
                                     self.Eval(kwargs.get('color', Color(0, 1))),
@@ -348,9 +349,9 @@ class Slider2(_MathVisual2):
         super().__init__(
             RectangleAsset(1, 1), 
             ['pos'], ['minval','maxval','initial'], *args, **kwargs)
-        self._val = initial
+        self._val = self.nposinputs.initial()
         self._steps = kwargs.get('steps', 50)
-        self._step = (self._max-self._min)/self._steps
+        self._step = (self.nposinputs.maxval()-self.nposinputs.minval())/self._steps
         self._leftctrl = kwargs.get('leftkey', None)
         self._rightctrl = kwargs.get('rightkey', None)
         self._centerctrl = kwargs.get('centerkey', None)
