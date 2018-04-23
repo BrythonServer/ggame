@@ -357,7 +357,6 @@ class Slider2(_MathVisual2):
         self.selectable = True  # must be after super init!
         self.strokable = True  # this enables grabbing/slideing the thumb
         self.thumbcaptured = False
-        #self._saveInputs(self._getInputs())
         self._thumbwidth = max(self.stdinputs.width()/40, 1)
         self.thumb = Sprite(RectangleAsset(self._thumbwidth, 
             self.stdinputs.size()-2, LineStyle(1, self.stdinputs.color()), self.stdinputs.color()), 
@@ -459,6 +458,7 @@ class Slider2(_MathVisual2):
 
     def physicalPointTouching(self, ppos):
         _ppos = self.spposinputs.pos
+        print(self.sstdinputs.width)
         return (ppos[0] >= _ppos[0] and 
             ppos[0] <= _ppos[0] + self.sstdinputs.width and
             ppos[1] >= _ppos[1] and 
@@ -1570,6 +1570,7 @@ if __name__ == "__main__":
         i = 100+vslider()
         return Color(i + 256*i + 256*256*i,1)
 
+    vslider0 = Slider((100, 100), -50, 50, 0, positioning='physical', steps=10)
     vslider = Slider((100, 125), -50, 50, 0, positioning='physical', steps=10)
     vslider1 = Slider2((100, 150), -50, 50, 0, positioning='physical', steps=10)
 
