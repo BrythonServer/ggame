@@ -392,7 +392,7 @@ class Slider2(_MathVisual2):
         self.setThumb()
         return RectangleAsset(
             self.stdinputs.width(), self.stdinputs.size(), 
-            line=self.stdinputs.style(), fill=self.stdinputs.color())
+            line=self.stdinputs.style(), fill=Color(0,0))
 
     def setThumb(self):
         self.thumb.position = self.thumbXY()
