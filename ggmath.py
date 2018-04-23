@@ -359,9 +359,9 @@ class Slider2(_MathVisual2):
         self.thumbcaptured = False
         self._saveInputs(self._getInputs())
         print(self.sstdinputs.width)
-        self._thumbwidth = max(self.sstdinputs.width()/40, 1)
+        self._thumbwidth = max(self.sstdinputs.width/40, 1)
         self.thumb = Sprite(RectangleAsset(self._thumbwidth, 
-            self.sstdinputs.size()-2, LineStyle(1, self.stdinputs.color()), self.stdinputs.color()), 
+            self.stdinputs.size()-2, LineStyle(1, self.stdinputs.color()), self.stdinputs.color()), 
             self.thumbXY())
         self._touchAsset()
         if self._leftctrl:
@@ -375,7 +375,7 @@ class Slider2(_MathVisual2):
         minval = self.nposinputs.minval()
         maxval = self.nposinputs.maxval()
         return (self.spposinputs.pos[0]+(self._val-minval)*
-                (self.sstdinputs.width()-self._thumbwidth)/(maxval-minval),
+                (self.sstdinputs.width-self._thumbwidth)/(maxval-minval),
                 self.spposinputs.pos[1]+1)
             
     def __call__(self):
