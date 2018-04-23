@@ -368,8 +368,7 @@ class Slider2(_MathVisual2):
             MathApp.listenKeyEvent("keydown", self._rightctrl, self.moveRight)
         if self._centerctrl:
             MathApp.listenKeyEvent("keydown", self._centerctrl, self.moveCenter)
-        print("Selectable: ", self.selectable)
-        
+
     def thumbXY(self):
         minval = self.nposinputs.minval()
         maxval = self.nposinputs.maxval()
@@ -458,7 +457,6 @@ class Slider2(_MathVisual2):
         self.value = (xpos - self._ppos[0])*(self._max-self._min)/self.sstdinputs.width + self._min
 
     def physicalPointTouching(self, ppos):
-        print("HERE")
         _ppos = self.spposinputs.pos
         return (ppos[0] >= _ppos[0] and 
             ppos[0] <= _ppos[0] + self.sstdinputs.width and
