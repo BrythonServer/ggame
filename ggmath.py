@@ -357,12 +357,11 @@ class Slider2(_MathVisual2):
         self.selectable = True  # must be after super init!
         self.strokable = True  # this enables grabbing/slideing the thumb
         self.thumbcaptured = False
-        ###  this is returning zero at this point
-        print(self.sstdinputs.width())
+        self._saveInputs(self._getInputs())
         self._thumbwidth = max(self.sstdinputs.width()/40, 1)
         self.thumb = Sprite(RectangleAsset(self._thumbwidth, 
             self.sstdinputs.size()-2, LineStyle(1, self.stdinputs.color()), self.stdinputs.color()), 
-            self.spposinputs.pos)
+            self.thumbXY())
         self._touchAsset()
         if self._leftctrl:
             MathApp.listenKeyEvent("keydown", self._leftctrl, self.moveLeft)
