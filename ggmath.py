@@ -1565,13 +1565,14 @@ if __name__ == "__main__":
         print(id(timer))
 
     def labelcoords():
-        return (100+vslider(), 150)
+        return (100+vslider(), 175)
         
     def labelcolor():
         i = 100+vslider()
         return Color(i + 256*i + 256*256*i,1)
 
-    vslider = Slider2((100, 125), -50, 50, 0, positioning='physical', steps=10)
+    vslider = Slider((100, 125), -50, 50, 0, positioning='physical', steps=10)
+    vslider1 = Slider2((100, 150), -50, 50, 0, positioning='physical', steps=10)
 
     label = Label2(labelcoords, lambda : "{0}".format(vslider.value), size=15, positioning="physical", color=labelcolor)
     
