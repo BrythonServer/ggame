@@ -1566,10 +1566,10 @@ if __name__ == "__main__":
         print(id(timer))
 
     def labelcoords():
-        return (100+vslider(), 175)
+        return (100+vslider1(), 175)
         
     def labelcolor():
-        i = 100+vslider()
+        i = 100+vslider1()
         return Color(i + 256*i + 256*256*i,1)
 
     vslider = Slider((100, 125), -50, 50, 0, positioning='physical', steps=10)
