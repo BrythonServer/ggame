@@ -446,7 +446,7 @@ class Slider2(_MathVisual2):
         self.increment(self._step)
         
     def moveCenter(self, event):
-        self._val = (self.nposinputs.minval() + self.nposinputs.maxval())/2
+        self._val = (self.snposinputs.minval + self.snposinputs.maxval)/2
         self.setThumb()
         
     def canstroke(self, ppos):
@@ -454,8 +454,10 @@ class Slider2(_MathVisual2):
         
     def stroke(self, ppos, pdisp):
         _ppos = self.spposinputs.pos
+        minval = self.snposinputs.minval
+        maxval = self.snposinputs.maxval
         xpos = ppos[0] + pdisp[0]
-        self.value = (xpos - _ppos[0])*(self._max-self._min)/self.sstdinputs.width + self._min
+        self.value = (xpos - _ppos[0])*(maxval-minval)/self.sstdinputs.width + minval
 
     def physicalPointTouching(self, ppos):
         _ppos = self.spposinputs.pos
