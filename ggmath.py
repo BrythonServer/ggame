@@ -1570,7 +1570,7 @@ if __name__ == "__main__":
         
     def labelcolor():
         i = 100+vslider1()
-        return Color(i + 256*i + 256*256*i,1)
+        return Color(256*256*i,1)
 
     vslider = Slider((100, 125), -50, 50, 0, positioning='physical', steps=10)
     vslider1 = Slider2((100, 150), -50, 50, 0, positioning='physical', steps=10)
