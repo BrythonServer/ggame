@@ -181,10 +181,10 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
                                     self.Eval(kwargs.get('width', 200)),
                                     self.Eval(kwargs.get('color', Color(0, 1))),
                                     self.Eval(kwargs.get('style', LineStyle(1, Color(0, 1)))))
-        self.sposinputs = self.PI(*[self.Eval(0)]*len(self.posinputs))
+        self.sposinputs = self.PI(*[0]*len(self.posinputs))
         self.spposinputs = self.PI(*self.pposinputs)
-        self.snposinputs = self.NPI(*[self.Eval(0)]*len(self.nposinputs))
-        self.sstdinputs = self.SI(*[self.Eval(0)]*len(self.stdinputs))
+        self.snposinputs = self.NPI(*[0]*len(self.nposinputs))
+        self.sstdinputs = self.SI(*[0]*len(self.stdinputs))
 
     def step(self):
         self._touchAsset()
@@ -358,6 +358,7 @@ class Slider2(_MathVisual2):
         self.strokable = True  # this enables grabbing/slideing the thumb
         self.thumbcaptured = False
         self._saveInputs(self._getInputs())
+        print(self.sstdinputs.width)
         self._thumbwidth = max(self.sstdinputs.width()/40, 1)
         self.thumb = Sprite(RectangleAsset(self._thumbwidth, 
             self.sstdinputs.size()-2, LineStyle(1, self.stdinputs.color()), self.stdinputs.color()), 
