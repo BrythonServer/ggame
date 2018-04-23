@@ -368,6 +368,7 @@ class Slider2(_MathVisual2):
             MathApp.listenKeyEvent("keydown", self._rightctrl, self.moveRight)
         if self._centerctrl:
             MathApp.listenKeyEvent("keydown", self._centerctrl, self.moveCenter)
+        print("Selectable: ", self.selectable)
         
     def thumbXY(self):
         minval = self.nposinputs.minval()
@@ -457,8 +458,8 @@ class Slider2(_MathVisual2):
         self.value = (xpos - self._ppos[0])*(self._max-self._min)/self.sstdinputs.width + self._min
 
     def physicalPointTouching(self, ppos):
+        print("HERE")
         _ppos = self.spposinputs.pos
-        print(self.sstdinputs.width)
         return (ppos[0] >= _ppos[0] and 
             ppos[0] <= _ppos[0] + self.sstdinputs.width and
             ppos[1] >= _ppos[1] and 
@@ -1381,32 +1382,32 @@ class MathApp(App):
 
     @classmethod
     def _addMovable(cls, obj):
-        if isinstance(obj, _MathVisual) and not obj in cls._mathMovableList:
+        if (isinstance(obj, _MathVisual) or isinstance(obj, _MathVisual2)) and not obj in cls._mathMovableList:
             cls._mathMovableList.append(obj)
             
     @classmethod
     def _removeMovable(cls, obj):
-        if isinstance(obj, _MathVisual) and obj in cls._mathMovableList:
+        if (isinstance(obj, _MathVisual) or isinstance(obj, _MathVisual2)) and obj in cls._mathMovableList:
             cls._mathMovableList.remove(obj)
 
     @classmethod
     def _addSelectable(cls, obj):
-        if isinstance(obj, _MathVisual) and not obj in cls._mathSelectableList:
+        if (isinstance(obj, _MathVisual) or isinstance(obj, _MathVisual2)) and not obj in cls._mathSelectableList:
             cls._mathSelectableList.append(obj)
             
     @classmethod
     def _removeSelectable(cls, obj):
-        if isinstance(obj, _MathVisual) and obj in cls._mathSelectableList:
+       if (isinstance(obj, _MathVisual) or isinstance(obj, _MathVisual2))  and obj in cls._mathSelectableList:
             cls._mathSelectableList.remove(obj)
 
     @classmethod
     def _addStrokable(cls, obj):
-        if isinstance(obj, _MathVisual) and not obj in cls._mathStrokableList:
+        if (isinstance(obj, _MathVisual) or isinstance(obj, _MathVisual2)) and not obj in cls._mathStrokableList:
             cls._mathStrokableList.append(obj)
             
     @classmethod
     def _removeStrokable(cls, obj):
-        if isinstance(obj, _MathVisual) and obj in cls._mathStrokableList:
+        if (isinstance(obj, _MathVisual) or isinstance(obj, _MathVisual2)) and obj in cls._mathStrokableList:
             cls._mathStrokableList.remove(obj)
 
     @classmethod
@@ -1570,7 +1571,6 @@ if __name__ == "__main__":
         i = 100+vslider()
         return Color(i + 256*i + 256*256*i,1)
 
-    vslider0 = Slider((100, 100), -50, 50, 0, positioning='physical', steps=10)
     vslider = Slider((100, 125), -50, 50, 0, positioning='physical', steps=10)
     vslider1 = Slider2((100, 150), -50, 50, 0, positioning='physical', steps=10)
 
