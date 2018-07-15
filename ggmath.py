@@ -373,8 +373,11 @@ class InputNumeric2(Label2):
         self._savedval = self._val
         self._updateText()
         print(self._text())
-        super().__init__(args[0], self._text, **kwargs)
+        super().__init__(args[0], self._textValue, **kwargs)
         self.selectable = True
+        
+    def _textValue(self):
+        return self._text()
 
     def _updateText(self):
         self._text = self.Eval(self._fmt.format(self._val))
@@ -389,6 +392,7 @@ class InputNumeric2(Label2):
             if self._text() == "0":
                 self._text = self.Eval("")
             self._text = self.Eval(self._text() + key)
+            print(self._text())
             self._touchAsset()
         elif event.key in ['enter','escape']:
             if event.key == 'enter':
@@ -1697,7 +1701,7 @@ if __name__ == "__main__":
 
     label = Label2(labelcoords, "whatevs", size=15, positioning="physical", color=labelcolor)
     button = InputButton2(pressbutton, buttoncoords, "Press Me", size=15, positioning="physical")
-    numinput = InputNumeric2(3.14, (300, 275))
+    numinput = InputNumeric2(3.14, (300, 275), positioning="physical")
 
    
     def zoomCheck(**kwargs):
