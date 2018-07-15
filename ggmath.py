@@ -336,7 +336,6 @@ class Label2(_MathVisual2):
         self._touchAsset()
 
     def _buildAsset(self):
-        print(self.nposinputs.text())
         return TextAsset(self.nposinputs.text(), 
                             style="{0}px Courier".format(self.stdinputs.size()),
                             width=self.stdinputs.width(),
@@ -372,7 +371,6 @@ class InputNumeric2(Label2):
         self._val = self.Eval(val)()  # initialize to simple numeric
         self._savedval = self._val
         self._updateText()
-        print(self._text())
         super().__init__(args[0], self._textValue, **kwargs)
         self.selectable = True
         
@@ -392,7 +390,6 @@ class InputNumeric2(Label2):
             if self._text() == "0":
                 self._text = self.Eval("")
             self._text = self.Eval(self._text() + key)
-            print(self._text())
             self._touchAsset()
         elif event.key in ['enter','escape']:
             if event.key == 'enter':
