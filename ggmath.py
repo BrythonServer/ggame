@@ -138,7 +138,10 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
 
 class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
     
-    def __init__(self, asset, posinputs, nonposinputs, *args, **kwargs):
+    posinputsdef = []
+    nonposinputsdef = []
+    
+    def __init__(self, asset, *args, **kwargs):
         """
         Required inputs
         
@@ -162,23 +165,23 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         # 
         self.positioning = kwargs.get('positioning', 'logical')
         # positional inputs
-        self.PI = namedtuple('PI', posinputs)
+        self.PI = namedtuple('PI', self.posinputsdef)
         # nonpositional inputs
-        self.NPI = namedtuple('NPI', nonposinputs)
+        self.NPI = namedtuple('NPI', self.nonposinputsdef)
         # standard inputs (not positional)
         standardargs = ['size','width','color','style']
         self.SI = namedtuple('SI', standardargs)
         # correct number of args?
-        if len(args) != len(posinputs) + len(nonposinputs):
+        if len(args) != len(self.posinputsdef) + len(self.nonposinputsdef):
             raise TypeError("Incorrect number of parameters provided")
         self.args = args
         # generated named tuple of functions from positional inputs
-        self.posinputs = self.PI(*[self.Eval(p) for p in args][:len(posinputs)])
+        self.posinputs = self.PI(*[self.Eval(p) for p in args][:len(self.posinputsdef)])
         self._getPhysicalInputs()
         # first positional argument must be a sprite position!
         Sprite.__init__(self, asset, self.pposinputs[0])
         # generated named tuple of functions from nonpositional inputs
-        self.nposinputs = self.NPI(*[self.Eval(p) for p in args][(-1*len(nonposinputs)):])
+        self.nposinputs = self.NPI(*[self.Eval(p) for p in args][(-1*len(self.nonposinputsdef)):])
         self.stdinputs = self.SI(self.Eval(kwargs.get('size', 15)),
                                     self.Eval(kwargs.get('width', 200)),
                                     self.Eval(kwargs.get('color', Color(0, 1))),
@@ -321,6 +324,9 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
 
 class Label2(_MathVisual2):
     
+    posinputsdef = ['pos']
+    nonposinputsdef = ['text']
+    
     def __init__(self, *args, **kwargs):
         """
         Required Inputs
@@ -328,7 +334,7 @@ class Label2(_MathVisual2):
         * **pos** position of label
         * **text** text contents of label
         """
-        super().__init__(TextAsset(""), ['pos'], ['text'], *args, **kwargs)
+        super().__init__(TextAsset(""), *args, **kwargs)
         self._touchAsset()
 
     def _buildAsset(self):
@@ -353,6 +359,8 @@ class Label2(_MathVisual2):
 
 class InputButton2(Label2):
     
+    nonposinputsdef = super().nonposinputsdef + ['callback']
+    
     def __init__(self, *args, **kwargs):
         """
         Required Inputs
@@ -361,7 +369,7 @@ class InputButton2(Label2):
         * **callback** reference of function to execute, passing this button object
         * **text** text of button
         """
-        _MathVisual2.__init__(TextAsset(""), ['pos'], ['text', 'callback'], *args, **kwargs)
+        _MathVisual2.__init__(TextAsset(""),*args, **kwargs)
         self._touchAsset()
         #self._callback = self.nposinputs.callback()
         self.selectable = True
