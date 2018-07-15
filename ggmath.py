@@ -342,6 +342,27 @@ class Label2(_MathVisual2):
     def translate(self, pdisp):
         pass
 
+
+class InputButton2(Label2):
+    
+    def __init__(self, pos, text, callback, positioning="logical", 
+            size=10, width=200, color=Color(0,1)):
+        self._callback = callback
+        super().__init__(pos, text, positioning=positioning,
+            size=size, width=width, color=color)
+        self.selectable = True
+
+    def select(self):
+        super().select()
+        self._callback()
+        self.unselect()
+
+    def unselect(self):
+        super().unselect()
+
+        
+
+
 class Slider2(_MathVisual2):
     
     def __init__(self, *args, **kwargs):
