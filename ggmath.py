@@ -222,7 +222,7 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         self.pposinputs = self.PI(*pplist)
     
     def _inputsChanged(self, saved):
-        return self.spposinputs != saved[1] or self.snposinputs != saved[2] or self.sstdinputs != saved[3]:
+        return self.spposinputs != saved[1] or self.snposinputs != saved[2] or self.sstdinputs != saved[3]
 
     
     def destroy(self):
