@@ -359,19 +359,17 @@ class Label2(_MathVisual2):
 
 class InputButton2(Label2):
     
-    nonposinputsdef = super().nonposinputsdef + ['callback']
-    
-    def __init__(self, *args, **kwargs):
+    def __init__(self, callback, *args, **kwargs):
         """
         Required Inputs
         
+        * **callback** reference of a function to execute, passing this button object
         * **pos** position of button
-        * **callback** reference of function to execute, passing this button object
         * **text** text of button
         """
         super().__init__(*args, **kwargs)
         self._touchAsset()
-        #self._callback = self.nposinputs.callback()
+        self._callback = callback
         self.selectable = True
 
     def _buildAsset(self):
@@ -393,10 +391,12 @@ class InputButton2(Label2):
 
 class Slider2(_MathVisual2):
     
+    posinputsdef = ['pos']
+    nonposinputsdef = ['minval','maxval','initial']
+
     def __init__(self, *args, **kwargs):
         super().__init__(
-            RectangleAsset(1, 1), 
-            ['pos'], ['minval','maxval','initial'], *args, **kwargs)
+            RectangleAsset(1, 1), *args, **kwargs)
         self._val = self.nposinputs.initial()
         self._steps = kwargs.get('steps', 50)
         self._step = (self.nposinputs.maxval()-self.nposinputs.minval())/self._steps
@@ -1631,7 +1631,7 @@ if __name__ == "__main__":
     #vslider1 = Slider2((100, 150), -50, 50, 0, positioning='physical', steps=10)
 
     label = Label2(labelcoords, "whatevs", size=15, positioning="physical", color=labelcolor)
-    button = InputButton2(buttoncoords, "Press Me", pressbutton, size=15, positioning="physical")
+    button = InputButton2(pressbutton, buttoncoords, "Press Me", size=15, positioning="physical")
 
    
     def zoomCheck(**kwargs):
