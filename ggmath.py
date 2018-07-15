@@ -145,8 +145,10 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         * **asset** a ggame asset
         * **posinputs** a list of names (string) of required positional inputs
         * **nonposinputs** a list of names (string) of required non positional inputs
-        * **args** the list of required positional and nonpositional arguments
-        * **kwargs** all other optional keyword arguments
+        * **args** the list of required positional and nonpositional arguments,
+          as named in the posinputs and nonposinputs lists
+        * **kwargs** all other optional keyword arguments:
+          positioning - logical (default) or physical, size, width, color, style
         
         """
         
@@ -320,6 +322,12 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
 class Label2(_MathVisual2):
     
     def __init__(self, *args, **kwargs):
+        """
+        Required Inputs
+        
+        * **pos** position of label
+        * **text** text contents of label
+        """
         super().__init__(TextAsset(""), ['pos'], ['text'], *args, **kwargs)
         self._touchAsset()
 
@@ -345,12 +353,26 @@ class Label2(_MathVisual2):
 
 class InputButton2(Label2):
     
-    def __init__(self, pos, text, callback, positioning="logical", 
-            size=10, width=200, color=Color(0,1)):
-        self._callback = callback
-        super().__init__(pos, text, positioning=positioning,
-            size=size, width=width, color=color)
+    def __init__(self, *args, **kwargs):
+        """
+        Required Inputs
+        
+        * **pos** position of button
+        * **text** text of button
+        
+        Optional Keyword argument
+        * **callback** reference of function to execute, with this button object
+          passed as sole argument.
+        """
+        super().__init__(*args, **kwargs)
+        self._callback = kwargs.get('callback', None)
         self.selectable = True
+
+    def _buildAsset(self):
+        return TextAsset(self.nposinputs.text(), 
+                            style="{0}px Courier bold".format(self.stdinputs.size()),
+                            width=self.stdinputs.width(),
+                            fill=self.stdinputs.color())
 
     def select(self):
         super().select()
