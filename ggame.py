@@ -338,7 +338,7 @@ class Color(object):
         self.alpha = alpha
         
     def __eq__(self, other):
-        return self.color = other.color and self.alpha == other.alpha
+        return self.color == other.color and self.alpha == other.alpha
         
 black = Color(0, 1.0)
 """
@@ -368,7 +368,7 @@ class LineStyle(object):
         self.color = color
 
     def __eq__(self, other):
-        return self.width = other.width and self.color == other.color
+        return self.width == other.width and self.color == other.color
 
 blackline = LineStyle(1, black)
 """
