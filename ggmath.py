@@ -231,6 +231,12 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         self.pposinputs = self.PI(*pplist)
     
     def _inputsChanged(self, saved):
+        print("**")
+        print(self.spposinputs != saved[1])
+        print (self.snposinputs != saved[2])
+        print(self.sstdinputs, saved[3])
+        print(self.sstdinputs != saved[3])
+        
         return self.spposinputs != saved[1] or self.snposinputs != saved[2] or self.sstdinputs != saved[3]
 
     
@@ -519,8 +525,6 @@ class Point2(_Point2):
         color = kwargs.get('color', self.defaultcolor)
         style = kwargs.get('style', self.defaultstyle)
         super().__init__(pos, CircleAsset(size, style, color), **kwargs)
-        self._touchAsset()
-        self.center = (0.5, 0.5)
 
 
     def _buildAsset(self):
