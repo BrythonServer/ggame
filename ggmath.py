@@ -138,18 +138,16 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
 
 class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
     
-    posinputsdef = []
-    nonposinputsdef = []
+    posinputsdef = []  # a list of names (string) of required positional inputs
+    nonposinputsdef = []  # a list of names (string) of required non positional inputs
     
     def __init__(self, asset, *args, **kwargs):
         """
         Required inputs
         
         * **asset** a ggame asset
-        * **posinputs** a list of names (string) of required positional inputs
-        * **nonposinputs** a list of names (string) of required non positional inputs
         * **args** the list of required positional and nonpositional arguments,
-          as named in the posinputs and nonposinputs lists
+          as named in the posinputsdef and nonposinputsdef lists
         * **kwargs** all other optional keyword arguments:
           positioning - logical (default) or physical, size, width, color, style
         
@@ -224,7 +222,12 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         self.pposinputs = self.PI(*pplist)
     
     def _inputsChanged(self, saved):
-        return self.spposinputs != saved[1] or self.snposinputs != saved[2] or self.sstdinputs != saved[3]
+        if self.spposinputs != saved[1] or self.snposinputs != saved[2] or self.sstdinputs != saved[3]:
+            print("**")
+            print(self.sstdinputs, saved[3], self.sstdinputs != saved[3])
+            return True
+        else:
+            return False
         
     
     def destroy(self):
@@ -338,6 +341,7 @@ class Label2(_MathVisual2):
         self._touchAsset()
 
     def _buildAsset(self):
+        print(self.nposinputs.text())
         return TextAsset(self.nposinputs.text(), 
                             style="{0}px Courier".format(self.stdinputs.size()),
                             width=self.stdinputs.width(),
@@ -355,6 +359,72 @@ class Label2(_MathVisual2):
 
     def translate(self, pdisp):
         pass
+
+
+class InputNumeric2(Label2):
+    
+    def __init__(self, val, *args, **kwargs):
+        """
+        Required Inputs
+        
+        * **val** initial value of input
+        * **pos** position of button
+        
+        Optional Keyword Input
+        * **fmt** a Python format string (default is {0.2})
+        """
+        self._fmt = kwargs.get('fmt', '{0.2}')
+        self._val = self.Eval(val)()  # initialize to simple numeric
+        self._savedval = self._val
+        self._updateText()
+        print(self._text())
+        super().__init__(args[0], self._text, **kwargs)
+        self.selectable = True
+
+    def _updateText(self):
+        self._text = self.Eval(self._fmt.format(self._val))
+
+    def processEvent(self, event):
+        if event.key in "0123456789insertdelete":
+            key = event.key
+            if event.key == 'insert':
+                key = '-'
+            elif event.key == 'delete':
+                key = '.'
+            if self._text() == "0":
+                self._text = self.Eval("")
+            self._text = self.Eval(self._text() + key)
+            self._touchAsset()
+        elif event.key in ['enter','escape']:
+            if event.key == 'enter':
+                try:
+                    self._val = float(self._text())
+                except ValueError:
+                    self._val = self._savedval
+                self._savedval = self._val
+            self.unselect()
+            
+
+    def select(self):
+        super().select()
+        self._savedval = self._val
+        self._val = 0
+        self._updateText()
+        self._touchAsset()
+        MathApp.listenKeyEvent("keypress", "*", self.processEvent)
+
+    def unselect(self):
+        super().unselect()
+        self._val = self._savedval
+        self._updateText()
+        self._touchAsset()
+        try:
+            MathApp.unlistenKeyEvent("keypress", "*", self.processEvent)
+        except ValueError:
+            pass
+
+    def __call__(self):
+        return self._val
 
 
 class InputButton2(Label2):
@@ -1615,23 +1685,24 @@ if __name__ == "__main__":
         print(id(timer))
 
     def labelcoords():
-        return (100, 175)
+        return (100 + vslider1(), 175)
         
     def buttoncoords():
-        return (300, 175)
+        return (300 + vslider1(), 175)
         
     def labelcolor():
-        i = 100
-        return Color(256*256*i,1)
+        colorval =   vslider1()
+        return Color(colorval*256,1)
 
     def pressbutton(caller):
         print("button pressed: ", caller)
 
     vslider = Slider((100, 125), -50, 50, 0, positioning='physical', steps=10)
-    #vslider1 = Slider2((100, 150), -50, 50, 0, positioning='physical', steps=10)
+    vslider1 = Slider2((100, 150), 0, 250, 125, positioning='physical', steps=10)
 
     label = Label2(labelcoords, "whatevs", size=15, positioning="physical", color=labelcolor)
     button = InputButton2(pressbutton, buttoncoords, "Press Me", size=15, positioning="physical")
+    numinput = InputNumeric2(3.14, (300, 275))
 
    
     def zoomCheck(**kwargs):
