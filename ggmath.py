@@ -357,12 +357,12 @@ class Label2(_MathVisual2):
 
 class InputNumeric2(Label2):
     
-    def __init__(self, val, *args, **kwargs):
+    def __init__(self, pos, val, **kwargs):
         """
         Required Inputs
         
-        * **val** initial value of input
         * **pos** position of button
+        * **val** initial value of input
         
         Optional Keyword Input
         * **fmt** a Python format string (default is {0.2})
@@ -371,7 +371,7 @@ class InputNumeric2(Label2):
         self._val = self.Eval(val)()  # initialize to simple numeric
         self._savedval = self._val
         self._updateText()
-        super().__init__(args[0], self._textValue, **kwargs)
+        super().__init__(pos, self._textValue, **kwargs)
         self.selectable = True
         
     def _textValue(self):
@@ -425,15 +425,15 @@ class InputNumeric2(Label2):
 
 class InputButton2(Label2):
     
-    def __init__(self, callback, *args, **kwargs):
+    def __init__(self, pos, text, callback, **kwargs):
         """
         Required Inputs
         
-        * **callback** reference of a function to execute, passing this button object
         * **pos** position of button
         * **text** text of button
+        * **callback** reference of a function to execute, passing this button object
         """
-        super().__init__(*args, **kwargs)
+        super().__init__(pos, text, **kwargs)
         self._touchAsset()
         self._callback = callback
         self.selectable = True
@@ -1697,8 +1697,8 @@ if __name__ == "__main__":
     vslider1 = Slider2((100, 150), 0, 250, 125, positioning='physical', steps=10)
 
     label = Label2(labelcoords, "whatevs", size=15, positioning="physical", color=labelcolor)
-    button = InputButton2(pressbutton, buttoncoords, "Press Me", size=15, positioning="physical")
-    numinput = InputNumeric2(3.14, (300, 275), positioning="physical")
+    button = InputButton2(buttoncoords, "Press Me", pressbutton, size=15, positioning="physical")
+    numinput = InputNumeric2((300, 275), 3.14, positioning="physical")
 
    
     def zoomCheck(**kwargs):
