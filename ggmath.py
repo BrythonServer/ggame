@@ -140,6 +140,11 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
     
     posinputsdef = []  # a list of names (string) of required positional inputs
     nonposinputsdef = []  # a list of names (string) of required non positional inputs
+    defaultsize = 15
+    defaultwidth = 200
+    defaultcolor = Color(0, 1)
+    defaultstyle = LineStyle(1, Color(0, 1))
+    
     
     def __init__(self, asset, *args, **kwargs):
         """
@@ -150,6 +155,7 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
           as named in the posinputsdef and nonposinputsdef lists
         * **kwargs** all other optional keyword arguments:
           positioning - logical (default) or physical, size, width, color, style
+          movable
         
         """
         
@@ -180,10 +186,10 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         Sprite.__init__(self, asset, self.pposinputs[0])
         # generated named tuple of functions from nonpositional inputs
         self.nposinputs = self.NPI(*[self.Eval(p) for p in args][(-1*len(self.nonposinputsdef)):])
-        self.stdinputs = self.SI(self.Eval(kwargs.get('size', 15)),
-                                    self.Eval(kwargs.get('width', 200)),
-                                    self.Eval(kwargs.get('color', Color(0, 1))),
-                                    self.Eval(kwargs.get('style', LineStyle(1, Color(0, 1)))))
+        self.stdinputs = self.SI(self.Eval(kwargs.get('size', self.defaultsize)),
+                                    self.Eval(kwargs.get('width', self.defaultwidth)),
+                                    self.Eval(kwargs.get('color', self.defaultcolor)),
+                                    self.Eval(kwargs.get('style', self.defaultstyle)))
         self.sposinputs = self.PI(*[0]*len(self.posinputs))
         self.spposinputs = self.PI(*self.pposinputs)
         self.snposinputs = self.NPI(*[0]*len(self.nposinputs))
@@ -453,6 +459,95 @@ class InputButton2(Label2):
         super().unselect()
 
         
+class _Point2(_MathVisual2, metaclass=ABCMeta):
+
+    posinputsdef = ['pos']
+    nonposinputsdef = ['asset']
+
+    def __init__(self, *args, **kwargs):
+        """
+        Required Inputs
+        
+        * **pos** position of label
+        * **asset** asset object to use
+        """
+        super().__init__(args[1], *args, **kwargs)
+        self._touchAsset()
+        self.center = (0.5, 0.5)
+
+
+    def __init__(self, pos, asset):
+        self._pos = self.Eval(pos)  # create a *callable* position function
+        self._ppos = MathApp.logicalToPhysical(self._pos()) # physical position
+        super().__init__(asset, self._ppos)
+        self.center = (0.5, 0.5)
+        
+    def __call__(self):
+        return self.posinputs.pos
+
+    def step(self):
+        self._touchAsset()
+
+    def physicalPointTouching(self, ppos):
+        return MathApp.distance(ppos, self.pposinputs.pos) < self._size
+        
+    def translate(self, pdisp):
+        ldisp = MathApp.translatePhysicalToLogical(pdisp)
+        pos = self.posinputs.pos
+        self.posinputs.pos = self.Eval((pos[0] + ldisp[0], pos[1] + ldisp[1]))
+        self._touchAsset()
+        
+    def distanceTo(self, otherpoint):
+        try:
+            pos = self.posinputs.pos
+            opos = otherpoint.posinputs.pos
+            return MathApp.distance(pos, opos())
+        except AttributeError:
+            return otherpoint  # presumably a scalar - use this distance
+
+
+class Point2(_Point2):
+
+    nonposinputsdef = ['asset']
+
+    defaultsize = 5
+    defaultstyle = LineStyle(0, Color(0, 1))
+
+
+    def __init__(self, *args, **kwargs):
+        """
+        Required Inputs
+        
+        * **pos** position of point
+        """
+        size = kwargs.get('size', self.defaultsize)
+        color = kwargs.get('color', self.defaultcolor)
+        style = kwargs.get('style', self.defaultstyle)
+        super().__init__(pos, CircleAsset(size, style, color))
+
+
+    def _buildAsset(self):
+        return CircleAsset(self.stdinputs.size(),
+                            self.stdinputs.style(),
+                            self.stdinputs.color())
+
+
+
+"""
+class ImagePoint2(_Point2):
+    def __init__(self, pos, url, frame=None, qty=1, direction='horizontal', margin=0):
+        super().__init__(pos, ImageAsset(url, frame, qty, direction, margin))
+
+    def _newAsset(self, pos):
+        ppos = MathApp.logicalToPhysical(pos())
+        if ppos != self._ppos:
+            self._ppos = ppos
+            self.position = ppos
+
+    def _touchAsset(self):
+        self._newAsset(self._pos)
+"""
+
 
 
 class Slider2(_MathVisual2):
