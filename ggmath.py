@@ -353,7 +353,7 @@ class Label2(_MathVisual2):
 
 class InputButton2(Label2):
     
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, callback, **kwargs):
         """
         Required Inputs
         
@@ -361,7 +361,7 @@ class InputButton2(Label2):
         * **callback** reference of function to execute, passing this button object
         * **text** text of button
         """
-        super().__init__(*args, callback, **kwargs)
+        super().__init__(*args, **kwargs)
         self._callback = callback
         self.selectable = True
 
