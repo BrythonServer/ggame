@@ -468,10 +468,10 @@ class _Point2(_MathVisual2, metaclass=ABCMeta):
         """
         Required Inputs
         
-        * **pos** position of label
+        * **pos** position of point
         * **asset** asset object to use
         """
-        super().__init__(args[1], *args, **kwargs)
+        super().__init__(args[1], args[0], **kwargs)
         self._touchAsset()
         self.center = (0.5, 0.5)
 
