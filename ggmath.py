@@ -358,25 +358,22 @@ class InputButton2(Label2):
         Required Inputs
         
         * **pos** position of button
+        * **callback** reference of function to execute, passing this button object
         * **text** text of button
-        
-        Optional Keyword argument
-        * **callback** reference of function to execute, with this button object
-          passed as sole argument.
         """
-        super().__init__(*args, **kwargs)
-        self._callback = kwargs.get('callback', None)
+        super().__init__(*args, callback, **kwargs)
+        self._callback = callback
         self.selectable = True
 
     def _buildAsset(self):
         return TextAsset(self.nposinputs.text(), 
-                            style="{0}px Courier bold".format(self.stdinputs.size()),
+                            style="bold {0}px Courier".format(self.stdinputs.size()),
                             width=self.stdinputs.width(),
                             fill=self.stdinputs.color())
 
     def select(self):
         super().select()
-        self._callback()
+        if self._callback: self._callback(self)
         self.unselect()
 
     def unselect(self):
@@ -1625,8 +1622,7 @@ if __name__ == "__main__":
     vslider1 = Slider2((100, 150), -50, 50, 0, positioning='physical', steps=10)
 
     label = Label2(labelcoords, lambda : "{0}".format(vslider1.value), size=15, positioning="physical", color=labelcolor)
-    button = InputButton2(buttoncoords, "Press Me", size=15, positioning="physical")
-    
+    button = InputButton2(buttoncoords, "Press Me", pressbutton, size=15, positioning="physical")
 
    
     def zoomCheck(**kwargs):
