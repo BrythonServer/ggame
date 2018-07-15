@@ -353,7 +353,7 @@ class Label2(_MathVisual2):
 
 class InputButton2(Label2):
     
-    def __init__(self, *args, callback, **kwargs):
+    def __init__(self, *args, **kwargs):
         """
         Required Inputs
         
@@ -361,8 +361,9 @@ class InputButton2(Label2):
         * **callback** reference of function to execute, passing this button object
         * **text** text of button
         """
-        super().__init__(*args, **kwargs)
-        self._callback = callback
+        _MathVisual2.__init__(TextAsset(""), ['pos'], ['text', 'callback'], *args, **kwargs)
+        self._touchAsset()
+        #self._callback = self.nposinputs.callback()
         self.selectable = True
 
     def _buildAsset(self):
