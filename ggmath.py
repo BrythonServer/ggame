@@ -1611,14 +1611,21 @@ if __name__ == "__main__":
     def labelcoords():
         return (100+vslider1(), 175)
         
+    def buttoncoords():
+        return (300+vslider1(), 175)
+        
     def labelcolor():
         i = 100+vslider1()
         return Color(256*256*i,1)
+
+    def pressbutton(caller):
+        print("button pressed: ", caller)
 
     vslider = Slider((100, 125), -50, 50, 0, positioning='physical', steps=10)
     vslider1 = Slider2((100, 150), -50, 50, 0, positioning='physical', steps=10)
 
     label = Label2(labelcoords, lambda : "{0}".format(vslider1.value), size=15, positioning="physical", color=labelcolor)
+    button = InputButton2(buttoncoords, "Press Me", size=15, positioning="physical")
     
 
    
