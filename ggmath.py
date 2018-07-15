@@ -1795,6 +1795,8 @@ if __name__ == "__main__":
     button = InputButton2(buttoncoords, "Press Me", pressbutton, size=15, positioning="physical")
     numinput = InputNumeric2((300, 275), 3.14, positioning="physical")
 
+    p1 = Point2((0,0))
+
    
     def zoomCheck(**kwargs):
         viewtype = kwargs.get('viewchange')
