@@ -337,6 +337,9 @@ class Color(object):
         self.color = color
         self.alpha = alpha
         
+    def __eq__(self, other):
+        return self.color = other.color and self.alpha == other.alpha
+        
 black = Color(0, 1.0)
 """
 Default black color
@@ -363,6 +366,9 @@ class LineStyle(object):
         """
         self.width = width
         self.color = color
+
+    def __eq__(self, other):
+        return self.width = other.width and self.color == other.color
 
 blackline = LineStyle(1, black)
 """
