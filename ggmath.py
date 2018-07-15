@@ -475,13 +475,6 @@ class _Point2(_MathVisual2, metaclass=ABCMeta):
         self._touchAsset()
         self.center = (0.5, 0.5)
 
-
-    def __init__(self, pos, asset):
-        self._pos = self.Eval(pos)  # create a *callable* position function
-        self._ppos = MathApp.logicalToPhysical(self._pos()) # physical position
-        super().__init__(asset, self._ppos)
-        self.center = (0.5, 0.5)
-        
     def __call__(self):
         return self.posinputs.pos
 
