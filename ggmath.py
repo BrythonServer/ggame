@@ -185,7 +185,10 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         # first positional argument must be a sprite position!
         Sprite.__init__(self, asset, self.pposinputs[0])
         # generated named tuple of functions from nonpositional inputs
-        self.nposinputs = self.NPI(*[self.Eval(p) for p in args][(-1*len(self.nonposinputsdef)):])
+        if len(self.nonposinputsdef) > 0:
+            self.nposinputs = self.NPI(*[self.Eval(p) for p in args][(-1*len(self.nonposinputsdef)):])
+        else:
+            self.nposinputs = []
         self.stdinputs = self.SI(self.Eval(kwargs.get('size', self.defaultsize)),
                                     self.Eval(kwargs.get('width', self.defaultwidth)),
                                     self.Eval(kwargs.get('color', self.defaultcolor)),
