@@ -192,7 +192,7 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         self._touchAsset()
         
     def _saveInputs(self, inputs):
-        self.sposinputs, self.spposinputs, self.snposinputs, self.sstdinputs = *inputs
+        self.sposinputs, self.spposinputs, self.snposinputs, self.sstdinputs = inputs
         
     def _getInputs(self):
         self._getPhysicalInputs()
