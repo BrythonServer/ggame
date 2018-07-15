@@ -508,13 +508,13 @@ class _Point2(_MathVisual2, metaclass=ABCMeta):
 
 class Point2(_Point2):
 
-    nonposinputsdef = ['asset']
+    nonposinputsdef = []
 
     defaultsize = 5
     defaultstyle = LineStyle(0, Color(0, 1))
 
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, pos, **kwargs):
         """
         Required Inputs
         
