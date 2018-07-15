@@ -359,7 +359,7 @@ class Label2(_MathVisual2):
 
 class InputButton2(Label2):
     
-    nonposinputsdef = super().nonposinputsdef + ['callback']
+    #nonposinputsdef = super().nonposinputsdef + ['callback']
     
     def __init__(self, *args, **kwargs):
         """
@@ -1615,22 +1615,22 @@ if __name__ == "__main__":
         print(id(timer))
 
     def labelcoords():
-        return (100+vslider1(), 175)
+        return (100, 175)
         
     def buttoncoords():
-        return (300+vslider1(), 175)
+        return (300, 175)
         
     def labelcolor():
-        i = 100+vslider1()
+        i = 100
         return Color(256*256*i,1)
 
     def pressbutton(caller):
         print("button pressed: ", caller)
 
     vslider = Slider((100, 125), -50, 50, 0, positioning='physical', steps=10)
-    vslider1 = Slider2((100, 150), -50, 50, 0, positioning='physical', steps=10)
+    #vslider1 = Slider2((100, 150), -50, 50, 0, positioning='physical', steps=10)
 
-    label = Label2(labelcoords, lambda : "{0}".format(vslider1.value), size=15, positioning="physical", color=labelcolor)
+    label = Label2(labelcoords, "whatevs", size=15, positioning="physical", color=labelcolor)
     button = InputButton2(buttoncoords, "Press Me", pressbutton, size=15, positioning="physical")
 
    
