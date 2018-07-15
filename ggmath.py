@@ -462,16 +462,16 @@ class InputButton2(Label2):
 class _Point2(_MathVisual2, metaclass=ABCMeta):
 
     posinputsdef = ['pos']
-    nonposinputsdef = ['asset']
+    nonposinputsdef = []
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, pos, asset, **kwargs):
         """
         Required Inputs
         
         * **pos** position of point
         * **asset** asset object to use
         """
-        super().__init__(args[1], args[0], **kwargs)
+        super().__init__(asset, pos, **kwargs)
         self._touchAsset()
         self.center = (0.5, 0.5)
 
@@ -501,7 +501,6 @@ class _Point2(_MathVisual2, metaclass=ABCMeta):
 
 class Point2(_Point2):
 
-    nonposinputsdef = []
 
     defaultsize = 5
     defaultstyle = LineStyle(0, Color(0, 1))
