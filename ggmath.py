@@ -490,7 +490,7 @@ class _Point2(_MathVisual2, metaclass=ABCMeta):
     def translate(self, pdisp):
         ldisp = MathApp.translatePhysicalToLogical(pdisp)
         pos = self.posinputs.pos()
-        self.posinputs.pos = self.Eval((pos[0] + ldisp[0], pos[1] + ldisp[1]))
+        self.posinputs = self.posinputs._replace(pos=self.Eval((pos[0] + ldisp[0], pos[1] + ldisp[1])))
         self._touchAsset()
         
     def distanceTo(self, otherpoint):
