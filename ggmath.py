@@ -1793,7 +1793,7 @@ if __name__ == "__main__":
     def pressbutton(caller):
         print("button pressed: ", caller)
 
-    vslider = Slider((100, 125), -50, 50, 0, positioning='physical', steps=10)
+    #vslider = Slider((100, 125), -50, 50, 0, positioning='physical', steps=10)
     vslider1 = Slider2((100, 150), 0, 250, 125, positioning='physical', steps=10)
 
     label = Label2(labelcoords, "whatevs", size=15, positioning="physical", color=labelcolor)
