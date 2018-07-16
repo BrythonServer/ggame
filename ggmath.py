@@ -502,32 +502,6 @@ class _Point2(_MathVisual2, metaclass=ABCMeta):
             return otherpoint  # presumably a scalar - use this distance
 
 
-class Point2(_Point2):
-
-
-    defaultsize = 5
-    defaultstyle = LineStyle(0, Color(0, 1))
-
-
-    def __init__(self, pos, **kwargs):
-        """
-        Required Inputs
-        
-        * **pos** position of point
-        """
-        size = kwargs.get('size', self.defaultsize)
-        color = kwargs.get('color', self.defaultcolor)
-        style = kwargs.get('style', self.defaultstyle)
-        super().__init__(pos, CircleAsset(size, style, color), **kwargs)
-
-
-    def _buildAsset(self):
-        return CircleAsset(self.stdinputs.size(),
-                            self.stdinputs.style(),
-                            self.stdinputs.color())
-
-
-
 class ImagePoint2(_Point2):
     def __init__(self, pos, url, **kwargs):
         """
@@ -552,6 +526,34 @@ class ImagePoint2(_Point2):
 
     def _buildAsset(self):
         return ImageAsset(self._url, self._frame, self._qty, self._direction, self._margin)
+
+
+
+
+class Point2(_Point2):
+
+
+    defaultsize = 5
+    defaultstyle = LineStyle(0, Color(0, 1))
+
+
+    def __init__(self, pos, **kwargs):
+        """
+        Required Inputs
+        
+        * **pos** position of point
+        """
+        size = kwargs.get('size', self.defaultsize)
+        color = kwargs.get('color', self.defaultcolor)
+        style = kwargs.get('style', self.defaultstyle)
+        super().__init__(pos, CircleAsset(size, style, color), **kwargs)
+
+
+    def _buildAsset(self):
+        return CircleAsset(self.stdinputs.size(),
+                            self.stdinputs.style(),
+                            self.stdinputs.color())
+
 
 
 class Slider2(_MathVisual2):
@@ -1808,6 +1810,9 @@ if __name__ == "__main__":
     
     p3 = Point2((1.2,0))
     
+    
+    bunnyasset = ImageAsset('bunny.png')
+    Sprite(bunnyasset, (100,100))
     
     #ip = ImagePoint2((1,0), 'bunny.png')
 
