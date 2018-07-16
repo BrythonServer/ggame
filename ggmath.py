@@ -1584,7 +1584,7 @@ class MathApp(App):
     @classmethod
     def _addVisual(cls, obj):
         """ FIX ME """
-        if isinstance(obj, _MathVisual) or sinstance(obj, _MathVisual2)i:
+        if isinstance(obj, _MathVisual) or isinstance(obj, _MathVisual2)i:
             cls._mathVisualList.append(obj)
             
     @classmethod
