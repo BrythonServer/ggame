@@ -477,7 +477,7 @@ class _Point2(_MathVisual2, metaclass=ABCMeta):
         * **asset** asset object to use
         """
         super().__init__(asset, pos, **kwargs)
-        self._touchAsset()
+        #self._touchAsset()
         self.center = (0.5, 0.5)
 
     def __call__(self):
