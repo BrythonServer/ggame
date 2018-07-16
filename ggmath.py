@@ -543,7 +543,7 @@ class ImagePoint2(_Point2):
         * **direction** Direction of image flow ('vertical' or 'horizontal') for animation
         * **margin** Gap between framed images in sprite sheet
         """
-        welf.url = url
+        self.url = url
         self._frame = kwargs.get('frame', None)
         self._qty = kwargs.get('qty', 1)
         self._direction = kwargs.get('direction', 'horizontal')
