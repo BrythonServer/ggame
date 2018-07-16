@@ -1807,7 +1807,7 @@ if __name__ == "__main__":
     
     p3 = Point2((1.2,0))
     
-    ip1 = ImagePoint2((1,0), 'bunny.png')
+    #ip1 = ImagePoint2((1,0), 'bunny.png')
 
    
     def zoomCheck(**kwargs):
