@@ -253,8 +253,7 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
             App._win.add(self.GFX)
         if type(self) is ImagePoint2:
             print(asset)
-        else:
-            self.position = self.pposinputs.pos
+        self.position = self.pposinputs.pos
             
     @property
     def movable(self):
