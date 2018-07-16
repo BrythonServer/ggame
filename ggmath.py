@@ -485,7 +485,7 @@ class _Point2(_MathVisual2, metaclass=ABCMeta):
         self._touchAsset()
 
     def physicalPointTouching(self, ppos):
-        return MathApp.distance(ppos, self.pposinputs.pos) < self._size
+        return MathApp.distance(ppos, self.pposinputs.pos) < self.sstdinputs.size
         
     def translate(self, pdisp):
         ldisp = MathApp.translatePhysicalToLogical(pdisp)
