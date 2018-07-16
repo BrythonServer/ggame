@@ -1825,9 +1825,7 @@ if __name__ == "__main__":
     p3 = Point2((1.2,0))
     
     
-    bunnyasset = ImageAsset('bunny.png')
-    Sprite(bunnyasset, (100,100))
-    
+
     ip = ImagePoint2((1,0), 'bunny.png')
 
    
