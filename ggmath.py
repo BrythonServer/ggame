@@ -252,7 +252,10 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         if App._win != None:
             App._win.add(self.GFX)
         if type(self) is ImagePoint2:
-            print(asset)
+            print(type(self))
+            print(dir(self))
+            print(self.position)
+            
         self.position = self.pposinputs.pos
             
     @property
@@ -477,13 +480,14 @@ class _Point2(_MathVisual2, metaclass=ABCMeta):
         * **asset** asset object to use
         """
         super().__init__(asset, pos, **kwargs)
-        #self._touchAsset()   FIXME?
+        self._touchAsset()
         self.center = (0.5, 0.5)
 
     def __call__(self):
         return self.posinputs.pos
 
     def step(self):
+        pass  # FIXME
         self._touchAsset()
 
     def physicalPointTouching(self, ppos):
@@ -524,8 +528,7 @@ class ImagePoint2(_Point2):
         #self._qty = kwargs.get('qty', 1)
         #self._direction = kwargs.get('direction', 'horizontal')
         #self._margin = kwargs.get('margin', 0)
-        asset = self._buildAsset()
-        super().__init__(pos, asset, **kwargs)
+        super().__init__(pos, self._buildAsset(), **kwargs)
 
     def _buildAsset(self):
         print("in ImagePoint2 buildAsset for ", self._url)
