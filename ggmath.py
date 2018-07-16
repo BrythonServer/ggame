@@ -538,7 +538,8 @@ class ImagePoint2(_Point2):
 
     def _buildAsset(self):
         print("in ImagePoint2 buildAsset for ", self._url)
-        return ImageAsset(self._url)
+        return CircleAsset(10, self.defaultstyle, self.defaultcolor)
+        #return ImageAsset(self._url)
 
 
 
