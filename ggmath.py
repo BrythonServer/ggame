@@ -218,7 +218,6 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         """
         pplist = []
         if self.positioning == 'logical':
-            print("logical!")
             for p in self.posinputs:
                 pval = p()
                 try:
@@ -226,21 +225,12 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
                 except AttributeError:
                     pp = MathApp._scale * pval
                 pplist.append(pp)
-                print("***")
-                print(pplist)
         else:
             # already physical
             pplist = [p() for p in self.posinputs]
         self.pposinputs = self.PI(*pplist)
     
     def _inputsChanged(self, saved):
-        """
-        print("**")
-        print(saved[1], self.spposinputs != saved[1])
-        print (self.snposinputs != saved[2])
-        print(self.sstdinputs, saved[3])
-        print(self.sstdinputs != saved[3])
-        """
         return self.spposinputs != saved[1] or self.snposinputs != saved[2] or self.sstdinputs != saved[3]
 
     
@@ -329,8 +319,6 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         return False
     
     def _touchAsset(self):
-        if type(self) == Point2:
-            print("****Point2")
         inputs = self._getInputs()
         if self._inputsChanged(inputs):
             self._saveInputs(inputs)
@@ -1435,12 +1423,9 @@ class MathApp(App):
 
     def _touchAllVisuals(self):
         # touch all visual object assets to use scaling
-        print("*****")
         for obj in self._mathVisualList:
-            print(obj)
             obj._touchAsset()
-        print("<<<<<")
-        
+
 
     @classmethod
     def logicalToPhysical(cls, lp):
@@ -1806,7 +1791,7 @@ if __name__ == "__main__":
     button = InputButton2(buttoncoords, "Press Me", pressbutton, size=15, positioning="physical")
     numinput = InputNumeric2((300, 275), 3.14, positioning="physical")
 
-    p1 = Point2((5,5))
+    p1 = Point2((0,0))
 
    
     def zoomCheck(**kwargs):
@@ -1815,7 +1800,7 @@ if __name__ == "__main__":
         print(ap.scale)
     
     pcenter = Point((0, -5000000))
-    c1 = Circle((0,-5000000), 5000000, LineStyle(1, Color(0x008040,1)), Color(0x008400,0.5))
+    # c1 = Circle((0,-5000000), 5000000, LineStyle(1, Color(0x008040,1)), Color(0x008400,0.5))
     ap = MathApp()
 
     #ap.addViewNotification(zoomCheck)
