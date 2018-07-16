@@ -518,14 +518,14 @@ class ImagePoint2(_Point2):
         * **margin** Gap between framed images in sprite sheet
         """
         self._url = url
-        self._frame = kwargs.get('frame', None)
-        self._qty = kwargs.get('qty', 1)
-        self._direction = kwargs.get('direction', 'horizontal')
-        self._margin = kwargs.get('margin', 0)
+        #self._frame = kwargs.get('frame', None)
+        #self._qty = kwargs.get('qty', 1)
+        #self._direction = kwargs.get('direction', 'horizontal')
+        #self._margin = kwargs.get('margin', 0)
         super().__init__(pos, self._buildAsset(), **kwargs)
 
     def _buildAsset(self):
-        return ImageAsset(self._url, self._frame, self._qty, self._direction, self._margin)
+        return ImageAsset(self._url)
 
 
 
@@ -1814,7 +1814,7 @@ if __name__ == "__main__":
     bunnyasset = ImageAsset('bunny.png')
     Sprite(bunnyasset, (100,100))
     
-    #ip = ImagePoint2((1,0), 'bunny.png')
+    ip = ImagePoint2((1,0), 'bunny.png')
 
    
     def zoomCheck(**kwargs):
