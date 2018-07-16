@@ -528,21 +528,30 @@ class Point2(_Point2):
 
 
 
-"""
 class ImagePoint2(_Point2):
-    def __init__(self, pos, url, frame=None, qty=1, direction='horizontal', margin=0):
-        super().__init__(pos, ImageAsset(url, frame, qty, direction, margin))
+    def __init__(self, pos, url, **kwargs):
+        """
+        Required Inputs
+        
+        * **pos** position of point
+        * **url** image file URL or path
+        
+        Optional Inputs
+        
+        * **frame** Rectangle specification of region within image
+        * **qty** Quantity of images to use for animation (sprite sheet)
+        * **direction** Direction of image flow ('vertical' or 'horizontal') for animation
+        * **margin** Gap between framed images in sprite sheet
+        """
+        welf.url = url
+        self._frame = kwargs.get('frame', None)
+        self._qty = kwargs.get('qty', 1)
+        self._direction = kwargs.get('direction', 'horizontal')
+        self._margin = kwargs.get('margin', 0)
+        super().__init__(pos, self._buildAsset(), **kwargs)
 
-    def _newAsset(self, pos):
-        ppos = MathApp.logicalToPhysical(pos())
-        if ppos != self._ppos:
-            self._ppos = ppos
-            self.position = ppos
-
-    def _touchAsset(self):
-        self._newAsset(self._pos)
-"""
-
+    def _buildAsset(self):
+        return ImageAsset(self.url, self._frame, self._qty, self._direction, self._margin)
 
 
 class Slider2(_MathVisual2):
@@ -1795,6 +1804,8 @@ if __name__ == "__main__":
     p1.movable = True
     
     p2 = Point2((0,-1))
+    
+    ip1 = ImagePoint2((1,0), 'bunny.png')
 
    
     def zoomCheck(**kwargs):
