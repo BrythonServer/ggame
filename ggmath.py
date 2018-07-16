@@ -252,10 +252,10 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         if App._win != None:
             App._win.add(self.GFX)
         if type(self) is ImagePoint2:
-            print(type(self))
-            print(dir(self))
-            print(self.position)
-            
+            temp = self
+            print(type(temp))
+            print(dir(temp))
+            print(temp.position)
         self.position = self.pposinputs.pos
             
     @property
