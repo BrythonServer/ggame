@@ -525,9 +525,11 @@ class ImagePoint2(_Point2):
         #self._qty = kwargs.get('qty', 1)
         #self._direction = kwargs.get('direction', 'horizontal')
         #self._margin = kwargs.get('margin', 0)
-        super().__init__(pos, self._buildAsset(), **kwargs)
+        asset = self._buildAsset()
+        super().__init__(pos, asset, **kwargs)
 
     def _buildAsset(self):
+        print("in ImagePoint2 buildAsset for ", self._url)
         return ImageAsset(self._url)
 
 
