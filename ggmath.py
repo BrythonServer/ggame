@@ -543,7 +543,7 @@ class ImagePoint2(_Point2):
         * **direction** Direction of image flow ('vertical' or 'horizontal') for animation
         * **margin** Gap between framed images in sprite sheet
         """
-        self.url = url
+        self._url = url
         self._frame = kwargs.get('frame', None)
         self._qty = kwargs.get('qty', 1)
         self._direction = kwargs.get('direction', 'horizontal')
@@ -551,7 +551,7 @@ class ImagePoint2(_Point2):
         super().__init__(pos, self._buildAsset(), **kwargs)
 
     def _buildAsset(self):
-        return ImageAsset(self.url, self._frame, self._qty, self._direction, self._margin)
+        return ImageAsset(self._url, self._frame, self._qty, self._direction, self._margin)
 
 
 class Slider2(_MathVisual2):
