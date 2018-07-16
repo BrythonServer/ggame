@@ -1817,7 +1817,7 @@ if __name__ == "__main__":
         scale = kwargs.get('scale')
         print(ap.scale)
     
-    pcenter = Point((0, -5000000))
+    #pcenter = Point((0, -5000000))
     # c1 = Circle((0,-5000000), 5000000, LineStyle(1, Color(0x008040,1)), Color(0x008400,0.5))
     ap = MathApp()
 
