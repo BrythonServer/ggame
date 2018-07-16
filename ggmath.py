@@ -1791,7 +1791,7 @@ if __name__ == "__main__":
     button = InputButton2(buttoncoords, "Press Me", pressbutton, size=15, positioning="physical")
     numinput = InputNumeric2((300, 275), 3.14, positioning="physical")
 
-    p1 = Point2((0,0))
+    p1 = Point2((0,0), color=Color(0x008000, 1))
     p1.movable = True
     
     p2 = Point2((0,-1))
