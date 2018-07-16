@@ -249,13 +249,15 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         self.asset = asset
         self.GFX = self.asset.GFX
         self.GFX.visible = visible        
+        if type(self) is ImagePoint2:
+            print("1: ", self.position)
         if App._win != None:
             App._win.add(self.GFX)
         if type(self) is ImagePoint2:
-            temp = self
-            print(type(temp))
-            print(dir(temp))
-            print(temp.position)
+            print(type(self))
+            print(dir(self))
+            print(isinstance(self, Sprite))
+            print("2: ", self.position)
         self.position = self.pposinputs.pos
             
     @property
