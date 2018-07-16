@@ -247,10 +247,14 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
             App._win.remove(self.GFX)
             self.GFX.destroy()
         self.asset = asset
-        self.GFX = self.asset.GFX
-        self.GFX.visible = visible        
         if type(self) is ImagePoint2:
             print("1: ", self.position)
+        self.GFX = self.asset.GFX
+        if type(self) is ImagePoint2:
+            print("1.1: ", self.position)
+        self.GFX.visible = visible        
+        if type(self) is ImagePoint2:
+            print("1.2: ", self.position)
         if App._win != None:
             App._win.add(self.GFX)
         if type(self) is ImagePoint2:
