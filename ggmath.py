@@ -514,21 +514,9 @@ class _Point2(_MathVisual2, metaclass=ABCMeta):
             return otherpoint  # presumably a scalar - use this distance
 
 
+"""
 class ImagePoint2(_Point2):
     def __init__(self, pos, url, **kwargs):
-        """
-        Required Inputs
-        
-        * **pos** position of point
-        * **url** image file URL or path
-        
-        Optional Inputs
-        
-        * **frame** Rectangle specification of region within image
-        * **qty** Quantity of images to use for animation (sprite sheet)
-        * **direction** Direction of image flow ('vertical' or 'horizontal') for animation
-        * **margin** Gap between framed images in sprite sheet
-        """
         self._url = url
         #self._frame = kwargs.get('frame', None)
         #self._qty = kwargs.get('qty', 1)
@@ -540,7 +528,7 @@ class ImagePoint2(_Point2):
         print("in ImagePoint2 buildAsset for ", self._url)
         return CircleAsset(10, self.defaultstyle, self.defaultcolor)
         #return ImageAsset(self._url)
-
+"""
 
 
 
@@ -567,6 +555,32 @@ class Point2(_Point2):
         return CircleAsset(self.stdinputs.size(),
                             self.stdinputs.style(),
                             self.stdinputs.color())
+
+# Can we simply handle another child of _Point2?
+class ImagePoint2(_Point2):
+
+
+    defaultsize = 5
+    defaultstyle = LineStyle(0, Color(0, 1))
+
+
+    def __init__(self, pos, **kwargs):
+        """
+        Required Inputs
+        
+        * **pos** position of point
+        """
+        size = kwargs.get('size', self.defaultsize)
+        color = kwargs.get('color', self.defaultcolor)
+        style = kwargs.get('style', self.defaultstyle)
+        super().__init__(pos, CircleAsset(size, style, color), **kwargs)
+
+
+    def _buildAsset(self):
+        return CircleAsset(self.stdinputs.size(),
+                            self.stdinputs.style(),
+                            self.stdinputs.color())
+
 
 
 
@@ -1827,6 +1841,7 @@ if __name__ == "__main__":
     
 
     #ip = ImagePoint2((1,0), 'bunny.png')
+    ip = ImagePoint2((1,0))
 
    
     def zoomCheck(**kwargs):
