@@ -1792,6 +1792,9 @@ if __name__ == "__main__":
     numinput = InputNumeric2((300, 275), 3.14, positioning="physical")
 
     p1 = Point2((0,0))
+    p1.movable = True
+    
+    p2 = Point2((0,-1))
 
    
     def zoomCheck(**kwargs):
