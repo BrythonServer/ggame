@@ -1910,10 +1910,8 @@ if __name__ == "__main__":
     
     p3 = Point2((1.2,0))
     
-    print(p2())
-    print(p3())
-    
-    LineSegment2(p2,p3)
+
+    LineSegment2(p2,p3, width=2)
     
     
 
