@@ -583,13 +583,14 @@ class ImagePoint2(_Point2):
         * **direction** one of 'horizontal' (default) or 'vertical'
         * **margin** pixels between sub-frames if sprite sheet
         """
-        self._frame = kwargs.get('frame', None)
-        self._qty = kwargs.get('qty', 1)
-        self._direction = kwargs.get('direction', 'horizontal')
-        self._margin = kwargs.get('margin', 0)
+        frame = kwargs.get('frame', None)
+        qty = kwargs.get('qty', 1)
+        direction = kwargs.get('direction', 'horizontal')
+        margin = kwargs.get('margin', 0)
         size = kwargs.get('size', self.defaultsize)
         color = kwargs.get('color', self.defaultcolor)
         style = kwargs.get('style', self.defaultstyle)
+        self._imageasset = ImageAsset(url, frame, qty, direction, margin)
         super().__init__(pos, CircleAsset(size, style, color), **kwargs)
 
 
