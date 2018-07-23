@@ -524,6 +524,11 @@ class LineSegment2(_MathVisual2):
                             self.pposinputs.end(),
                             self.stdinputs.style())
 
+    def physicalPointTouching(self, ppos):
+        return False
+
+    def translate(self, pdisp):
+        pass
 
 
 
