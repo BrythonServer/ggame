@@ -516,7 +516,7 @@ class LineSegment2(_MathVisual2):
         * **end** end position of segment
         """
         style = kwargs.get('style', self.defaultstyle)
-        super().__init__(LineAsset(0,0, style), (0,0), *args, **kwargs)
+        super().__init__(LineAsset(0,0, style), *args, **kwargs)
         self._touchAsset()
         
     def _buildAsset(self):
