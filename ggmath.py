@@ -517,6 +517,23 @@ class ImagePoint2(_Point2):
         print("in ImagePoint2 buildAsset for ", self._url)
         return CircleAsset(10, self.defaultstyle, self.defaultcolor)
         #return ImageAsset(self._url)
+        
+        
+class ImagePoint(_Point):
+    def __init__(self, pos, url, frame=None, qty=1, direction='horizontal', margin=0):
+        super().__init__(pos, ImageAsset(url, frame, qty, direction, margin))
+
+    def _newAsset(self, pos):
+        ppos = MathApp.logicalToPhysical(pos())
+        if ppos != self._ppos:
+            self._ppos = ppos
+            self.position = ppos
+
+    def _touchAsset(self):
+        self._newAsset(self._pos)
+
+
+ 
 """
 
 
@@ -553,12 +570,23 @@ class ImagePoint2(_Point2):
     defaultstyle = LineStyle(0, Color(0, 1))
 
 
-    def __init__(self, pos, **kwargs):
+    def __init__(self, pos, url, **kwargs):
         """
         Required Inputs
         
         * **pos** position of point
+        * **url** location of image file
+        
+        Optional Inputs
+        * **frame** sub-frame location of image within file
+        * **qty** number of sub-frames, when used as sprite sheet
+        * **direction** one of 'horizontal' (default) or 'vertical'
+        * **margin** pixels between sub-frames if sprite sheet
         """
+        self._frame = kwargs.get('frame', None)
+        self._qty = kwargs.get('qty', 1)
+        self._direction = kwargs.get('direction', 'horizontal')
+        self._margin = kwargs.get('margin', 0)
         size = kwargs.get('size', self.defaultsize)
         color = kwargs.get('color', self.defaultcolor)
         style = kwargs.get('style', self.defaultstyle)
