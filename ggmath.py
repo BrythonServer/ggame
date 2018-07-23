@@ -520,8 +520,8 @@ class LineSegment2(_MathVisual2):
         self._touchAsset()
         
     def _buildAsset(self):
-        start = self.pposinputs.start()
-        end = self.pposinputs.end()
+        start = self.spposinputs.start
+        end = self.spposinputs.end
         self.position = start
         return LineAsset(end[0]-start[0],
                             end[1]-start[1],
