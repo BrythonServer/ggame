@@ -504,37 +504,84 @@ class _Point2(_MathVisual2, metaclass=ABCMeta):
             return otherpoint  # presumably a scalar - use this distance
 
 
-"""
-class ImagePoint2(_Point2):
-    def __init__(self, pos, url, **kwargs):
-        self._url = url
-        #self._frame = kwargs.get('frame', None)
-        #self._qty = kwargs.get('qty', 1)
-        #self._direction = kwargs.get('direction', 'horizontal')
-        #self._margin = kwargs.get('margin', 0)
-        super().__init__(pos, self._buildAsset(), **kwargs)
-
+class LineSegment2(_MathVisual2):
+    
+    posinputsdef = ['start','end']
+    
+    def __init__(self, *args, **kwargs):
+        """
+        Required Inputs
+        
+        * **start** start position of segment
+        * **end** end position of segment
+        """
+        style = kwargs.get('style', self.defaultstyle)
+        super().__init__(LineAsset((0,0),(0,0), *args, **kwargs), (0,0))
+        self._touchAsset()
+        
     def _buildAsset(self):
-        print("in ImagePoint2 buildAsset for ", self._url)
-        return CircleAsset(10, self.defaultstyle, self.defaultcolor)
-        #return ImageAsset(self._url)
-        
-        
-class ImagePoint(_Point):
-    def __init__(self, pos, url, frame=None, qty=1, direction='horizontal', margin=0):
-        super().__init__(pos, ImageAsset(url, frame, qty, direction, margin))
+        return LineAsset(self.pposinputs.start(),
+                            self.pposinputs.end(),
+                            self.stdinputs.style())
 
-    def _newAsset(self, pos):
-        ppos = MathApp.logicalToPhysical(pos())
-        if ppos != self._ppos:
-            self._ppos = ppos
-            self.position = ppos
+
+
+
+"""
+class LineSegment(_MathVisual):
+    
+    def __init__(self, start, end, style=LineStyle(1, Color(0,1))):
+        self._start = self.Eval(start)  # save function
+        self._end = self.Eval(end)
+        self._style = style
+        self._pstart = MathApp.logicalToPhysical(self._start())
+        self._pend = MathApp.logicalToPhysical(self._end())
+        super().__init__(LineAsset(self._pend[0]-self._pstart[0], 
+            self._pend[1]-self._pstart[1], style), self._pstart)
+
+    def _newAsset(self, start, end, style):
+        pstart = MathApp.logicalToPhysical(start())
+        pend = MathApp.logicalToPhysical(end())
+        if pstart != self._pstart or pend != self._pend:
+            self._pstart = pstart
+            self._pend = pend
+            self._updateAsset(LineAsset(pend[0]-pstart[0], pend[1]-pstart[1], style))
+            self.position = pstart
 
     def _touchAsset(self):
-        self._newAsset(self._pos)
+        self._newAsset(self._start, self._end, self._style)
+    
+    @property
+    def start(self):
+        return self._start()
 
+    @start.setter
+    def start(self, val):
+        newval = self.Eval(val)
+        if newval != self._start:
+            self._start = newval
+            self._touchAsset()
 
- 
+    @property
+    def end(self):
+        return self._end()
+
+    @end.setter
+    def end(self, val):
+        newval = self.Eval(val)
+        if newval != self._end:
+            self._end = newval
+            self._touchAsset()
+        
+    def step(self):
+        self._touchAsset()
+
+    def physicalPointTouching(self, ppos):
+        return False
+        
+    def translate(self, pdisp):
+        pass
+
 """
 
 
@@ -1854,6 +1901,8 @@ if __name__ == "__main__":
     p2 = Point2((0,-1))
     
     p3 = Point2((1.2,0))
+    
+    LineSegment2(p2,p3)
     
     
 
