@@ -242,15 +242,16 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         Sprite.destroy(self)
 
     def _updateAsset(self, asset):
-        visible = self.GFX.visible
-        if App._win != None:
-            App._win.remove(self.GFX)
-            self.GFX.destroy()
-        self.asset = asset
-        self.GFX = self.asset.GFX
-        self.GFX.visible = visible        
-        if App._win != None:
-            App._win.add(self.GFX)
+        if type(asset) != ImageAsset:
+            visible = self.GFX.visible
+            if App._win != None:
+                App._win.remove(self.GFX)
+                self.GFX.destroy()
+            self.asset = asset
+            self.GFX = self.asset.GFX
+            self.GFX.visible = visible        
+            if App._win != None:
+                App._win.add(self.GFX)
         print(type(asset))
         self.position = self.pposinputs.pos
             
