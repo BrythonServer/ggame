@@ -506,13 +506,13 @@ class _Point2(_MathVisual2, metaclass=ABCMeta):
 
 class LineSegment2(_MathVisual2):
     
-    posinputsdef = ['start','end']
+    posinputsdef = ['pos','end']
     
     def __init__(self, *args, **kwargs):
         """
         Required Inputs
         
-        * **start** start position of segment
+        * **pos** start position of segment
         * **end** end position of segment
         """
         style = kwargs.get('style', self.defaultstyle)
@@ -520,9 +520,7 @@ class LineSegment2(_MathVisual2):
         self._touchAsset()
         
     def _buildAsset(self):
-        print(self.spposinputs.start)
-        print(self.pposinputs.start)
-        start = self.pposinputs.start
+        start = self.pposinputs.pos
         end = self.pposinputs.end
         self.position = start
         return LineAsset(end[0]-start[0],
