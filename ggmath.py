@@ -522,8 +522,8 @@ class LineSegment2(_MathVisual2):
     def _buildAsset(self):
         print(self.spposinputs.start)
         print(self.pposinputs.start)
-        start = self.pposinputs.start()
-        end = self.pposinputs.end()
+        start = self.pposinputs.start
+        end = self.pposinputs.end
         self.position = start
         return LineAsset(end[0]-start[0],
                             end[1]-start[1],
