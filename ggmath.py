@@ -591,13 +591,11 @@ class ImagePoint2(_Point2):
         color = kwargs.get('color', self.defaultcolor)
         style = kwargs.get('style', self.defaultstyle)
         self._imageasset = ImageAsset(url, frame, qty, direction, margin)
-        super().__init__(pos, CircleAsset(size, style, color), **kwargs)
+        super().__init__(pos, self._imageasset, **kwargs)
 
 
     def _buildAsset(self):
-        return CircleAsset(self.stdinputs.size(),
-                            self.stdinputs.style(),
-                            self.stdinputs.color())
+        return self._imageasset
 
 
 
