@@ -480,7 +480,7 @@ class _Point2(_MathVisual2, metaclass=ABCMeta):
         self.center = (0.5, 0.5)
 
     def __call__(self):
-        return self.posinputs.pos
+        return self.posinputs.pos()
 
     def step(self):
         pass  # FIXME
