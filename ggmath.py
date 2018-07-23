@@ -253,7 +253,8 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
             App._win.add(self.GFX)
         ### 
         print(type(self))
-        self.fred = self.pposinputs.pos
+        print(type(self.position))
+        print(self.pposinputs.pos)
         self.position = self.pposinputs.pos
             
     @property
