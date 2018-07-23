@@ -1911,7 +1911,7 @@ if __name__ == "__main__":
     p3 = Point2((1.2,0))
     
 
-    LineSegment2(p2,p3, size=5)
+    LineSegment2(p2,p3, style=LineStyle(3, Color(0,1)))
     
     
 
