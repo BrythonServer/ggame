@@ -1858,8 +1858,7 @@ if __name__ == "__main__":
     
 
     ip = ImagePoint2((1,0), 'bunny.png')
-    #ip = ImagePoint2((1,0))
-
+    ip.movable = True
    
     def zoomCheck(**kwargs):
         viewtype = kwargs.get('viewchange')
