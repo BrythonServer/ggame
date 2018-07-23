@@ -252,6 +252,7 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
             self.GFX.visible = visible        
             if App._win != None:
                 App._win.add(self.GFX)
+            print(type(asset))
             self.position = self.pposinputs.pos
             
     @property
