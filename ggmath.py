@@ -748,10 +748,10 @@ class Point2(_Point2):
         
         * **pos** position of point
         """
-        size = kwargs.get('size', self.defaultsize)
-        color = kwargs.get('color', self.defaultcolor)
-        style = kwargs.get('style', self.defaultstyle)
-        super().__init__(pos, CircleAsset(size, style, color), **kwargs)
+        kwargs.setdefault('size', self.defaultsize)
+        kwargs.setdefault('style', self.defaultstyle)
+        super().__init__(pos, CircleAsset(self.defaultsize, 
+            self.defaultstyle, self.defaultcolor), **kwargs)
 
 
     def _buildAsset(self):
