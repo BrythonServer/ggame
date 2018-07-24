@@ -445,8 +445,8 @@ class Planet(MathApp):
         self.planetcircle = Circle(
             (0,0), 
             self.radius, 
-            LineStyle(1, Color(self.color,1)), 
-            Color(self.color,0.5))
+            style = LineStyle(1, Color(self.color,1)), 
+            color = Color(self.color,0.5))
         r = self.radius + self.viewaltitude
         self.viewPosition = (r*cos(self.viewanomaly), r*sin(self.viewanomaly))
         super().run()
