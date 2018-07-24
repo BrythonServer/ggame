@@ -110,10 +110,11 @@ class Rocket(ImagePoint):
         # end dynamic 
         super().__init__(self._getposition, 
             self.bmurl, 
-            self.bitmapframe, 
-            self.bitmapqty, 
-            self.bitmapdir,
-            self.bitmapmargin)
+            **kwargs)
+#            frame = self.bitmapframe, 
+#            qty = self.bitmapqty, 
+#            direction = self.bitmapdir,
+#            margin = self.bitmapmargin)
         self.scale = kwargs.get('bitmapscale', 0.1) # small
         initvel = kwargs.get('velocity', 0) # initial velocity
         initdird = kwargs.get('directiond', 0) # initial direction, degrees
