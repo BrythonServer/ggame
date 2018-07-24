@@ -565,7 +565,7 @@ class Circle2(_MathVisual2):
         #self._color = fill
         #self._pcenter = MathApp.logicalToPhysical(self._center())
         style = kwargs.get('style', self.defaultstyle)
-        color = kwargs.get('color', Color(0,0))
+        color = kwargs.get('color', Color(0x800000,0.5))
         
         super().__init__(CircleAsset(0, style, color), *args, **kwargs)
         self._touchAsset()
