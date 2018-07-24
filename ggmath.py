@@ -34,7 +34,7 @@ class _MathDynamic(metaclass=ABCMeta):
         self._dynamic = True
             
 
-class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
+class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     
     posinputsdef = []  # a list of names (string) of required positional inputs
     nonposinputsdef = []  # a list of names (string) of required non positional inputs
@@ -228,7 +228,7 @@ class _MathVisual2(Sprite, _MathDynamic, metaclass=ABCMeta):
         pass
     
 
-class Label2(_MathVisual2):
+class Label(_MathVisual):
     
     posinputsdef = ['pos']
     nonposinputsdef = ['text']
@@ -263,7 +263,7 @@ class Label2(_MathVisual2):
         pass
 
 
-class InputNumeric2(Label2):
+class InputNumeric(Label):
     
     def __init__(self, pos, val, **kwargs):
         """
@@ -331,7 +331,7 @@ class InputNumeric2(Label2):
         return self._val
 
 
-class InputButton2(Label2):
+class InputButton(Label):
     
     def __init__(self, pos, text, callback, **kwargs):
         """
@@ -361,7 +361,7 @@ class InputButton2(Label2):
         super().unselect()
 
         
-class _Point2(_MathVisual2, metaclass=ABCMeta):
+class _Point(_MathVisual, metaclass=ABCMeta):
 
     posinputsdef = ['pos']
     nonposinputsdef = []
@@ -404,7 +404,7 @@ class _Point2(_MathVisual2, metaclass=ABCMeta):
 
 
 
-class Point2(_Point2):
+class Point(_Point):
 
 
     defaultsize = 5
@@ -430,7 +430,7 @@ class Point2(_Point2):
 
 
 
-class ImagePoint2(_Point2):
+class ImagePoint(_Point):
 
 
     defaultsize = 5
@@ -467,7 +467,7 @@ class ImagePoint2(_Point2):
 
 
 
-class LineSegment2(_MathVisual2):
+class LineSegment(_MathVisual):
     
     posinputsdef = ['pos','end']
     
@@ -502,7 +502,7 @@ class LineSegment2(_MathVisual2):
 
 
 
-class Circle2(_MathVisual2):
+class Circle(_MathVisual):
     
     posinputsdef = ['pos']
     nonposinputsdef = ['radius']
@@ -698,7 +698,7 @@ class Circle2(_MathVisual2):
 
 
 
-class Slider2(_MathVisual2):
+class Slider(_MathVisual):
     
     posinputsdef = ['pos']
     nonposinputsdef = ['minval','maxval','initial']
@@ -1340,28 +1340,27 @@ if __name__ == "__main__":
     def pressbutton(caller):
         print("button pressed: ", caller)
 
-    #vslider = Slider((100, 125), -50, 50, 0, positioning='physical', steps=10)
-    vslider1 = Slider2((100, 150), 0, 250, 125, positioning='physical', steps=10)
+    vslider1 = Slider((100, 150), 0, 250, 125, positioning='physical', steps=10)
 
-    label = Label2(labelcoords, "whatevs", size=15, positioning="physical", color=labelcolor)
-    button = InputButton2(buttoncoords, "Press Me", pressbutton, size=15, positioning="physical")
-    numinput = InputNumeric2((300, 275), 3.14, positioning="physical")
+    label = Label(labelcoords, "whatevs", size=15, positioning="physical", color=labelcolor)
+    button = InputButton(buttoncoords, "Press Me", pressbutton, size=15, positioning="physical")
+    numinput = InputNumeric((300, 275), 3.14, positioning="physical")
 
     
-    p1 = Point2((0,0), color=Color(0x008000, 1))
+    p1 = Point((0,0), color=Color(0x008000, 1))
     p1.movable = True
     
-    p2 = Point2((0,-1))
+    p2 = Point((0,-1))
     
-    p3 = Point2((1.2,0))
+    p3 = Point((1.2,0))
     
 
-    LineSegment2(p2,p3, style=LineStyle(3, Color(0,1)))
-    LineSegment2(p2,p1, style=LineStyle(3, Color(0,1)))
+    LineSegment(p2,p3, style=LineStyle(3, Color(0,1)))
+    LineSegment(p2,p1, style=LineStyle(3, Color(0,1)))
     
-    c2 = Circle2((-1,-1), p1)
+    c2 = Circle((-1,-1), p1)
 
-    ip = ImagePoint2((1,0), 'bunny.png')
+    ip = ImagePoint((1,0), 'bunny.png')
     ip.movable = True
    
     def zoomCheck(**kwargs):
