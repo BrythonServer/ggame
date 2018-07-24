@@ -565,28 +565,13 @@ class Circle2(_MathVisual2):
         #self._color = fill
         #self._pcenter = MathApp.logicalToPhysical(self._center())
         style = kwargs.get('style', self.defaultstyle)
-        color = kwargs.get('color', self.defaultcolor)
+        color = kwargs.get('color', Color(0,0))
         
         super().__init__(CircleAsset(0, style, color), *args, **kwargs)
         self._touchAsset()
         self.fxcenter = self.fycenter = 0.5
 
-    """
-    def _newAsset(self, center, radius, fill, style):
-        pcenter = MathApp.logicalToPhysical(center())
-        try:
-            pradius = MathApp.distance(center(), radius()) * MathApp._scale
-        except AttributeError:
-            pradius = radius() * MathApp._scale
-        if pcenter != self._pcenter or pradius != self._pradius:
-            self._pcenter = pcenter
-            self._pradius = pradius
-            asset = self._buildAsset(pcenter, pradius, style, fill)
-            self._updateAsset(asset)
-            self.position = pcenter
-    """
-            
-    # This method is required
+
     def _buildAsset(self):
         pcenter = self.spposinputs.pos
         try: 
@@ -712,11 +697,6 @@ class Circle2(_MathVisual2):
         res.extend(getcoords(x[1], y[1], c))
         return res
 
-
-    """
-    def _touchAsset(self):
-        self._newAsset(self._center, self._radius, self._color, self._style)
-    """
 
     @property
     def center(self):
