@@ -417,8 +417,6 @@ class Point(_Point):
         
         * **pos** position of point
         """
-        kwargs.setdefault('size', self.defaultsize)
-        kwargs.setdefault('style', self.defaultstyle)
         super().__init__(pos, CircleAsset(self.defaultsize, 
             self.defaultstyle, self.defaultcolor), **kwargs)
 
@@ -454,9 +452,6 @@ class ImagePoint(_Point):
         qty = kwargs.get('qty', 1)
         direction = kwargs.get('direction', 'horizontal')
         margin = kwargs.get('margin', 0)
-        size = kwargs.get('size', self.defaultsize)
-        color = kwargs.get('color', self.defaultcolor)
-        style = kwargs.get('style', self.defaultstyle)
         self._imageasset = ImageAsset(url, frame, qty, direction, margin)
         super().__init__(pos, self._imageasset, **kwargs)
 
@@ -482,8 +477,7 @@ class LineSegment(_MathVisual):
         
         * **style** line style (thickness, color)
         """
-        style = kwargs.get('style', self.defaultstyle)
-        super().__init__(LineAsset(0,0, style), *args, **kwargs)
+        super().__init__(LineAsset(0,0, self.defaultstyle), *args, **kwargs)
         self._touchAsset()
         
     def _buildAsset(self):
@@ -506,6 +500,7 @@ class Circle(_MathVisual):
     
     posinputsdef = ['pos']
     nonposinputsdef = ['radius']
+    defaultcolor = Color(0,0)
     
     def __init__(self, *args, **kwargs):
         """
@@ -522,13 +517,6 @@ class Circle(_MathVisual):
         """
         Radius may be scalar or point
         """
-        #self._center = self.Eval(center)  # save function
-        #self._radius = self.Eval(radius)
-        #self._style = style
-        #self._color = fill
-        #self._pcenter = MathApp.logicalToPhysical(self._center())
-        kwargs.setdefault('color', Color(0,0))
-        
         super().__init__(CircleAsset(0, self.defaultstyle, self.defaultcolor), *args, **kwargs)
         self._touchAsset()
         self.fxcenter = self.fycenter = 0.5
