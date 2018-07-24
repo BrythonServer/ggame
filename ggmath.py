@@ -504,6 +504,71 @@ class _Point2(_MathVisual2, metaclass=ABCMeta):
             return otherpoint  # presumably a scalar - use this distance
 
 
+
+
+class Point2(_Point2):
+
+
+    defaultsize = 5
+    defaultstyle = LineStyle(0, Color(0, 1))
+
+
+    def __init__(self, pos, **kwargs):
+        """
+        Required Inputs
+        
+        * **pos** position of point
+        """
+        kwargs.setdefault('size', self.defaultsize)
+        kwargs.setdefault('style', self.defaultstyle)
+        super().__init__(pos, CircleAsset(self.defaultsize, 
+            self.defaultstyle, self.defaultcolor), **kwargs)
+
+
+    def _buildAsset(self):
+        return CircleAsset(self.stdinputs.size(),
+                            self.stdinputs.style(),
+                            self.stdinputs.color())
+
+
+
+class ImagePoint2(_Point2):
+
+
+    defaultsize = 5
+    defaultstyle = LineStyle(0, Color(0, 1))
+
+
+    def __init__(self, pos, url, **kwargs):
+        """
+        Required Inputs
+        
+        * **pos** position of point
+        * **url** location of image file
+        
+        Optional Inputs
+        * **frame** sub-frame location of image within file
+        * **qty** number of sub-frames, when used as sprite sheet
+        * **direction** one of 'horizontal' (default) or 'vertical'
+        * **margin** pixels between sub-frames if sprite sheet
+        """
+        frame = kwargs.get('frame', None)
+        qty = kwargs.get('qty', 1)
+        direction = kwargs.get('direction', 'horizontal')
+        margin = kwargs.get('margin', 0)
+        size = kwargs.get('size', self.defaultsize)
+        color = kwargs.get('color', self.defaultcolor)
+        style = kwargs.get('style', self.defaultstyle)
+        self._imageasset = ImageAsset(url, frame, qty, direction, margin)
+        super().__init__(pos, self._imageasset, **kwargs)
+
+
+    def _buildAsset(self):
+        return self._imageasset
+
+
+
+
 class LineSegment2(_MathVisual2):
     
     posinputsdef = ['pos','end']
@@ -731,68 +796,6 @@ class Circle2(_MathVisual2):
     def translate(self, pdisp):
         pass
 
-
-
-
-
-class Point2(_Point2):
-
-
-    defaultsize = 5
-    defaultstyle = LineStyle(0, Color(0, 1))
-
-
-    def __init__(self, pos, **kwargs):
-        """
-        Required Inputs
-        
-        * **pos** position of point
-        """
-        kwargs.setdefault('size', self.defaultsize)
-        kwargs.setdefault('style', self.defaultstyle)
-        super().__init__(pos, CircleAsset(self.defaultsize, 
-            self.defaultstyle, self.defaultcolor), **kwargs)
-
-
-    def _buildAsset(self):
-        return CircleAsset(self.stdinputs.size(),
-                            self.stdinputs.style(),
-                            self.stdinputs.color())
-
-# Can we simply handle another child of _Point2?
-class ImagePoint2(_Point2):
-
-
-    defaultsize = 5
-    defaultstyle = LineStyle(0, Color(0, 1))
-
-
-    def __init__(self, pos, url, **kwargs):
-        """
-        Required Inputs
-        
-        * **pos** position of point
-        * **url** location of image file
-        
-        Optional Inputs
-        * **frame** sub-frame location of image within file
-        * **qty** number of sub-frames, when used as sprite sheet
-        * **direction** one of 'horizontal' (default) or 'vertical'
-        * **margin** pixels between sub-frames if sprite sheet
-        """
-        frame = kwargs.get('frame', None)
-        qty = kwargs.get('qty', 1)
-        direction = kwargs.get('direction', 'horizontal')
-        margin = kwargs.get('margin', 0)
-        size = kwargs.get('size', self.defaultsize)
-        color = kwargs.get('color', self.defaultcolor)
-        style = kwargs.get('style', self.defaultstyle)
-        self._imageasset = ImageAsset(url, frame, qty, direction, margin)
-        super().__init__(pos, self._imageasset, **kwargs)
-
-
-    def _buildAsset(self):
-        return self._imageasset
 
 
 
