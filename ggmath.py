@@ -571,6 +571,7 @@ class Circle2(_MathVisual2):
         self._touchAsset()
         self.fxcenter = self.fycenter = 0.5
 
+    """
     def _newAsset(self, center, radius, fill, style):
         pcenter = MathApp.logicalToPhysical(center())
         try:
@@ -583,7 +584,9 @@ class Circle2(_MathVisual2):
             asset = self._buildAsset(pcenter, pradius, style, fill)
             self._updateAsset(asset)
             self.position = pcenter
+    """
             
+    # This method is required
     def _buildAsset(self):
         pcenter = self.spposinputs.pos
         try: 
@@ -710,9 +713,10 @@ class Circle2(_MathVisual2):
         return res
 
 
-
+    """
     def _touchAsset(self):
         self._newAsset(self._center, self._radius, self._color, self._style)
+    """
 
     @property
     def center(self):
@@ -2071,7 +2075,7 @@ if __name__ == "__main__":
     LineSegment2(p2,p3, style=LineStyle(3, Color(0,1)))
     LineSegment2(p2,p1, style=LineStyle(3, Color(0,1)))
     
-    
+    c2 = Circle2(p2, 1)
 
     ip = ImagePoint2((1,0), 'bunny.png')
     ip.movable = True
