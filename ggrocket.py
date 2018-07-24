@@ -110,10 +110,10 @@ class Rocket(ImagePoint):
         # end dynamic 
         super().__init__(self._getposition, 
             self.bmurl, 
-            self.bitmapframe, 
-            self.bitmapqty, 
-            self.bitmapdir,
-            self.bitmapmargin)
+            frame = self.bitmapframe, 
+            qty = self.bitmapqty, 
+            direction = self.bitmapdir,
+            margin = self.bitmapmargin)
         self.scale = kwargs.get('bitmapscale', 0.1) # small
         initvel = kwargs.get('velocity', 0) # initial velocity
         initdird = kwargs.get('directiond', 0) # initial direction, degrees
@@ -445,8 +445,8 @@ class Planet(MathApp):
         self.planetcircle = Circle(
             (0,0), 
             self.radius, 
-            LineStyle(1, Color(self.color,1)), 
-            Color(self.color,0.5))
+            style = LineStyle(1, Color(self.color,1)), 
+            color = Color(self.color,0.5))
         r = self.radius + self.viewaltitude
         self.viewPosition = (r*cos(self.viewanomaly), r*sin(self.viewanomaly))
         super().run()

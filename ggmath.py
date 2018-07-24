@@ -4,6 +4,7 @@ from ggame import Color, LineStyle, LineAsset, CircleAsset, Sprite, App
 from ggame import TextAsset, ImageAsset, PolygonAsset, RectangleAsset
 from abc import ABCMeta, abstractmethod
 from operator import add
+from collections import namedtuple
 
 from math import sin, cos, sqrt, pi
 from time import time
@@ -18,7 +19,6 @@ class _MathDynamic(metaclass=ABCMeta):
     def destroy(self):
         MathApp._removeDynamic(self)
 
-    @abstractmethod
     def step(self):
         pass
     
@@ -36,14 +36,101 @@ class _MathDynamic(metaclass=ABCMeta):
 
 class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     
-    def __init__(self, asset, pos):
+    posinputsdef = []  # a list of names (string) of required positional inputs
+    nonposinputsdef = []  # a list of names (string) of required non positional inputs
+    defaultsize = 15
+    defaultwidth = 200
+    defaultcolor = Color(0, 1)
+    defaultstyle = LineStyle(1, Color(0, 1))
+    
+    
+    def __init__(self, asset, *args, **kwargs):
+        """
+        Required inputs
+        
+        * **asset** a ggame asset
+        * **args** the list of required positional and nonpositional arguments,
+          as named in the posinputsdef and nonposinputsdef lists
+        * **kwargs** all other optional keyword arguments:
+          positioning - logical (default) or physical, size, width, color, style
+          movable
+        
+        """
+        
         MathApp._addVisual(self)
-        Sprite.__init__(self, asset, pos)
+        #Sprite.__init__(self, asset, args[0])
         _MathDynamic.__init__(self)
         self._movable = False
         self._selectable = False
         self._strokable = False
         self.selected = False
+        # 
+        self.positioning = kwargs.get('positioning', 'logical')
+        # positional inputs
+        self.PI = namedtuple('PI', self.posinputsdef)
+        # nonpositional inputs
+        self.NPI = namedtuple('NPI', self.nonposinputsdef)
+        # standard inputs (not positional)
+        standardargs = ['size','width','color','style']
+        self.SI = namedtuple('SI', standardargs)
+        # correct number of args?
+        if len(args) != len(self.posinputsdef) + len(self.nonposinputsdef):
+            raise TypeError("Incorrect number of parameters provided")
+        self.args = args
+        # generated named tuple of functions from positional inputs
+        self.posinputs = self.PI(*[self.Eval(p) for p in args][:len(self.posinputsdef)])
+        self._getPhysicalInputs()
+        # first positional argument must be a sprite position!
+        Sprite.__init__(self, asset, self.pposinputs[0])
+        # generated named tuple of functions from nonpositional inputs
+        if len(self.nonposinputsdef) > 0:
+            self.nposinputs = self.NPI(*[self.Eval(p) for p in args][(-1*len(self.nonposinputsdef)):])
+        else:
+            self.nposinputs = []
+        self.stdinputs = self.SI(self.Eval(kwargs.get('size', self.defaultsize)),
+                                    self.Eval(kwargs.get('width', self.defaultwidth)),
+                                    self.Eval(kwargs.get('color', self.defaultcolor)),
+                                    self.Eval(kwargs.get('style', self.defaultstyle)))
+        self.sposinputs = self.PI(*[0]*len(self.posinputs))
+        self.spposinputs = self.PI(*self.pposinputs)
+        self.snposinputs = self.NPI(*[0]*len(self.nposinputs))
+        self.sstdinputs = self.SI(*[0]*len(self.stdinputs))
+
+    def step(self):
+        self._touchAsset()
+        
+    def _saveInputs(self, inputs):
+        self.sposinputs, self.spposinputs, self.snposinputs, self.sstdinputs = inputs
+        
+    def _getInputs(self):
+        self._getPhysicalInputs()
+        return (self.PI(*[p() for p in self.posinputs]),
+            self.PI(*self.pposinputs),
+            self.NPI(*[p() for p in self.nposinputs]),
+            self.SI(*[p() for p in self.stdinputs]))
+
+    
+    def _getPhysicalInputs(self):
+        """
+        Translate all positional inputs to physical
+        """
+        pplist = []
+        if self.positioning == 'logical':
+            for p in self.posinputs:
+                pval = p()
+                try:
+                    pp = MathApp.logicalToPhysical(pval)
+                except AttributeError:
+                    pp = MathApp._scale * pval
+                pplist.append(pp)
+        else:
+            # already physical
+            pplist = [p() for p in self.posinputs]
+        self.pposinputs = self.PI(*pplist)
+    
+    def _inputsChanged(self, saved):
+        return self.spposinputs != saved[1] or self.snposinputs != saved[2] or self.sstdinputs != saved[3]
+
     
     def destroy(self):
         MathApp._removeVisual(self)
@@ -53,15 +140,17 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         Sprite.destroy(self)
 
     def _updateAsset(self, asset):
-        visible = self.GFX.visible
-        if App._win != None:
-            App._win.remove(self.GFX)
-            self.GFX.destroy()
-        self.asset = asset
-        self.GFX = self.asset.GFX
-        self.GFX.visible = visible        
-        if App._win != None:
-            App._win.add(self.GFX)
+        if type(asset) != ImageAsset:
+            visible = self.GFX.visible
+            if App._win != None:
+                App._win.remove(self.GFX)
+                self.GFX.destroy()
+            self.asset = asset
+            self.GFX = self.asset.GFX
+            self.GFX.visible = visible        
+            if App._win != None:
+                App._win.add(self.GFX)
+        self.position = self.pposinputs.pos
             
     @property
     def movable(self):
@@ -128,298 +217,73 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     def canstroke(self, ppos):
         return False
     
-    @abstractmethod
-    def _newAsset(self):    
-        pass
-
-    @abstractmethod
     def _touchAsset(self):
-        pass
-
-class Timer(_MathDynamic):
+        inputs = self._getInputs()
+        if self._inputsChanged(inputs):
+            self._saveInputs(inputs)
+            self._updateAsset(self._buildAsset())
     
-    def __init__(self):
-        super().__init__()
-        self.once = []
-        self.callbacks = {}
-        self.reset()
-        self.step()
-        self._start = self._reset  #first time
-        self.next = None
-        MathApp._addDynamic(self)  # always dynamically defined
-        
-    def reset(self):
-        self._reset = MathApp.time
-        
-    def step(self):
-        nexttimers = []
-        calllist = []
-        self.time = MathApp.time - self._reset
-        while self.once and self.once[0][0] <= MathApp.time:
-            tickinfo = self.once.pop(0)
-            if tickinfo[1]:  # periodic?
-                nexttimers.append((tickinfo[1], self.callbacks[tickinfo][0]))  # delay, callback
-            calllist.append(self.callbacks[tickinfo].pop(0)) # remove callback and queue it
-            if not self.callbacks[tickinfo]: # if the callback list is empty
-                del self.callbacks[tickinfo] # remove the dictionary entry altogether
-        for tickadd in nexttimers:
-            self.callAfter(tickadd[0], tickadd[1], True)  # keep it going
-        for call in calllist:
-            call(self)
-
-    def callAfter(self, delay, callback, periodic=False):
-        key = (MathApp.time + delay, delay if periodic else 0)
-        self.once.append(key)
-        callbacklist = self.callbacks.get(key, [])
-        callbacklist.append(callback)
-        self.callbacks[key] = callbacklist
-        self.once.sort()
-        
-    def callAt(self, time, callback):
-        self.callAfter(time-self.time, callback)
-        
-    def callEvery(self, period, callback):
-        self.callAfter(period, callback, True)
-
-    def __call__(self):
-        return self.time
-
-class Slider(_MathVisual):
-    
-    def __init__(self, pos, minval, maxval, initial, *args, **kwargs):
-        self._pos = self.Eval(pos)
-        self._min = minval
-        self._max = maxval
-        self.initial = initial
-        self._val = initial
-        
-        self._steps = kwargs.get('steps', 50)
-        self._step = (self._max-self._min)/self._steps
-        self._leftctrl = kwargs.get('leftkey', None)
-        self._rightctrl = kwargs.get('rightkey', None)
-        self._centerctrl = kwargs.get('centerkey', None)
-        self._positioning = kwargs.get('positioning', 'logical')
-        self._size = kwargs.get('size', 20)
-        self._width = kwargs.get('width', 200)
-        self.color = kwargs.get('color', Color(0,1))
-        if self._positioning == "physical":
-            self._ppos = self._pos()
-        else:
-            self._ppos = MathApp.logicalToPhysical(self._pos())
-        
-        super().__init__(RectangleAsset(self._width, self._size,
-            LineStyle(1, self.color), Color(0,0)), self._ppos)
-        self.selectable = True  # must be after super init!
-        self.strokable = True  # this enables grabbing/slideing the thumb
-        self._thumbwidth = max(self._width/40, 1)
-        if self._leftctrl:
-            MathApp.listenKeyEvent("keydown", self._leftctrl, self.moveLeft)
-        if self._rightctrl:
-            MathApp.listenKeyEvent("keydown", self._rightctrl, self.moveRight)
-        if self._centerctrl:
-            MathApp.listenKeyEvent("keydown", self._centerctrl, self.moveCenter)
-
-        self.thumb = Sprite(RectangleAsset(self._thumbwidth, 
-            self._size-2, LineStyle(1, self.color), self.color), 
-            self.thumbXY())
-            
-        self.thumbcaptured = False
-            
-    def __call__(self):
-        return self._val
-
-    @property
-    def value(self):
-        return self._val
-        
-    @value.setter
-    def value(self, val):
-        self._setval(val)
-
-    def thumbXY(self):
-        return (self._ppos[0]+(self._val-self._min)*
-                (self._width-self._thumbwidth)/(self._max-self._min),
-                self._ppos[1]+1)
-            
-    def _newAsset(self, pos):
-        if self._positioning != "physical":
-            ppos = MathApp.logicalToPhysical(pos())
-        else:
-            ppos = pos()
-        if ppos != self._ppos:
-            self._ppos = ppos
-            self.position = ppos
-            self.setThumb()
-            
-    def _touchAsset(self):
-        self._newAsset(self._pos)
-        
-    def setThumb(self):
-        self.thumb.position = self.thumbXY()
-                
-    def step(self):
+    @abstractmethod
+    def _buildAsset(self):
         pass
     
-    def _setval(self, val):
-        if val <= self._min:
-            self._val = self._min
-        elif val >= self._max:
-            self._val = self._max
-        else:
-            #self._val = val
-            self._val = round((val - self._min)*self._steps/(self._max-self._min))*self._step + self._min
-        self.setThumb()
-        
-    
-    def increment(self, step):
-        self._setval(self._val + step)
-        
-    def select(self):
-        super().select()
-        if not self._leftctrl:
-            MathApp.listenKeyEvent("keydown", "left arrow", self.moveLeft)
-        if not self._rightctrl:
-            MathApp.listenKeyEvent("keydown", "right arrow", self.moveRight)
-        MathApp.listenMouseEvent("click", self.mouseClick)
-
-    def unselect(self):
-        super().unselect()
-        try:
-            if not self._leftctrl:
-                MathApp.unlistenKeyEvent("keydown", "left arrow", self.moveLeft)
-            if not self._rightctrl:
-                MathApp.unlistenKeyEvent("keydown", "right arrow", self.moveRight)
-            MathApp.unlistenMouseEvent("click", self.mouseClick)
-        except ValueError:
-            pass
-
-    def mouseClick(self, event):
-        if self.physicalPointTouching((event.x, event.y)):
-            if event.x > self.thumb.x + self._thumbwidth:
-                self.moveRight(event)
-            elif event.x < self.thumb.x:
-                self.moveLeft(event)
-                
-
-    def moveLeft(self, event):
-        self.increment(-self._step)
-
-    def moveRight(self, event):
-        self.increment(self._step)
-        
-    def moveCenter(self, event):
-        self._val = (self._min + self._max)/2
-        self.setThumb()
-        
-    def canstroke(self, ppos):
-        return self.physicalPointTouchingThumb(ppos)
-        
-    def stroke(self, ppos, pdisp):
-        xpos = ppos[0] + pdisp[0]
-        self.value = (xpos - self._ppos[0])*(self._max-self._min)/self._width + self._min
-
-    def physicalPointTouching(self, ppos):
-        return (ppos[0] >= self._ppos[0] and 
-            ppos[0] <= self._ppos[0] + self._width and
-            ppos[1] >= self._ppos[1] and 
-            ppos[1] <= self._ppos[1] + self._size)
-
-    def physicalPointTouchingThumb(self, ppos):
-        thumbpos = self.thumbXY()
-        return (ppos[0] >= thumbpos[0] and 
-            ppos[0] <= thumbpos[0] + self._thumbwidth + 2 and
-            ppos[1] >= thumbpos[1] and 
-            ppos[1] <= thumbpos[1] + self._size - 2)
-
-    def translate(self, pdisp):
-        pass
-    
-
 
 class Label(_MathVisual):
     
-    def __init__(self, pos, text, positioning="logical", size=10, width=200, color=Color(0,1)):
-        self._text = self.Eval(text) # create a *callable* text value function
-        self._ptext = self._text()
-        self._pos = self.Eval(pos)
-        self._positioning = positioning
-        self._size = size
-        self._width = width
-        self._color = color
-        if self._positioning == "physical":
-            self._ppos = self._pos()
-        else:
-            self._ppos = MathApp.logicalToPhysical(self._pos())
-            
-        super().__init__(TextAsset(self._ptext, 
-                style="{0}px Courier".format(self._size), 
-                width=self._width,
-                color=self._color), 
-            self._ppos)
-
-    def _newAsset(self, pos, text, size, width, color):    
-        if self._positioning != "physical":
-            ppos = MathApp.logicalToPhysical(pos())
-        else:
-            ppos = pos()
-        text = text()
-        if ppos != self._ppos or text != self._ptext:
-            self._ppos = ppos
-            self._ptext = text
-            self._updateAsset(TextAsset(text, 
-                style="{0}px Courier".format(size),
-                width=width,
-                color=color))
-            self.position = ppos
-        
-    def __call__(self):
-        return self._text()
-
-    def _touchAsset(self):
-        self._newAsset(self._pos, self._text, self._size, self._width, self._color)
-
-    def step(self):
-        self._touchAsset()
+    posinputsdef = ['pos']
+    nonposinputsdef = ['text']
     
+    def __init__(self, *args, **kwargs):
+        """
+        Required Inputs
+        
+        * **pos** position of label
+        * **text** text contents of label
+        """
+        super().__init__(TextAsset(""), *args, **kwargs)
+        self._touchAsset()
+
+    def _buildAsset(self):
+        return TextAsset(self.nposinputs.text(), 
+                            style="{0}px Courier".format(self.stdinputs.size()),
+                            width=self.stdinputs.width(),
+                            fill=self.stdinputs.color())
+
+    def __call__(self):
+        return self.nposinputs.text()
+
     def physicalPointTouching(self, ppos):
-        return (ppos[0] >= self._ppos[0] and 
-            ppos[0] <= self._ppos[0] + self._width and
-            ppos[1] >= self._ppos[1] and 
-            ppos[1] <= self._ppos[1] + self._size)
+        _ppos = self.spposinputs.pos
+        return (ppos[0] >= _ppos[0] and 
+            ppos[0] <= _ppos[0] + self.sstdinputs.width and
+            ppos[1] >= _ppos[1] and 
+            ppos[1] <= _ppos[1] + self.sstdinputs.size)
 
     def translate(self, pdisp):
         pass
 
 
-class InputButton(Label):
-    
-    def __init__(self, pos, text, callback, positioning="logical", 
-            size=10, width=200, color=Color(0,1)):
-        self._callback = callback
-        super().__init__(pos, text, positioning=positioning,
-            size=size, width=width, color=color)
-        self.selectable = True
-
-    def select(self):
-        super().select()
-        self._callback()
-        self.unselect()
-
-    def unselect(self):
-        super().unselect()
-
-        
 class InputNumeric(Label):
-
-    def __init__(self, pos, val, fmt="{0.2}", positioning="logical", size=10, 
-            width=200, color=Color(0,1)):
-        self._fmt = fmt
+    
+    def __init__(self, pos, val, **kwargs):
+        """
+        Required Inputs
+        
+        * **pos** position of button
+        * **val** initial value of input
+        
+        Optional Keyword Input
+        * **fmt** a Python format string (default is {0.2})
+        """
+        self._fmt = kwargs.get('fmt', '{0.2}')
         self._val = self.Eval(val)()  # initialize to simple numeric
         self._savedval = self._val
         self._updateText()
-        super().__init__(pos, self._text, positioning=positioning, 
-            size=size, width=width, color=color)
+        super().__init__(pos, self._textValue, **kwargs)
         self.selectable = True
+        
+    def _textValue(self):
+        return self._text()
 
     def _updateText(self):
         self._text = self.Eval(self._fmt.format(self._val))
@@ -467,163 +331,205 @@ class InputNumeric(Label):
         return self._val
 
 
-class _Point(_MathVisual, metaclass=ABCMeta):
+class InputButton(Label):
     
-    def __init__(self, pos, asset):
-        self._pos = self.Eval(pos)  # create a *callable* position function
-        self._ppos = MathApp.logicalToPhysical(self._pos()) # physical position
-        super().__init__(asset, self._ppos)
-        self.center = (0.5, 0.5)
+    def __init__(self, pos, text, callback, **kwargs):
+        """
+        Required Inputs
         
+        * **pos** position of button
+        * **text** text of button
+        * **callback** reference of a function to execute, passing this button object
+        """
+        super().__init__(pos, text, **kwargs)
+        self._touchAsset()
+        self._callback = callback
+        self.selectable = True
+
+    def _buildAsset(self):
+        return TextAsset(self.nposinputs.text(), 
+                            style="bold {0}px Courier".format(self.stdinputs.size()),
+                            width=self.stdinputs.width(),
+                            fill=self.stdinputs.color())
+
+    def select(self):
+        super().select()
+        if self._callback: self._callback(self)
+        self.unselect()
+
+    def unselect(self):
+        super().unselect()
+
+        
+class _Point(_MathVisual, metaclass=ABCMeta):
+
+    posinputsdef = ['pos']
+    nonposinputsdef = []
+
+    def __init__(self, pos, asset, **kwargs):
+        """
+        Required Inputs
+        
+        * **pos** position of point
+        * **asset** asset object to use
+        """
+        super().__init__(asset, pos, **kwargs)
+        self._touchAsset()
+        self.center = (0.5, 0.5)
+
     def __call__(self):
-        return self._pos()
+        return self.posinputs.pos()
 
     def step(self):
+        pass  # FIXME
         self._touchAsset()
 
     def physicalPointTouching(self, ppos):
-        return MathApp.distance(ppos, self._ppos) < self._size
+        return MathApp.distance(ppos, self.pposinputs.pos) < self.sstdinputs.size
         
     def translate(self, pdisp):
         ldisp = MathApp.translatePhysicalToLogical(pdisp)
-        pos = self._pos()
-        self._pos = self.Eval((pos[0] + ldisp[0], pos[1] + ldisp[1]))
+        pos = self.posinputs.pos()
+        self.posinputs = self.posinputs._replace(pos=self.Eval((pos[0] + ldisp[0], pos[1] + ldisp[1])))
         self._touchAsset()
         
     def distanceTo(self, otherpoint):
         try:
-            pos = self._pos()
-            opos = otherpoint._pos()
-            return MathApp.distance(self._pos(), otherpoint._pos())
+            pos = self.posinputs.pos
+            opos = otherpoint.posinputs.pos
+            return MathApp.distance(pos, opos())
         except AttributeError:
             return otherpoint  # presumably a scalar - use this distance
 
 
+
+
 class Point(_Point):
 
-    def __init__(self, pos, size=5, color=Color(0,1), style=LineStyle(0, Color(0,1))):
-        self._size = size
-        self._color = color
-        self._style = style
-        super().__init__(pos, CircleAsset(size, style, color))
 
-    def _newAsset(self, pos, size, color, style):
-        ppos = MathApp.logicalToPhysical(pos())
-        if size != self._size or color != self._color or style != self._style:
-            self._updateAsset(CircleAsset(size, style, color))
-            self._size = size
-            self._color = color
-            self._style = style
-            
-        if ppos != self._ppos:
-            self._ppos = ppos
-            self.position = ppos
+    defaultsize = 5
+    defaultstyle = LineStyle(0, Color(0, 1))
 
-    def _touchAsset(self):
-        self._newAsset(self._pos, self._size, self._color, self._style)
+
+    def __init__(self, pos, **kwargs):
+        """
+        Required Inputs
+        
+        * **pos** position of point
+        """
+        super().__init__(pos, CircleAsset(self.defaultsize, 
+            self.defaultstyle, self.defaultcolor), **kwargs)
+
+
+    def _buildAsset(self):
+        return CircleAsset(self.stdinputs.size(),
+                            self.stdinputs.style(),
+                            self.stdinputs.color())
 
 
 
 class ImagePoint(_Point):
-    def __init__(self, pos, url, frame=None, qty=1, direction='horizontal', margin=0):
-        super().__init__(pos, ImageAsset(url, frame, qty, direction, margin))
-
-    def _newAsset(self, pos):
-        ppos = MathApp.logicalToPhysical(pos())
-        if ppos != self._ppos:
-            self._ppos = ppos
-            self.position = ppos
-
-    def _touchAsset(self):
-        self._newAsset(self._pos)
 
 
-    
+    defaultsize = 5
+    defaultstyle = LineStyle(0, Color(0, 1))
+
+
+    def __init__(self, pos, url, **kwargs):
+        """
+        Required Inputs
+        
+        * **pos** position of point
+        * **url** location of image file
+        
+        Optional Inputs
+        * **frame** sub-frame location of image within file
+        * **qty** number of sub-frames, when used as sprite sheet
+        * **direction** one of 'horizontal' (default) or 'vertical'
+        * **margin** pixels between sub-frames if sprite sheet
+        """
+        frame = kwargs.get('frame', None)
+        qty = kwargs.get('qty', 1)
+        direction = kwargs.get('direction', 'horizontal')
+        margin = kwargs.get('margin', 0)
+        self._imageasset = ImageAsset(url, frame, qty, direction, margin)
+        super().__init__(pos, self._imageasset, **kwargs)
+
+
+    def _buildAsset(self):
+        return self._imageasset
+
+
+
 
 class LineSegment(_MathVisual):
     
-    def __init__(self, start, end, style=LineStyle(1, Color(0,1))):
-        self._start = self.Eval(start)  # save function
-        self._end = self.Eval(end)
-        self._style = style
-        self._pstart = MathApp.logicalToPhysical(self._start())
-        self._pend = MathApp.logicalToPhysical(self._end())
-        super().__init__(LineAsset(self._pend[0]-self._pstart[0], 
-            self._pend[1]-self._pstart[1], style), self._pstart)
-
-    def _newAsset(self, start, end, style):
-        pstart = MathApp.logicalToPhysical(start())
-        pend = MathApp.logicalToPhysical(end())
-        if pstart != self._pstart or pend != self._pend:
-            self._pstart = pstart
-            self._pend = pend
-            self._updateAsset(LineAsset(pend[0]-pstart[0], pend[1]-pstart[1], style))
-            self.position = pstart
-
-    def _touchAsset(self):
-        self._newAsset(self._start, self._end, self._style)
+    posinputsdef = ['pos','end']
     
-    @property
-    def start(self):
-        return self._start()
-
-    @start.setter
-    def start(self, val):
-        newval = self.Eval(val)
-        if newval != self._start:
-            self._start = newval
-            self._touchAsset()
-
-    @property
-    def end(self):
-        return self._end()
-
-    @end.setter
-    def end(self, val):
-        newval = self.Eval(val)
-        if newval != self._end:
-            self._end = newval
-            self._touchAsset()
+    def __init__(self, *args, **kwargs):
+        """
+        Required Inputs
         
-    def step(self):
+        * **pos** start position of segment
+        * **end** end position of segment
+        
+        Optional Inputs
+        
+        * **style** line style (thickness, color)
+        """
+        super().__init__(LineAsset(0,0, self.defaultstyle), *args, **kwargs)
         self._touchAsset()
+        
+    def _buildAsset(self):
+        start = self.pposinputs.pos
+        end = self.pposinputs.end
+        self.position = start
+        return LineAsset(end[0]-start[0],
+                            end[1]-start[1],
+                            self.stdinputs.style())
 
     def physicalPointTouching(self, ppos):
         return False
-        
+
     def translate(self, pdisp):
         pass
 
+
+
 class Circle(_MathVisual):
     
-    def __init__(self, center, radius, style=LineStyle(1, Color(0,1)), fill=Color(0,0)):
+    posinputsdef = ['pos']
+    nonposinputsdef = ['radius']
+    defaultcolor = Color(0,0)
+    
+    def __init__(self, *args, **kwargs):
+        """
+        Required Inputs
+        
+        * **pos** center of circle
+        * **radius** radius of circle (logical) or point on circle
+        
+        Optional Inputs
+        
+        * **style** border line style (thickness, color)
+        * **color** fill color
+        """
         """
         Radius may be scalar or point
         """
-        self._center = self.Eval(center)  # save function
-        self._radius = self.Eval(radius)
-        self._style = style
-        self._color = fill
-        self._pcenter = MathApp.logicalToPhysical(self._center())
-        super().__init__(CircleAsset(0, style, fill), (0,0))
-        self._pradius = -1
+        super().__init__(CircleAsset(0, self.defaultstyle, self.defaultcolor), *args, **kwargs)
         self._touchAsset()
         self.fxcenter = self.fycenter = 0.5
 
-    def _newAsset(self, center, radius, fill, style):
-        pcenter = MathApp.logicalToPhysical(center())
-        try:
-            pradius = MathApp.distance(center(), radius()) * MathApp._scale
-        except AttributeError:
-            pradius = radius() * MathApp._scale
-        if pcenter != self._pcenter or pradius != self._pradius:
-            self._pcenter = pcenter
-            self._pradius = pradius
-            asset = self._buildAsset(pcenter, pradius, style, fill)
-            self._updateAsset(asset)
-            self.position = pcenter
 
-    def _buildAsset(self, pcenter, pradius, style, fill):
+    def _buildAsset(self):
+        pcenter = self.spposinputs.pos
+        try: 
+            pradius = MathApp.distance(self.posinputs.pos(), self.nposinputs.radius()) * MathApp._scale
+        except AttributeError:
+            pradius = self.nposinputs.radius() * MathApp._scale
+        style = self.stdinputs.style()
+        fill = self.stdinputs.color()
         ymax = pcenter[1]+pradius
         ymin = pcenter[1]-pradius
         xmax = pcenter[0]+pradius
@@ -742,10 +648,6 @@ class Circle(_MathVisual):
         return res
 
 
-
-    def _touchAsset(self):
-        self._newAsset(self._center, self._radius, self._color, self._style)
-
     @property
     def center(self):
         return self._center()
@@ -780,6 +682,194 @@ class Circle(_MathVisual):
     def translate(self, pdisp):
         pass
 
+
+
+
+
+class Slider(_MathVisual):
+    
+    posinputsdef = ['pos']
+    nonposinputsdef = ['minval','maxval','initial']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(
+            RectangleAsset(1, 1), *args, **kwargs)
+        self._val = self.nposinputs.initial()
+        self._steps = kwargs.get('steps', 50)
+        self._step = (self.nposinputs.maxval()-self.nposinputs.minval())/self._steps
+        self._leftctrl = kwargs.get('leftkey', None)
+        self._rightctrl = kwargs.get('rightkey', None)
+        self._centerctrl = kwargs.get('centerkey', None)
+        self.selectable = True  # must be after super init!
+        self.strokable = True  # this enables grabbing/slideing the thumb
+        self.thumbcaptured = False
+        self._thumbwidth = max(self.stdinputs.width()/40, 1)
+        self.thumb = Sprite(RectangleAsset(self._thumbwidth, 
+            self.stdinputs.size()-2, LineStyle(1, self.stdinputs.color()), self.stdinputs.color()), 
+            self.thumbXY())
+        self._touchAsset()
+        if self._leftctrl:
+            MathApp.listenKeyEvent("keydown", self._leftctrl, self.moveLeft)
+        if self._rightctrl:
+            MathApp.listenKeyEvent("keydown", self._rightctrl, self.moveRight)
+        if self._centerctrl:
+            MathApp.listenKeyEvent("keydown", self._centerctrl, self.moveCenter)
+
+    def thumbXY(self):
+        minval = self.nposinputs.minval()
+        maxval = self.nposinputs.maxval()
+        return (self.spposinputs.pos[0]+(self._val-minval)*
+                (self.sstdinputs.width-self._thumbwidth)/(maxval-minval),
+                self.spposinputs.pos[1]+1)
+            
+    def __call__(self):
+        return self._val
+
+    @property
+    def value(self):
+        return self._val
+        
+    @value.setter
+    def value(self, val):
+        self._setval(val)
+
+    def _buildAsset(self):
+        self.setThumb()
+        return RectangleAsset(
+            self.stdinputs.width(), self.stdinputs.size(), 
+            line=self.stdinputs.style(), fill=Color(0,0))
+
+    def setThumb(self):
+        self.thumb.position = self.thumbXY()
+                
+    def step(self):
+        pass
+    
+    def _setval(self, val):
+        minval = self.nposinputs.minval()
+        maxval = self.nposinputs.maxval()
+        if val <= minval:
+            self._val = minval
+        elif val >= maxval:
+            self._val = maxval
+        else:
+            self._val = round((val - minval)*self._steps/(maxval-minval))*self._step + minval
+        self.setThumb()
+        
+    def increment(self, step):
+        self._setval(self._val + step)
+        
+    def select(self):
+        super().select()
+        if not self._leftctrl:
+            MathApp.listenKeyEvent("keydown", "left arrow", self.moveLeft)
+        if not self._rightctrl:
+            MathApp.listenKeyEvent("keydown", "right arrow", self.moveRight)
+        MathApp.listenMouseEvent("click", self.mouseClick)
+
+    def unselect(self):
+        super().unselect()
+        try:
+            if not self._leftctrl:
+                MathApp.unlistenKeyEvent("keydown", "left arrow", self.moveLeft)
+            if not self._rightctrl:
+                MathApp.unlistenKeyEvent("keydown", "right arrow", self.moveRight)
+            MathApp.unlistenMouseEvent("click", self.mouseClick)
+        except ValueError:
+            pass
+
+    def mouseClick(self, event):
+        if self.physicalPointTouching((event.x, event.y)):
+            if event.x > self.thumb.x + self._thumbwidth:
+                self.moveRight(event)
+            elif event.x < self.thumb.x:
+                self.moveLeft(event)
+                
+    def moveLeft(self, event):
+        self.increment(-self._step)
+
+    def moveRight(self, event):
+        self.increment(self._step)
+        
+    def moveCenter(self, event):
+        self._val = (self.snposinputs.minval + self.snposinputs.maxval)/2
+        self.setThumb()
+        
+    def canstroke(self, ppos):
+        return self.physicalPointTouchingThumb(ppos)
+        
+    def stroke(self, ppos, pdisp):
+        _ppos = self.spposinputs.pos
+        minval = self.snposinputs.minval
+        maxval = self.snposinputs.maxval
+        xpos = ppos[0] + pdisp[0]
+        self.value = (xpos - _ppos[0])*(maxval-minval)/self.sstdinputs.width + minval
+
+    def physicalPointTouching(self, ppos):
+        _ppos = self.spposinputs.pos
+        return (ppos[0] >= _ppos[0] and 
+            ppos[0] <= _ppos[0] + self.sstdinputs.width and
+            ppos[1] >= _ppos[1] and 
+            ppos[1] <= _ppos[1] + self.sstdinputs.size)
+
+    def physicalPointTouchingThumb(self, ppos):
+        thumbpos = self.thumbXY()
+        return (ppos[0] >= thumbpos[0] and 
+            ppos[0] <= thumbpos[0] + self._thumbwidth + 2 and
+            ppos[1] >= thumbpos[1] and 
+            ppos[1] <= thumbpos[1] + self.sstdinputs.size - 2)
+
+    def translate(self, pdisp):
+        pass
+
+    
+class Timer(_MathDynamic):
+    
+    def __init__(self):
+        super().__init__()
+        self.once = []
+        self.callbacks = {}
+        self.reset()
+        self.step()
+        self._start = self._reset  #first time
+        self.next = None
+        MathApp._addDynamic(self)  # always dynamically defined
+        
+    def reset(self):
+        self._reset = MathApp.time
+        
+    def step(self):
+        nexttimers = []
+        calllist = []
+        self.time = MathApp.time - self._reset
+        while self.once and self.once[0][0] <= MathApp.time:
+            tickinfo = self.once.pop(0)
+            if tickinfo[1]:  # periodic?
+                nexttimers.append((tickinfo[1], self.callbacks[tickinfo][0]))  # delay, callback
+            calllist.append(self.callbacks[tickinfo].pop(0)) # remove callback and queue it
+            if not self.callbacks[tickinfo]: # if the callback list is empty
+                del self.callbacks[tickinfo] # remove the dictionary entry altogether
+        for tickadd in nexttimers:
+            self.callAfter(tickadd[0], tickadd[1], True)  # keep it going
+        for call in calllist:
+            call(self)
+
+    def callAfter(self, delay, callback, periodic=False):
+        key = (MathApp.time + delay, delay if periodic else 0)
+        self.once.append(key)
+        callbacklist = self.callbacks.get(key, [])
+        callbacklist.append(callback)
+        self.callbacks[key] = callbacklist
+        self.once.sort()
+        
+    def callAt(self, time, callback):
+        self.callAfter(time-self.time, callback)
+        
+    def callEvery(self, period, callback):
+        self.callAfter(period, callback, True)
+
+    def __call__(self):
+        return self.time
 
 
 class Bunny():
@@ -879,7 +969,7 @@ class MathApp(App):
         # touch all visual object assets to use scaling
         for obj in self._mathVisualList:
             obj._touchAsset()
-        
+
 
     @classmethod
     def logicalToPhysical(cls, lp):
@@ -1022,6 +1112,7 @@ class MathApp(App):
             
     @classmethod
     def _addVisual(cls, obj):
+        """ FIX ME """
         if isinstance(obj, _MathVisual):
             cls._mathVisualList.append(obj)
             
@@ -1057,7 +1148,7 @@ class MathApp(App):
             
     @classmethod
     def _removeSelectable(cls, obj):
-        if isinstance(obj, _MathVisual) and obj in cls._mathSelectableList:
+       if isinstance(obj, _MathVisual)  and obj in cls._mathSelectableList:
             cls._mathSelectableList.remove(obj)
 
     @classmethod
@@ -1224,16 +1315,49 @@ if __name__ == "__main__":
     def step(timer):
         print(id(timer))
 
-    vslider = Slider((100, 125), -50, 50, 0, positioning='physical', steps=10)
+    def labelcoords():
+        return (100 + vslider1(), 175)
+        
+    def buttoncoords():
+        return (300 + vslider1(), 175)
+        
+    def labelcolor():
+        colorval =   vslider1()
+        return Color(colorval*256,1)
 
+    def pressbutton(caller):
+        print("button pressed: ", caller)
+
+    vslider1 = Slider((100, 150), 0, 250, 125, positioning='physical', steps=10)
+
+    label = Label(labelcoords, "whatevs", size=15, positioning="physical", color=labelcolor)
+    button = InputButton(buttoncoords, "Press Me", pressbutton, size=15, positioning="physical")
+    numinput = InputNumeric((300, 275), 3.14, positioning="physical")
+
+    
+    p1 = Point((0,0), color=Color(0x008000, 1))
+    p1.movable = True
+    
+    p2 = Point((0,-1))
+    
+    p3 = Point((1.2,0))
+    
+
+    LineSegment(p2,p3, style=LineStyle(3, Color(0,1)))
+    LineSegment(p2,p1, style=LineStyle(3, Color(0,1)))
+    
+    c2 = Circle((-1,-1), p1)
+
+    ip = ImagePoint((1,0), 'bunny.png')
+    ip.movable = True
    
     def zoomCheck(**kwargs):
         viewtype = kwargs.get('viewchange')
         scale = kwargs.get('scale')
         print(ap.scale)
     
-    pcenter = Point((0, -5000000))
-    c1 = Circle((0,-5000000), 5000000, LineStyle(1, Color(0x008040,1)), Color(0x008400,0.5))
+    #pcenter = Point((0, -5000000))
+    # c1 = Circle((0,-5000000), 5000000, LineStyle(1, Color(0x008040,1)), Color(0x008400,0.5))
     ap = MathApp()
 
     #ap.addViewNotification(zoomCheck)
