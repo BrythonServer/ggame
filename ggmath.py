@@ -2057,7 +2057,7 @@ if __name__ == "__main__":
     LineSegment2(p2,p3, style=LineStyle(3, Color(0,1)))
     LineSegment2(p2,p1, style=LineStyle(3, Color(0,1)))
     
-    c2 = Circle2(p2, 1)
+    c2 = Circle2((-1,-1), p1)
 
     ip = ImagePoint2((1,0), 'bunny.png')
     ip.movable = True
