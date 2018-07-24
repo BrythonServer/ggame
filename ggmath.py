@@ -1125,12 +1125,12 @@ class MathApp(App):
     @classmethod
     def _addVisual(cls, obj):
         """ FIX ME """
-        if isinstance(obj, _MathVisual2):
+        if isinstance(obj, _MathVisual):
             cls._mathVisualList.append(obj)
             
     @classmethod
     def _removeVisual(cls, obj):
-        if isinstance(obj, _MathVisual2) and obj in cls._mathVisualList:
+        if isinstance(obj, _MathVisual) and obj in cls._mathVisualList:
             cls._mathVisualList.remove(obj)
 
     @classmethod
@@ -1145,32 +1145,32 @@ class MathApp(App):
 
     @classmethod
     def _addMovable(cls, obj):
-        if isinstance(obj, _MathVisual2) and not obj in cls._mathMovableList:
+        if isinstance(obj, _MathVisual) and not obj in cls._mathMovableList:
             cls._mathMovableList.append(obj)
             
     @classmethod
     def _removeMovable(cls, obj):
-        if isinstance(obj, _MathVisual2) and obj in cls._mathMovableList:
+        if isinstance(obj, _MathVisual) and obj in cls._mathMovableList:
             cls._mathMovableList.remove(obj)
 
     @classmethod
     def _addSelectable(cls, obj):
-        if isinstance(obj, _MathVisual2) and not obj in cls._mathSelectableList:
+        if isinstance(obj, _MathVisual) and not obj in cls._mathSelectableList:
             cls._mathSelectableList.append(obj)
             
     @classmethod
     def _removeSelectable(cls, obj):
-       if isinstance(obj, _MathVisual2)  and obj in cls._mathSelectableList:
+       if isinstance(obj, _MathVisual)  and obj in cls._mathSelectableList:
             cls._mathSelectableList.remove(obj)
 
     @classmethod
     def _addStrokable(cls, obj):
-        if isinstance(obj, _MathVisual2) and not obj in cls._mathStrokableList:
+        if isinstance(obj, _MathVisual) and not obj in cls._mathStrokableList:
             cls._mathStrokableList.append(obj)
             
     @classmethod
     def _removeStrokable(cls, obj):
-        if isinstance(obj, _MathVisual2) and obj in cls._mathStrokableList:
+        if isinstance(obj, _MathVisual) and obj in cls._mathStrokableList:
             cls._mathStrokableList.remove(obj)
 
     @classmethod
