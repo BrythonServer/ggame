@@ -506,8 +506,10 @@ class InputImageButton(ImagePoint):
     def step(self):
         if self.mouseisdown != self.mousewasdown:
             if self.mouseisdown:
+                print("next")
                 self.nextImage()
             else:
+                print("first")
                 self.firstImage()
             self.mousewasdown = self.mouseisdown
         super().step()
