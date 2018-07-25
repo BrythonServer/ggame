@@ -247,6 +247,7 @@ class Label(_MathVisual):
         * **pos** position of label
         * **text** text contents of label
         """
+        print("L")
         super().__init__(TextAsset(""), *args, **kwargs)
         self._touchAsset()
 
@@ -348,6 +349,7 @@ class InputButton(Label):
         * **text** text of button
         * **callback** reference of a function to execute, passing this button object
         """
+        print("IB")
         super().__init__(pos, text, **kwargs)
         self._touchAsset()
         self._callback = callback
@@ -381,6 +383,7 @@ class _Point(_MathVisual, metaclass=ABCMeta):
         * **pos** position of point
         * **asset** asset object to use
         """
+        print("_P")
         super().__init__(asset, pos, **kwargs)
         self._touchAsset()
         self.center = (0.5, 0.5)
@@ -452,6 +455,7 @@ class ImagePoint(_Point):
         * **direction** one of 'horizontal' (default) or 'vertical'
         * **margin** pixels between sub-frames if sprite sheet
         """
+        print("IP")
         frame = kwargs.get('frame', None)
         qty = kwargs.get('qty', 1)
         direction = kwargs.get('direction', 'horizontal')
@@ -481,7 +485,8 @@ class InputImageButton(ImagePoint, InputButton):
         * **direction** one of 'horizontal' (default) or 'vertical'
         * **margin** pixels between sub-frames if sprite sheet
         """
-        ImagePoint.__init__(pos, url, **kwargs)
+        print("IIB")
+        super().__init__(pos, url, **kwargs)
         self._callback = callback
         self.selectable = True
 
