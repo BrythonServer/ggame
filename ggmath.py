@@ -512,6 +512,54 @@ class InputImageButton(ImagePoint):
         return self.mouseisdown
         
 
+class InputImageToggle(ImagePoint):
+
+    def __init__(self, url, statelist, *args, **kwargs):
+        """
+        Required Inputs
+        
+        * **url** location of image file
+        * **statelist** list of values to correspond with toggle states
+        * **pos** position of point
+        
+        Optional Inputs
+        * **frame** sub-frame location of image within file
+        * **direction** for sprite sheet one of 'horizontal' (default) or 'vertical'
+        * **margin** pixels between sub-frames if sprite sheet
+        * Note the qty of images is equal to length of the statelist
+        """
+        self.statelist = statelist
+        kwargs.setdefault('qty', len(statelist))
+        super().__init__(url, *args, **kwargs)
+        self.center = (0,0)
+        self.selectable = True
+        self.togglestate = 0
+        self.setImage(self.togglestate)
+
+    def select(self):
+        super().select()
+        self.togglestate += 1
+        if self.togglestate > len(self.statelist):
+            self.togglestate = 0
+        self.setImage(self.togglestate)
+        self.unselect()
+
+    def __call__(self):
+        return self.statelist[self.togglestate]
+    
+    
+class MetalToggle(InputImageToggle):
+    def __init__(self, *args, **kwargs):
+        """
+        Required Inputs
+        
+        * **pos** position of toggle
+        """
+        kwargs.setdefault('frame', Frame(0,0,110,150))
+        super().__init__("toggle_up_down.png", [False, True], *args, **kwargs)
+        
+
+
 class GlassButton(InputImageButton):
     
     def __init__(self, callback, *args, **kwargs):
@@ -1503,8 +1551,11 @@ if __name__ == "__main__":
     ii.scale = 0.1
    
     glassbutton = GlassButton(None, (0,-0.5))
+    toggle = MetalToggle((0, -1))
+    
    
     Li = LEDIndicator((300,450), glassbutton, positioning="physical")
+    Lit = LEDIndicator((300,480), toggle, positioning="physical")
    
     def zoomCheck(**kwargs):
         viewtype = kwargs.get('viewchange')
