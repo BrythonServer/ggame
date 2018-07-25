@@ -488,6 +488,7 @@ class InputImageButton(ImagePoint):
         * **margin** pixels between sub-frames if sprite sheet
         """
         super().__init__(pos, url, **kwargs)
+        self.center = (0,0)
         self._callback = callback
         self.selectable = True
 
