@@ -1543,9 +1543,10 @@ if __name__ == '__main__':
     circ = CircleAsset(75, line, red)
     circ2 = CircleAsset(55, line, blue)
     bun = ImageAsset('bunny.png')
+    bun.center = (0.5,0.5)
     rect = RectangleAsset(30,150)
     ell = EllipseAsset(10,3)
-    spr = Sprite(ell, (200,300))
+    spr = Sprite(bun, (200,300))
     spr2 = Sprite(poly, (375, 255))
     # TRYING to get the extents to initialize!!
     spr2._extentsdirty = True
