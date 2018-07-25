@@ -374,7 +374,7 @@ class _Point(_MathVisual, metaclass=ABCMeta):
     posinputsdef = ['pos']
     nonposinputsdef = []
 
-    def __init__(self, pos, asset, **kwargs):
+    def __init__(self, asset, pos, **kwargs):
         """
         Required Inputs
         
@@ -425,8 +425,8 @@ class Point(_Point):
         
         * **pos** position of point
         """
-        super().__init__(pos, CircleAsset(self.defaultsize, 
-            self.defaultstyle, self.defaultcolor), **kwargs)
+        super().__init__(CircleAsset(self.defaultsize, 
+            self.defaultstyle, self.defaultcolor), pos, **kwargs)
 
 
     def _buildAsset(self):
@@ -439,7 +439,7 @@ class Point(_Point):
 class ImagePoint(_Point):
 
 
-    def __init__(self, pos, url, **kwargs):
+    def __init__(self, url, pos, **kwargs):
         """
         Required Inputs
         
@@ -457,7 +457,7 @@ class ImagePoint(_Point):
         direction = kwargs.get('direction', 'horizontal')
         margin = kwargs.get('margin', 0)
         self._imageasset = ImageAsset(url, frame, qty, direction, margin)
-        super().__init__(pos, self._imageasset, **kwargs)
+        super().__init__(self._imageasset, pos, **kwargs)
 
 
     def _buildAsset(self):
@@ -471,7 +471,7 @@ class ImagePoint(_Point):
 
 class InputImageButton(ImagePoint):
     
-    def __init__(self, pos, url, callback, **kwargs):
+    def __init__(self, url, callback, pos **kwargs):
         """
         Required Inputs
         
@@ -485,7 +485,7 @@ class InputImageButton(ImagePoint):
         * **direction** one of 'horizontal' (default) or 'vertical'
         * **margin** pixels between sub-frames if sprite sheet
         """
-        super().__init__(pos, url, **kwargs)
+        super().__init__(url, pos, **kwargs)
         self.center = (0,0)
         self._callback = callback
         self.selectable = True
@@ -512,18 +512,18 @@ class InputImageButton(ImagePoint):
         return self.mouseisdown
         
 
-class ImageIndicator(ImagePoint):
+class ImageIndicator(_MathVisual):
 
     posinputsdef = ['pos']
-    nonposinputsdef = ['value', 'url']
+    nonposinputsdef = ['value']
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, url, *args, **kwargs):
         """
         Required Inputs
         
+        * **url** location of image file consisting of two image sprite sheet
         * **pos** position of point
         * **value** state of the indicator (True/False or integer)
-        * **url** location of image file consisting of two image sprite sheet
 
         Optional Inputs
         * **frame** sub-frame location of image within file
@@ -1424,7 +1424,7 @@ if __name__ == "__main__":
     def buttonstatus():
         return "True" if imgbutton() else "False"
 
-    imgbutton = InputImageButton((0,0), "button-round.png", pressbutton, frame=Frame(0,0,100,100), qty=2)
+    imgbutton = InputImageButton("button-round.png", pressbutton, (0,0), frame=Frame(0,0,100,100), qty=2)
     imgbutton.scale = 0.5
 
     label = Label(labelcoords, buttonstatus, size=15, positioning="physical", color=labelcolor)
@@ -1447,7 +1447,7 @@ if __name__ == "__main__":
     
     c2 = Circle((-1,-1), p1)
     
-    ii = ImageIndicator((300,500), imgbutton, "red-led-off-on.png", positioning="physical", frame=Frame(0,0,600,600), qty=2)
+    ii = ImageIndicator("red-led-off-on.png", (300,500), imgbutton, positioning="physical", frame=Frame(0,0,600,600), qty=2)
 
    
     def zoomCheck(**kwargs):
