@@ -465,6 +465,9 @@ class ImagePoint(_Point):
 
     def physicalPointTouching(self, ppos):
         x, y = ppos
+        print(x,y)
+        print(self.pos, self.xmin, self.xmax)
+        print(self.ymin, self.ymax
         return x >= self.xmin and x < self.xmax and y >= self.ymin and y <= self.ymax
 
 
