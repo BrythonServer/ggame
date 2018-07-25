@@ -353,12 +353,18 @@ class InputButton(Label):
                             fill=self.stdinputs.color())
 
     def select(self):
+        print("button select")
         super().select()
         if self._callback: self._callback(self)
         self.unselect()
 
     def unselect(self):
+        print("button unselect")
         super().unselect()
+        
+    def step(self):
+        super().step()
+
 
         
 class _Point(_MathVisual, metaclass=ABCMeta):
