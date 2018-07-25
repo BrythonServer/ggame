@@ -523,7 +523,7 @@ class GlassButton(InputImageButton):
         """        
         kwargs.setdefault('frame', Frame(0,0,100,100))
         kwargs.setdefault('qty', 2)
-        super().__init__("red-round.png", callback, *args, **kwargs)
+        super().__init__("button-round.png", callback, *args, **kwargs)
         self.scale = 0.05
         
         
