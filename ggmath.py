@@ -374,14 +374,14 @@ class _Point(_MathVisual, metaclass=ABCMeta):
     posinputsdef = ['pos']
     nonposinputsdef = []
 
-    def __init__(self, asset, pos, **kwargs):
+    def __init__(self, asset, *args, **kwargs):
         """
         Required Inputs
         
-        * **pos** position of point
         * **asset** asset object to use
+        * **pos** position of point
         """
-        super().__init__(asset, pos, **kwargs)
+        super().__init__(asset, *args, **kwargs)
         self._touchAsset()
         self.center = (0.5, 0.5)
 
@@ -419,14 +419,14 @@ class Point(_Point):
     defaultstyle = LineStyle(0, Color(0, 1))
 
 
-    def __init__(self, pos, **kwargs):
+    def __init__(self, *args, **kwargs):
         """
         Required Inputs
         
         * **pos** position of point
         """
         super().__init__(CircleAsset(self.defaultsize, 
-            self.defaultstyle, self.defaultcolor), pos, **kwargs)
+            self.defaultstyle, self.defaultcolor), *args, **kwargs)
 
 
     def _buildAsset(self):
@@ -439,12 +439,12 @@ class Point(_Point):
 class ImagePoint(_Point):
 
 
-    def __init__(self, url, pos, **kwargs):
+    def __init__(self, url, *args, **kwargs):
         """
         Required Inputs
         
-        * **pos** position of point
         * **url** location of image file
+        * **pos** position of point
         
         Optional Inputs
         * **frame** sub-frame location of image within file
@@ -457,7 +457,7 @@ class ImagePoint(_Point):
         direction = kwargs.get('direction', 'horizontal')
         margin = kwargs.get('margin', 0)
         self._imageasset = ImageAsset(url, frame, qty, direction, margin)
-        super().__init__(self._imageasset, pos, **kwargs)
+        super().__init__(self._imageasset, *args, **kwargs)
 
 
     def _buildAsset(self):
@@ -471,13 +471,13 @@ class ImagePoint(_Point):
 
 class InputImageButton(ImagePoint):
     
-    def __init__(self, url, callback, pos, **kwargs):
+    def __init__(self, url, callback, *args, **kwargs):
         """
         Required Inputs
         
-        * **pos** position of point
         * **url** location of image file
         * **callback** reference of a function to execute, passing this button object
+        * **pos** position of point
         
         Optional Inputs
         * **frame** sub-frame location of image within file
@@ -485,7 +485,7 @@ class InputImageButton(ImagePoint):
         * **direction** one of 'horizontal' (default) or 'vertical'
         * **margin** pixels between sub-frames if sprite sheet
         """
-        super().__init__(url, pos, **kwargs)
+        super().__init__(url, *args, **kwargs)
         self.center = (0,0)
         self._callback = callback
         self.selectable = True
@@ -511,6 +511,23 @@ class InputImageButton(ImagePoint):
             self.mousewasdown = self.mouseisdown
         return self.mouseisdown
         
+
+class GlassButton(InputImageButton):
+    
+    def __init__(self, callback, *args, **kwargs):
+        """
+        Required Inputs
+        
+        * **callback** reference of a function to execute, passing this button object
+        * **pos** position of point
+        """        
+        kwargs.setdefault('frame', Frame(0,0,100,100))
+        kwargs.setdefault('qty', 2)
+        super().__init__("red-round.png", callback, *args, **kwargs)
+        self.scale = 0.05
+        
+        
+
 
 class ImageIndicator(_MathVisual):
 
@@ -1485,7 +1502,9 @@ if __name__ == "__main__":
     ii = ImageIndicator("red-led-off-on.png", (300,500), imgbutton, positioning="physical", frame=Frame(0,0,600,600), qty=2)
     ii.scale = 0.1
    
-    Li = LEDIndicator((300,450), imgbutton, positioning="physical")
+    glassbutton = GlassButton(None, (0,-0.5))
+   
+    Li = LEDIndicator((300,450), glassbutton, positioning="physical")
    
     def zoomCheck(**kwargs):
         viewtype = kwargs.get('viewchange')
