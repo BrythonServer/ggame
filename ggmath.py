@@ -537,6 +537,7 @@ class InputImageToggle(ImagePoint):
         self.setImage(self.togglestate)
 
     def select(self):
+        print("toggle select")
         super().select()
         self.togglestate += 1
         if self.togglestate > len(self.statelist):
