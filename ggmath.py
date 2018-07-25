@@ -343,6 +343,7 @@ class InputButton(Label):
         """
         super().__init__(pos, text, **kwargs)
         self._touchAsset()
+        self.strokable = True
         self._callback = callback
         self.selectable = True
 
