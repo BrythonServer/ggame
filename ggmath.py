@@ -464,6 +464,7 @@ class ImagePoint(_Point):
         return self._imageasset
 
     def physicalPointTouching(self, ppos):
+        self._setExtents()  # ensure xmin, xmax are correct
         x, y = ppos
         print(x,y)
         print(self.position, self.xmin, self.xmax)
@@ -1387,8 +1388,7 @@ if __name__ == "__main__":
     def buttonstatus():
         return "True" if imgbutton() else "False"
 
-    imgbutton = InputImageButton((800, 300), "button.png", pressbutton, positioning="physical")
-    imgbutton._setExtents()
+    imgbutton = InputImageButton((0,0), "button.png", pressbutton)
 
     label = Label(labelcoords, buttonstatus, size=15, positioning="physical", color=labelcolor)
     button = InputButton(buttoncoords, "Press Me", pressbutton, size=15, positioning="physical")
@@ -1396,7 +1396,7 @@ if __name__ == "__main__":
 
     ip = ImagePoint((0,0), 'bunny.png')
     ip.movable = True
-    
+
     p1 = Point((0,0), color=Color(0x008000, 1))
     p1.movable = True
     
