@@ -463,6 +463,9 @@ class ImagePoint(_Point):
     def _buildAsset(self):
         return self._imageasset
 
+    def physicalPointTouching(self, ppos):
+        x, y = ppos
+        return x >= self.xmin and x < self.xmax and y >= self.ymin and y <= self.ymax
 
 
 class InputImageButton(ImagePoint):
