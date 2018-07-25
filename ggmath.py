@@ -545,6 +545,7 @@ class ImageIndicator(_MathVisual):
         self.center = (0,0)
 
     def _buildAsset(self):
+        print("imageindicator buildasset")
         if self.nposinputs.value == True:
             self.setImage(1)
         elif self.nposinputs.value == False:
