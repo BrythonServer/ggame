@@ -1485,7 +1485,7 @@ if __name__ == "__main__":
     ii = ImageIndicator("red-led-off-on.png", (300,500), imgbutton, positioning="physical", frame=Frame(0,0,600,600), qty=2)
     ii.scale = 0.1
    
-    Li = LEDIndicator((300,550), imgbutton, positioning="physical")
+    Li = LEDIndicator((300,450), imgbutton, positioning="physical")
    
     def zoomCheck(**kwargs):
         viewtype = kwargs.get('viewchange')
