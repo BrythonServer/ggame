@@ -556,7 +556,7 @@ class MetalToggle(InputImageToggle):
         * **pos** position of toggle
         """
         kwargs.setdefault('frame', Frame(0,0,110,150))
-        super().__init__("toggle_up_down.png", [False, True], *args, **kwargs)
+        super().__init__("toggle-up-down.png", [False, True], *args, **kwargs)
         
 
 
