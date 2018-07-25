@@ -558,7 +558,7 @@ class MetalToggle(InputImageToggle):
         """
         kwargs.setdefault('frame', Frame(0,0,110,150))
         super().__init__("toggle-up-down.png", [False, True], *args, **kwargs)
-        self.scale = 0.3
+        self.scale = 0.4
         
 
 
