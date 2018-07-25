@@ -247,7 +247,6 @@ class Label(_MathVisual):
         * **pos** position of label
         * **text** text contents of label
         """
-        print("L")
         super().__init__(TextAsset(""), *args, **kwargs)
         self._touchAsset()
 
@@ -349,7 +348,6 @@ class InputButton(Label):
         * **text** text of button
         * **callback** reference of a function to execute, passing this button object
         """
-        print("IB")
         super().__init__(pos, text, **kwargs)
         self._touchAsset()
         self._callback = callback
