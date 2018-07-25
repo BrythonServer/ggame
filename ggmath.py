@@ -471,7 +471,7 @@ class ImagePoint(_Point):
 
 class InputImageButton(ImagePoint):
     
-    def __init__(self, url, callback, pos **kwargs):
+    def __init__(self, url, callback, pos, **kwargs):
         """
         Required Inputs
         
@@ -531,7 +531,17 @@ class ImageIndicator(_MathVisual):
         * **direction** one of 'horizontal' (default) or 'vertical'
         * **margin** pixels between sub-frames if sprite sheet
         """
-        super().__init__(args[0], args[2], **kwargs)
+        kwargs.setdefault('frame', None)
+        kwargs.setdefault('qty', 1)
+        kwargs.setdefault('direction', 'horizontal')
+        kwargs.setdefault('margin', 0)
+        super().__init__(
+            ImageAsset(url, 
+                kwargs['frame'], 
+                kwargs['qty'], 
+                kwargs['direction'], 
+                kwargs['margin']), 
+            *args, **kwargs)
         self.center = (0,0)
 
     def _buildAsset(self):
