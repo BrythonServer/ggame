@@ -1371,7 +1371,7 @@ if __name__ == "__main__":
     button = InputButton(buttoncoords, "Press Me", pressbutton, size=15, positioning="physical")
     numinput = InputNumeric((300, 275), 3.14, positioning="physical")
 
-    imgbutton = InputImageButton((400, 200), "button.png", pressbutton, positioning="physical")
+    imgbutton = InputImageButton((600, 200), "button.png", pressbutton, positioning="physical")
     
     p1 = Point((0,0), color=Color(0x008000, 1))
     p1.movable = True
