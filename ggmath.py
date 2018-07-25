@@ -1441,7 +1441,7 @@ if __name__ == "__main__":
     button = InputButton(buttoncoords, "Press Me", pressbutton, size=15, positioning="physical")
     numinput = InputNumeric((300, 275), 3.14, positioning="physical")
 
-    ip = ImagePoint((0,0), 'bunny.png')
+    ip = ImagePoint( 'bunny.png', (0,0))
     ip.movable = True
 
     p1 = Point((0,0), color=Color(0x008000, 1))
