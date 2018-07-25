@@ -1388,11 +1388,14 @@ if __name__ == "__main__":
         return "True" if imgbutton() else "False"
 
     imgbutton = InputImageButton((800, 300), "button.png", pressbutton, positioning="physical")
+    imgbutton._setExtents()
 
     label = Label(labelcoords, buttonstatus, size=15, positioning="physical", color=labelcolor)
     button = InputButton(buttoncoords, "Press Me", pressbutton, size=15, positioning="physical")
     numinput = InputNumeric((300, 275), 3.14, positioning="physical")
 
+    ip = ImagePoint((0,0), 'bunny.png')
+    ip.movable = True
     
     p1 = Point((0,0), color=Color(0x008000, 1))
     p1.movable = True
@@ -1407,8 +1410,6 @@ if __name__ == "__main__":
     
     c2 = Circle((-1,-1), p1)
 
-    ip = ImagePoint((1,0), 'bunny.png')
-    ip.movable = True
    
     def zoomCheck(**kwargs):
         viewtype = kwargs.get('viewchange')
