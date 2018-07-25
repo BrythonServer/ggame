@@ -545,13 +545,13 @@ class ImageIndicator(_MathVisual):
         self.center = (0,0)
 
     def _buildAsset(self):
-        print("imageindicator buildasset")
-        if self.nposinputs.value == True:
+        inval = self.nposinputs.value()
+        if inval == True:
             self.setImage(1)
-        elif self.nposinputs.value == False:
+        elif inval == False:
             self.setImage(0)
         else:
-            self.setImage(self.nposinputs.value)
+            self.setImage(inval)
         return self.asset
 
     def physicalPointTouching(self, ppos):
