@@ -1,6 +1,6 @@
 # ggmath - ggame extensions for geometry and mathematics in the browser
 
-from ggame import Color, LineStyle, LineAsset, CircleAsset, Sprite, App
+from ggame import Frame, Color, LineStyle, LineAsset, CircleAsset, Sprite, App
 from ggame import TextAsset, ImageAsset, PolygonAsset, RectangleAsset
 from abc import ABCMeta, abstractmethod
 from operator import add
@@ -489,6 +489,8 @@ class InputImageButton(ImagePoint):
         self.center = (0,0)
         self._callback = callback
         self.selectable = True
+        self.firstImage()
+        self.mousewasdown = self.mouseisdown
 
     def select(self):
         super().select()
@@ -500,6 +502,16 @@ class InputImageButton(ImagePoint):
 
     def __call__(self):
         return self.mouseisdown
+        
+    def step(self):
+        if self.mouseisdown != self.mousewasdown:
+            if self.mouseisdown:
+                self.nextImage()
+            else:
+                self.firstImage()
+            self.mousewasdown = self.mouseisdown
+        super().step()
+        
 
 
 
@@ -1385,7 +1397,8 @@ if __name__ == "__main__":
     def buttonstatus():
         return "True" if imgbutton() else "False"
 
-    imgbutton = InputImageButton((0,0), "button.png", pressbutton)
+    imgbutton = InputImageButton((0,0), "button-round.png", pressbutton, frame=Frame(0,0,100,100), qty=2)
+    imgbutton.scale = 0.5
 
     label = Label(labelcoords, buttonstatus, size=15, positioning="physical", color=labelcolor)
     button = InputButton(buttoncoords, "Press Me", pressbutton, size=15, positioning="physical")
