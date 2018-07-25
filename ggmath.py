@@ -512,8 +512,36 @@ class InputImageButton(ImagePoint):
         return self.mouseisdown
         
 
+class ImageIndicator(ImagePoint):
 
+    posinputsdef = ['pos']
+    nonposinputsdef = ['value', 'url']
 
+    def __init__(self, *args, **kwargs):
+        """
+        Required Inputs
+        
+        * **pos** position of point
+        * **value** state of the indicator (True/False or integer)
+        * **url** location of image file consisting of two image sprite sheet
+
+        Optional Inputs
+        * **frame** sub-frame location of image within file
+        * **qty** number of sub-frames, when used as sprite sheet
+        * **direction** one of 'horizontal' (default) or 'vertical'
+        * **margin** pixels between sub-frames if sprite sheet
+        """
+        super().__init__(args[0], args[2], **kwargs)
+        self.center = (0,0)
+
+    def _buildAsset(self):
+        if self.nposinputs.value == True:
+            self.setImage(1)
+        elif self.nposinputs.value == False:
+            self.setImage(0)
+        else:
+            self.setImage(self.nposinputs.value)
+        return self.asset
 
 
 class LineSegment(_MathVisual):
@@ -1418,6 +1446,8 @@ if __name__ == "__main__":
     LineSegment(p2,p1, style=LineStyle(3, Color(0,1)))
     
     c2 = Circle((-1,-1), p1)
+    
+    ii = ImageIndicator((300,500), imgbutton, "red-led-off-on.png", "positioning="physical", frame=Frame(0,0,600,600), qty=2)
 
    
     def zoomCheck(**kwargs):
