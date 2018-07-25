@@ -1447,7 +1447,7 @@ if __name__ == "__main__":
     
     c2 = Circle((-1,-1), p1)
     
-    ii = ImageIndicator((300,500), imgbutton, "red-led-off-on.png", "positioning="physical", frame=Frame(0,0,600,600), qty=2)
+    ii = ImageIndicator((300,500), imgbutton, "red-led-off-on.png", positioning="physical", frame=Frame(0,0,600,600), qty=2)
 
    
     def zoomCheck(**kwargs):
