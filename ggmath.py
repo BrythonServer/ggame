@@ -501,18 +501,15 @@ class InputImageButton(ImagePoint):
         super().unselect()
 
     def __call__(self):
-        return self.mouseisdown
-        
-    def step(self):
+        # code for controlling the button image state only works if the
+        # button state is being monitored!
         if self.mouseisdown != self.mousewasdown:
             if self.mouseisdown:
-                print("next")
                 self.nextImage()
             else:
-                print("first")
                 self.firstImage()
             self.mousewasdown = self.mouseisdown
-        super().step()
+        return self.mouseisdown
         
 
 
