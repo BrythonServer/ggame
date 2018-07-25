@@ -367,11 +367,27 @@ class InputButton(Label):
     def unselect(self):
         super().unselect()
 
+class InputImageButton(ImagePoint, InputButton):
+    
+    def __init__(self, pos, url, callback, **kwargs):
+        """
+        Required Inputs
+        
+        * **pos** position of point
+        * **url** location of image file
+        * **callback** reference of a function to execute, passing this button object
+        
+        Optional Inputs
+        * **frame** sub-frame location of image within file
+        * **qty** number of sub-frames, when used as sprite sheet
+        * **direction** one of 'horizontal' (default) or 'vertical'
+        * **margin** pixels between sub-frames if sprite sheet
+        """
+        super().__init__(pos, url, **kwargs)
+        self._callback = callback
+        self.selectable = True
 
-    def step(self):
-        if self.mouseisdown:
-            print("PRESSING!")
-        super().step()
+
 
 
         
@@ -443,10 +459,6 @@ class Point(_Point):
 
 
 class ImagePoint(_Point):
-
-
-    defaultsize = 5
-    defaultstyle = LineStyle(0, Color(0, 1))
 
 
     def __init__(self, pos, url, **kwargs):
@@ -1357,6 +1369,7 @@ if __name__ == "__main__":
     button = InputButton(buttoncoords, "Press Me", pressbutton, size=15, positioning="physical")
     numinput = InputNumeric((300, 275), 3.14, positioning="physical")
 
+    imgbutton = InputImageButton((400, 200), "button.png", pressbutton)
     
     p1 = Point((0,0), color=Color(0x008000, 1))
     p1.movable = True
