@@ -1383,7 +1383,7 @@ if __name__ == "__main__":
     def buttonstatus():
         return "True" if imgbutton() else "False"
 
-    imgbutton = InputImageButton((600, 200), "button.png", pressbutton, positioning="physical")
+    imgbutton = InputImageButton((800, 300), "button.png", pressbutton, positioning="physical")
 
     label = Label(labelcoords, buttonstatus, size=15, positioning="physical", color=labelcolor)
     button = InputButton(buttoncoords, "Press Me", pressbutton, size=15, positioning="physical")
