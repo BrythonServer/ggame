@@ -485,6 +485,16 @@ class InputImageButton(ImagePoint):
         self._callback = callback
         self.selectable = True
 
+    def select(self):
+        super().select()
+        if self._callback: self._callback(self)
+        self.unselect()
+
+    def unselect(self):
+        super().unselect()
+
+    def __call__(self):
+        return self.mouseisdown
 
 
 
@@ -1366,6 +1376,9 @@ if __name__ == "__main__":
         print("button pressed: ", caller)
 
     vslider1 = Slider((100, 150), 0, 250, 125, positioning='physical', steps=10)
+
+    def buttonstatus():
+        return "True" if imagebutton() else "False"
 
     label = Label(labelcoords, "whatevs", size=15, positioning="physical", color=labelcolor)
     button = InputButton(buttoncoords, "Press Me", pressbutton, size=15, positioning="physical")
