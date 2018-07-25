@@ -367,28 +367,6 @@ class InputButton(Label):
     def unselect(self):
         super().unselect()
 
-class InputImageButton(ImagePoint, InputButton):
-    
-    def __init__(self, pos, url, callback, **kwargs):
-        """
-        Required Inputs
-        
-        * **pos** position of point
-        * **url** location of image file
-        * **callback** reference of a function to execute, passing this button object
-        
-        Optional Inputs
-        * **frame** sub-frame location of image within file
-        * **qty** number of sub-frames, when used as sprite sheet
-        * **direction** one of 'horizontal' (default) or 'vertical'
-        * **margin** pixels between sub-frames if sprite sheet
-        """
-        super().__init__(pos, url, **kwargs)
-        self._callback = callback
-        self.selectable = True
-
-
-
 
         
 class _Point(_MathVisual, metaclass=ABCMeta):
@@ -484,6 +462,30 @@ class ImagePoint(_Point):
 
     def _buildAsset(self):
         return self._imageasset
+
+
+
+class InputImageButton(ImagePoint, InputButton):
+    
+    def __init__(self, pos, url, callback, **kwargs):
+        """
+        Required Inputs
+        
+        * **pos** position of point
+        * **url** location of image file
+        * **callback** reference of a function to execute, passing this button object
+        
+        Optional Inputs
+        * **frame** sub-frame location of image within file
+        * **qty** number of sub-frames, when used as sprite sheet
+        * **direction** one of 'horizontal' (default) or 'vertical'
+        * **margin** pixels between sub-frames if sprite sheet
+        """
+        super().__init__(pos, url, **kwargs)
+        self._callback = callback
+        self.selectable = True
+
+
 
 
 
