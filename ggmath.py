@@ -64,6 +64,7 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         self._selectable = False
         self._strokable = False
         self.selected = False
+        self.mouseisdown = False
         # 
         self.positioning = kwargs.get('positioning', 'logical')
         # positional inputs
@@ -195,6 +196,12 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
 
     def unselect(self):
         self.selected = False
+        
+    def mousedown(self):
+        self.mouseisdown = True
+        
+    def mouseup(self):
+        self.mouseisdown = False
 
     def processEvent(self, event):
         pass
@@ -343,7 +350,6 @@ class InputButton(Label):
         """
         super().__init__(pos, text, **kwargs)
         self._touchAsset()
-        self.strokable = True
         self._callback = callback
         self.selectable = True
 
@@ -354,16 +360,17 @@ class InputButton(Label):
                             fill=self.stdinputs.color())
 
     def select(self):
-        print("button select")
         super().select()
         if self._callback: self._callback(self)
         self.unselect()
 
     def unselect(self):
-        print("button unselect")
         super().unselect()
-        
+
+
     def step(self):
+        if self.mouseisdown:
+            print("PRESSING!")
         super().step()
 
 
@@ -962,6 +969,7 @@ class MathApp(App):
         self.mouseDown = False
         self.mouseCapturedObject = None
         self.mouseStrokedObject = None
+        self.mouseDownObject = None
         self.mouseX = self.mouseY = None
         self._touchAllVisuals()
         self.selectedObj = None
@@ -1036,6 +1044,11 @@ class MathApp(App):
         self.mouseDown = True
         self.mouseCapturedObject = None
         self.mouseStrokedObject = None
+        for obj in self._mathSelectableList:
+            if obj.physicalPointTouching((event.x, event.y)):
+                obj.mousedown()
+                self.mouseDownObject = obj
+                break
         for obj in self._mathMovableList:
             if obj.physicalPointTouching((event.x, event.y)) and not (obj.strokable and obj.canstroke((event.x,event.y))):
                 self.mouseCapturedObject = obj
@@ -1047,6 +1060,9 @@ class MathApp(App):
                     break
 
     def handleMouseUp(self, event):
+        if self.mouseDownObject:
+            self.mouseDownObject.mouseup()
+            self.mouseDownObject = None
         self.mouseDown = False
         self.mouseCapturedObject = None
         self.mouseStrokedObject = None
