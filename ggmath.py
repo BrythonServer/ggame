@@ -563,6 +563,21 @@ class ImageIndicator(_MathVisual):
         pass
 
 
+class LEDIndicator(ImageIndicator):
+    
+    def __init__(self, *args, **kwargs):
+        """
+        Required Inputs
+        
+        * **pos** position of point
+        * **value** state of the indicator (True/False or integer)
+
+        """
+        kwargs.setdefault('frame', Frame(0,0,600,600))
+        kwargs.setdefault('qty', 2)
+        super().__init__("red-led-on-off.png", *args, **kwargs)
+        self.scale = 0.1
+
 
 class LineSegment(_MathVisual):
     
@@ -1469,6 +1484,8 @@ if __name__ == "__main__":
     
     ii = ImageIndicator("red-led-off-on.png", (300,500), imgbutton, positioning="physical", frame=Frame(0,0,600,600), qty=2)
     ii.scale = 0.1
+   
+    Li = LEDIndicator((300,550), imgbutton, positioning="physical")
    
     def zoomCheck(**kwargs):
         viewtype = kwargs.get('viewchange')
