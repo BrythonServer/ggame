@@ -35,9 +35,10 @@ if __name__ == "__main__":
     from ggmath import GlassButton, LEDIndicator
     
 
-
+    IC1 = BoolNot("IC1")
     button = GlassButton(None, (0,0))
-    LED = LEDIndicator((0,-1), button)
+    LED = LEDIndicator((0,-1), IC1.Out)
+    IC1.In = button 
     
     app = MathApp()
     app.run()
