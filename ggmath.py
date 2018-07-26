@@ -340,7 +340,7 @@ class InputNumeric(Label):
 
 class InputButton(Label):
     
-    def __init__(self, pos, text, callback, **kwargs):
+    def __init__(self, callback, *args,  **kwargs):
         """
         Required Inputs
         
@@ -348,7 +348,7 @@ class InputButton(Label):
         * **text** text of button
         * **callback** reference of a function to execute, passing this button object
         """
-        super().__init__(pos, text, **kwargs)
+        super().__init__(*args, **kwargs)
         self._touchAsset()
         self._callback = callback
         self.selectable = True
@@ -1529,7 +1529,7 @@ if __name__ == "__main__":
     imgbutton.scale = 0.5
 
     label = Label(labelcoords, buttonstatus, size=15, positioning="physical", color=labelcolor)
-    button = InputButton(buttoncoords, "Press Me", pressbutton, size=15, positioning="physical")
+    button = InputButton(pressbutton, buttoncoords, "Press Me", size=15, positioning="physical")
     numinput = InputNumeric((300, 275), 3.14, positioning="physical")
 
     ip = ImagePoint( 'bunny.png', (0,0))
