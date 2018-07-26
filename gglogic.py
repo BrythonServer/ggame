@@ -19,13 +19,14 @@ class BoolNot(_MathDynamic):
     def Out(self):
         return True and not self.In()
 
+    @property
+    def In(self):
+        return self._input
+
     @In.setter
     def In(self, val):
         self._input = self.Eval(val)
         
-    @property
-    def In(self):
-        return self._input
 
 
 # test code here
