@@ -18,7 +18,7 @@ class BoolNot(_MathDynamic):
 
 
     def __call__(self):
-        return True and not self.In()
+        return not self.In()
 
     @property
     def In(self):
