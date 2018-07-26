@@ -13,6 +13,7 @@ class BoolNot(_MathDynamic):
         * **name** identifying text name
         """
         self.name = args[0]
+        self._input = False
         super().__init__()
         
     @property
