@@ -108,8 +108,8 @@ class Rocket(ImagePoint):
         self.mass = self.Eval(kwargs.get('mass', self.getmass)) # kg
         self.thrust = self.Eval(kwargs.get('thrust', self.getthrust)) # N
         # end dynamic 
-        super().__init__(self._getposition, 
-            self.bmurl, 
+        super().__init__(self.bmurl,
+            self._getposition, 
             frame = self.bitmapframe, 
             qty = self.bitmapqty, 
             direction = self.bitmapdir,
