@@ -139,8 +139,8 @@ if __name__ == "__main__":
 
     d2 = LEDIndicator((1.5,0.45), IC2)
     
-    IC2.In = b1, b2
-    IC2.In = IC2.In + [b3, b4]
+    IC2.In = b1, b2, b3, b4
+    #IC2.In = IC2.In + [b3, b4]
     
     button = GlassButton(None, (0,0))
     LED = LEDIndicator((0,-1), IC1)
