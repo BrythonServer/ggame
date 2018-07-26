@@ -26,6 +26,12 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
 
 class BoolNOT(_BoolDevice):
 
+    def __init__(self, *args, **kwargs):
+        """ 
+        No Required Inputs
+        """
+        super().__init__(1)
+
     def __call__(self):
         inval = self.In[0]()
         if inval == None:
@@ -37,6 +43,12 @@ class BoolNOT(_BoolDevice):
 
 class BoolAND(_BoolDevice):
     
+    def __init__(self, *args, **kwargs):
+        """ 
+        No Required Inputs
+        """
+        super().__init__(2)
+
 
     def __call__(self):
         for v in self._input:
