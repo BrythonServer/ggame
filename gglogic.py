@@ -4,7 +4,7 @@ from ggmath import MathApp, _MathDynamic
 from abc import ABCMeta, abstractmethod
 
 
-class BoolNot(_MathDynamic):
+class BoolNOT(_MathDynamic):
     
     def __init__(self, *args, **kwargs):
         """
@@ -33,6 +33,16 @@ class BoolNot(_MathDynamic):
         self._input = self.Eval(val)
         
 
+class BoolAND(_MathDynamic):
+    
+    def __init__(self, *args, **kwargs):
+        """
+        Required Inputs
+        
+        * **name** identifying text name
+        """
+        
+
 
 # test code here
 if __name__ == "__main__":
@@ -40,7 +50,7 @@ if __name__ == "__main__":
     from ggmath import GlassButton, LEDIndicator
     
 
-    IC1 = BoolNot("IC1")
+    IC1 = BoolNOT("IC1")
     button = GlassButton(None, (0,0))
     LED = LEDIndicator((0,-1), IC1)
     IC1.In = button 
