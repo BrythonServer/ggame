@@ -113,7 +113,7 @@ class TestDevice(_BoolOneInput):
         
         
         
-    
+
     
 
 # test code here
