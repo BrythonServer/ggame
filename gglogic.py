@@ -66,7 +66,7 @@ if __name__ == "__main__":
     from ggmath import GlassButton, LEDIndicator, MetalToggle
     
 
-    IC1 = BoolNOT()
+    #IC1 = BoolNOT()
     IC2 = BoolAND()
     
     b1 = MetalToggle(1, (1,0))
@@ -85,9 +85,9 @@ if __name__ == "__main__":
     IC2.In = b1, b2
     IC2.In = IC2.In + [b3, b4]
     
-    button = GlassButton(None, (0,0))
-    LED = LEDIndicator((0,-1), IC1)
-    IC1.In = button 
+    #button = GlassButton(None, (0,0))
+    #LED = LEDIndicator((0,-1), IC1)
+    #IC1.In = button 
     
     app = MathApp()
     app.run()
