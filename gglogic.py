@@ -34,10 +34,10 @@ if __name__ == "__main__":
     
     from ggmath import GlassButton, LEDIndicator
     
-    app = MathApp()
 
 
     button = GlassButton(None, (0,0))
     LED = LEDIndicator((0,-1), button)
     
+    app = MathApp()
     app.run()
