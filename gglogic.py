@@ -22,7 +22,6 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
         try:
             self._input = [self.Eval(v) for v in list(val)]
         except TypeError:
-            print("handling single input")
             self._input = [self.Eval(val)]
 
     
