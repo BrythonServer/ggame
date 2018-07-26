@@ -74,10 +74,10 @@ if __name__ == "__main__":
     db2 = LEDIndicator((1.3,0.9), b4)
 
 
-    d2 = LEDIndicator((1.5,0.15), IC2)
+    d2 = LEDIndicator((1.5,0.45), IC2)
     
     IC2.In = [b1, b2]
-    IC2.In.extend([b1, b2])
+    IC2.In.extend([b3, b4])
     
     button = GlassButton(None, (0,0))
     LED = LEDIndicator((0,-1), IC1)
