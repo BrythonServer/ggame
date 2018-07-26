@@ -64,8 +64,8 @@ if __name__ == "__main__":
     IC2 = BoolAND()
     
     b1 = MetalToggle(1, (1,0))
-    b2 = MetalToggle(1, (1,0.2))
-    d2 = LEDIndicator((1.5,0.1), IC2)
+    b2 = MetalToggle(1, (1,0.3))
+    d2 = LEDIndicator((1.5,0.15), IC2)
     
     button = GlassButton(None, (0,0))
     LED = LEDIndicator((0,-1), IC1)
