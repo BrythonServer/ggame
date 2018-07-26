@@ -18,6 +18,7 @@ class BoolNot(_MathDynamic):
         
     @property
     def Out(self):
+        print(self.In())
         return True and not self.In()
 
     @property
