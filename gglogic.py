@@ -19,7 +19,10 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
     
     @In.setter
     def In(self, val):
-        self._input = [self.Eval(v) for v in list(val)]
+        try:
+            self._input = [self.Eval(v) for v in list(val)]
+        except TypeError:
+            self._input = [self.Eval(v)]
 
     
     
