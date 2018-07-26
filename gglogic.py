@@ -50,7 +50,7 @@ class BoolAND(_MathDynamic):
         return self._input
     
     @In.setter
-    def In(self, val)
+    def In(self, val):
         self._input = [self.Eval(v) for v in list(val)]
 
 
