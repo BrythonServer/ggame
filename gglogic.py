@@ -24,16 +24,26 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
         except TypeError:
             self._input = [self.Eval(val)]
 
-    
-    
 
-class BoolNOT(_BoolDevice):
+class _BoolOneInput(_BoolDevice):
 
     def __init__(self, *args, **kwargs):
         """ 
         No Required Inputs
         """
         super().__init__(1)
+
+    
+class _BoolMultiInput(_BoolDevice):
+
+    def __init__(self, *args, **kwargs):
+        """ 
+        No Required Inputs
+        """
+        super().__init__(2)
+
+
+class BoolNOT(_BoolOneInput):
 
     def __call__(self):
         inval = self.In[0]()
@@ -43,16 +53,8 @@ class BoolNOT(_BoolDevice):
             return not inval
 
 
-
-class BoolAND(_BoolDevice):
+class BoolAND(_BoolMultiInput):
     
-    def __init__(self, *args, **kwargs):
-        """ 
-        No Required Inputs
-        """
-        super().__init__(2)
-
-
     def __call__(self):
         for v in self._input:
             if not v():
