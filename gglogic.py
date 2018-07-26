@@ -112,6 +112,9 @@ class TestDevice(_BoolOneInput):
     def out2(self):
         return self.in1 or self.in2
         
+    def _getvalue(self):
+        return None
+        
         
         
     
