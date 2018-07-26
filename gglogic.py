@@ -65,6 +65,8 @@ if __name__ == "__main__":
     
     b1 = MetalToggle(1, (1,0))
     b2 = MetalToggle(1, (1,0.3))
+    db1 = LEDIndicator((1.3,0), b1)
+    db2 = LEDIndicator((1.3,0.3), b2)
     d2 = LEDIndicator((1.5,0.15), IC2)
     
     button = GlassButton(None, (0,0))
