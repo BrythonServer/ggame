@@ -15,11 +15,9 @@ class BoolNot(_MathDynamic):
         self.name = args[0]
         self._input = self.Eval(False)
         super().__init__()
-        self._setDynamic()
-        
-    @property
-    def Out(self):
-        print(self.In())
+
+
+    def __call__(self):
         return True and not self.In()
 
     @property
@@ -40,7 +38,7 @@ if __name__ == "__main__":
 
     IC1 = BoolNot("IC1")
     button = GlassButton(None, (0,0))
-    LED = LEDIndicator((0,-1), IC1.Out)
+    LED = LEDIndicator((0,-1), IC1)
     IC1.In = button 
     
     app = MathApp()
