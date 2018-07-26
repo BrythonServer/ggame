@@ -13,12 +13,16 @@ class BoolNot(_MathDynamic):
         * **name** identifying text name
         """
         self.name = args[0]
-        self._input = self.Eval(False)
+        self._input = self.Eval(None)
         super().__init__()
 
 
     def __call__(self):
-        return not self.In()
+        inval = self.In()
+        if inval == None:
+            return True  # equivalent to an "open" input
+        else:
+            return not inval
 
     @property
     def In(self):
