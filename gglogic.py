@@ -52,7 +52,10 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
             return None
             
     def __getattr__(self, name):
-        return self._indict[name]
+        try:
+            return self._indict[name]
+        except: AttributeError:
+            return super().__getattr__(name)
             
             
     def __setattr__(self, name, val):
