@@ -50,17 +50,13 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
             return self._getvalue()
         else:
             return None
-            
-    def __getattr__(self, name):
-        return self._indict[name]
+    
+    def GetInput(self, inputname):
+        return self._indict[inputname]()
 
-            
-    def __setattr__(self, name, val):
-        try:
-            self._indict[name] = self.Eval(val)
-        except AttributeError:
-            print("boom: ", type(self), name, val)
-            super().__setattr__(name, val)
+    def SetInput(self, inputname, reference):
+        self._indict[inputname] = self.Eval(reference)
+    
 
 
 class _BoolOneInput(_BoolDevice):
@@ -107,10 +103,10 @@ class TestDevice(_BoolOneInput):
         super().__init__(*args, **kwargs)
         
     def out1(self):
-        return self.in1 and self.in2
+        return self.GetInput('in1') and self.GetInput('in2')
         
     def out2(self):
-        return self.in1 or self.in2
+        return self.GetInput('in1') or self.GetInput('in2')
         
     def _getvalue(self):
         return None
@@ -157,6 +153,8 @@ if __name__ == "__main__":
     dt2 = LEDIndicator((1.3, -1.3), t2)
     dtd1 = LEDIndicator((1.5, -1), td.out1)
     dtd2 = LEDIndicator((1.5, -1.3), td.out2)
+    td.SetInput('in1', t1)
+    td.SetInput('in2', t2)
     
     app = MathApp()
     app.run()
