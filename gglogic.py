@@ -57,7 +57,7 @@ class BoolAND(_MathDynamic):
 # test code here
 if __name__ == "__main__":
     
-    from ggmath import GlassButton, LEDIndicator
+    from ggmath import GlassButton, LEDIndicator, MetalToggle
     
 
     IC1 = BoolNOT()
