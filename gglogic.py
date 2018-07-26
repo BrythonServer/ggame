@@ -69,6 +69,8 @@ if __name__ == "__main__":
     db2 = LEDIndicator((1.3,0.3), b2)
     d2 = LEDIndicator((1.5,0.15), IC2)
     
+    IC2.In = [b1, b2]
+    
     button = GlassButton(None, (0,0))
     LED = LEDIndicator((0,-1), IC1)
     IC1.In = button 
