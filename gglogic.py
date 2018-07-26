@@ -22,7 +22,7 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
         try:
             self._input = [self.Eval(v) for v in list(val)]
         except TypeError:
-            self._input = [self.Eval(v)]
+            self._input = [self.Eval(val)]
 
     
     
