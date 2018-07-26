@@ -1554,7 +1554,7 @@ if __name__ == "__main__":
     ii.scale = 0.1
    
     glassbutton = GlassButton(None, (0,-0.5))
-    toggle = MetalToggle((0, -1), 0)
+    toggle = MetalToggle(0, (0, -1))
     
    
     Li = LEDIndicator((300,450), glassbutton, positioning="physical")
