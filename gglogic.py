@@ -45,6 +45,26 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
     def _getvalue(self):
         pass
     
+    def _inputState(self, value):
+        """
+        interprets a value that could be single input or a list of inputs!
+        """
+        try:
+            inputs = [].extend(value)
+        except TypeError:
+            inputs = [value]
+        scalars = [v() for v in inputs]
+        ones = scalars.count(True) + scalars.count(1)
+        zeros = scalars.count(False) + scalars.count(0)
+        if ones > 0 and zeros > 0:
+            raise ValueError("Conflicting inputs found")
+        if ones > 0:
+            return True
+        elif zeros > 0:
+            return False
+        else: 
+            return None
+    
     def __call__(self):
         if self.Enable:
             return self._getvalue()
@@ -52,7 +72,7 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
             return None
     
     def GetInput(self, inputname):
-        return self._indict[inputname]()
+        return self._inputState(self._indict[inputname])
 
     def SetInput(self, inputname, reference):
         self._indict[inputname] = self.Eval(reference)
@@ -80,7 +100,7 @@ class _BoolMultiInput(_BoolDevice):
 class BoolNOT(_BoolOneInput):
 
     def _getvalue(self):
-        inval = self.In[0]()
+        inval = self._inputState(self.In[0])
         if inval == None:
             return True  # equivalent to an "open" input
         else:
@@ -91,7 +111,7 @@ class BoolAND(_BoolMultiInput):
     
     def _getvalue(self):
         for v in self._input:
-            if not v():
+            if not self._inputState(v):
                 return False
         return True
         
