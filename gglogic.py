@@ -5,13 +5,13 @@ from abc import ABCMeta, abstractmethod
 
 class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
 
-    def __init__(self, mininputqty, *args, **kwargs)
-    """
-    Required Inputs
-    
-    * **mininputqty** minimum number of inputs possible
-    """
-    self.In = [None]*mininputqty
+    def __init__(self, mininputqty, *args, **kwargs):
+        """
+        Required Inputs
+        
+        * **mininputqty** minimum number of inputs possible
+        """
+        self.In = [None]*mininputqty
 
     @property
     def In(self):
