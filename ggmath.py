@@ -514,12 +514,13 @@ class InputImageButton(ImagePoint):
 
 class InputImageToggle(ImagePoint):
 
-    def __init__(self, url, statelist, *args, **kwargs):
+    def __init__(self, url, statelist, initindex, *args, **kwargs):
         """
         Required Inputs
         
         * **url** location of image file
         * **statelist** list of values to correspond with toggle states
+        * **initindex** index to initial toggle state
         * **pos** position of point
         
         Optional Inputs
@@ -533,7 +534,7 @@ class InputImageToggle(ImagePoint):
         super().__init__(url, *args, **kwargs)
         self.center = (0,0)
         self.selectable = True
-        self.togglestate = 0
+        self.togglestate = initindex
         self.setImage(self.togglestate)
 
     def select(self):
@@ -549,14 +550,15 @@ class InputImageToggle(ImagePoint):
     
     
 class MetalToggle(InputImageToggle):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, initindex, *args, **kwargs):
         """
         Required Inputs
         
+        * **initindex** index to initial toggle state
         * **pos** position of toggle
         """
         kwargs.setdefault('frame', Frame(0,0,110,150))
-        super().__init__("toggle-up-down.png", [False, True], *args, **kwargs)
+        super().__init__("toggle-up-down.png", [True, False], initindex, *args, **kwargs)
         self.scale = 0.4
         
 
