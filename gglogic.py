@@ -59,8 +59,7 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
         try:
             self._indict[name] = self.Eval(val)
         except AttributeError:
-            print("boom")
-            super().__setattr(name, val)
+            super().__setattr__(name, val)
 
 
 class _BoolOneInput(_BoolDevice):
