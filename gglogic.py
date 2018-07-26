@@ -24,7 +24,7 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
     
     
 
-class BoolNOT(_MathDynamic):
+class BoolNOT(_BoolDevice):
 
     def __call__(self):
         inval = self.In[0]()
@@ -35,7 +35,7 @@ class BoolNOT(_MathDynamic):
 
 
 
-class BoolAND(_MathDynamic):
+class BoolAND(_BoolDevice):
     
 
     def __call__(self):
