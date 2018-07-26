@@ -15,6 +15,7 @@ class BoolNot(_MathDynamic):
         self.name = args[0]
         self._input = self.Eval(False)
         super().__init__()
+        self._setDynamic()
         
     @property
     def Out(self):
