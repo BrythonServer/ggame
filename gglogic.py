@@ -59,7 +59,7 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
         try:
             self._indict[name] = self.Eval(val)
         except AttributeError:
-            print("boom: ", type(self))
+            print("boom: ", type(self), name, val)
             super().__setattr__(name, val)
 
 
