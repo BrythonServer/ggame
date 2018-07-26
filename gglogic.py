@@ -10,9 +10,16 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
         Required Inputs
         
         * **mininputqty** minimum number of inputs possible
+        
+        Optional keyword arguments
+        
+        * **namedinputs** list of input names
         """
         self.In = [None]*mininputqty
         self.Enable = True
+        namedinputs = kwargs.get('namedinputs', [])
+        self._indict = {name:Eval(None) for name in namedinputs}
+        
 
     @property
     def In(self):
@@ -34,11 +41,22 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
     def Enable(self, val):
         self._enable = self.Eval(val)
     
+    @abstractmethod
+    def _getvalue(self):
+        pass
+    
     def __call__(self):
         if self.Enable:
-            return super().__call__()
+            return self._getvalue()
         else:
             return None
+            
+    def __getattr__(self, name):
+        return self._indict[name]
+            
+            
+    def __setattr__(self, name, val):
+        self._indict[name] = self.Eval(val)
         
 
 
@@ -62,7 +80,7 @@ class _BoolMultiInput(_BoolDevice):
 
 class BoolNOT(_BoolOneInput):
 
-    def __call__(self):
+    def _getvalue(self):
         inval = self.In[0]()
         if inval == None:
             return True  # equivalent to an "open" input
@@ -72,12 +90,29 @@ class BoolNOT(_BoolOneInput):
 
 class BoolAND(_BoolMultiInput):
     
-    def __call__(self):
+    def _getvalue(self):
         for v in self._input:
             if not v():
                 return False
         return True
         
+
+class TestDevice(_BoolOneInput):
+    
+    def __init__(self, *args, **kwargs):
+        kwargs['namedinputs'] = ['in1', 'in2']
+        super().__init__(*args, **kwargs)
+        
+    def out1(self):
+        return self.in1 and self.in2
+        
+    def out2(self):
+        return self.in1 or self.in2
+        
+        
+        
+    
+    
 
 # test code here
 if __name__ == "__main__":
@@ -107,6 +142,15 @@ if __name__ == "__main__":
     button = GlassButton(None, (0,0))
     LED = LEDIndicator((0,-1), IC1)
     IC1.In = button 
+
+
+    t1 = MetalToggle(1, (1,-1))
+    t2 = MetalToggle(1, (1, -1.3))
+    td = TestDevice()
+    dt1 = LEDIndicator((1.3, -1), t1)
+    dt2 = LEDIndicator((1.3, -1.3), t2)
+    dtd1 = LEDIndicator((1.5, -1), td.out1)
+    dtd2 = LEDIndicator((1.5, -1.3), td.out2)
     
     app = MathApp()
     app.run()
