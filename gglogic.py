@@ -12,6 +12,7 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
         * **mininputqty** minimum number of inputs possible
         """
         self.In = [None]*mininputqty
+        self.Enable = True
 
     @property
     def In(self):
@@ -23,6 +24,22 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
             self._input = [self.Eval(v) for v in list(val)]
         except TypeError:
             self._input = [self.Eval(val)]
+            
+    # Enable attribute controls the "tri-state" of output
+    @property
+    def Enable(self):
+        return self._enable
+    
+    @Enable.setter
+    def Enable(self, val):
+        self._enable = self.Eval(val)
+    
+    def __call__(self):
+        if self.Enable:
+            return super().__call__()
+        else:
+            return None
+        
 
 
 class _BoolOneInput(_BoolDevice):
