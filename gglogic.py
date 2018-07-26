@@ -39,7 +39,7 @@ class BoolAND(_MathDynamic):
         self._input = [self.Eval(None), self.Eval(None)]
         super().__init__()
 
-    def __cal__(self):
+    def __call__(self):
         for v in self._input:
             if not v():
                 return False
