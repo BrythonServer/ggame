@@ -1,6 +1,6 @@
 # ggmath - ggame extensions for geometry and mathematics in the browser
 
-from ggame import Color, LineStyle, LineAsset, CircleAsset, Sprite, App
+from ggame import Frame, Color, LineStyle, LineAsset, CircleAsset, Sprite, App
 from ggame import TextAsset, ImageAsset, PolygonAsset, RectangleAsset
 from abc import ABCMeta, abstractmethod
 from operator import add
@@ -64,6 +64,7 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         self._selectable = False
         self._strokable = False
         self.selected = False
+        self.mouseisdown = False
         # 
         self.positioning = kwargs.get('positioning', 'logical')
         # positional inputs
@@ -195,6 +196,12 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
 
     def unselect(self):
         self.selected = False
+        
+    def mousedown(self):
+        self.mouseisdown = True
+        
+    def mouseup(self):
+        self.mouseisdown = False
 
     def processEvent(self, event):
         pass
@@ -333,7 +340,7 @@ class InputNumeric(Label):
 
 class InputButton(Label):
     
-    def __init__(self, pos, text, callback, **kwargs):
+    def __init__(self, callback, *args,  **kwargs):
         """
         Required Inputs
         
@@ -341,7 +348,7 @@ class InputButton(Label):
         * **text** text of button
         * **callback** reference of a function to execute, passing this button object
         """
-        super().__init__(pos, text, **kwargs)
+        super().__init__(*args, **kwargs)
         self._touchAsset()
         self._callback = callback
         self.selectable = True
@@ -360,20 +367,21 @@ class InputButton(Label):
     def unselect(self):
         super().unselect()
 
+
         
 class _Point(_MathVisual, metaclass=ABCMeta):
 
     posinputsdef = ['pos']
     nonposinputsdef = []
 
-    def __init__(self, pos, asset, **kwargs):
+    def __init__(self, asset, *args, **kwargs):
         """
         Required Inputs
         
-        * **pos** position of point
         * **asset** asset object to use
+        * **pos** position of point
         """
-        super().__init__(asset, pos, **kwargs)
+        super().__init__(asset, *args, **kwargs)
         self._touchAsset()
         self.center = (0.5, 0.5)
 
@@ -411,14 +419,14 @@ class Point(_Point):
     defaultstyle = LineStyle(0, Color(0, 1))
 
 
-    def __init__(self, pos, **kwargs):
+    def __init__(self, *args, **kwargs):
         """
         Required Inputs
         
         * **pos** position of point
         """
-        super().__init__(pos, CircleAsset(self.defaultsize, 
-            self.defaultstyle, self.defaultcolor), **kwargs)
+        super().__init__(CircleAsset(self.defaultsize, 
+            self.defaultstyle, self.defaultcolor), *args, **kwargs)
 
 
     def _buildAsset(self):
@@ -431,16 +439,12 @@ class Point(_Point):
 class ImagePoint(_Point):
 
 
-    defaultsize = 5
-    defaultstyle = LineStyle(0, Color(0, 1))
-
-
-    def __init__(self, pos, url, **kwargs):
+    def __init__(self, url, *args, **kwargs):
         """
         Required Inputs
         
-        * **pos** position of point
         * **url** location of image file
+        * **pos** position of point
         
         Optional Inputs
         * **frame** sub-frame location of image within file
@@ -453,13 +457,194 @@ class ImagePoint(_Point):
         direction = kwargs.get('direction', 'horizontal')
         margin = kwargs.get('margin', 0)
         self._imageasset = ImageAsset(url, frame, qty, direction, margin)
-        super().__init__(pos, self._imageasset, **kwargs)
+        super().__init__(self._imageasset, *args, **kwargs)
 
 
     def _buildAsset(self):
         return self._imageasset
 
+    def physicalPointTouching(self, ppos):
+        self._setExtents()  # ensure xmin, xmax are correct
+        x, y = ppos
+        return x >= self.xmin and x < self.xmax and y >= self.ymin and y <= self.ymax
 
+
+class InputImageButton(ImagePoint):
+    
+    def __init__(self, url, callback, *args, **kwargs):
+        """
+        Required Inputs
+        
+        * **url** location of image file
+        * **callback** reference of a function to execute, passing this button object
+        * **pos** position of point
+        
+        Optional Inputs
+        * **frame** sub-frame location of image within file
+        * **qty** number of sub-frames, when used as sprite sheet
+        * **direction** one of 'horizontal' (default) or 'vertical'
+        * **margin** pixels between sub-frames if sprite sheet
+        """
+        super().__init__(url, *args, **kwargs)
+        self.center = (0,0)
+        self._callback = callback
+        self.selectable = True
+        self.firstImage()
+        self.mousewasdown = self.mouseisdown
+
+    def select(self):
+        super().select()
+        if self._callback: self._callback(self)
+        self.unselect()
+
+    def unselect(self):
+        super().unselect()
+
+    def __call__(self):
+        # code for controlling the button image state only works if the
+        # button state is being monitored!
+        if self.mouseisdown != self.mousewasdown:
+            if self.mouseisdown:
+                self.nextImage()
+            else:
+                self.firstImage()
+            self.mousewasdown = self.mouseisdown
+        return self.mouseisdown
+        
+
+class InputImageToggle(ImagePoint):
+
+    def __init__(self, url, statelist, initindex, *args, **kwargs):
+        """
+        Required Inputs
+        
+        * **url** location of image file
+        * **statelist** list of values to correspond with toggle states
+        * **initindex** index to initial toggle state
+        * **pos** position of point
+        
+        Optional Inputs
+        * **frame** sub-frame location of image within file
+        * **direction** for sprite sheet one of 'horizontal' (default) or 'vertical'
+        * **margin** pixels between sub-frames if sprite sheet
+        * Note the qty of images is equal to length of the statelist
+        """
+        self.statelist = statelist
+        kwargs.setdefault('qty', len(statelist))
+        super().__init__(url, *args, **kwargs)
+        self.center = (0,0)
+        self.selectable = True
+        self.togglestate = initindex
+        self.setImage(self.togglestate)
+
+    def select(self):
+        super().select()
+        self.togglestate += 1
+        if self.togglestate == len(self.statelist):
+            self.togglestate = 0
+        self.setImage(self.togglestate)
+        self.unselect()
+
+    def __call__(self):
+        return self.statelist[self.togglestate]
+    
+    
+class MetalToggle(InputImageToggle):
+    def __init__(self, initindex, *args, **kwargs):
+        """
+        Required Inputs
+        
+        * **initindex** index to initial toggle state
+        * **pos** position of toggle
+        """
+        kwargs.setdefault('frame', Frame(0,0,110,150))
+        super().__init__("toggle-up-down.png", [True, False], initindex, *args, **kwargs)
+        self.scale = 0.4
+        
+
+
+class GlassButton(InputImageButton):
+    
+    def __init__(self, callback, *args, **kwargs):
+        """
+        Required Inputs
+        
+        * **callback** reference of a function to execute, passing this button object
+        * **pos** position of point
+        """        
+        kwargs.setdefault('frame', Frame(0,0,100,100))
+        kwargs.setdefault('qty', 2)
+        super().__init__("button-round.png", callback, *args, **kwargs)
+        self.scale = 0.3
+        
+        
+
+
+class ImageIndicator(_MathVisual):
+
+    posinputsdef = ['pos']
+    nonposinputsdef = ['value']
+
+    def __init__(self, url, *args, **kwargs):
+        """
+        Required Inputs
+        
+        * **url** location of image file consisting of two image sprite sheet
+        * **pos** position of point
+        * **value** state of the indicator (True/False or integer)
+
+        Optional Inputs
+        * **frame** sub-frame location of image within file
+        * **qty** number of sub-frames, when used as sprite sheet
+        * **direction** one of 'horizontal' (default) or 'vertical'
+        * **margin** pixels between sub-frames if sprite sheet
+        """
+        kwargs.setdefault('frame', None)
+        kwargs.setdefault('qty', 1)
+        kwargs.setdefault('direction', 'horizontal')
+        kwargs.setdefault('margin', 0)
+        super().__init__(
+            ImageAsset(url, 
+                kwargs['frame'], 
+                kwargs['qty'], 
+                kwargs['direction'], 
+                kwargs['margin']), 
+            *args, **kwargs)
+        self.center = (0,0)
+
+    def _buildAsset(self):
+        inval = self.nposinputs.value()
+        if inval == True:
+            self.setImage(1)
+        elif inval == False:
+            self.setImage(0)
+        else:
+            self.setImage(inval)
+        return self.asset
+
+    def physicalPointTouching(self, ppos):
+        self._setExtents()  # ensure xmin, xmax are correct
+        x, y = ppos
+        return x >= self.xmin and x < self.xmax and y >= self.ymin and y <= self.ymax
+
+    def translate(self, pdisp):
+        pass
+
+
+class LEDIndicator(ImageIndicator):
+    
+    def __init__(self, *args, **kwargs):
+        """
+        Required Inputs
+        
+        * **pos** position of point
+        * **value** state of the indicator (True/False or integer)
+
+        """
+        kwargs.setdefault('frame', Frame(0,0,600,600))
+        kwargs.setdefault('qty', 2)
+        super().__init__("red-led-off-on.png", *args, **kwargs)
+        self.scale = 0.05
 
 
 class LineSegment(_MathVisual):
@@ -955,6 +1140,7 @@ class MathApp(App):
         self.mouseDown = False
         self.mouseCapturedObject = None
         self.mouseStrokedObject = None
+        self.mouseDownObject = None
         self.mouseX = self.mouseY = None
         self._touchAllVisuals()
         self.selectedObj = None
@@ -1029,6 +1215,11 @@ class MathApp(App):
         self.mouseDown = True
         self.mouseCapturedObject = None
         self.mouseStrokedObject = None
+        for obj in self._mathSelectableList:
+            if obj.physicalPointTouching((event.x, event.y)):
+                obj.mousedown()
+                self.mouseDownObject = obj
+                break
         for obj in self._mathMovableList:
             if obj.physicalPointTouching((event.x, event.y)) and not (obj.strokable and obj.canstroke((event.x,event.y))):
                 self.mouseCapturedObject = obj
@@ -1040,6 +1231,9 @@ class MathApp(App):
                     break
 
     def handleMouseUp(self, event):
+        if self.mouseDownObject:
+            self.mouseDownObject.mouseup()
+            self.mouseDownObject = None
         self.mouseDown = False
         self.mouseCapturedObject = None
         self.mouseStrokedObject = None
@@ -1330,11 +1524,19 @@ if __name__ == "__main__":
 
     vslider1 = Slider((100, 150), 0, 250, 125, positioning='physical', steps=10)
 
-    label = Label(labelcoords, "whatevs", size=15, positioning="physical", color=labelcolor)
-    button = InputButton(buttoncoords, "Press Me", pressbutton, size=15, positioning="physical")
+    def buttonstatus():
+        return "True" if imgbutton() else "False"
+
+    imgbutton = InputImageButton("button-round.png", pressbutton, (0,0), frame=Frame(0,0,100,100), qty=2)
+    imgbutton.scale = 0.5
+
+    label = Label(labelcoords, buttonstatus, size=15, positioning="physical", color=labelcolor)
+    button = InputButton(pressbutton, buttoncoords, "Press Me", size=15, positioning="physical")
     numinput = InputNumeric((300, 275), 3.14, positioning="physical")
 
-    
+    ip = ImagePoint( 'bunny.png', (0,0))
+    ip.movable = True
+
     p1 = Point((0,0), color=Color(0x008000, 1))
     p1.movable = True
     
@@ -1347,9 +1549,16 @@ if __name__ == "__main__":
     LineSegment(p2,p1, style=LineStyle(3, Color(0,1)))
     
     c2 = Circle((-1,-1), p1)
-
-    ip = ImagePoint((1,0), 'bunny.png')
-    ip.movable = True
+    
+    ii = ImageIndicator("red-led-off-on.png", (300,500), imgbutton, positioning="physical", frame=Frame(0,0,600,600), qty=2)
+    ii.scale = 0.1
+   
+    glassbutton = GlassButton(None, (0,-0.5))
+    toggle = MetalToggle(0, (0, -1))
+    
+   
+    Li = LEDIndicator((300,450), glassbutton, positioning="physical")
+    Lit = LEDIndicator((300,480), toggle, positioning="physical")
    
     def zoomCheck(**kwargs):
         viewtype = kwargs.get('viewchange')
