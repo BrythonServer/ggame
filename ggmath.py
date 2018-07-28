@@ -711,7 +711,7 @@ class Circle(_MathVisual):
         pcenter = self.spposinputs.pos
         try: 
             pradius = MathApp.distance(self.posinputs.pos(), self.nposinputs.radius()) * MathApp._scale
-        except AttributeError:
+        except AttributeError, TypeError:
             pradius = self.nposinputs.radius() * MathApp._scale
         style = self.stdinputs.style()
         fill = self.stdinputs.color()
