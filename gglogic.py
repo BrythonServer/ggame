@@ -207,8 +207,8 @@ class BoolJKFF(_BoolOneInput):
         self.ICK = BoolNAND()
         self.IC1.In = self.ICJ, self.IC2
         self.IC2.In = self.ICK, self.IC1
-"""
     # we can only assign ICJ, ICK inputs when this device's inputs are set
+    """
     def SetInput(self, inputname, reference):
         super().SetInput(inputname, reference)
         for i in self.InputNames:
@@ -217,6 +217,7 @@ class BoolJKFF(_BoolOneInput):
         self.ICJ.In = self.IC2, self._indict['J'], self._indict['CLK']
         self.ICK.In = self.IC1, self._indict['K'], self._indict['CLK']
         
+    """
     def _getvalue(self):
         return self.IC1()
         
@@ -225,7 +226,6 @@ class BoolJKFF(_BoolOneInput):
         
     def Q(self):
         return self._getvalue()
-"""        
 
 class TestDevice(_BoolOneInput):
     
