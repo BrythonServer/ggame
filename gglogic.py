@@ -44,21 +44,22 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
         self._enable = self.Eval(val)
         
     # decorator for _getvalue
-    def recursiontrap(self, handler):
-        if not self.ingetvalue:
-            self.ingetvalue = True
-            self.lastget = handler()
-            self.ingetvalue = False
-            return self.lastget
-        else:
-            self.ingetvalue = False
-            return self.lastget
-            
+    def recursiontrap(handler):
+        def trapmagic(self):
+            if not self.ingetvalue:
+                self.ingetvalue = True
+                self.lastget = handler(self)
+                self.ingetvalue = False
+                return self.lastget
+            else:
+                self.ingetvalue = False
+                return self.lastget
+                
+        return trapmagic 
     
     @abstractmethod
-    @self.recursiontrap
     def _getvalue(self):
-        pass
+        return None
     
     def _inputState(self, value):
         """
@@ -132,7 +133,6 @@ class BoolAND(_BoolMultiInput):
         
 class BoolNOR(_BoolMultiInput):
     
-    @self.recursiontrap
     def _getvalue(self):
         for v in self._input:
             if self._inputState(v):
