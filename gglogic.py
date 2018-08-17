@@ -35,6 +35,8 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
         self.Enable = True
         namedinputs = kwargs.get('namedinputs', [])
         self._indict = {name:Eval(None) for name in namedinputs}
+        print(self._indict)
+        print(namedinputs)
         self.ingetvalue = False
         self.lastget = None
         
