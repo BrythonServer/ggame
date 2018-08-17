@@ -3,6 +3,22 @@
 from ggmath import MathApp, _MathDynamic
 from abc import ABCMeta, abstractmethod
 
+
+# decorator for _getvalue
+def recursiontrap(handler):
+    def trapmagic(self):
+        if not self.ingetvalue:
+            self.ingetvalue = True
+            self.lastget = handler(self)
+            self.ingetvalue = False
+            return self.lastget
+        else:
+            self.ingetvalue = False
+            return self.lastget
+            
+    return trapmagic 
+
+
 class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
 
     def __init__(self, mininputqty, *args, **kwargs):
@@ -43,20 +59,6 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
     def Enable(self, val):
         self._enable = self.Eval(val)
         
-    # decorator for _getvalue
-    def recursiontrap(handler):
-        def trapmagic(self):
-            if not self.ingetvalue:
-                self.ingetvalue = True
-                self.lastget = handler(self)
-                self.ingetvalue = False
-                return self.lastget
-            else:
-                self.ingetvalue = False
-                return self.lastget
-                
-        return trapmagic 
-    
     @abstractmethod
     def _getvalue(self):
         return None
