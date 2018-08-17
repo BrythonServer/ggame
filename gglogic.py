@@ -213,8 +213,9 @@ class BoolJKFF(_BoolOneInput):
         for i in self.InputNames:
             if self._indict[i]() is None:
                 return
-        self.ICJ.In = self.IC2, self._indict['J'], self._indict['CLK']
-        self.ICK.In = self.IC1, self._indict['K'], self._indict['CLK']
+        print(self.IC2, self._indict['J'],  self._indict['K'], self._indict['CLK'])    
+        #self.ICJ.In = self.IC2, self._indict['J'], self._indict['CLK']
+        #self.ICK.In = self.IC1, self._indict['K'], self._indict['CLK']
         
     def _getvalue(self):
         return self.IC1()
