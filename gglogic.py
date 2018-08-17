@@ -310,10 +310,10 @@ if __name__ == "__main__":
     """
     
     IC1 = BoolJKFF()
-    """
     t1 = MetalToggle(0, (0,0.5))
     b1 = GlassButton(None, (0,0))
     t2 = MetalToggle(0, (0,-0.5))
+    """
 
     IC1.SetInput('J', t1)
     IC1.SetInput('K', t2)
