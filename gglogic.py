@@ -56,7 +56,7 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
             
     
     @abstractmethod
-    @recursiontrap
+    @self.recursiontrap
     def _getvalue(self):
         pass
     
