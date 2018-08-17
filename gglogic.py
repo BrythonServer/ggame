@@ -145,15 +145,31 @@ class BoolNOR(_BoolMultiInput):
                 return False
         return True
         
+class BoolNAND(_BoolMultiInput):
+    
+    @recursiontrap
+    def _getvalue(self):
+        for v in self._input:
+            if not self._inputState(v):
+                return True
+        return False
+        
+# example of a composite device
 class BoolSRFF(_BoolOneInput):
     
     def __init__(self, *args, **kwargs):
+        """
+        Optional keyword arguments
+        
+        * **gateclass** one of BoolNAND or BoolNOR (default)
+        """
         kwargs['namedinputs'] = ['R','S']
         super().__init__(*args, **kwargs)
-        self.IC1 = BoolNOR()
-        self.IC2 = BoolNOR()
+        gate = kwargs.get('gateclass', BoolNOR)
+        self.IC1 = gate()
+        self.IC2 = gate()
 
-
+    # we can only assign IC1 and IC2 inputs when this device's inputs are set
     def SetInput(self, inputname, reference):
         super().SetInput(inputname, reference)
         if inputname == 'R':
@@ -235,21 +251,7 @@ if __name__ == "__main__":
     """
     
     
-    """ SR Flip Flop Test
-    IC1 = BoolNOR()
-    IC2 = BoolNOR()
-    
-    b1 = GlassButton(None, (0,0))
-    b2 = GlassButton(None, (0,-0.5))
-    
-    IC1.In = b1, IC2
-    IC2.In = b2, IC1
-    
-    d1 = LEDIndicator((0.5,0), IC1)
-    d2 = LEDIndicator((0.5,-0.5), IC2)
-    """
-    
-    IC1 = BoolSRFF()
+    IC1 = BoolSRFF(gateclass=BoolNAND)
 
     b1 = GlassButton(None, (0,0))
     b2 = GlassButton(None, (0,-0.5))
