@@ -35,8 +35,6 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
         self.Enable = True
         namedinputs = kwargs.get('namedinputs', [])
         self._indict = {name:self.Eval(None) for name in namedinputs}
-        print(self._indict)
-        print(namedinputs)
         self.ingetvalue = False
         self.lastget = None
         
@@ -313,11 +311,11 @@ if __name__ == "__main__":
     t1 = MetalToggle(0, (0,0.5))
     b1 = GlassButton(None, (0,0))
     t2 = MetalToggle(0, (0,-0.5))
-    """
 
     IC1.SetInput('J', t1)
     IC1.SetInput('K', t2)
     IC1.SetInput('CLK', b1)
+    """
 
     d1 = LEDIndicator((0.5,0.5), IC1)
     d2 = LEDIndicator((0.5,-0.5), IC1.Q_)
