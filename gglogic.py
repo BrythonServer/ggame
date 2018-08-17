@@ -251,7 +251,7 @@ if __name__ == "__main__":
     IC1.SetInput('S', b2)
 
     d1 = LEDIndicator((0.5,0), IC1)
-    d2 = LEDIndicator((0.5,-0.5), IC2.Q_)
+    d2 = LEDIndicator((0.5,-0.5), IC1.Q_)
     
     
     app = MathApp()
