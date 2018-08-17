@@ -115,6 +115,14 @@ class BoolAND(_BoolMultiInput):
                 return False
         return True
         
+class BoolNOR(_BoolMultiInput):
+    
+    def _getvalue(self):
+        for v in self._input:
+            if self._inputState(v):
+                return False
+        return True
+        
 
 class TestDevice(_BoolOneInput):
     
@@ -142,6 +150,7 @@ if __name__ == "__main__":
     from ggmath import GlassButton, LEDIndicator, MetalToggle
     
 
+    """
     IC1 = BoolNOT()
     IC2 = BoolAND()
     
@@ -175,6 +184,12 @@ if __name__ == "__main__":
     dtd2 = LEDIndicator((1.5, -1.3), td.out2)
     td.SetInput('in1', t1)
     td.SetInput('in2', t2)
+    """
+    
+    IC1 = BoolNOR()
+    IC2 = BoolNOR()
+    
+    
     
     app = MathApp()
     app.run()
