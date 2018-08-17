@@ -211,11 +211,10 @@ class BoolJKFF(_BoolOneInput):
     def SetInput(self, inputname, reference):
         super().SetInput(inputname, reference)
         for i in self.InputNames:
-            if self._indict[i] is None:
+            if self._indict[i]() is None:
                 return
-        print('setting inputs for J and K')
-        #self.ICJ.In = self.IC2, self._indict['J'], self._indict['CLK']
-        #self.ICK.In = self.IC1, self._indict['K'], self._indict['CLK']
+        self.ICJ.In = self.IC2, self._indict['J'], self._indict['CLK']
+        self.ICK.In = self.IC1, self._indict['K'], self._indict['CLK']
         
     def _getvalue(self):
         return self.IC1()
