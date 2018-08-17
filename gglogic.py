@@ -188,6 +188,7 @@ class BoolSRFF(_BoolOneInput):
     def Q(self):
         return self._getvalue()
         
+
 class BoolJKFF(_BoolOneInput):
     
     def __init__(self, *args, **kwargs):
@@ -206,7 +207,7 @@ class BoolJKFF(_BoolOneInput):
         self.ICK = BoolNAND()
         self.IC1.In = self.ICJ, self.IC2
         self.IC2.In = self.ICK, self.IC1
-
+"""
     # we can only assign ICJ, ICK inputs when this device's inputs are set
     def SetInput(self, inputname, reference):
         super().SetInput(inputname, reference)
@@ -224,7 +225,7 @@ class BoolJKFF(_BoolOneInput):
         
     def Q(self):
         return self._getvalue()
-        
+"""        
 
 class TestDevice(_BoolOneInput):
     
