@@ -60,7 +60,7 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
         self._enable = self.Eval(val)
         
     @abstractmethod
-    @recursiontrap
+    @recursiontrap     # MUST use with any implementation that may recurse!
     def _getvalue(self):
         return None
     
@@ -118,6 +118,7 @@ class _BoolMultiInput(_BoolDevice):
 
 class BoolNOT(_BoolOneInput):
 
+    @recursiontrap
     def _getvalue(self):
         inval = self._inputState(self.In[0])
         if inval == None:
@@ -128,6 +129,7 @@ class BoolNOT(_BoolOneInput):
 
 class BoolAND(_BoolMultiInput):
     
+    @recursiontrap
     def _getvalue(self):
         for v in self._input:
             if not self._inputState(v):
@@ -136,6 +138,7 @@ class BoolAND(_BoolMultiInput):
         
 class BoolNOR(_BoolMultiInput):
     
+    @recursiontrap
     def _getvalue(self):
         for v in self._input:
             if self._inputState(v):
