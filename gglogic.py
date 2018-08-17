@@ -189,7 +189,14 @@ if __name__ == "__main__":
     IC1 = BoolNOR()
     IC2 = BoolNOR()
     
+    b1 = GlassButton(None, (0,0))
+    b2 = GlassButton(None, (0,-0.5))
     
+    IC1.In = b1, IC2
+    IC2.In = b2, IC1
+    
+    d1 = LEDIndicator((0.5,0), IC1)
+    d2 = LEDIndicator((0.5,-0.5), IC2)
     
     app = MathApp()
     app.run()
