@@ -154,11 +154,12 @@ class BoolNAND(_BoolMultiInput):
                 return True
         return False
         
-# example of a composite device
 class BoolSRFF(_BoolOneInput):
     
     def __init__(self, *args, **kwargs):
         """
+        SR Flip Flop
+        
         Optional keyword arguments
         
         * **gateclass** one of BoolNAND or BoolNOR (default)
@@ -177,6 +178,43 @@ class BoolSRFF(_BoolOneInput):
         elif inputname == 'S':
             self.IC2.In = reference, self.IC1
 
+        
+    def _getvalue(self):
+        return self.IC1()
+        
+    def Q_(self):
+        return self.IC2()
+        
+    def Q(self):
+        return self._getvalue()
+        
+class BoolJKFF(_BoolOneInput):
+    
+    def __init__(self, *args, **kwargs):
+        """
+        JK Flip Flop
+        
+        Optional keyword arguments
+        
+        """
+        self.InputNames = ['J','K','CLK']
+        kwargs['namedinputs'] = self.InputNames
+        super().__init__(*args, **kwargs)
+        self.IC1 = BoolNAND()
+        self.IC2 = BoolNAND()
+        self.ICJ = BoolNAND()
+        self.ICK = BoolNAND()
+        self.IC1.In = self.ICJ, self.IC2
+        self.IC2.In = self.ICK, self.IC1
+
+    # we can only assign ICJ, ICK inputs when this device's inputs are set
+    def SetInput(self, inputname, reference):
+        super().SetInput(inputname, reference)
+        for i in self.InputNames:
+            self._indict[i] is None:
+                return
+        self.ICJ.In = self.IC2, self._indict['J'], self._indict['CLK']
+        self.ICK.In = self.IC1, self._indict['K'], self._indict['CLK']
         
     def _getvalue(self):
         return self.IC1()
@@ -250,7 +288,7 @@ if __name__ == "__main__":
     td.SetInput('in2', t2)
     """
     
-    
+    """ SR Flip Flop demo
     IC1 = BoolSRFF(gateclass=BoolNAND)
     Inv1 = BoolNOT()
     Inv2 = BoolNOT()
@@ -265,7 +303,7 @@ if __name__ == "__main__":
 
     d1 = LEDIndicator((0.5,0), IC1)
     d2 = LEDIndicator((0.5,-0.5), IC1.Q_)
-    
+    """
     
     app = MathApp()
     app.run()
