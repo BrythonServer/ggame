@@ -60,6 +60,7 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
         self._enable = self.Eval(val)
         
     @abstractmethod
+    @recursiontrap
     def _getvalue(self):
         return None
     
@@ -135,7 +136,6 @@ class BoolAND(_BoolMultiInput):
         
 class BoolNOR(_BoolMultiInput):
     
-    @recursiontrap
     def _getvalue(self):
         for v in self._input:
             if self._inputState(v):
