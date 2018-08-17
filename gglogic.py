@@ -34,7 +34,7 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
         self.In = [None]*mininputqty
         self.Enable = True
         namedinputs = kwargs.get('namedinputs', [])
-        self._indict = {name:Eval(None) for name in namedinputs}
+        self._indict = {name:self.Eval(None) for name in namedinputs}
         print(self._indict)
         print(namedinputs)
         self.ingetvalue = False
@@ -106,7 +106,7 @@ class _BoolOneInput(_BoolDevice):
         """ 
         No Required Inputs
         """
-        super().__init__(1)
+        super().__init__(1, *args, **kwargs)
 
     
 class _BoolMultiInput(_BoolDevice):
@@ -115,7 +115,7 @@ class _BoolMultiInput(_BoolDevice):
         """ 
         No Required Inputs
         """
-        super().__init__(2)
+        super().__init__(2, *args, **kwargs)
 
 
 class BoolNOT(_BoolOneInput):
