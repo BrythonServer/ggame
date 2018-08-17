@@ -290,7 +290,7 @@ if __name__ == "__main__":
     td.SetInput('in2', t2)
     """
     
-    """ SR Flip Flop demo
+    #""" SR Flip Flop demo
     IC1 = BoolSRFF(gateclass=BoolNAND)
     Inv1 = BoolNOT()
     Inv2 = BoolNOT()
@@ -305,10 +305,9 @@ if __name__ == "__main__":
 
     d1 = LEDIndicator((0.5,0), IC1)
     d2 = LEDIndicator((0.5,-0.5), IC1.Q_)
-    """
+    #"""
 
     """ JK Flip Flop demo
-    """
     
     IC1 = BoolJKFF()
     t1 = MetalToggle(0, (0,0.5))
@@ -321,7 +320,7 @@ if __name__ == "__main__":
 
     d1 = LEDIndicator((0.5,0.5), IC1)
     d2 = LEDIndicator((0.5,-0.5), IC1.Q_)
-    """
+    
     """
     
     app = MathApp()
