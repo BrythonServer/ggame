@@ -252,12 +252,16 @@ if __name__ == "__main__":
     
     
     IC1 = BoolSRFF(gateclass=BoolNAND)
+    Inv1 = BoolNOT()
+    Inv2 = BoolNOT()
 
     b1 = GlassButton(None, (0,0))
     b2 = GlassButton(None, (0,-0.5))
+    Inv1.In = b1
+    Inv2.In = b2
     
-    IC1.SetInput('R', b1)
-    IC1.SetInput('S', b2)
+    IC1.SetInput('R', Inv1)
+    IC1.SetInput('S', Inv2)
 
     d1 = LEDIndicator((0.5,0), IC1)
     d2 = LEDIndicator((0.5,-0.5), IC1.Q_)
