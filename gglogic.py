@@ -149,7 +149,6 @@ class BoolNAND(_BoolMultiInput):
     
     @recursiontrap
     def _getvalue(self):
-        print('getting NAND output')
         for v in self._input:
             if not self._inputState(v):
                 return True
@@ -216,7 +215,7 @@ class BoolJKFF(_BoolOneInput):
             if self._indict[i]() is None:
                 return
         self.ICJ.In = self.IC2, self._indict['J'], self._indict['CLK']
-        self.ICK.In = self.IC1, self._indict['K'], self._indict['CLK']
+        #self.ICK.In = self.IC1, self._indict['K'], self._indict['CLK']
         
     def _getvalue(self):
         return self.IC1()
