@@ -4,7 +4,7 @@ from ggmath import MathApp, _MathDynamic
 from abc import ABCMeta, abstractmethod
 
 
-# decorator for _getvalue
+# decorator for _getvalue or any value handler that may experience recursion
 def recursiontrap(handler):
     def trapmagic(self):
         if not self.ingetvalue:
@@ -145,6 +145,25 @@ class BoolNOR(_BoolMultiInput):
                 return False
         return True
         
+class BoolSRFF(_BoolOneInput):
+    
+    def __init__(self, *args, **kwargs):
+        kwargs['namedinputs'] = ['R','S']
+        super().__init__(*args, **kwargs)
+        self.IC1 = BoolNOR()
+        self.IC2 = BoolNOR()
+        self.IC1.In = self.GetInput('R'), self.IC2
+        self.IC2.In = self.GetInput('S'), self.IC1
+        
+    def _getvalue(self):
+        return self.IC1()
+        
+    def Q_(self):
+        return self.IC2()
+        
+    def Q(self):
+        return self._getvalue()
+        
 
 class TestDevice(_BoolOneInput):
     
@@ -208,6 +227,8 @@ if __name__ == "__main__":
     td.SetInput('in2', t2)
     """
     
+    
+    """ SR Flip Flop Test
     IC1 = BoolNOR()
     IC2 = BoolNOR()
     
@@ -219,6 +240,9 @@ if __name__ == "__main__":
     
     d1 = LEDIndicator((0.5,0), IC1)
     d2 = LEDIndicator((0.5,-0.5), IC2)
+    """
+    
+    
     
     app = MathApp()
     app.run()
