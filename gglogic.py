@@ -149,6 +149,7 @@ class BoolNAND(_BoolMultiInput):
     
     @recursiontrap
     def _getvalue(self):
+        print('getting NAND output')
         for v in self._input:
             if not self._inputState(v):
                 return True
