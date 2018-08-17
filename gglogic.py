@@ -315,10 +315,10 @@ if __name__ == "__main__":
     IC1.SetInput('J', t1)
     IC1.SetInput('K', t2)
     IC1.SetInput('CLK', b1)
-    """
 
     d1 = LEDIndicator((0.5,0.5), IC1)
     d2 = LEDIndicator((0.5,-0.5), IC1.Q_)
+    """
     """
     
     app = MathApp()
