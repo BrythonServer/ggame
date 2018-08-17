@@ -242,6 +242,16 @@ if __name__ == "__main__":
     d2 = LEDIndicator((0.5,-0.5), IC2)
     """
     
+    IC1 = BoolSRFF()
+
+    b1 = GlassButton(None, (0,0))
+    b2 = GlassButton(None, (0,-0.5))
+    
+    IC1.SetInput('R', b1)
+    IC1.SetInput('S', b2)
+
+    d1 = LEDIndicator((0.5,0), IC1)
+    d2 = LEDIndicator((0.5,-0.5), IC2.Q_)
     
     
     app = MathApp()
