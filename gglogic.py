@@ -19,6 +19,8 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
         self.Enable = True
         namedinputs = kwargs.get('namedinputs', [])
         self._indict = {name:Eval(None) for name in namedinputs}
+        self.ingetvalue = False
+        self.lastget = None
         
 
     @property
@@ -40,8 +42,21 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
     @Enable.setter
     def Enable(self, val):
         self._enable = self.Eval(val)
+        
+    # decorator for _getvalue
+    def recursiontrap(self, handler):
+        if not self.ingetvalue:
+            self.ingetvalue = True
+            self.lastget = handler()
+            self.ingetvalue = False
+            return self.lastget
+        else:
+            self.ingetvalue = False
+            return self.lastget
+            
     
     @abstractmethod
+    @recursiontrap
     def _getvalue(self):
         pass
     
