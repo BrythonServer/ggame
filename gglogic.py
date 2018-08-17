@@ -133,6 +133,7 @@ class BoolAND(_BoolMultiInput):
         
 class BoolNOR(_BoolMultiInput):
     
+    @recursiontrap
     def _getvalue(self):
         for v in self._input:
             if self._inputState(v):
