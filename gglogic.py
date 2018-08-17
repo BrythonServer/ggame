@@ -152,8 +152,8 @@ class BoolSRFF(_BoolOneInput):
         super().__init__(*args, **kwargs)
         self.IC1 = BoolNOR()
         self.IC2 = BoolNOR()
-        self.IC1.In = self.GetInput('R'), self.IC2
-        self.IC2.In = self.GetInput('S'), self.IC1
+        #self.IC1.In = self.GetInput('R'), self.IC2
+        #self.IC2.In = self.GetInput('S'), self.IC1
         
     def _getvalue(self):
         return self.IC1()
