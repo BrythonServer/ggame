@@ -1599,10 +1599,12 @@ if __name__ == "__main__":
         a = guess1
         b = guess2
         c = b
-        while a - 2*pi > 0.000001:
+        val = 0
+        while c > 0.000001:
             c = (a*opt(n,b)-b*opt(n,a))/(opt(n,b)-opt(n,a))
-            b = a
-            a = c
+            a = b
+            b = c
+            val = opt(n,c)
         return c
 
     
