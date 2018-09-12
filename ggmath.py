@@ -1610,7 +1610,7 @@ if __name__ == "__main__":
     
     circleqty = 7
     
-    print(optimize(circleqty, opt, .9, .99))
+    #print(optimize(circleqty, opt, .9, .99))
     
     
     a = 0.9485
