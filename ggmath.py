@@ -1599,7 +1599,7 @@ if __name__ == "__main__":
         a = guess1
         b = guess2
         c = b
-        while a - 2*pi > 0.000001
+        while a - 2*pi > 0.000001:
             c = (a*opt(n,b)-b*opt(n,a))/(opt(n,b)-opt(n,a))
             a = b
             b = c
@@ -1608,7 +1608,7 @@ if __name__ == "__main__":
     
     circleqty = 7
     
-    print(optimize(n, opt, .9, .99))
+    print(optimize(circleqty, opt, .9, .99))
     
     
     a = 0.9485
