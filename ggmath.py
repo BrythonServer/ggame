@@ -1600,7 +1600,7 @@ if __name__ == "__main__":
         b = guess2
         c = b
         val = 0
-        while c > 0.000001:
+        while c > 0.0001:
             c = (a*opt(n,b)-b*opt(n,a))/(opt(n,b)-opt(n,a))
             a = b
             b = c
