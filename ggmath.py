@@ -1592,7 +1592,25 @@ if __name__ == "__main__":
         angle = thtot(n,a)  # angle to center
         return (r*cos(angle), r*sin(angle))
     
+    def opt(n, a):
+        return thtot(circleqty, a) + thlast(circleqty, a) - 2*pi
+
+    def optimize(n, opt, guess1, guess2):
+        a = guess1
+        b = guess2
+        c = b
+        while a - 2*pi > 0.000001
+            c = (a*opt(n,b)-b*opt(n,a))/(opt(n,b)-opt(n,a))
+            a = b
+            b = c
+        return c
+
+    
     circleqty = 7
+    
+    print(optimize(n, opt, .9, .99))
+    
+    
     a = 0.9485
     r = 0.5
     angle = 0
