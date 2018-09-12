@@ -1601,8 +1601,8 @@ if __name__ == "__main__":
         c = b
         while a - 2*pi > 0.000001:
             c = (a*opt(n,b)-b*opt(n,a))/(opt(n,b)-opt(n,a))
-            a = b
-            b = c
+            b = a
+            a = c
         return c
 
     
