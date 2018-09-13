@@ -1157,7 +1157,7 @@ class MathApp(App):
     def _touchAllVisuals(self):
         # touch all visual object assets to use scaling
         for obj in self._mathVisualList:
-            obj._touchAsset()
+            obj._touchAsset(True)
 
 
     @classmethod
