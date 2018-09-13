@@ -228,7 +228,11 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         inputs = self._getInputs()
         if self._inputsChanged(inputs):
             self._saveInputs(inputs)
+            self._redrawAsset()
             self._updateAsset(self._buildAsset())
+
+    def _redrawAsset(self):
+        self._updateAsset(self._buildAsset())
     
     @abstractmethod
     def _buildAsset(self):
@@ -1154,7 +1158,7 @@ class MathApp(App):
     def _touchAllVisuals(self):
         # touch all visual object assets to use scaling
         for obj in self._mathVisualList:
-            obj._touchAsset()
+            obj._redrawAsset()
 
 
     @classmethod
