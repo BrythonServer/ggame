@@ -224,14 +224,14 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     def canstroke(self, ppos):
         return False
     
-    def _touchAsset(self):
+    def _touchAsset(self, force = False):
         inputs = self._getInputs()
-        if self._inputsChanged(inputs):
+        changed = self._inputsChanged(inputs)
+        if changed:
             self._saveInputs(inputs)
-            self._redrawAsset()
+        if changed or force:
+            self._updateAsset(self._buildAsset())
 
-    def _redrawAsset(self):
-        self._updateAsset(self._buildAsset())
     
     @abstractmethod
     def _buildAsset(self):
@@ -1157,7 +1157,7 @@ class MathApp(App):
     def _touchAllVisuals(self):
         # touch all visual object assets to use scaling
         for obj in self._mathVisualList:
-            obj._redrawAsset()
+            obj._touchAsset()
 
 
     @classmethod
