@@ -1618,7 +1618,7 @@ if __name__ == "__main__":
     angle = 0
     
     # draw the base circle
-    Circle((0,0), r)
+    Circle((0.0,0.0), r)
     
     # draw the children
     for n in range(1, circleqty+1):
