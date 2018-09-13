@@ -229,7 +229,6 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         if self._inputsChanged(inputs):
             self._saveInputs(inputs)
             self._redrawAsset()
-            self._updateAsset(self._buildAsset())
 
     def _redrawAsset(self):
         self._updateAsset(self._buildAsset())
