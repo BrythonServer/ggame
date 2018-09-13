@@ -224,11 +224,14 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     def canstroke(self, ppos):
         return False
     
-    def _touchAsset(self):
+    def _touchAsset(self, force = False):
         inputs = self._getInputs()
-        if self._inputsChanged(inputs):
+        changed = self._inputsChanged(inputs)
+        if changed:
             self._saveInputs(inputs)
+        if changed or force:
             self._updateAsset(self._buildAsset())
+
     
     @abstractmethod
     def _buildAsset(self):
@@ -711,7 +714,7 @@ class Circle(_MathVisual):
         pcenter = self.spposinputs.pos
         try: 
             pradius = MathApp.distance(self.posinputs.pos(), self.nposinputs.radius()) * MathApp._scale
-        except AttributeError:
+        except (AttributeError, TypeError):
             pradius = self.nposinputs.radius() * MathApp._scale
         style = self.stdinputs.style()
         fill = self.stdinputs.color()
@@ -1154,7 +1157,7 @@ class MathApp(App):
     def _touchAllVisuals(self):
         # touch all visual object assets to use scaling
         for obj in self._mathVisualList:
-            obj._touchAsset()
+            obj._touchAsset(True)
 
 
     @classmethod
@@ -1567,6 +1570,8 @@ if __name__ == "__main__":
     
     #pcenter = Point((0, -5000000))
     # c1 = Circle((0,-5000000), 5000000, LineStyle(1, Color(0x008040,1)), Color(0x008400,0.5))
+
+
     ap = MathApp()
 
     #ap.addViewNotification(zoomCheck)
