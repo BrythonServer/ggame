@@ -1,11 +1,15 @@
 """
-# ggrocket 
-## A ggmath extensions for modeling spacecraft in planetary orbit
+## aerospace
+## ggame extensions for modeling spacecraft in planetary orbit
 """
 
 from math import pi, degrees, radians, atan2, sin, cos, sqrt
-from ggame import LineStyle, Color
-from ggmath import MathApp, Circle, ImagePoint, Timer, Label
+from ggame.asset import LineStyle, Color
+from ggame.mathapp import MathApp
+from ggame.circle import Circle
+from ggame.point import ImagePoint
+from ggame.timer import Timer
+from ggame.label import Label
 
 class Rocket(ImagePoint):
     """
@@ -29,7 +33,7 @@ class Rocket(ImagePoint):
         Optional keyword parameters are supported:
         
         * **bitmap**:  url of a suitable bitmap image for the rocket (png recommended)
-          default is `rocket.png`
+          default is `ggimages/rocket.png`
         * **bitmapscale**:  scale factor for bitmap. Default is 0.1
         * **velocity**:  initial rocket speed. default is zero.
         * **directiond**:  initial rocket direction in degrees. Default is zero.
@@ -70,7 +74,7 @@ class Rocket(ImagePoint):
         """
         self._xy = (1000000,1000000)
         self.planet = planet
-        self.bmurl = kwargs.get('bitmap', 'rocket.png') # default rocket png
+        self.bmurl = kwargs.get('bitmap', 'ggimages/rocket.png') # default rocket png
         self.bitmapframe = kwargs.get('bitmapframe', None) #
         self.bitmapqty = kwargs.get('bitmapqty', 1) # Number of images in bitmap
         self.bitmapdir = kwargs.get('bitmapdir', 'horizontal') # animation orientation

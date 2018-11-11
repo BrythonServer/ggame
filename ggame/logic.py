@@ -1,6 +1,7 @@
 # gglogic boolean logic device simulations for ggmath
 
-from ggmath import MathApp, _MathDynamic
+from ggame.mathapp import MathApp
+from ggame.mathbase import _MathDynamic
 from abc import ABCMeta, abstractmethod
 
 
