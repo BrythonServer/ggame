@@ -209,6 +209,7 @@ class App(object):
         `ggame.App.step` method is called once per animation frame. Set `userfunc`
         to any function which shall be called once per animation frame.
         """
+        print("running")
         self.userfunc = userfunc
         App._win.animate(self._animate)
 
