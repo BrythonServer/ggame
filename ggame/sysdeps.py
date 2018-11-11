@@ -85,13 +85,13 @@ elif module_exists('pygame'):
 
     try:
         from ggame.pygamedeps import *
-    except:
+    except ImportError:
         from pygamedeps import *
 
 else:
     try:
         from ggame.headlessdeps import *
-    except:
+    except ImportError:
         from headlessdeps import *
   
     
