@@ -1,3 +1,6 @@
+.. module:: ggame
+
+
 Introduction
 ============
 
@@ -13,65 +16,69 @@ ___________________
 
 The ggame library is intended to be trivially easy to use. For example:
 
-.. literalinclude:: /examples/onebunny.py
+.. literalinclude:: ../examples/onebunny.py
    :language: python
 
 
 
-## Extensions
+Extensions
+__________
 
-The `ggame` library has been extended with [ggmath](/ggame/ggmath.html) for geometry
-exploration in a manner reminiscent of Geogebra, and [ggrocket](/ggame/ggrocket.html)
-for tools and classes to use with rocket and orbital simulations.
+Ggame is being extended for geometry exploration in a manner 
+reminiscent of Geogebra, digital logic simulation, and with tools and 
+classes to use with rocket and orbital simulations.
 
-## Overview
+Overview
+________
 
-There are three major components to the `ggame` system: Assets, Sprites and the App.
+There are three major pieces in a ggame app: assets, sprites and the app itself.
 
-### Assets
+Assets
+^^^^^^
 
-Asset objects (i.e. `ggame.ImageAsset`, etc.) typically represent separate files that
+Asset objects (i.e. ``ImageAsset``, etc.) typically represent separate files that
 are provided by the "art department". These might be background images, user interface
-images, or images that represent objects in the game. In addition, `ggame.SoundAsset` 
-is used to represent sound files (`.wav` or `.mp3` format) that can be played in the 
+images, or images that represent objects in the game. In addition, ``SoundAsset`` 
+are used to represent sound files (.wav or .mp3 format) that can be played in the 
 game.
 
 Ggame also extends the asset concept to include graphics that are generated dynamically
 at run-time, such as geometrical objects, e.g. rectangles, lines, etc.
 
-### Sprites
+Sprites
+^^^^^^^
 
-All of the visual aspects of the game are represented by instances of `ggame.Sprite` or
+All of the visual aspects of the game are represented by instances of ``Sprite`` or
 subclasses of it. 
 
-### App
+App
+^^^
 
-Every ggame application must create a single instance of the `ggame.App` class (or 
-a sub-class of it). Creating an instance of the `ggame.App` class will initiate 
-creation of a pop-up window on your browser. Executing the app's `run` method will
-begin the process of refreshing the visual assets on the screen. 
+Every ggame application must create a single instance of the :class:`App` class (or 
+a sub-class of it). Create an instance of the :class:`App` class to draw a 
+graphics canvas in your browser window. Execute the app's :meth:`~App.run` method to
+start refreshing and redrawing the visual assets on the screen. 
 
-### Events
+Events
+^^^^^^
 
-No game is complete without a player and players produce events. Your code handles user
-input by registering to receive keyboard and mouse events using `ggame.App.listenKeyEvent` and
-`ggame.App.listenMouseEvent` methods.
+No game is complete without a player and players make events. Your code handles 
+user input by registering to receive keyboard and mouse events using
+:meth:`~App.listenKeyEvent` and :meth:`~App.listenMouseEvent` methods of the :class:`App` class.
 
-## Execution Environment
+Execution Environment
+_____________________
 
-Ggame is designed to be executed in a web browser using [Brython](http://brython.info/),
-[Pixi.js](http://www.pixijs.com/) and [Buzz](http://buzz.jaysalvat.com/). The easiest
-way to do this is by executing from [runpython](http://runpython.com), with source
-code residing on [github](http://github.com).
+Ggame is designed to execute in a web browser using `Brython <http://brython.info/>`_,
+`Pixi.js <http://www.pixijs.com/>`_ and `Buzz <http://buzz.jaysalvat.com/>`_. 
+The easiest way to do this is by executing from 
+`runpython <https://runpython.org>`_, with your source code stored at 
+`github <http://github.com>`_. When you use ggame from within 
+`runpython <https://runpython.org>`_, the Github ggame repository is 
+automatically placed on the import search path.
 
-To use Ggame in your own application, you may create a folder called
-`ggame` in your project. Within `ggame`, copy the `ggame.py`, `sysdeps.py` and 
-`__init__.py` files from the [ggame project](https://github.com/BrythonServer/ggame).
-
-When using `ggame` from within [runpython](http://runpython.com), the Github
-`ggame` repository is automatically placed on the import search path.
-
-## Geometry
+Geometry
+________
 
 When referring to screen coordinates, note that the x-axis of the computer screen
 is *horizontal* with the zero position on the left hand side of the screen. The 
@@ -80,3 +87,8 @@ y-axis is *vertical* with the zero position at the **top** of the screen.
 Increasing positive y-coordinates correspond to the downward direction on the 
 computer screen. Note that this is **different** from the way you may have learned
 about x and y coordinates in math class!
+
+
+
+.. autoclass:: App
+    :members:
