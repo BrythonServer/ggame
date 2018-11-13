@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Welcome to ggame!
-=================================
+=================
 
 The simple cross-platform sprite and game platform for 
 `Brython Server <https://github.com/tiggerntatie/brython-server>`_ and 
@@ -17,7 +17,7 @@ Ggame stands for a couple of things: “good game” (of course!) and also
 
 
 User's Guide
-------------
+____________
 
 This part of the documentation, which is mostly prose, begins with some
 background information about ggame, then presents several tutorials to 
@@ -28,9 +28,20 @@ illustrate typical uses.
 
    introduction
 
+API Reference
+_____________
+
+.. toctree::
+   :maxdepth: 2
+   
+   ggameapi
+   ggmathapi
+   gglogicapi
+   ggrocketapi
+
 
 Indices and tables
-==================
+__________________
 
 * :ref:`genindex`
 * :ref:`modindex`

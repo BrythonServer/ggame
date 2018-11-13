@@ -8,23 +8,29 @@ from ggame.event import *
 
 class App(object):
     """
-    The `ggame.App` class is a (typically subclassed) class that encapsulates
-    handling of the display system, and processing user events. The `ggame.App` 
-    class also manages lists of all `ggame.Sprite` instances in the application.
+    The :class:`App` class is a (typically subclassed) class that encapsulates
+    handling of the display system, and processing user events. The :class:`App` 
+    class also manages lists of all :class:`Sprite` instances in the application.
 
-    When subclassing `ggame.App` you may elect to instantiate most of your
+    When subclassing :class:`App` you may elect to instantiate most of your
     sprite objects in the initialization section.
 
     Processing that must occur on a per-frame basis may be included by overriding
-    the `ggame.App.step` method. This is also an appropriate location to call
+    the :meth:`~App.run` method. This is also an appropriate location to call
     similar 'step' methods for your various customized sprite classes.
 
     Once your application class has been instantiated, begin the frame drawing
     process by calling its `ggame.App.run` method.
 
-    NOTE: Only **one** instance of an `ggame.App` class or subclass may be 
+    The `ggame.App` class is called either by specifying the desired app window size
+    in pixels, as two parameters (e.g. `myapp = App(640,480)`), or by providing
+    no size parameters at all (e.g. `myapp = App()`), in which case, the full browser
+    window size is used.
+
+    NOTE: Only **one** instance of an :class:`App` class or subclass may be 
     instantiated at a time.
     """
+    
     spritelist = []
     """List of all sprites currently active in the application."""
     _eventdict = {}
@@ -33,12 +39,6 @@ class App(object):
     _win = None
 
     def __init__(self, *args):
-        """
-        The `ggame.App` class is called either by specifying the desired app window size
-        in pixels, as two parameters (e.g. `myapp = App(640,480)`), or by providing
-        no size parameters at all (e.g. `myapp = App()`), in which case, the full browser
-        window size is used.
-        """
         if App._win == None and (len(args) == 0 or len(args) == 2):
             x = y = 0
             if len(args) == 2:
@@ -62,7 +62,6 @@ class App(object):
             App._win.bind(MouseEvent.click, self._mouseEvent)
             App._win.bind(MouseEvent.dblclick, self._mouseEvent)
 
-        
     def _routeEvent(self, event, evtlist):
         for callback in reversed(evtlist):
             if not event.consumed:
@@ -195,18 +194,18 @@ class App(object):
     def step(self):
         """
         The `ggame.App.step` method is called once per animation frame. Override
-        this method in your own subclass of `ggame.App` to perform periodic 
+        this method in your own subclass of :class:`App` to perform periodic 
         calculations, such as checking for sprite collisions, or calling
         'step' functions in your own customized sprite classes.
 
-        The base class `ggame.App.step` method is empty and is intended to be overriden.
+        The base class :meth:`~App.step` method is empty and is intended to be overriden.
         """
         pass
     
     def run(self, userfunc = None):
         """
-        Calling the `ggame.App.run` method begins the animation process whereby the 
-        `ggame.App.step` method is called once per animation frame. Set `userfunc`
+        Calling the :meth:`~App.run` method begins the animation process whereby the 
+        :meth:`~App.step` method is called once per animation frame. Set `userfunc`
         to any function which shall be called once per animation frame.
         """
         print("running")

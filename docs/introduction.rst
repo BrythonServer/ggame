@@ -89,6 +89,3 @@ computer screen. Note that this is **different** from the way you may have learn
 about x and y coordinates in math class!
 
 
-
-.. autoclass:: App
-    :members:
