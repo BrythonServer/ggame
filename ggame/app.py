@@ -20,12 +20,18 @@ class App(object):
     similar 'step' methods for your various customized sprite classes.
 
     Once your application class has been instantiated, begin the frame drawing
-    process by calling its `ggame.App.run` method.
+    process by calling its :meth:`~App.run` method.
 
-    The `ggame.App` class is called either by specifying the desired app window size
-    in pixels, as two parameters (e.g. `myapp = App(640,480)`), or by providing
-    no size parameters at all (e.g. `myapp = App()`), in which case, the full browser
-    window size is used.
+    The :class:`App` class is instantiated either by specifying the desired app 
+    window size in pixels, as two parameters:::
+    
+        myapp = App(640,480)
+    
+    or by providing no size parameters at all:::
+    
+        myapp = App()
+    
+    in which case, the full browser window size is used.
 
     NOTE: Only **one** instance of an :class:`App` class or subclass may be 
     instantiated at a time.
@@ -135,15 +141,18 @@ class App(object):
     @classmethod
     def listenKeyEvent(cls, eventtype, key, callback):
         """
-        Register to receive keyboard events. The `eventtype` parameter is a 
-        string that indicates what type of key event to receive (value is one
-        of: `'keydown'`, `'keyup'` or `'keypress'`). The `key` parameter is a 
-        string indicating which key (e.g. `'space'`, `'left arrow'`, etc.) to 
-        receive events for. The `callback` parameter is a reference to a 
-        function or method that will be called with the `ggame.KeyEvent` object
-        when the event occurs.
+        Register to receive keyboard events. 
 
-        See the source for `ggame.KeyEvent.keys` for a list of key names
+        :param eventtype:  A string that indicates what type of key event to 
+            receive (value is one of: `'keydown'`, `'keyup'` or `'keypress'`). 
+            
+        :param key:  A string indicating which key (e.g. `'space'`, 
+            `'left arrow'`, etc.) to receive events for.
+            
+        :param callback:  A reference to a function or method that will be 
+            called with the :class:`KeyEvent` object when the event occurs.
+
+        See the source for :attr:`~KeyEvent.keys` for a list of key names
         to use with the `key` paramter.
         """
         evtlist = App._eventdict.get((eventtype, key), [])
@@ -154,12 +163,14 @@ class App(object):
     @classmethod
     def listenMouseEvent(cls, eventtype, callback):
         """
-        Register to receive mouse events. The `eventtype` parameter is
-        a string that indicates what type of mouse event to receive (
-        value is one of: `'mousemove'`, `'mousedown'`, `'mouseup'`, `'click'`, 
-        `'dblclick'` or `'mousewheel'`). The `callback` parameter is a 
-        reference to a function or method that will be called with the 
-        `ggame.MouseEvent` object when the event occurs.
+        Register to receive mouse events. 
+        
+        :param eventtype: A string that indicates what type of mouse event to 
+            receive (value is one of: `'mousemove'`, `'mousedown'`, `'mouseup'`,
+            `'click'`, `'dblclick'` or `'mousewheel'`). 
+        
+        :param callback: A reference to a function or method that will be 
+            called with the :class:`MouseEvent` object when the event occurs.
         """
         evtlist = App._eventdict.get(eventtype, [])
         if not callback in evtlist:
@@ -172,6 +183,19 @@ class App(object):
         Use this method to remove a registration to receive a particular
         keyboard event. Arguments must exactly match those used when
         registering for the event.
+        
+        :param eventtype:  A string that indicates what type of key event to 
+            receive (value is one of: `'keydown'`, `'keyup'` or `'keypress'`). 
+            
+        :param key:  A string indicating which key (e.g. `'space'`, 
+            `'left arrow'`, etc.) to receive events for.
+            
+        :param callback:  A reference to a function or method that will be 
+            called with the :class:`KeyEvent` object when the event occurs.
+
+        See the source for :attr:`~KeyEvent.keys` for a list of key names
+        to use with the `key` paramter.
+        
         """
         App._eventdict[(eventtype,key)].remove(callback)
 
@@ -181,6 +205,13 @@ class App(object):
         Use this method to remove a registration to receive a particular
         mouse event. Arguments must exactly match those used when
         registering for the event.
+        
+        :param eventtype: A string that indicates what type of mouse event to 
+            receive (value is one of: `'mousemove'`, `'mousedown'`, `'mouseup'`,
+            `'click'`, `'dblclick'` or `'mousewheel'`). 
+        
+        :param callback: A reference to a function or method that will be 
+            called with the :class:`MouseEvent` object when the event occurs.
         """
         App._eventdict[eventtype].remove(callback)
 
@@ -188,12 +219,14 @@ class App(object):
     def getSpritesbyClass(cls, sclass):
         """
         Returns a list of all active sprites of a given class.
+        
+        :param sclass: A class name (e.g. 'Sprite') or subclass.
         """
         return App._spritesdict.get(sclass, [])
     
     def step(self):
         """
-        The `ggame.App.step` method is called once per animation frame. Override
+        The :meth:`~App.step` method is called once per animation frame. Override
         this method in your own subclass of :class:`App` to perform periodic 
         calculations, such as checking for sprite collisions, or calling
         'step' functions in your own customized sprite classes.
@@ -205,8 +238,10 @@ class App(object):
     def run(self, userfunc = None):
         """
         Calling the :meth:`~App.run` method begins the animation process whereby the 
-        :meth:`~App.step` method is called once per animation frame. Set `userfunc`
-        to any function which shall be called once per animation frame.
+        :meth:`~App.step` method is called once per animation frame. 
+        
+        :param userfunc: Name of any function which shall be called once per 
+            animation frame.
         """
         print("running")
         self.userfunc = userfunc

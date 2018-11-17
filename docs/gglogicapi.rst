@@ -1,2 +1,2 @@
-Digital Logic Extensions
-========================
+Digital Logic
+=============

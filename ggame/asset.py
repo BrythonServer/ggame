@@ -6,40 +6,33 @@ except:
 class Frame(object):
     """
     Frame is a utility class for expressing the idea of a rectangular region.
+    
+    Initializing parameters describe the position of the upper-left corner
+    of the frame, and the frame's width and height. The units are *typically*
+    in pixels, though a frame can be generic.
+    
+    :param int x: X-coordinate of frame upper-left corner
+    :param int y: Y-coordinate of frame upper-left corner
+    :param int w: Width of the frame
+    :param int h: Height of the frame
     """
     
     def __init__(self, x, y, w, h):
-        """
-        Initialization for the `ggame.Frame` objects.
-
-        `x` and `y` are coordinates of the upper left hand corner of the frame.
- 
-        `w` and `h` are the width and height of the frame rectangle.
-        """
 
         self.GFX = GFX_Rectangle(x,y,w,h)
         """
         `GFX` is a reference to the underlying object provided by the system.
         """
         self.x = x
-        """
-        X-coordinate of the upper left hand corner of this `ggame.Frame`.
-        """
         self.y = y
-        """
-        Y-coordinate of the upper left hand corner of this `ggame.Frame`.
-        """
         self.w = w
-        """
-        Width of the `ggame.Frame`.
-        """
         self.h = h
-        """
-        Height of the `ggame.Frame`.
-        """
     
     @property
     def x(self):
+        """
+        X-coordinate of the upper left hand corner of this frame.
+        """
         return self.GFX.x
     
     @x.setter
@@ -48,6 +41,9 @@ class Frame(object):
         
     @property
     def y(self):
+        """
+        Y-coordinate of the upper left hand corner of this frame.
+        """
         return self.GFX.y
     
     @y.setter
@@ -56,6 +52,9 @@ class Frame(object):
     
     @property
     def w(self):
+        """
+        Width of the frame.
+        """
         return self.GFX.width
     
     @w.setter
@@ -64,6 +63,9 @@ class Frame(object):
         
     @property
     def h(self):
+        """
+        Height of the frame.
+        """
         return self.GFX.height
         
     @h.setter
@@ -73,7 +75,7 @@ class Frame(object):
     @property
     def center(self):
         """
-        `center` property computes a coordinate pair (tuple) for the 
+        The `center` property computes a coordinate pair (tuple) for the 
         center of the frame.
 
         The `center` property, when set, redefines the `x` and `y` properties
@@ -142,6 +144,10 @@ class _Asset(object):
         return Iter(self)
 
     def destroy(self):
+        """
+        Destroy or deallocate any underlying graphics resources used by the
+        asset. Call this method on any asset that is no longer being used.
+        """
         if hasattr(self, 'GFX'):
             try:
                 for gfx in self.GFXlist:
@@ -155,29 +161,35 @@ class _Asset(object):
         
 class ImageAsset(_Asset):
     """
-    The `ImageAsset` class connects ggame to a specific image **file**.
+    The ImageAsset class connects ggame to a specific image **file**.
+
+    :param str url: All ImageAsset instances must specify a file name or 
+        url where a jpg or png image is located.
+
+    :param Frame frame: If the desired sprite image exists in only a smaller 
+        sub-section of the original image, then specify an area `within` the
+        image using `frame` parameter, which must be a valid :class:`Frame` 
+        instance.
+
+    :param int qty=0: If the image file actually is a *collection* of images, such 
+        as a so-called *sprite sheet*, then the ImageAsset class supports 
+        defining a list of images, provided they exist in the original image 
+        as a **row** of evenly spaced images or a **column** of images. To 
+        specify this, provide the `qty` (quantity) of images in the row or 
+        column.
+    
+    :param str direction='horizontal': For an image *sprite sheet*, specify whether the images
+        are oriented in a `'vertical'` or `'horizontal'` arrangement.
+        
+    :param int margin=0: If there is a gap between successive images in an image
+        *sprite sheet*, then specify the size of the gap (in pixels). When 
+        used in this way, the `frame` parameter must define the
+        area of only the **first** image in the collection; all subsequent 
+        images in the list are assumed to be the same size, but separated by the
+        `margin` value.
     """
 
     def __init__(self, url, frame=None, qty=1, direction='horizontal', margin=0):
-        """
-        All `ggame.ImageAsset` instances must specify a file name or url with
-        the `url` parameter.
-
-        If the desired sprite image exists in only a smaller sub-section of the 
-        original image, then the are can be specified by providing the
-        `frame` parameter, which must be a valid `ggame.Frame` object.
-
-        If image file actually is a *collection* of images, such as a so-called
-        *sprite sheet*, then the `ImageAsset` class supports defining a list
-        of images, provided they exist in the original image as a **row**
-        of evenly spaced images or a **column** of images. To specify this,
-        provide the `qty` (quantity) of images in the row or column, the
-        `direction` of the list ('horizontal' or 'vertical' are supported),
-        and an optional `margin`, if there is a gap between successive 
-        images. When used in this way, the `frame` parameter must define the
-        area of the **first** image in the collection; all subsequent images
-        in the list are assumed to be the same size.
-        """
         super().__init__()
         self.url = url
         """
@@ -198,7 +210,7 @@ class ImageAsset(_Asset):
         sprite sheet image.
 
         The parameters for the `append` method are identical to those 
-        supplied to the `ggame.ImageAsset` initialization method. 
+        supplied to the :class:`ImageAsset` initialization method. 
 
         This method allows you to build up an asset that consists of 
         multiple rows or columns of images in a sprite sheet or sheets.
@@ -224,29 +236,41 @@ class ImageAsset(_Asset):
 
 class Color(object):
     """
-    The `ggame.Color` class is used to represent colors and/or colors with
+    The Color class is used to represent colors and/or colors with
     transparency.
+
+    :param int color: an integer in the conventional format (usually 
+        as a hexadecimal literal, e.g. 0xffbb33 that represents 
+        the three color components, red, green and blue)
+        
+    :param float alpha: a transparency value, or `alpha` as a floating-point 
+        number in the range of 0.0 to 1.0 where 0.0 represents 
+        completely transparent and 1.0 represents completely opaque.
+    
+    Example::
+
+        red = Color(0xff0000, 1.0)
+
     """
-
+    _colornames = {
+        0xffffff: 'white',
+        0x000000: 'black'
+    }
+    
     def __init__(self, color, alpha):
-        """
-        A `ggame.Color` instance must specify both a `color` as an integer
-        in the conventional format (usually as a hexadecimal literal, e.g.
-        0xffbb33 that represents the three color components, red, green 
-        and blue), and a transparency value, or `alpha` as a floating
-        point number in the range of 0.0 to 1.0 where 0.0 represents 
-        completely transparent and 1.0 represents completely solid.
-
-        Example: `red = Color(0xff0000, 1.0)`
-
-        """
         self.color = color
         self.alpha = alpha
+        self.name = "Color(0x{0:06X}, {1})".format(self.color, self.alpha)
+        if alpha == 1.0:
+            self.name = self._colornames.get(self.color, self.name)
         
     def __eq__(self, other):
         return type(self) is type(other) and self.color == other.color and self.alpha == other.alpha
         
-black = Color(0, 1.0)
+    def __repr__(self):
+        return self.name
+
+black = Color(0x000000, 1.0)
 """
 Default black color
 """
@@ -257,24 +281,33 @@ Default white color
 
 class LineStyle(object):
     """
-    The `ggame.LineStyle` class is used to represent line style when
+    The LineStyle class is used to represent line style when
     drawing geometrical objects such as rectangles, ellipses, etc.
+
+    :param int width: the `width` of the line in pixels
+    
+    :param Color color: the `color` as a valid :class:`Color` instance. 
+    
+    Example::
+
+        line = LineStyle(3, Color(0x00ff00, 1.0))
+        
+    This defines a 3-pixel wide green line.
     """
     
     def __init__(self, width, color):
         """
-        When creating a `ggame.LineStyle` instances you must specify 
-        the `width` of the line in pixels and the `color` as a valid
-        `ggame.Color` instance.
-
-        Example: `line = LineStyle(3, Color(0x00ff00, 1.0))` will define
-        a 3 pixel wide green line.
         """
         self.width = width
         self.color = color
 
     def __eq__(self, other):
         return type(self) is type(other) and self.width == other.width and self.color == other.color
+
+    def __repr__(self):
+        return "LineStyle({}, {})".format(self.width, self.color)
+        
+
 
 blackline = LineStyle(1, black)
 """
@@ -307,17 +340,16 @@ class _ShapeAsset(_CurveAsset):
 
 class RectangleAsset(_ShapeAsset):
     """
-    The `ggame.RectangleAsset` is a "virtual" asset that is created on the
+    The RectangleAsset is a "virtual" asset that is created on the
     fly without requiring creation of an image file.
+
+    :param int width: Rectangle width, in pixels
+    :param int height: Rectangle height, in pixels
+    :param LineStyle line=blackline: The color and width of the rectangle border
+    :param Color fill=black: The color of the rectangle body
     """
 
     def __init__(self, width, height, line=blackline, fill=black):
-        """
-        Creation of a `ggame.RectangleAsset` requires specification of the 
-        rectangle `width` and `height` in pixels, the `line` (as a proper
-        `ggame.LineStyle` instance) and fill properties (as a `ggame.Color`
-        instance).
-        """
         super().__init__(line, fill)
         self.width = width
         self.height = height
@@ -330,14 +362,13 @@ class CircleAsset(_ShapeAsset):
     """
     The `ggame.CircleAsset` is a "virtual" asset that is created on the
     fly without requiring creation of an image file.
+
+    :param int radius: Circle radius, in pixels
+    :param LineStyle line=blackline: The color and width of the circle border
+    :param Color fill=black: The color of the circle body
     """    
 
     def __init__(self, radius, line=blackline, fill=black):
-        """
-        Creation of a `ggame.CircleAsset` requires specification of the circle
-        `radius` in pixels, the `line` (as a proper `ggame.LineStyle` instance)
-        and fill properties (as a `ggame.Color` instance).
-        """
         super().__init__(line, fill)
         self.radius = radius
         self.GFX = GFX_Graphics.drawCircle(0, 0, self.radius).clone()
@@ -348,16 +379,17 @@ class EllipseAsset(_ShapeAsset):
     """
     The `ggame.EllipseAsset` is a "virtual" asset that is created on the 
     fly without requiring creation of an image file.
+
+    :param int halfw: Ellipse semi-axis dimension in the horizontal direction
+        (half the width of the ellipse), in pixels
+    :param int halfh: Ellipse semi-axis dimension in the vertical direction
+        (half the height of the ellipse), in pixels
+    :param LineStyle line=blackline: The color and width of the ellipse border
+    :param Color fill=black: The color of the ellipse body
+
     """
 
     def __init__(self, halfw, halfh, line=blackline, fill=black):
-        """
-        Creation of a `ggame.EllipseAsset` requires specification of the ellipse
-        `halfw`, or semi-axis length in the horizontal direction (half of the
-        ellipse width) and the `halfh`, or semi-axis length in the vertical direction.
-        `line` (as `ggame.LineStyle` instance) and `fill` (as `ggame.Color` instance)
-        must also be provided.
-        """
         super().__init__(line, fill)
         self.halfw = halfw
         self.halfh = halfh
@@ -367,20 +399,29 @@ class EllipseAsset(_ShapeAsset):
         
 class PolygonAsset(_ShapeAsset):
     """
-    The `ggame.PolygonAsset` is a "virtual" asset that is created on the
+    The PolygonAsset is a "virtual" asset that is created on the
     fly without requiring creation of an image file.
+    
+    Note: you should not specificy absolute screen coordinates for this
+    asset, since you will use the :class:`Sprite` position to locate your 
+    polygon on the screen.
+
+    :param list path: A list of pixel-coordinate tuples. These coordinates should 
+        not be in absolute screen coordinates, but should be relative to the
+        desired 'center' of the resulting :class:`Sprite`. The final 
+        coordinate pair in the list must be the same as the first.
+    :param LineStyle line=blackline: The color and width of the ellipse border
+    :param Color fill=black: The color of the ellipse body
+        
+    Example::
+    
+        poly = PolygonAsset([(0,0), (50,50), (50,100), (0,0)], 
+            LineStyle(4, black), 
+            Color(0x80FF00, 0.8)))
+
     """
 
     def __init__(self, path, line=blackline, fill=black):
-        """
-        Creation of a `ggame.PolygonAsset` requires specification of a 
-        `path` consisting of a list of coordinate tuples. `line` and 
-        `fill` arguments (instances of `ggame.LineStyle` and `ggame.Color`,
-        respectively) must also be supplied. The final coordinate in the 
-        list must be the same as the first.
-
-        Example: `poly = PolygonAsset([(0,0), (50,50), (50,100), (0,0)], linesty, fcolor)`
-        """
         super().__init__(line, fill)
         self.path = path
         jpath = []
@@ -393,22 +434,24 @@ class PolygonAsset(_ShapeAsset):
 
 class LineAsset(_CurveAsset):
     """
-    The `ggame.LineAsset` is a "virtual" asset that is created on the
-    fly without requiring creation of an image file. A `LineAsset` instance
+    The LineAsset is a "virtual" asset that is created on the
+    fly without requiring creation of an image file. A LineAsset instance
     represents a single line segment.
+
+    Note: you should not specificy absolute screen coordinates for this
+    asset, since you will use the :class:`Sprite` position to locate your 
+    line on the screen. The line segment will begin at pixel coordinates (0,0),
+    and will end at the (x,y) coordinates given below.
+
+    As the LineAsset does not cover a region, only a :class:`LineStyle` 
+    argument must be supplied (`line`) to specify the color.
+
+    :param int x: x-coordinate of the line endpoint, in pixel units
+    :param int y: y-coordinate of the line endpoint, in pixel units
+    :param LineStyle line=blackline: The color and width of the ellipse border
     """
 
     def __init__(self, x, y, line=blackline):
-        """
-        Creation of a `ggame.LineAsset` requires specification of an `x` and
-        `y` coordinate for the endpoint of the line. The starting point of the
-        line is implied as coordinates (0,0). Note that when this asset is 
-        used in a `ggame.Sprite` class, the sprite's `x` and `y` coordinates
-        will control the location of the line segment on the screen.
-
-        As the `ggame.LineAsset` does not cover a region, only a `ggame.LineStyle` 
-        argument must be supplied (`line`).
-        """
         super().__init__(line)
         self.deltaX = x
         """This attribute represents the `x` parameter supplied during instantiation."""
@@ -421,28 +464,42 @@ class LineAsset(_CurveAsset):
 
 class TextAsset(_GraphicsAsset):
     """
-    The `ggame.TextAsset` is a "virtual" asset that is created on the fly
-    without requiring creation of an image file. A `TextAsset` instance
+    The TextAsset is a "virtual" asset that is created on the fly
+    without requiring creation of an image file. A TextAsset instance
     represents a block of text, together with its styling (font, color, etc.).
+
+    :param str text: The text that should be displayed
+
+    :param \**kwargs: Optional formatting and style attributes (below)
+    
+    :param str style='20px Arial': Text style, size and typeface. Example:: 
+    
+            'italic 20pt Helvetica'
+        
+    :keyword int width=100: Width of the text block on screen, in pixels. 
+    :param Color fill=black: :class:`Color` instance to specify color
+        and transparency of the text. 
+    :param str align='left': Alignment style of the block. One of 'left',
+        'center', or 'right'. 
+
+    Full example::
+    
+        ta = TextAsset("Sample Text", 
+            style="bold 40pt Arial", 
+            width=250, 
+            fill=Color(0x1122ff, 1.0))
+
     """
  
     def __init__(self, text, **kwargs):
         """
-        The `ggame.TextAsset` must be created with a string as the `text` parameter.
-        
-        The remaining optional arguments must be supplied as keyword parameters. These
-        parameters are described under the class attributes, below:
         """
         super().__init__()
         self.text = text
         self.style = kwargs.get('style', '20px Arial')
-        """A string that specifies style, size and typeface (e.g. `'italic 20pt Helvetica'` or `'20px Arial'`)"""
         width = kwargs.get('width', 100)
-        """Width of the text block on the screen, in pixels."""
         self.fill = kwargs.get('fill', Color(0, 1))
-        """A valid `ggame.Color` instance that specifies the color and transparency of the text."""
         self.align = kwargs.get('align', 'left')
-        """The alignment style of the text. One of: `'left'`, `'center'`, or `'right'`."""
         self.GFX = GFX_Text(self.text, 
             {'font': self.style,
                 'fill' : self.fill.color,
@@ -450,7 +507,6 @@ class TextAsset(_GraphicsAsset):
                 'wordWrap' : True,
                 'wordWrapWidth' : width,
                 })
-        """The `GFX` property represents the underlying system object."""
         self.GFX.alpha = self.fill.alpha
         self.GFX.visible = False
         

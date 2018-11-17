@@ -1,2 +1,2 @@
-Astronautics Extensions
-=======================
+Astronautics
+============

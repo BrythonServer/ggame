@@ -1,2 +1,2 @@
-Math and Geometry Extensions
-============================
+Math and Geometry
+=================
