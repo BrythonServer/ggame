@@ -6,7 +6,7 @@
 Welcome to ggame!
 =================
 
-The simple cross-platform sprite and game platform for 
+The simple sprite and game platform for 
 `Brython Server <https://github.com/tiggerntatie/brython-server>`_ and 
 `Runpython <https://runpython.org>`_.
 
