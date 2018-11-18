@@ -1,5 +1,9 @@
-Ggame
-=====
+**************
+ggame Core API
+**************
+
+ggame Application Classes
+=========================
 
 .. module:: ggame.app
 
@@ -24,6 +28,25 @@ ___
     
     .. automethod:: step
         
+
+Events
+______
+
+.. automodule:: ggame.event
+
+.. autoclass:: MouseEvent
+    :inherited-members:
+    :members:
+
+
+.. autoclass:: KeyEvent
+    :inherited-members:
+    :members:
+    :exclude-members: keys
+
+
+ggame Assets
+============
 
 .. automodule:: ggame.asset
 
@@ -105,3 +128,34 @@ _________
     :inherited-members:
     :exclude-members: GFX
 
+
+Sounds
+======
+
+.. automodule:: ggame.sound
+
+SoundAsset
+__________
+
+.. autoclass:: SoundAsset
+    :members:
+    
+Sound
+_____
+
+.. autoclass:: Sound
+    :members:
+    :exclude-members: SND
+    
+Sprites
+=======
+
+.. automodule:: ggame.sprite
+
+Sprite
+______
+
+.. autoclass:: Sprite
+    :members:
+    :exclude-members: rectangularCollisionModel, circularCollisionModel
+    

@@ -6,13 +6,13 @@ except:
 class SoundAsset(object):
     """
     Class representing a single sound asset (sound file, such as .mp3 or .wav).
+
+    :param str url: The URL or file name of the desired sound. Sound file 
+        formats may include `.wav` or `.mp3`, subject to browser compatibility. 
+    
+    :returns: The asset instance
     """    
     def __init__(self, url):
-        """
-        Create a `ggame.SoundAsset` instance by passing in the URL or file name
-        of the desired sound. Sound file formats may include `.wav` or `.mp3`, subject
-        to browser compatibility. 
-        """
         self.url = url
         """
         A string containing the url or name of the asset file.
@@ -21,17 +21,18 @@ class SoundAsset(object):
         
 class Sound(object):
     """
-    The `ggame.Sound` class represents a sound, with methods for controlling
+    The Sound class represents a sound, with methods for controlling
     when and how the sound is played in the application.
+    
+    :param SoundAsset asset: A valid :class:`SoundAsset` instance.
+    
+    :returns: the Sound instance
     """
 
     def __init__(self, asset):
-        """
-        Pass a valid `ggame.SoundAsset` instance when creating a `ggame.Sound` object.
-        """
         self.asset = asset
         """
-        A reference to the `ggame.SoundAsset` instance.
+        A reference to the sound asset instance.
         """
         self.SND = SND_Sound(self.asset.url)
         """
@@ -63,7 +64,7 @@ class Sound(object):
     @property
     def volume(self):
         """
-        The `ggame.Sound.volume` property is a number ranging from 0-100, that 
+        The volume property is a number ranging from 0-100 that 
         represents the volume or intensity of the sound when it is playing.
         """
         return self.SND.getVolume()

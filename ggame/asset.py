@@ -1,3 +1,12 @@
+# asset.py
+
+"""
+ggame assets and related objects (:class:`Color` and :class:`LineStyle`) are
+classes that encapsulate and represent displayable images. A single asset 
+may be used in multiple sprites. Animated assets may be created from any 
+image that includes multiple images within it (i.e. a sprite sheet).
+"""
+
 try:
     from ggame.sysdeps import *
 except:

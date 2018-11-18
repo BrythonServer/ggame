@@ -1,3 +1,5 @@
+# app.py
+
 try:
     from ggame.sysdeps import *
 except:
@@ -143,16 +145,18 @@ class App(object):
         """
         Register to receive keyboard events. 
 
-        :param eventtype:  A string that indicates what type of key event to 
+        :param str eventtype:  The type of key event to 
             receive (value is one of: `'keydown'`, `'keyup'` or `'keypress'`). 
             
-        :param key:  A string indicating which key (e.g. `'space'`, 
+        :param str key:  Identify the keyboard key (e.g. `'space'`, 
             `'left arrow'`, etc.) to receive events for.
             
-        :param callback:  A reference to a function or method that will be 
-            called with the :class:`KeyEvent` object when the event occurs.
+        :param function callback:  The function or method that will be 
+            called with the :class:`~ggame.event.KeyEvent` object when the event occurs.
+            
+        :returns: Nothing
 
-        See the source for :attr:`~KeyEvent.keys` for a list of key names
+        See the source for :class:`~ggame.event.KeyEvent` for a list of key names
         to use with the `key` paramter.
         """
         evtlist = App._eventdict.get((eventtype, key), [])
@@ -165,12 +169,14 @@ class App(object):
         """
         Register to receive mouse events. 
         
-        :param eventtype: A string that indicates what type of mouse event to 
+        :param str eventtype: The type of mouse event to 
             receive (value is one of: `'mousemove'`, `'mousedown'`, `'mouseup'`,
             `'click'`, `'dblclick'` or `'mousewheel'`). 
         
-        :param callback: A reference to a function or method that will be 
-            called with the :class:`MouseEvent` object when the event occurs.
+        :param function callback: The function or method that will be 
+            called with the :class:`ggame.event.MouseEvent` object when the event occurs.
+            
+        :returns: Nothing
         """
         evtlist = App._eventdict.get(eventtype, [])
         if not callback in evtlist:
@@ -184,16 +190,18 @@ class App(object):
         keyboard event. Arguments must exactly match those used when
         registering for the event.
         
-        :param eventtype:  A string that indicates what type of key event to 
-            receive (value is one of: `'keydown'`, `'keyup'` or `'keypress'`). 
+        :param str eventtype:  The type of key event to stop
+            receiving (value is one of: `'keydown'`, `'keyup'` or `'keypress'`). 
             
-        :param key:  A string indicating which key (e.g. `'space'`, 
-            `'left arrow'`, etc.) to receive events for.
+        :param str key:  The keyboard key (e.g. `'space'`, 
+            `'left arrow'`, etc.) to stop receiving events for.
             
-        :param callback:  A reference to a function or method that will be 
-            called with the :class:`KeyEvent` object when the event occurs.
+        :param function callback:  The function or method that will no longer be
+            called with the :class:`~ggame.event.KeyEvent` object when the event occurs.
+            
+        :returns: Nothing
 
-        See the source for :attr:`~KeyEvent.keys` for a list of key names
+        See the source for :class:`~ggame.event.KeyEvent` for a list of key names
         to use with the `key` paramter.
         
         """
@@ -206,12 +214,14 @@ class App(object):
         mouse event. Arguments must exactly match those used when
         registering for the event.
         
-        :param eventtype: A string that indicates what type of mouse event to 
-            receive (value is one of: `'mousemove'`, `'mousedown'`, `'mouseup'`,
+        :param str eventtype: The type of mouse event to stop receiving events
+            for (value is one of: `'mousemove'`, `'mousedown'`, `'mouseup'`,
             `'click'`, `'dblclick'` or `'mousewheel'`). 
         
-        :param callback: A reference to a function or method that will be 
-            called with the :class:`MouseEvent` object when the event occurs.
+        :param function callback: The function or method that will no longer be 
+            called with the :class:`ggame.event.MouseEvent` object when the event occurs.
+            
+        :returns: Nothing
         """
         App._eventdict[eventtype].remove(callback)
 
@@ -220,7 +230,9 @@ class App(object):
         """
         Returns a list of all active sprites of a given class.
         
-        :param sclass: A class name (e.g. 'Sprite') or subclass.
+        :param class sclass: A class name (e.g. 'Sprite') or subclass.
+        
+        :returns: A (potentially empty) list of sprite references.
         """
         return App._spritesdict.get(sclass, [])
     
@@ -232,6 +244,9 @@ class App(object):
         'step' functions in your own customized sprite classes.
 
         The base class :meth:`~App.step` method is empty and is intended to be overriden.
+        
+        :returns: Nothing
+        
         """
         pass
     
@@ -240,8 +255,10 @@ class App(object):
         Calling the :meth:`~App.run` method begins the animation process whereby the 
         :meth:`~App.step` method is called once per animation frame. 
         
-        :param userfunc: Name of any function which shall be called once per 
-            animation frame.
+        :param function userfunc: Any function or method which shall be 
+            called once per animation frame.
+            
+        :returns: Nothing
         """
         print("running")
         self.userfunc = userfunc

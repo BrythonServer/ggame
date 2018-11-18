@@ -32,7 +32,7 @@ API Reference
 _____________
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    
    ggameapi
    ggmathapi
