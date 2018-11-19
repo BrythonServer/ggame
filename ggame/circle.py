@@ -1,5 +1,6 @@
 from ggame.mathapp import MathApp, _MathVisual
 from ggame.asset import CircleAsset, PolygonAsset, Color, LineStyle
+from math import sqrt
 
 class Circle(_MathVisual):
     
