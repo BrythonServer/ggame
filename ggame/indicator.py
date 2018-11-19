@@ -1,5 +1,5 @@
 from ggame.mathapp import _MathVisual
-from ggame.asset import Frame
+from ggame.asset import Frame, ImageAsset
 
 class ImageIndicator(_MathVisual):
 
