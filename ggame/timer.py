@@ -1,5 +1,4 @@
-from ggame.mathbase import _MathDynamic
-from ggame.mathapp import MathApp
+from ggame.mathapp import MathApp, _MathDynamic
 
 
 class Timer(_MathDynamic):

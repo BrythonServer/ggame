@@ -1,4 +1,4 @@
-from ggame.mathbase import _MathVisual
+from ggame.mathapp import _MathVisual
 from ggame.asset import Frame
 
 class ImageIndicator(_MathVisual):
