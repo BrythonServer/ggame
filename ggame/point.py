@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from ggame.mathapp import _MathVisual
+from ggame.mathapp import _MathVisual, MathApp
 from ggame.asset import Color, LineStyle, CircleAsset
 
 
