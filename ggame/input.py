@@ -1,4 +1,5 @@
 from ggame.label import Label
+from ggame.asset import TextAsset
 
 class InputNumeric(Label):
     
