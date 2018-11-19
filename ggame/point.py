@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from ggame.mathapp import _MathVisual, MathApp
-from ggame.asset import Color, LineStyle, CircleAsset
+from ggame.asset import Color, LineStyle, CircleAsset, ImageAsset
 
 
 class _Point(_MathVisual, metaclass=ABCMeta):
