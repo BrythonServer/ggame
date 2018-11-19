@@ -269,7 +269,7 @@ class Color(object):
     def __init__(self, color, alpha):
         self.color = color
         self.alpha = alpha
-        self.name = "Color(0x{0:06X}, {1})".format(self.color, self.alpha)
+        self.name = "Color(0x{0:06X}, {1})".format(int(self.color), self.alpha)
         if alpha == 1.0:
             self.name = self._colornames.get(self.color, self.name)
         
