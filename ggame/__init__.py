@@ -5,7 +5,6 @@ from .sound import SoundAsset, Sound
 from .sprite import Sprite
 from .app import App 
 from .event import KeyEvent, MouseEvent
-from .mathbase import _MathDynamic, _MathVisual
 from .label import Label
 from .input import InputNumeric, InputButton
 from .mathapp import MathApp

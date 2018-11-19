@@ -13,19 +13,12 @@ ___
 .. autoclass:: App
     
     .. autoattribute:: spritelist
-    
     .. automethod:: getSpritesbyClass
-    
     .. automethod:: listenKeyEvent
-    
     .. automethod:: listenMouseEvent
-    
     .. automethod:: unlistenKeyEvent
-    
     .. automethod:: unlistenMouseEvent
-    
     .. automethod:: run
-    
     .. automethod:: step
         
 

@@ -40,7 +40,9 @@ class App(object):
     """
     
     spritelist = []
-    """List of all sprites currently active in the application."""
+    """
+    List of all sprites currently active in the application.
+    """
     _eventdict = {}
     _spritesdict = {}
     _spritesadded = False

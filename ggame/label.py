@@ -1,4 +1,4 @@
-from ggame.mathbase import _MathVisual
+from ggame.mathapp import _MathVisual
 from ggame.asset import TextAsset
 
 class Label(_MathVisual):
