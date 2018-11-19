@@ -1,5 +1,5 @@
 from ggame.mathapp import MathApp, _MathVisual
-from ggame.asset import RectangleAsset
+from ggame.asset import RectangleAsset, LineStyle, Color
 from ggame.sprite import Sprite
 
 class Slider(_MathVisual):

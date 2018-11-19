@@ -1,5 +1,5 @@
 from ggame.mathapp import MathApp, _MathVisual
-from ggame.asset import CircleAsset, PolygonAsset, Color
+from ggame.asset import CircleAsset, PolygonAsset, Color, LineStyle
 
 class Circle(_MathVisual):
     
