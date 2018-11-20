@@ -14,7 +14,7 @@ class InputNumeric(Label):
         Optional Keyword Input
         * **fmt** a Python format string (default is {0.2})
         """
-        self._fmt = kwargs.get('fmt', '{0.2}')
+        self._fmt = kwargs.get('fmt', '{0:.2f}')
         self._val = self.Eval(val)()  # initialize to simple numeric
         self._savedval = self._val
         self._updateText()

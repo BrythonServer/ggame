@@ -138,3 +138,6 @@ class Slider(_MathVisual):
     def translate(self, pdisp):
         pass
 
+    def destroy(self):
+        self.thumb.destroy()
+        super().destroy()
