@@ -1,17 +1,15 @@
-***********
-Mathematics
-***********
+##################
+ggMath Mathematics
+##################
 
-These mathematics and geometry extensions subclass the :class:`~ggame.app.App` 
-and :class:`~ggame.sprite.Sprite` classes to create a framework for building
-apps that mimic some of the functionality of online math tools like Geogebra.
+.. automodule:: ggame.mathapp
 
-These extensions are very experimental and are not fully developed!
+******************
+ggMath Application
+******************
 
-ggMath Application Class
-========================
-
-.. module:: ggame.mathapp
+MathApp
+=======
 
 .. autoclass:: MathApp
 
@@ -24,7 +22,6 @@ ggMath Application Class
     .. automethod:: listenMouseEvent
     .. automethod:: unlistenKeyEvent
     .. automethod:: unlistenMouseEvent
-    .. automethod:: run
     .. automethod:: logicalToPhysical
     .. automethod:: physicalToLogical
     .. automethod:: translateLogicalToPhysical
@@ -32,5 +29,139 @@ ggMath Application Class
     .. automethod:: distance
     .. automethod:: addViewNotification
     .. automethod:: removeViewNotification
-    
-    
+    .. automethod:: run
+
+ggMath Base Class for Visual Objects
+====================================
+
+.. autoclass:: _MathVisual
+    :members:
+
+
+.. automodule:: ggame.point
+
+*************
+Point Objects
+*************
+
+These classes are subclasses of :class:`~ggame.sprite.Sprite` and are used
+to represent points in geometry and mathematics.
+
+_Point
+======
+
+This is the abstract base class for all point classes.
+
+.. autoclass:: _Point
+    :members:
+
+Point
+=====
+
+.. autoclass:: Point
+    :members:
+
+
+ImagePoint
+==========
+
+.. autoclass:: ImagePoint
+    :members:
+
+
+.. automodule:: ggame.line
+
+************
+Line Objects
+************
+
+This category currently only has one class: :class:`LineSegment`, but will
+eventually be extended to include at least :class:`Line` and :class:`Ray`.
+
+LineSegment
+===========
+
+.. autoclass:: LineSegment
+    :members:
+
+Circle
+======
+
+.. automodule:: ggame.circle
+
+.. autoclass:: Circle
+    :members:
+
+************
+Text Objects
+************
+
+Label
+=====
+
+.. automodule:: ggame.label
+
+.. autoclass:: Label
+
+**********
+Indicators
+**********
+
+.. automodule:: ggame.indicator
+
+ImageIndicator
+==============
+
+.. autoclass:: ImageIndicator
+
+LEDIndicator
+============
+
+.. autoclass:: LEDIndicator
+
+**************
+Input Controls
+**************
+
+Slider
+======
+
+.. automodule:: ggame.slider
+
+.. autoclass:: Slider
+
+.. automodule:: ggame.input
+
+InputNumeric
+============
+
+.. autoclass:: InputNumeric
+
+InputButton
+===========
+
+.. autoclass:: InputButton
+
+.. automodule:: ggame.inputpoint
+
+InputImageButton
+================
+
+.. autoclass:: InputImageButton
+
+InputImageToggle
+================
+
+.. autoclass:: InputImageToggle
+
+MetalToggle
+===========
+
+.. autoclass:: MetalToggle
+
+GlassButton
+===========
+
+.. autoclass:: GlassButton
+
+

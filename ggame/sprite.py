@@ -44,10 +44,16 @@ class Sprite(object):
     
     Example::
     
+        from ggame.sprite import Sprite
+        from ggame.asset import ImageAsset, CircleAsset
+        from ggame.app import App
+        
         player = Sprite(
             ImageAsset("player.png", 
             (100,100), 
             CircleAsset(50))
+
+        App().run()
 
     This creates a sprite using the 'player.png' image, positioned with its
     upper-left corner at coordinates (100,100) and with a 50 pixel radius 

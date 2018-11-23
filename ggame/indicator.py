@@ -3,8 +3,8 @@ from ggame.asset import Frame, ImageAsset
 
 class ImageIndicator(_MathVisual):
 
-    posinputsdef = ['pos']
-    nonposinputsdef = ['value']
+    _posinputsdef = ['pos']
+    _nonposinputsdef = ['value']
 
     def __init__(self, url, *args, **kwargs):
         """
@@ -34,7 +34,7 @@ class ImageIndicator(_MathVisual):
         self.center = (0,0)
 
     def _buildAsset(self):
-        inval = self.nposinputs.value()
+        inval = self._nposinputs.value()
         if inval == True:
             self.setImage(1)
         elif inval == False:

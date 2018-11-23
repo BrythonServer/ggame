@@ -38,6 +38,7 @@ class TestSpriteMethods(unittest.TestCase):
     s1 = Sprite(self.image, (51,52))
     s2 = Sprite(self.image, (51, 52))
     cl = s2.collidingWithSprites()
+    print(cl)
     self.assertEqual(len(cl), 1)
     self.assertEqual(s2.collidingWith(cl[0]), True)
     s2.x = 125
@@ -73,6 +74,7 @@ class TestSpriteMethods(unittest.TestCase):
     self.assertEqual(len(cl), 1)
     self.assertIs(cl[0], s3)
     cl = s1.collidingWithSprites()
+    print(cl)
     self.assertEqual(len(cl), 2)
     s1.destroy()
     s2.destroy()

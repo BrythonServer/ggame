@@ -1,3 +1,14 @@
+"""
+These mathematics and geometry extensions subclass the :class:`~ggame.app.App` 
+and :class:`~ggame.sprite.Sprite` classes to create a framework for building
+apps that mimic some of the functionality of online math tools like Geogebra.
+
+This :mod:`~ggame.mathapp` module implements base classes for
+:class:`~ggame.sprite.Sprite`-based classes defined in this module.
+
+These extensions are very experimental and are not fully developed!
+"""
+
 from abc import ABCMeta, abstractmethod
 from time import time
 from math import sqrt
@@ -5,235 +16,6 @@ from collections import namedtuple
 from ggame.sprite import Sprite
 from ggame.asset import Color, LineStyle, ImageAsset
 from ggame.app import App
-
-
-
-class _MathDynamic(metaclass=ABCMeta):
-    
-    def __init__(self):
-        self._dynamic = False  # not switched on, by default!
-    
-    def destroy(self):
-        MathApp._removeDynamic(self)
-
-    def step(self):
-        pass
-    
-    def Eval(self, val):
-        if callable(val):
-            self._setDynamic() # dynamically defined .. must step
-            return val
-        else:
-            return lambda : val  
-            
-    def _setDynamic(self):
-        MathApp._addDynamic(self)
-        self._dynamic = True
-            
-
-class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
-    
-    posinputsdef = []  # a list of names (string) of required positional inputs
-    nonposinputsdef = []  # a list of names (string) of required non positional inputs
-    defaultsize = 15
-    defaultwidth = 200
-    defaultcolor = Color(0, 1)
-    defaultstyle = LineStyle(1, Color(0, 1))
-    
-    
-    def __init__(self, asset, *args, **kwargs):
-        """
-        Required inputs
-        
-        * **asset** a ggame asset
-        * **args** the list of required positional and nonpositional arguments,
-          as named in the posinputsdef and nonposinputsdef lists
-        * **kwargs** all other optional keyword arguments:
-          positioning - logical (default) or physical, size, width, color, style
-          movable
-        
-        """
-        
-        MathApp._addVisual(self)
-        #Sprite.__init__(self, asset, args[0])
-        _MathDynamic.__init__(self)
-        self._movable = False
-        self._selectable = False
-        self._strokable = False
-        self.selected = False
-        self.mouseisdown = False
-        # 
-        self.positioning = kwargs.get('positioning', 'logical')
-        # positional inputs
-        self.PI = namedtuple('PI', self.posinputsdef)
-        # nonpositional inputs
-        self.NPI = namedtuple('NPI', self.nonposinputsdef)
-        # standard inputs (not positional)
-        standardargs = ['size','width','color','style']
-        self.SI = namedtuple('SI', standardargs)
-        # correct number of args?
-        if len(args) != len(self.posinputsdef) + len(self.nonposinputsdef):
-            raise TypeError("Incorrect number of parameters provided")
-        self.args = args
-        # generated named tuple of functions from positional inputs
-        self.posinputs = self.PI(*[self.Eval(p) for p in args][:len(self.posinputsdef)])
-        self._getPhysicalInputs()
-        # first positional argument must be a sprite position!
-        Sprite.__init__(self, asset, self.pposinputs[0])
-        # generated named tuple of functions from nonpositional inputs
-        if len(self.nonposinputsdef) > 0:
-            self.nposinputs = self.NPI(*[self.Eval(p) for p in args][(-1*len(self.nonposinputsdef)):])
-        else:
-            self.nposinputs = []
-        self.stdinputs = self.SI(self.Eval(kwargs.get('size', self.defaultsize)),
-                                    self.Eval(kwargs.get('width', self.defaultwidth)),
-                                    self.Eval(kwargs.get('color', self.defaultcolor)),
-                                    self.Eval(kwargs.get('style', self.defaultstyle)))
-        self.sposinputs = self.PI(*[0]*len(self.posinputs))
-        self.spposinputs = self.PI(*self.pposinputs)
-        self.snposinputs = self.NPI(*[0]*len(self.nposinputs))
-        self.sstdinputs = self.SI(*[0]*len(self.stdinputs))
-
-    def step(self):
-        self._touchAsset()
-        
-    def _saveInputs(self, inputs):
-        self.sposinputs, self.spposinputs, self.snposinputs, self.sstdinputs = inputs
-        
-    def _getInputs(self):
-        self._getPhysicalInputs()
-        return (self.PI(*[p() for p in self.posinputs]),
-            self.PI(*self.pposinputs),
-            self.NPI(*[p() for p in self.nposinputs]),
-            self.SI(*[p() for p in self.stdinputs]))
-
-    
-    def _getPhysicalInputs(self):
-        """
-        Translate all positional inputs to physical
-        """
-        pplist = []
-        if self.positioning == 'logical':
-            for p in self.posinputs:
-                pval = p()
-                try:
-                    pp = MathApp.logicalToPhysical(pval)
-                except AttributeError:
-                    pp = MathApp._scale * pval
-                pplist.append(pp)
-        else:
-            # already physical
-            pplist = [p() for p in self.posinputs]
-        self.pposinputs = self.PI(*pplist)
-    
-    def _inputsChanged(self, saved):
-        return self.spposinputs != saved[1] or self.snposinputs != saved[2] or self.sstdinputs != saved[3]
-
-    
-    def destroy(self):
-        MathApp._removeVisual(self)
-        MathApp._removeMovable(self)
-        MathApp._removeStrokable(self)
-        _MathDynamic.destroy(self)
-        Sprite.destroy(self)
-
-    def _updateAsset(self, asset):
-        if type(asset) != ImageAsset:
-            visible = self.GFX.visible
-            if App._win != None:
-                App._win.remove(self.GFX)
-                self.GFX.destroy()
-            self.asset = asset
-            self.GFX = self.asset.GFX
-            self.GFX.visible = visible        
-            if App._win != None:
-                App._win.add(self.GFX)
-        self.position = self.pposinputs.pos
-            
-    @property
-    def movable(self):
-        return self._movable
-        
-    @movable.setter
-    def movable(self, val):
-        if not self._dynamic:
-            self._movable = val
-            if val:
-                MathApp._addMovable(self)
-            else:
-                MathApp._removeMovable(self)
-
-    @property
-    def selectable(self):
-        return self._selectable
-        
-    @selectable.setter
-    def selectable(self, val):
-        self._selectable = val
-        if val:
-            MathApp._addSelectable(self)
-        else:
-            MathApp._removeSelectable(self)
-
-    @property
-    def strokable(self):
-        return self._strokable
-        
-    @strokable.setter
-    def strokable(self, val):
-        self._strokable = val
-        if val:
-            MathApp._addStrokable(self)
-        else:
-            MathApp._removeStrokable(self)
-
-    def select(self):
-        self.selected = True
-
-
-    def unselect(self):
-        self.selected = False
-        
-    def mousedown(self):
-        self.mouseisdown = True
-        
-    def mouseup(self):
-        self.mouseisdown = False
-
-    def processEvent(self, event):
-        pass
-
-    # define how your class responds to mouse clicks - returns True/False
-    @abstractmethod
-    def physicalPointTouching(self, ppos):
-        pass
-    
-    # define how your class responds to being moved (physical units)
-    @abstractmethod
-    def translate(self, pdisp):
-        pass
-    
-    # define how your class responds to being stroked (physical units)
-    def stroke(self, ppos, pdisp):
-        pass
-    
-    # is the mousedown in a place that will result in a stroke?
-    def canstroke(self, ppos):
-        return False
-    
-    def _touchAsset(self, force = False):
-        inputs = self._getInputs()
-        changed = self._inputsChanged(inputs)
-        if changed:
-            self._saveInputs(inputs)
-        if changed or force:
-            self._updateAsset(self._buildAsset())
-
-    
-    @abstractmethod
-    def _buildAsset(self):
-        pass
-    
 
 
 class MathApp(App):
@@ -594,3 +376,328 @@ class MathApp(App):
         MathApp._viewNotificationList = []
         
 
+class _MathDynamic(metaclass=ABCMeta):
+    
+    def __init__(self):
+        self._dynamic = False  # not switched on, by default!
+    
+    def destroy(self):
+        MathApp._removeDynamic(self)
+
+    def step(self):
+        pass
+    
+    def Eval(self, val):
+        if callable(val):
+            self._setDynamic() # dynamically defined .. must step
+            return val
+        else:
+            return lambda : val  
+            
+    def _setDynamic(self):
+        MathApp._addDynamic(self)
+        self._dynamic = True
+            
+
+class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
+    """
+    Abstract Base Class for all visual, potentially dynamic objects.
+    
+    :param Asset asset: A valid ggame asset object.
+    
+    :param list args: A list of required positional or non-positional arguments
+        as named in the _posinputsdef and _nonposinputsdef lists overridden
+        by child classes.
+        
+    :param \**kwargs:
+        See below
+
+    :Optional Keyword Arguments:
+        * **positioning** (*string*) One of 'logical' or 'physical'
+        * **size** (*int*) Size of the object (in pixels)
+        * **width** (*int*) Width of the object (in pixels)
+        * **color** (*Color*) Valid :class:`~ggame.asset.Color` object
+        * **style** (*LineStyle*) Valid :class:`~ggame.asset.LineStyle` object
+    """
+    
+    _posinputsdef = []  # a list of names (string) of required positional inputs
+    _nonposinputsdef = []  # a list of names (string) of required non positional inputs
+    _defaultsize = 15
+    _defaultwidth = 200
+    _defaultcolor = Color(0, 1)
+    _defaultstyle = LineStyle(1, Color(0, 1))
+    
+    
+    def __init__(self, asset, *args, **kwargs):
+        MathApp._addVisual(self)
+        #Sprite.__init__(self, asset, args[0])
+        _MathDynamic.__init__(self)
+        self._movable = False
+        self._selectable = False
+        self._strokable = False
+        self.selected = False
+        """
+        True if object is currently selected by the UI. 
+        """
+        self.mouseisdown = False
+        """
+        True if object is tracking UI mouse button as down. 
+        """
+        self._positioning = kwargs.get('positioning', 'logical')
+        # positional inputs
+        self._PI = namedtuple('PI', self._posinputsdef)
+        # nonpositional inputs
+        self._NPI = namedtuple('NPI', self._nonposinputsdef)
+        # standard inputs (not positional)
+        standardargs = ['size','width','color','style']
+        self._SI = namedtuple('SI', standardargs)
+        # correct number of args?
+        if len(args) != len(self._posinputsdef) + len(self._nonposinputsdef):
+            raise TypeError("Incorrect number of parameters provided")
+        self._args = args
+        # generated named tuple of functions from positional inputs
+        self._posinputs = self._PI(*[self.Eval(p) for p in args][:len(self._posinputsdef)])
+        self._getPhysicalInputs()
+        # first positional argument must be a sprite position!
+        Sprite.__init__(self, asset, self._pposinputs[0])
+        # generated named tuple of functions from nonpositional inputs
+        if len(self._nonposinputsdef) > 0:
+            self._nposinputs = self._NPI(*[self.Eval(p) for p in args][(-1*len(self._nonposinputsdef)):])
+        else:
+            self._nposinputs = []
+        self._stdinputs = self._SI(self.Eval(kwargs.get('size', self._defaultsize)),
+                                    self.Eval(kwargs.get('width', self._defaultwidth)),
+                                    self.Eval(kwargs.get('color', self._defaultcolor)),
+                                    self.Eval(kwargs.get('style', self._defaultstyle)))
+        self._sposinputs = self._PI(*[0]*len(self._posinputs))
+        self._spposinputs = self._PI(*self._pposinputs)
+        self._snposinputs = self._NPI(*[0]*len(self._nposinputs))
+        self._sstdinputs = self._SI(*[0]*len(self._stdinputs))
+
+    def step(self):
+        self._touchAsset()
+        
+    def _saveInputs(self, inputs):
+        self._sposinputs, self._spposinputs, self._snposinputs, self._sstdinputs = inputs
+        
+    def _getInputs(self):
+        self._getPhysicalInputs()
+        return (self._PI(*[p() for p in self._posinputs]),
+            self._PI(*self._pposinputs),
+            self._NPI(*[p() for p in self._nposinputs]),
+            self._SI(*[p() for p in self._stdinputs]))
+
+    
+    def _getPhysicalInputs(self):
+        """
+        Translate all positional inputs to physical
+        """
+        pplist = []
+        if self._positioning == 'logical':
+            for p in self._posinputs:
+                pval = p()
+                try:
+                    pp = MathApp.logicalToPhysical(pval)
+                except AttributeError:
+                    pp = MathApp._scale * pval
+                pplist.append(pp)
+        else:
+            # already physical
+            pplist = [p() for p in self._posinputs]
+        self._pposinputs = self._PI(*pplist)
+    
+    def _inputsChanged(self, saved):
+        return self._spposinputs != saved[1] or self._snposinputs != saved[2] or self._sstdinputs != saved[3]
+
+    
+    def destroy(self):
+        MathApp._removeVisual(self)
+        MathApp._removeMovable(self)
+        MathApp._removeStrokable(self)
+        _MathDynamic.destroy(self)
+        Sprite.destroy(self)
+
+    def _updateAsset(self, asset):
+        if type(asset) != ImageAsset:
+            visible = self.GFX.visible
+            if App._win != None:
+                App._win.remove(self.GFX)
+                self.GFX.destroy()
+            self.asset = asset
+            self.GFX = self.asset.GFX
+            self.GFX.visible = visible        
+            if App._win != None:
+                App._win.add(self.GFX)
+        self.position = self._pposinputs.pos
+            
+    @property
+    def positioning(self):
+        """
+        Whether object was created with 'logical' or 'physical' positioning. 
+        """
+        return self._positioning
+    
+    @positioning.setter
+    def positioning(self, val):
+        pass
+    
+    @property
+    def movable(self):
+        """
+        Whether object can be moved. Set-able and get-able. 
+        """
+        return self._movable
+        
+    @movable.setter
+    def movable(self, val):
+        if not self._dynamic:
+            self._movable = val
+            if val:
+                MathApp._addMovable(self)
+            else:
+                MathApp._removeMovable(self)
+
+    @property
+    def selectable(self):
+        """
+        Whether object can be selected by the UI. Set-able and get-able.
+        """
+        return self._selectable
+        
+    @selectable.setter
+    def selectable(self, val):
+        self._selectable = val
+        if val:
+            MathApp._addSelectable(self)
+        else:
+            MathApp._removeSelectable(self)
+
+    @property
+    def strokable(self):
+        """
+        Whether the object supports a click-drag input from the UI mouse. 
+        Set-able and get-able. 
+        """
+        return self._strokable
+        
+    @strokable.setter
+    def strokable(self, val):
+        self._strokable = val
+        if val:
+            MathApp._addStrokable(self)
+        else:
+            MathApp._removeStrokable(self)
+
+    def select(self):
+        """
+        Place the object in a 'selected' state. 
+        
+        :param: None
+        :returns: None 
+        """
+        self.selected = True
+
+    def unselect(self):
+        """
+        Place the object in an 'unselected' state. 
+        
+        :param: None
+        :returns: None
+        """
+        self.selected = False
+        
+    def mousedown(self):
+        """
+        Inform the object of a 'mouse down' event. 
+        
+        :param: None 
+        :returns: None 
+        """
+        self.mouseisdown = True
+        
+    def mouseup(self):
+        """
+        Inform the object of a 'mouse up' event. 
+        
+        :param: None 
+        :returns: None 
+        """
+        self.mouseisdown = False
+
+    def processEvent(self, event):
+        """
+        Inform the object of a generic ggame event. 
+        
+        :param event: The ggame event object to receive and process. 
+        :returns: None 
+        
+        This method is intended to be overridden.
+        """
+        pass
+
+    @abstractmethod
+    def physicalPointTouching(self, ppos):
+        """
+        Determine if a physical point is considered to be touching this object.
+        
+        :param tuple(int,int) ppos: Physical screen coordinates.
+        :rtype: boolean
+        :returns: True if touching, False otherwise.
+        
+        This method **must** be overridden.
+        """
+        pass
+    
+    @abstractmethod
+    def translate(self, pdisp):
+        """ 
+        Perform necessary processing in response to being moved by the mouse/UI.
+        
+        :param tuple(int,int) pdisp: Translation vector (x,y) in physical screen
+            units.
+        :returns: None
+        
+        This method **must** be overridden.
+        """
+        pass
+    
+    def stroke(self, ppos, pdisp):
+        """
+        Perform necessary processing in response to click-drag action by the
+        mouse/UI.
+        
+        :param tuple(int,int) ppos: Physical coordinates of stroke start.
+        :param tuple(int,int) pdisp: Translation vector of stroke action in
+            physical screen units.
+        :returns: None
+        
+        This method is intended to be overridden.
+        """
+        pass
+    
+    def canStroke(self, ppos):
+        """
+        Can the object respond to beginning a stroke action at the given
+        position.
+        
+        :param tuple(int,int) ppos: Physical coordinates of stroke start.
+        :rtype: Boolean
+        :returns: True if the object can respond, False otherwise.
+        
+        This method is intended to be overridden.
+        """
+        return False
+    
+    def _touchAsset(self, force = False):
+        inputs = self._getInputs()
+        changed = self._inputsChanged(inputs)
+        if changed:
+            self._saveInputs(inputs)
+        if changed or force:
+            self._updateAsset(self._buildAsset())
+
+    
+    @abstractmethod
+    def _buildAsset(self):
+        pass
+    

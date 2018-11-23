@@ -3,39 +3,60 @@ from ggame.asset import CircleAsset, PolygonAsset, Color, LineStyle
 from math import sqrt
 
 class Circle(_MathVisual):
+    """
+    Create a circle on the screen. This is a subclass of 
+    :class:`~ggame.sprite.Sprite` and 
+    :class:`~ggame.mathapp._MathVisual` but most of the inherited members are of
+    little use and are not shown in the documentation.
+
+    :param \*args:
+        See below
+    :param \**kwargs:
+        See below
+
+    :Required Arguments:
+        * **pos** (*tuple(float,float)*) Center point of the circle, which may
+            be a literal tuple of floats, or a reference to any object or 
+            function that returns or evaluates to a tuple of floats.
+        * **radius** [float or Point] Radius of the circle (logical units)
+            or a :class:`~ggame.point.Point` on the circle.
     
-    posinputsdef = ['pos']
-    nonposinputsdef = ['radius']
-    defaultcolor = Color(0,0)
+    
+    :Optional Keyword Arguments:
+        * **positioning** (*str*) One of 'logical' or 'physical'
+        * **style** (*LineStyle*) Valid :class:`~ggame.asset.LineStyle` object
+        * **color** (*Color*) Valid :class:`~ggame.color.Color` object`
+        
+    Example::
+    
+        from ggame.point import Point
+        from ggame.circle import Circle
+        from ggame.mathapp import MathApp
+        
+        p1 = Point((2,1))
+        c = Circle(p1, 1.4)
+    
+        MathApp().run()
+    """
+
+    _posinputsdef = ['pos']
+    _nonposinputsdef = ['radius']
+    _defaultcolor = Color(0,0)
     
     def __init__(self, *args, **kwargs):
-        """
-        Required Inputs
-        
-        * **pos** center of circle
-        * **radius** radius of circle (logical) or point on circle
-        
-        Optional Inputs
-        
-        * **style** border line style (thickness, color)
-        * **color** fill color
-        """
-        """
-        Radius may be scalar or point
-        """
-        super().__init__(CircleAsset(0, self.defaultstyle, self.defaultcolor), *args, **kwargs)
+        super().__init__(CircleAsset(0, self._defaultstyle, self._defaultcolor), *args, **kwargs)
         self._touchAsset()
         self.fxcenter = self.fycenter = 0.5
 
 
     def _buildAsset(self):
-        pcenter = self.spposinputs.pos
+        pcenter = self._spposinputs.pos
         try: 
-            pradius = MathApp.distance(self.posinputs.pos(), self.nposinputs.radius()) * MathApp._scale
+            pradius = MathApp.distance(self._posinputs.pos(), self._nposinputs.radius()) * MathApp._scale
         except (AttributeError, TypeError):
-            pradius = self.nposinputs.radius() * MathApp._scale
-        style = self.stdinputs.style()
-        fill = self.stdinputs.color()
+            pradius = self._nposinputs.radius() * MathApp._scale
+        style = self._stdinputs.style()
+        fill = self._stdinputs.color()
         ymax = pcenter[1]+pradius
         ymin = pcenter[1]-pradius
         xmax = pcenter[0]+pradius
@@ -160,6 +181,10 @@ class Circle(_MathVisual):
 
     @center.setter
     def center(self, val):
+        """
+        An ordered pair (x,y) or :class:`~ggame.point.Point` that represents 
+        the (logical) circle center. This attribute is set-able and get-able.
+        """
         newval = self.Eval(val)
         if newval != self._center:
             self._center = newval
@@ -172,6 +197,10 @@ class Circle(_MathVisual):
     @radius.setter
     def radius(self, val):
         newval = self.Eval(val)
+        """
+        A **float** that represents the radius of the circle. This attribugte
+        is set-able and get-able.
+        """
         if newval != self._radius:
             self._radius = newval
             self._touchAsset()
