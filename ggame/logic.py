@@ -1,11 +1,14 @@
 # gglogic boolean logic device simulations for ggmath
+"""
+These digital logic classes are experimental.
+"""
 
 from ggame.mathapp import MathApp, _MathDynamic
 from abc import ABCMeta, abstractmethod
 
 
 # decorator for _getvalue or any value handler that may experience recursion
-def recursiontrap(handler):
+def _recursiontrap(handler):
     def trapmagic(self):
         if not self.ingetvalue:
             self.ingetvalue = True
@@ -62,7 +65,7 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
         self._enable = self.Eval(val)
         
     @abstractmethod
-    @recursiontrap     # MUST use with any implementation that may recurse!
+    @_recursiontrap     # MUST use with any implementation that may recurse!
     def _getvalue(self):
         return None
     
@@ -120,7 +123,7 @@ class _BoolMultiInput(_BoolDevice):
 
 class BoolNOT(_BoolOneInput):
 
-    @recursiontrap
+    @_recursiontrap
     def _getvalue(self):
         inval = self._inputState(self.In[0])
         if inval == None:
@@ -131,7 +134,7 @@ class BoolNOT(_BoolOneInput):
 
 class BoolAND(_BoolMultiInput):
     
-    @recursiontrap
+    @_recursiontrap
     def _getvalue(self):
         for v in self._input:
             if not self._inputState(v):
@@ -140,7 +143,7 @@ class BoolAND(_BoolMultiInput):
         
 class BoolNOR(_BoolMultiInput):
     
-    @recursiontrap
+    @_recursiontrap
     def _getvalue(self):
         for v in self._input:
             if self._inputState(v):
@@ -149,7 +152,7 @@ class BoolNOR(_BoolMultiInput):
         
 class BoolNAND(_BoolMultiInput):
     
-    @recursiontrap
+    @_recursiontrap
     def _getvalue(self):
         for v in self._input:
             if not self._inputState(v):
@@ -190,7 +193,7 @@ class BoolSRFF(_BoolOneInput):
     def Q(self):
         return self._getvalue()
         
-
+'''  This must be re-implemented to prevent recursion
 class BoolJKFF(_BoolOneInput):
     
     def __init__(self, *args, **kwargs):
@@ -218,7 +221,7 @@ class BoolJKFF(_BoolOneInput):
                 return
         self.ICJ.In = self.IC2, self._indict['J'], self._indict['CLK']
         self.ICK.In = self.IC1, self._indict['K'], self._indict['CLK']
-        
+    
     def _getvalue(self):
         return self.IC1()
         
@@ -227,7 +230,9 @@ class BoolJKFF(_BoolOneInput):
         
     def Q(self):
         return self._getvalue()
+'''
 
+"""
 class TestDevice(_BoolOneInput):
     
     def __init__(self, *args, **kwargs):
@@ -242,86 +247,5 @@ class TestDevice(_BoolOneInput):
         
     def _getvalue(self):
         return None
+"""        
         
-        
-        
-
-    
-
-# test code here
-if __name__ == "__main__":
-    
-    from ggmath import GlassButton, LEDIndicator, MetalToggle
-    
-
-    """
-    IC1 = BoolNOT()
-    IC2 = BoolAND()
-    
-    b1 = MetalToggle(1, (1,0))
-    b2 = MetalToggle(1, (1,0.3))
-    db1 = LEDIndicator((1.3,0), b1)
-    db2 = LEDIndicator((1.3,0.3), b2)
-
-    b3 = MetalToggle(1, (1,0.6))
-    b4 = MetalToggle(1, (1,0.9))
-    db1 = LEDIndicator((1.3,0.6), b3)
-    db2 = LEDIndicator((1.3,0.9), b4)
-
-
-    d2 = LEDIndicator((1.5,0.45), IC2)
-    
-    IC2.In = b1, b2
-    IC2.In = IC2.In + [b3, b4]
-    
-    button = GlassButton(None, (0,0))
-    LED = LEDIndicator((0,-1), IC1)
-    IC1.In = button 
-
-
-    t1 = MetalToggle(1, (1,-1))
-    t2 = MetalToggle(1, (1, -1.3))
-    td = TestDevice()
-    dt1 = LEDIndicator((1.3, -1), t1)
-    dt2 = LEDIndicator((1.3, -1.3), t2)
-    dtd1 = LEDIndicator((1.5, -1), td.out1)
-    dtd2 = LEDIndicator((1.5, -1.3), td.out2)
-    td.SetInput('in1', t1)
-    td.SetInput('in2', t2)
-    """
-    
-    #""" SR Flip Flop demo
-    IC1 = BoolSRFF(gateclass=BoolNAND)
-    Inv1 = BoolNOT()
-    Inv2 = BoolNOT()
-
-    b1 = GlassButton(None, (0,0))
-    b2 = GlassButton(None, (0,-0.5))
-    Inv1.In = b1
-    Inv2.In = b2
-    
-    IC1.SetInput('R', Inv1)
-    IC1.SetInput('S', Inv2)
-
-    d1 = LEDIndicator((0.5,0), IC1)
-    d2 = LEDIndicator((0.5,-0.5), IC1.Q_)
-    #"""
-
-    """ JK Flip Flop demo
-    
-    IC1 = BoolJKFF()
-    t1 = MetalToggle(0, (0,0.5))
-    b1 = GlassButton(None, (0,0))
-    t2 = MetalToggle(0, (0,-0.5))
-
-    IC1.SetInput('J', t1)
-    IC1.SetInput('K', t2)
-    IC1.SetInput('CLK', b1)
-
-    d1 = LEDIndicator((0.5,0.5), IC1)
-    d2 = LEDIndicator((0.5,-0.5), IC1.Q_)
-    
-    """
-    
-    app = MathApp()
-    app.run()

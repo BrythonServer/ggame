@@ -164,4 +164,17 @@ GlassButton
 
 .. autoclass:: GlassButton
 
+************
+Time Utility
+************
+
+.. automodule:: ggame.timer
+
+Timer
+=====
+
+.. autoclass:: Timer
+    :members:
+
+
 

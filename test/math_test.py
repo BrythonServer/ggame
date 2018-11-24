@@ -1,8 +1,19 @@
 import unittest
-from ggame import Point, Circle, MathApp, Slider, InputImageButton, Label
-from ggame import InputButton, InputNumeric, ImagePoint, LineSegment, ImageIndicator
-from ggame import Color, LineStyle, GlassButton, MetalToggle, LEDIndicator, Frame
-from ggame import ImageAsset
+from ggame.point import Point
+from ggame.circle import Circle
+from ggame.mathapp import MathApp
+from ggame.slider import Slider
+from ggame.inputpoint import InputImageButton
+from ggame.label import Label
+from ggame.input import InputButton, InputNumeric
+from ggame.point import ImagePoint
+from ggame.line import LineSegment
+from ggame.indicator import ImageIndicator
+from ggame import Color, LineStyle, ImageAsset, Frame
+from ggame.inputpoint import GlassButton, MetalToggle
+from ggame.indicator import LEDIndicator 
+from ggame.timer import Timer
+import time
 
 class TestMathMethods(unittest.TestCase):
 
@@ -83,6 +94,26 @@ class TestMathMethods(unittest.TestCase):
         self.toggle.destroy()
         self.Li.destroy()
         self.Lit.destroy()
+        
+    def timercallback(self, timer):
+        self.assertEqual(timer, self.timer)
+        self.callbackcomplete = True
+        
+    def test_timer(self):
+        self.callbackcomplete = False
+        self.timer = Timer()
+        self.timer.callAfter(0.1, self.timercallback)
+        ma = MathApp()
+        ma.run()
+        
+        for i in range(10):
+            time.sleep(1/60)
+            ma.step()
+
+        self.assertEquals(self.callbackcomplete, True)
+        
+        self.timer.destroy()
+        
 
 
 if __name__ == '__main__':
