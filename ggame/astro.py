@@ -349,12 +349,7 @@ class Rocket(ImagePoint):
         """
         increment = pi/50 * (1 if event.key == "left arrow" else -1)
         self.localheading += increment
-        
-    def destroy(self):
-        for l in self._labels:
-            l.destroy()
-        super().destroy()
-            
+
     def _getposition(self):
         return self._xy
     
@@ -438,7 +433,7 @@ class Planet(MathApp):
         self.mass = kwargs.get('planetmass', 5.9722E24) # Earth - kg
         self.color = kwargs.get('color', 0x008040)  # greenish
         self.kwargs = kwargs # save it for later..
-        super().__init__(self.scale)
+        super().__init__(scale)
 
     def run(self, rocket=None):
         """
@@ -465,9 +460,3 @@ class Planet(MathApp):
         r = self.radius + self.viewaltitude
         self.viewPosition = (r*cos(self.viewanomaly), r*sin(self.viewanomaly))
         super().run()
-
-    def destroy(self):
-        """
-        Cleanup any Sprites or other resources that should be freed.
-        """
-        self._planetcircle.destroy()

@@ -262,7 +262,6 @@ class App(object):
             
         :returns: Nothing
         """
-        print("running")
         self.userfunc = userfunc
         App._win.animate(self._animate)
 
