@@ -4,7 +4,7 @@
 The simple cross-platform sprite and game platform for Brython Server (Pygame, Tkinter to follow?).
 
 Ggame stands for a couple of things: "good game" (of course!) and also "git game" or "github game" 
-because it is designed to operate with [Brython Server](http://runpython.com) in concert with
+because it is designed to operate with [Brython Server](http://runpython.org) in concert with
 Github as a backend file store.
 
 Ggame is **not** intended to be a full-featured gaming API, with every bell and whistle. Ggame is
@@ -13,7 +13,8 @@ to create engaging and interactive games is a powerful motivator for many progam
 Accordingly, any functional or performance enhancements that *can* be reasonably implemented 
 by the user are left as an exercise. 
 
-Please visit the [detailed documentation page for ggame](http://brythonserver.github.io/ggame/). 
+Please visit the 
+[detailed documentation page for ggame](https://ggame.readthedocs.io/en/latest/introduction.html). 
 This is generated automatically from the ggame sources. 
 
 ## Functionality Goals
