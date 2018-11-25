@@ -4,7 +4,7 @@ python:
 install:
 - pip install -r requirements-headless.txt
 script:
-- nosetests
+- python3 -m nose
 env:
   global:
   - GH_REF: github.com/BrythonServer/ggame.git
