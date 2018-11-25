@@ -22,11 +22,10 @@ The ggame library is intended to be trivially easy to use. For example:
 
 ```python
 from ggame import App, ImageAsset, Sprite
-
 # Create a displayed object at 100,100 using an image asset
-Sprite(ImageAsset("ggame/bunny.png"), (100,100))
-# Create the app, with a 500x500 pixel stage
-app = App(500,500)  
+Sprite(ImageAsset("bunny.png"), (100,100))
+# Create the app, with a default stage
+app = App()  
 # Run the app
 app.run()
 ```
@@ -37,20 +36,21 @@ The following example illustrates the more common use case in which the basic gg
 classes, Sprite and App, are subclassed as Bunny and DemoApp and given event handlers
 and step (i.e. poll) functions.
 
+
 ```python
 from ggame import App, ImageAsset, Sprite, MouseEvent
 from random import random, randint
 
 class Bunny(Sprite):
     
-    asset = ImageAsset("ggame/bunny.png")
+    asset = ImageAsset("bunny.png")
     
     def __init__(self, position):
         super().__init__(Bunny.asset, position)
         # register mouse events
-        self.app.listenMouseEvent(MouseEvent.mousedown, self.mousedown)
-        self.app.listenMouseEvent(MouseEvent.mouseup, self.mouseup)
-        self.app.listenMouseEvent(MouseEvent.mousemove, self.mousemove)
+        App.listenMouseEvent(MouseEvent.mousedown, self.mousedown)
+        App.listenMouseEvent(MouseEvent.mouseup, self.mouseup)
+        App.listenMouseEvent(MouseEvent.mousemove, self.mousemove)
         self.dragging = False
 
     
@@ -58,9 +58,10 @@ class Bunny(Sprite):
         """
         Every now and then a bunny hops...
         """
-        if random() < 0.001:
-            self.x += randint(-50,50)
-            self.y += randint(-50,50)
+        if random() < 0.01:
+            self.x += randint(-20,20)
+            self.y += randint(-20,20)
+        
         
     def mousedown(self, event):
         # capture any mouse down within 50 pixels
@@ -86,9 +87,9 @@ class Bunny(Sprite):
 class DemoApp(App):
     
     def __init__(self):
-        super().__init__(500, 500)
+        super().__init__()
         for i in range(10):
-            Bunny((randint(50,450),randint(50,450)))
+            Bunny((randint(50,self.width),randint(50,self.height)))
         
     def step(self):
         """

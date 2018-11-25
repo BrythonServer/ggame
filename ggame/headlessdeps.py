@@ -86,6 +86,8 @@ if module_exists('PIL'):
     def __init__(self):
       self.Container = _Container
       self.autoDetectRenderer = _Renderer
+      self.width = 0
+      self.height = 0
 
   window = _window()
 
