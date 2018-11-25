@@ -1,0 +1,4755 @@
+<!doctype html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+
+    <title>ggrocket API documentation</title>
+    <meta name="description" content="# ggrocket 
+## A ggmath extensions for modeling spacecraft in planetary orbit" />
+
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300' rel='stylesheet' type='text/css'>
+  
+  <style type="text/css">
+  
+* {
+  box-sizing: border-box;
+}
+/*! normalize.css v1.1.1 | MIT License | git.io/normalize */
+
+/* ==========================================================================
+   HTML5 display definitions
+   ========================================================================== */
+
+/**
+ * Correct `block` display not defined in IE 6/7/8/9 and Firefox 3.
+ */
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+    display: block;
+}
+
+/**
+ * Correct `inline-block` display not defined in IE 6/7/8/9 and Firefox 3.
+ */
+
+audio,
+canvas,
+video {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+}
+
+/**
+ * Prevent modern browsers from displaying `audio` without controls.
+ * Remove excess height in iOS 5 devices.
+ */
+
+audio:not([controls]) {
+    display: none;
+    height: 0;
+}
+
+/**
+ * Address styling not present in IE 7/8/9, Firefox 3, and Safari 4.
+ * Known issue: no IE 6 support.
+ */
+
+[hidden] {
+    display: none;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+/**
+ * 1. Prevent system color scheme's background color being used in Firefox, IE,
+ *    and Opera.
+ * 2. Prevent system color scheme's text color being used in Firefox, IE, and
+ *    Opera.
+ * 3. Correct text resizing oddly in IE 6/7 when body `font-size` is set using
+ *    `em` units.
+ * 4. Prevent iOS text size adjust after orientation change, without disabling
+ *    user zoom.
+ */
+
+html {
+    background: #fff; /* 1 */
+    color: #000; /* 2 */
+    font-size: 100%; /* 3 */
+    -webkit-text-size-adjust: 100%; /* 4 */
+    -ms-text-size-adjust: 100%; /* 4 */
+}
+
+/**
+ * Address `font-family` inconsistency between `textarea` and other form
+ * elements.
+ */
+
+html,
+button,
+input,
+select,
+textarea {
+    font-family: sans-serif;
+}
+
+/**
+ * Address margins handled incorrectly in IE 6/7.
+ */
+
+body {
+    margin: 0;
+}
+
+/* ==========================================================================
+   Links
+   ========================================================================== */
+
+/**
+ * Address `outline` inconsistency between Chrome and other browsers.
+ */
+
+a:focus {
+    outline: thin dotted;
+}
+
+/**
+ * Improve readability when focused and also mouse hovered in all browsers.
+ */
+
+a:active,
+a:hover {
+    outline: 0;
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
+/**
+ * Address font sizes and margins set differently in IE 6/7.
+ * Address font sizes within `section` and `article` in Firefox 4+, Safari 5,
+ * and Chrome.
+ */
+
+h1 {
+    font-size: 2em;
+    margin: 0.67em 0;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin: 0.83em 0;
+}
+
+h3 {
+    font-size: 1.17em;
+    margin: 1em 0;
+}
+
+h4 {
+    font-size: 1em;
+    margin: 1.33em 0;
+}
+
+h5 {
+    font-size: 0.83em;
+    margin: 1.67em 0;
+}
+
+h6 {
+    font-size: 0.67em;
+    margin: 2.33em 0;
+}
+
+/**
+ * Address styling not present in IE 7/8/9, Safari 5, and Chrome.
+ */
+
+abbr[title] {
+    border-bottom: 1px dotted;
+}
+
+/**
+ * Address style set to `bolder` in Firefox 3+, Safari 4/5, and Chrome.
+ */
+
+b,
+strong {
+    font-weight: bold;
+}
+
+blockquote {
+    margin: 1em 40px;
+}
+
+/**
+ * Address styling not present in Safari 5 and Chrome.
+ */
+
+dfn {
+    font-style: italic;
+}
+
+/**
+ * Address differences between Firefox and other browsers.
+ * Known issue: no IE 6/7 normalization.
+ */
+
+hr {
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    height: 0;
+}
+
+/**
+ * Address styling not present in IE 6/7/8/9.
+ */
+
+mark {
+    background: #ff0;
+    color: #000;
+}
+
+/**
+ * Address margins set differently in IE 6/7.
+ */
+
+p,
+pre {
+    margin: 1em 0;
+}
+
+/**
+ * Correct font family set oddly in IE 6, Safari 4/5, and Chrome.
+ */
+
+code,
+kbd,
+pre,
+samp {
+    font-family: monospace, serif;
+    _font-family: 'courier new', monospace;
+    font-size: 1em;
+}
+
+/**
+ * Improve readability of pre-formatted text in all browsers.
+ */
+
+pre {
+    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/**
+ * Address CSS quotes not supported in IE 6/7.
+ */
+
+q {
+    quotes: none;
+}
+
+/**
+ * Address `quotes` property not supported in Safari 4.
+ */
+
+q:before,
+q:after {
+    content: '';
+    content: none;
+}
+
+/**
+ * Address inconsistent and variable font size in all browsers.
+ */
+
+small {
+    font-size: 80%;
+}
+
+/**
+ * Prevent `sub` and `sup` affecting `line-height` in all browsers.
+ */
+
+sub,
+sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+
+sup {
+    top: -0.5em;
+}
+
+sub {
+    bottom: -0.25em;
+}
+
+/* ==========================================================================
+   Lists
+   ========================================================================== */
+
+/**
+ * Address margins set differently in IE 6/7.
+ */
+
+dl,
+menu,
+ol,
+ul {
+    margin: 1em 0;
+}
+
+dd {
+    margin: 0 0 0 40px;
+}
+
+/**
+ * Address paddings set differently in IE 6/7.
+ */
+
+menu,
+ol,
+ul {
+    padding: 0 0 0 40px;
+}
+
+/**
+ * Correct list images handled incorrectly in IE 7.
+ */
+
+nav ul,
+nav ol {
+    list-style: none;
+    list-style-image: none;
+}
+
+/* ==========================================================================
+   Embedded content
+   ========================================================================== */
+
+/**
+ * 1. Remove border when inside `a` element in IE 6/7/8/9 and Firefox 3.
+ * 2. Improve image quality when scaled in IE 7.
+ */
+
+img {
+    border: 0; /* 1 */
+    -ms-interpolation-mode: bicubic; /* 2 */
+}
+
+/**
+ * Correct overflow displayed oddly in IE 9.
+ */
+
+svg:not(:root) {
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   Figures
+   ========================================================================== */
+
+/**
+ * Address margin not present in IE 6/7/8/9, Safari 5, and Opera 11.
+ */
+
+figure {
+    margin: 0;
+}
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+
+/**
+ * Correct margin displayed oddly in IE 6/7.
+ */
+
+form {
+    margin: 0;
+}
+
+/**
+ * Define consistent border, margin, and padding.
+ */
+
+fieldset {
+    border: 1px solid #c0c0c0;
+    margin: 0 2px;
+    padding: 0.35em 0.625em 0.75em;
+}
+
+/**
+ * 1. Correct color not being inherited in IE 6/7/8/9.
+ * 2. Correct text not wrapping in Firefox 3.
+ * 3. Correct alignment displayed oddly in IE 6/7.
+ */
+
+legend {
+    border: 0; /* 1 */
+    padding: 0;
+    white-space: normal; /* 2 */
+    *margin-left: -7px; /* 3 */
+}
+
+/**
+ * 1. Correct font size not being inherited in all browsers.
+ * 2. Address margins set differently in IE 6/7, Firefox 3+, Safari 5,
+ *    and Chrome.
+ * 3. Improve appearance and consistency in all browsers.
+ */
+
+button,
+input,
+select,
+textarea {
+    font-size: 100%; /* 1 */
+    margin: 0; /* 2 */
+    vertical-align: baseline; /* 3 */
+    *vertical-align: middle; /* 3 */
+}
+
+/**
+ * Address Firefox 3+ setting `line-height` on `input` using `!important` in
+ * the UA stylesheet.
+ */
+
+button,
+input {
+    line-height: normal;
+}
+
+/**
+ * Address inconsistent `text-transform` inheritance for `button` and `select`.
+ * All other form control elements do not inherit `text-transform` values.
+ * Correct `button` style inheritance in Chrome, Safari 5+, and IE 6+.
+ * Correct `select` style inheritance in Firefox 4+ and Opera.
+ */
+
+button,
+select {
+    text-transform: none;
+}
+
+/**
+ * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+ *    and `video` controls.
+ * 2. Correct inability to style clickable `input` types in iOS.
+ * 3. Improve usability and consistency of cursor style between image-type
+ *    `input` and others.
+ * 4. Remove inner spacing in IE 7 without affecting normal text inputs.
+ *    Known issue: inner spacing remains in IE 6.
+ */
+
+button,
+html input[type="button"], /* 1 */
+input[type="reset"],
+input[type="submit"] {
+    -webkit-appearance: button; /* 2 */
+    cursor: pointer; /* 3 */
+    *overflow: visible;  /* 4 */
+}
+
+/**
+ * Re-set default cursor for disabled elements.
+ */
+
+button[disabled],
+html input[disabled] {
+    cursor: default;
+}
+
+/**
+ * 1. Address box sizing set to content-box in IE 8/9.
+ * 2. Remove excess padding in IE 8/9.
+ * 3. Remove excess padding in IE 7.
+ *    Known issue: excess padding remains in IE 6.
+ */
+
+input[type="checkbox"],
+input[type="radio"] {
+    box-sizing: border-box; /* 1 */
+    padding: 0; /* 2 */
+    *height: 13px; /* 3 */
+    *width: 13px; /* 3 */
+}
+
+/**
+ * 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome.
+ * 2. Address `box-sizing` set to `border-box` in Safari 5 and Chrome
+ *    (include `-moz` to future-proof).
+ */
+
+input[type="search"] {
+    -webkit-appearance: textfield; /* 1 */
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box; /* 2 */
+    box-sizing: content-box;
+}
+
+/**
+ * Remove inner padding and search cancel button in Safari 5 and Chrome
+ * on OS X.
+ */
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+
+/**
+ * Remove inner padding and border in Firefox 3+.
+ */
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
+/**
+ * 1. Remove default vertical scrollbar in IE 6/7/8/9.
+ * 2. Improve readability and alignment in all browsers.
+ */
+
+textarea {
+    overflow: auto; /* 1 */
+    vertical-align: top; /* 2 */
+}
+
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+
+/**
+ * Remove most spacing between table cells.
+ */
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+  </style>
+
+  <style type="text/css">
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+  body {
+    background: #fff;
+    font-family: "Source Sans Pro", "Helvetica Neueue", Helvetica, sans;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.6em;
+  }
+  #content {
+    width: 70%;
+    max-width: 850px;
+    float: left;
+    padding: 30px 60px;
+    border-left: 1px solid #ddd;
+  }
+  #sidebar {
+    width: 25%;
+    float: left;
+    padding: 30px;
+    overflow: hidden;
+  }
+  #nav {
+    font-size: 130%;
+    margin: 0 0 15px 0;
+  }
+
+  #top {
+    display: block;
+    position: fixed;
+    bottom: 5px;
+    left: 5px;
+    font-size: .85em;
+    text-transform: uppercase;
+  }
+
+  #footer {
+    font-size: .75em;
+    padding: 5px 30px;
+    border-top: 1px solid #ddd;
+    text-align: right;
+  }
+    #footer p {
+      margin: 0 0 0 30px;
+      display: inline-block;
+    }
+
+  h1, h2, h3, h4, h5 {
+    font-weight: 300;
+  }
+  h1 {
+    font-size: 2.5em;
+    line-height: 1.1em;
+    margin: 0 0 .50em 0;
+  }
+
+  h2 {
+    font-size: 1.75em;
+    margin: 1em 0 .50em 0;
+  }
+
+  h3 {
+    margin: 25px 0 10px 0;
+  }
+
+  h4 {
+    margin: 0;
+    font-size: 105%;
+  }
+
+  a {
+    color: #058;
+    text-decoration: none;
+    transition: color .3s ease-in-out;
+  }
+
+  a:hover {
+    color: #e08524;
+    transition: color .3s ease-in-out;
+  }
+
+  pre, code, .mono, .name {
+    font-family: "Ubuntu Mono", "Cousine", "DejaVu Sans Mono", monospace;
+  }
+
+  .title .name {
+    font-weight: bold;
+  }
+  .section-title {
+    margin-top: 2em;
+  }
+  .ident {
+    color: #900;
+  }
+
+  code {
+    background: #f9f9f9;
+  } 
+
+  pre {
+    background: #fefefe;
+    border: 1px solid #ddd;
+    box-shadow: 2px 2px 0 #f3f3f3;
+    margin: 0 30px;
+    padding: 15px 30px;
+  }
+
+  .codehilite {
+    margin: 0 30px 10px 30px;
+  }
+
+    .codehilite pre {
+      margin: 0;
+    }
+    .codehilite .err { background: #ff3300; color: #fff !important; } 
+
+  table#module-list {
+    font-size: 110%;
+  }
+
+    table#module-list tr td:first-child {
+      padding-right: 10px;
+      white-space: nowrap;
+    }
+
+    table#module-list td {
+      vertical-align: top;
+      padding-bottom: 8px;
+    }
+
+      table#module-list td p {
+        margin: 0 0 7px 0;
+      }
+
+  .def {
+    display: table;
+  }
+
+    .def p {
+      display: table-cell;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .def p:first-child {
+      white-space: nowrap;
+    }
+
+    .def p:last-child {
+      width: 100%;
+    }
+
+
+  #index {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+    ul#index .class_name {
+      /* font-size: 110%; */
+      font-weight: bold;
+    }
+    #index ul {
+      margin: 0;
+    }
+
+  .item {
+    margin: 0 0 15px 0;
+  }
+
+    .item .class {
+      margin: 0 0 25px 30px;
+    }
+
+      .item .class ul.class_list {
+        margin: 0 0 20px 0;
+      }
+
+    .item .name {
+      background: #fafafa;
+      margin: 0;
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 3px;
+      display: inline-block;
+      min-width: 40%;
+    }
+      .item .name:hover {
+        background: #f6f6f6;
+      }
+
+    .item .empty_desc {
+      margin: 0 0 5px 0;
+      padding: 0;
+    }
+
+    .item .inheritance {
+      margin: 3px 0 0 30px;
+    }
+
+    .item .inherited {
+      color: #666;
+    }
+
+    .item .desc {
+      padding: 0 8px;
+      margin: 0;
+    }
+
+      .item .desc p {
+        margin: 0 0 10px 0;
+      }
+
+    .source_cont {
+      margin: 0;
+      padding: 0;
+    }
+
+    .source_link a {
+      background: #ffc300;
+      font-weight: 400;
+      font-size: .75em;
+      text-transform: uppercase;
+      color: #fff;
+      text-shadow: 1px 1px 0 #f4b700;
+      
+      padding: 3px 8px;
+      border-radius: 2px;
+      transition: background .3s ease-in-out;
+    }
+      .source_link a:hover {
+        background: #FF7200;
+        text-shadow: none;
+        transition: background .3s ease-in-out;
+      }
+
+    .source {
+      display: none;
+      max-height: 600px;
+      overflow-y: scroll;
+      margin-bottom: 15px;
+    }
+
+      .source .codehilite {
+        margin: 0;
+      }
+
+  .desc h1, .desc h2, .desc h3 {
+    font-size: 100% !important;
+  }
+  .clear {
+    clear: both;
+  }
+
+  @media all and (max-width: 950px) {
+    #sidebar {
+      width: 35%;
+    }
+    #content {
+      width: 65%;
+    }
+  }
+  @media all and (max-width: 650px) {
+    #top {
+      display: none;
+    }
+    #sidebar {
+      float: none;
+      width: auto;
+    }
+    #content {
+      float: none;
+      width: auto;
+      padding: 30px;
+    }
+
+    #index ul {
+      padding: 0;
+      margin-bottom: 15px;
+    }
+    #index ul li {
+      display: inline-block;
+      margin-right: 30px;
+    }
+    #footer {
+      text-align: left;
+    }
+    #footer p {
+      display: block;
+      margin: inherit;
+    }
+  }
+
+  /*****************************/
+
+  </style>
+
+
+  <style type="text/css">
+  
+/* ==========================================================================
+   EXAMPLE Media Queries for Responsive Design.
+   These examples override the primary ('mobile first') styles.
+   Modify as content requires.
+   ========================================================================== */
+
+@media only screen and (min-width: 35em) {
+    /* Style adjustments for viewports that meet the condition */
+}
+
+@media print,
+       (-o-min-device-pixel-ratio: 5/4),
+       (-webkit-min-device-pixel-ratio: 1.25),
+       (min-resolution: 120dpi) {
+    /* Style adjustments for high resolution devices */
+}
+
+/* ==========================================================================
+   Print styles.
+   Inlined to avoid required HTTP connection: h5bp.com/r
+   ========================================================================== */
+
+@media print {
+    * {
+        background: transparent !important;
+        color: #000 !important; /* Black prints faster: h5bp.com/s */
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+    }
+
+    /*
+     * Don't show links for images, or javascript/internal links
+     */
+
+    .ir a:after,
+    a[href^="javascript:"]:after,
+    a[href^="#"]:after {
+        content: "";
+    }
+
+    pre,
+    blockquote {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+
+    thead {
+        display: table-header-group; /* h5bp.com/t */
+    }
+
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
+
+    img {
+        max-width: 100% !important;
+    }
+
+    @page {
+        margin: 0.5cm;
+    }
+
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+}
+
+  </style>
+
+  <script type="text/javascript">
+  function toggle(id, $link) {
+    $node = document.getElementById(id);
+    if (!$node)
+    return;
+    if (!$node.style.display || $node.style.display == 'none') {
+    $node.style.display = 'block';
+    $link.innerHTML = 'Hide source &nequiv;';
+    } else {
+    $node.style.display = 'none';
+    $link.innerHTML = 'Show source &equiv;';
+    }
+  }
+  </script>
+</head>
+<body>
+<a href="#" id="top">Top</a>
+
+<div id="container">
+    
+  
+  <div id="sidebar">
+    <h1>Index</h1>
+    <ul id="index">
+    <li class="set"><h3><a href="#header-variables">Module variables</a></h3>
+      
+  <ul>
+    <li class="mono"><a href="#ggrocket.pi">pi</a></li>
+  </ul>
+
+    </li>
+
+
+    <li class="set"><h3><a href="#header-classes">Classes</a></h3>
+      <ul>
+        <li class="mono">
+        <span class="class_name"><a href="#ggrocket.Planet">Planet</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#ggrocket.Planet.__init__">__init__</a></li>
+    <li class="mono"><a href="#ggrocket.Planet.handleMouseClick">handleMouseClick</a></li>
+    <li class="mono"><a href="#ggrocket.Planet.handleMouseDown">handleMouseDown</a></li>
+    <li class="mono"><a href="#ggrocket.Planet.handleMouseMove">handleMouseMove</a></li>
+    <li class="mono"><a href="#ggrocket.Planet.handleMouseUp">handleMouseUp</a></li>
+    <li class="mono"><a href="#ggrocket.Planet.handleMouseWheel">handleMouseWheel</a></li>
+    <li class="mono"><a href="#ggrocket.Planet.run">run</a></li>
+    <li class="mono"><a href="#ggrocket.Planet.step">step</a></li>
+    <li class="mono"><a href="#ggrocket.Planet.addViewNotification">addViewNotification</a></li>
+    <li class="mono"><a href="#ggrocket.Planet.distance">distance</a></li>
+    <li class="mono"><a href="#ggrocket.Planet.getSpritesbyClass">getSpritesbyClass</a></li>
+    <li class="mono"><a href="#ggrocket.Planet.listenKeyEvent">listenKeyEvent</a></li>
+    <li class="mono"><a href="#ggrocket.Planet.listenMouseEvent">listenMouseEvent</a></li>
+    <li class="mono"><a href="#ggrocket.Planet.logicalToPhysical">logicalToPhysical</a></li>
+    <li class="mono"><a href="#ggrocket.Planet.physicalToLogical">physicalToLogical</a></li>
+    <li class="mono"><a href="#ggrocket.Planet.removeViewNotification">removeViewNotification</a></li>
+    <li class="mono"><a href="#ggrocket.Planet.translateLogicalToPhysical">translateLogicalToPhysical</a></li>
+    <li class="mono"><a href="#ggrocket.Planet.translatePhysicalToLogical">translatePhysicalToLogical</a></li>
+    <li class="mono"><a href="#ggrocket.Planet.unlistenKeyEvent">unlistenKeyEvent</a></li>
+    <li class="mono"><a href="#ggrocket.Planet.unlistenMouseEvent">unlistenMouseEvent</a></li>
+  </ul>
+
+        </li>
+        <li class="mono">
+        <span class="class_name"><a href="#ggrocket.Rocket">Rocket</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#ggrocket.Rocket.__init__">__init__</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.Eval">Eval</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.accelerationText">accelerationText</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.addStatusReport">addStatusReport</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.altitudeText">altitudeText</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.ar">ar</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.canstroke">canstroke</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.circularCollisionModel">circularCollisionModel</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.collidingPolyWithPoly">collidingPolyWithPoly</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.collidingWith">collidingWith</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.collidingWithSprites">collidingWithSprites</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.courseDegreesText">courseDegreesText</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.destroy">destroy</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.distanceTo">distanceTo</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.dynamics">dynamics</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.fgrav">fgrav</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.firstImage">firstImage</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.fr">fr</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.getheading">getheading</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.getmass">getmass</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.getthrust">getthrust</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.gettimezoom">gettimezoom</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.lastImage">lastImage</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.massText">massText</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.mousedown">mousedown</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.mouseup">mouseup</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.nextImage">nextImage</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.physicalPointTouching">physicalPointTouching</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.prevImage">prevImage</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.processEvent">processEvent</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.radiusText">radiusText</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.rectangularCollisionModel">rectangularCollisionModel</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.scaleText">scaleText</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.select">select</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.setImage">setImage</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.shipTimeText">shipTimeText</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.step">step</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.stroke">stroke</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.thrustText">thrustText</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.timeZoomText">timeZoomText</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.translate">translate</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.trueAnomalyDegreesText">trueAnomalyDegreesText</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.trueAnomalyRadiansText">trueAnomalyRadiansText</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.turn">turn</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.unselect">unselect</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.vadd">vadd</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.velocityText">velocityText</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.vmag">vmag</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.vmul">vmul</a></li>
+    <li class="mono"><a href="#ggrocket.Rocket.collidingCircleWithPoly">collidingCircleWithPoly</a></li>
+  </ul>
+
+        </li>
+      </ul>
+    </li>
+
+    </ul>
+  </div>
+
+    <article id="content">
+      
+  
+
+  
+
+
+  <header id="section-intro">
+  <h1 class="title"><span class="name">ggrocket</span> module</h1>
+  <h1>ggrocket</h1>
+<h2>A ggmath extensions for modeling spacecraft in planetary orbit</h2>
+  
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket" class="source">
+    <pre><code>"""
+# ggrocket 
+## A ggmath extensions for modeling spacecraft in planetary orbit
+"""
+
+from math import pi, degrees, radians, atan2, sin, cos, sqrt
+from ggame import LineStyle, Color
+from ggmath import MathApp, Circle, ImagePoint, Timer, Label
+
+class Rocket(ImagePoint):
+    """
+    Rocket is a class for simulating the motion of a projectile through space, 
+    acted upon by arbitrary forces (thrust) and by gravitaitonal 
+    attraction to a single planetary object.
+    """
+
+    def __init__(self, planet, **kwargs):
+        """
+        Initialize the Rocket object. 
+        
+        Example:
+        
+            rocket1 = Rocket(earth, altitude=400000, velocity=7670, timezoom=2)
+       
+        Required parameters:
+        
+        * **planet**:  Reference to a `Planet` object.
+        
+        Optional keyword parameters are supported:
+        
+        * **bitmap**:  url of a suitable bitmap image for the rocket (png recommended)
+          default is `rocket.png`
+        * **bitmapscale**:  scale factor for bitmap. Default is 0.1
+        * **velocity**:  initial rocket speed. default is zero.
+        * **directiond**:  initial rocket direction in degrees. Default is zero.
+        * **direction**:  initial rocket direction in radians. Default is zero.
+        * **tanomalyd**:  initial rocket true anomaly in degrees. Default is 90.
+        * **tanomaly**:  initial rocket true anomaly in radians. Default is pi/2.
+        * **altitude**:  initial rocket altitude in meters. Default is zero.
+        * **showstatus**:  boolean displays flight parameters on screen. Default
+          is True.
+        * **statuspos**:  tuple with x,y coordinates of flight parameters. 
+          Default is upper left.
+        * **statuslist**: list of status names to include in flight parameters. 
+          Default is all, consisting of: "velocity", "acceleration", "course",
+          "altitude", "thrust", "mass", "trueanomaly", "scale", "timezoom",
+          "shiptime"
+        * **leftkey**: a `ggame` key identifier that will serve as the 
+          "rotate left" key while controlling the ship. Default is 'left arrow'.
+        * **rightkey**: a `ggame` key identifier that will serve as the 
+          "rotate right" key while controlling the ship. Default is 'right arrow'.
+        
+        Following parameters may be set as a constant value, or pass in the
+        name of a function that will return the value dynamically or the
+        name of a `ggmath` UI control that will return the value.
+        
+        * **timezoom**  scale factor for time zoom. Factor = 10^timezoom
+        * **heading**  direction to point the rocket in (must be radians)
+        * **mass**  mass of the rocket (must be kg)
+        * **thrust**  thrust of the rocket (must be N)
+
+        Animation related parameters may be ignored if no sprite animation:
+        
+        * **bitmapframe**  ((x1,y1),(x2,y2)) tuple defines a region in the bitmap
+        * **bitmapqty**  number of bitmaps -- used for animation effects
+        * **bitmapdir**  "horizontal" or "vertical" use with animation effects
+        * **bitmapmargin**  pixels between successive animation frames
+        * **tickrate**  frequency of spacecraft dynamics calculations (Hz)
+        
+        """
+        self._xy = (1000000,1000000)
+        self.planet = planet
+        self.bmurl = kwargs.get('bitmap', 'rocket.png') # default rocket png
+        self.bitmapframe = kwargs.get('bitmapframe', None) #
+        self.bitmapqty = kwargs.get('bitmapqty', 1) # Number of images in bitmap
+        self.bitmapdir = kwargs.get('bitmapdir', 'horizontal') # animation orientation
+        self.bitmapmargin = kwargs.get('bitmapmargin', 0) # bitmap spacing
+        self.tickrate = kwargs.get('tickrate', 30) # dynamics calcs per sec
+        # status display
+        statusfuncs = [ self.velocityText,
+                        self.accelerationText,
+                        self.courseDegreesText,
+                        self.altitudeText,
+                        self.thrustText,
+                        self.massText,
+                        self.trueAnomalyDegreesText,
+                        self.scaleText,
+                        self.timeZoomText,
+                        self.shipTimeText]
+        statuslist = [  "velocity",
+                        "acceleration",
+                        "course",
+                        "altitude",
+                        "thrust",
+                        "mass",
+                        "trueanomaly",
+                        "scale",
+                        "timezoom",
+                        "shiptime"]
+        
+        self.showstatus = kwargs.get('showstatus', True) # show stats
+        self.statuspos = kwargs.get('statuspos', [10,10])  # position of stats
+        self.statusselect = kwargs.get('statuslist', statuslist)
+        self.localheading = 0
+        # dynamic parameters
+        self.timezoom = self.Eval(kwargs.get('timezoom', self.gettimezoom)) # 1,2,3 faster, -1, slower
+        self.heading = self.Eval(kwargs.get('heading', self.getheading)) # must be radians
+        self.mass = self.Eval(kwargs.get('mass', self.getmass)) # kg
+        self.thrust = self.Eval(kwargs.get('thrust', self.getthrust)) # N
+        # end dynamic 
+        super().__init__(self.bmurl,
+            self._getposition, 
+            frame = self.bitmapframe, 
+            qty = self.bitmapqty, 
+            direction = self.bitmapdir,
+            margin = self.bitmapmargin)
+        self.scale = kwargs.get('bitmapscale', 0.1) # small
+        initvel = kwargs.get('velocity', 0) # initial velocity
+        initdird = kwargs.get('directiond', 0) # initial direction, degrees
+        initdir = kwargs.get('direction', radians(initdird))
+        tanomaly = kwargs.get('tanomaly', pi/2) # position angle
+        tanomaly = radians(kwargs.get('tanomalyd', degrees(tanomaly))) 
+        altitude = kwargs.get('altitude', 0) #
+        r = altitude + self.planet.radius
+        self._xy = (r*cos(tanomaly), r*sin(tanomaly))
+        # default heading control if none provided by user
+        leftkey = kwargs.get('leftkey', 'left arrow')
+        rightkey = kwargs.get('rightkey', 'right arrow')
+        if self.heading == self.getheading:
+            Planet.listenKeyEvent('keydown', leftkey, self.turn)
+            Planet.listenKeyEvent('keydown', rightkey, self.turn)
+        self.timer = Timer()
+        self.shiptime = 0  # track time on shipboard
+        self.timer.callEvery(1/self.tickrate, self.dynamics)
+        self.lasttime = self.timer.time
+        self.V = [initvel * cos(initdir), initvel * sin(initdir)]
+        self.A = [0,0]
+        # set up status display
+        if self.showstatus:
+            self.addStatusReport(statuslist, statusfuncs, self.statusselect)
+
+    # override or define externally!
+    def getthrust(self):
+        """
+        User override function for dynamically determining thrust force.
+        """
+        return 0
+
+    # override or define externally!
+    def getmass(self):
+        """
+        User override function for dynamically determining rocket mass.
+        """
+        return 1
+
+    # override or define externally!
+    def getheading(self):
+        """
+        User override function for dynamically determining the heading.
+        """
+        return self.localheading
+        
+    # override or define externally!
+    def gettimezoom(self):
+        """
+        User override function for dynamically determining the timezoom.
+        """
+        return 0
+
+    # add a status reporting function to status display
+    def addStatusReport(self, statuslist, statusfuncs, statusselect):
+        """
+        Accept list of all status names, all status text functions, and
+        the list of status names that have been selected for display.
+        """
+        statusdict = {n:f for n, f in zip(statuslist, statusfuncs)}
+        for name in statusselect:
+            if name in statusdict:
+                Label(self.statuspos[:], statusdict[name], size=15, positioning='physical', width=250)
+                self.statuspos[1] += 25
+
+    # functions available for reporting flight parameters to UI
+    def velocityText(self):
+        """
+        Report the velocity in m/s as a text string.
+        """
+        return "Velocity:     {0:8.1f} m/s".format(self.velocity)
+        
+    def accelerationText(self):
+        """
+        Report the acceleration in m/s as a text string.
+        """
+        return "Acceleration: {0:8.1f} m/s²".format(self.acceleration)
+        
+    def courseDegreesText(self):
+        """
+        Report the heading in degrees (zero to the right) as a text string.
+        """
+        return "Course:       {0:8.1f}°".format(degrees(atan2(self.V[1], self.V[0])))
+
+    def thrustText(self):
+        """
+        Report the thrust level in Newtons as a text string.
+        """
+        return "Thrust:       {0:8.1f} N".format(self.thrust())
+        
+    def massText(self):
+        """
+        Report the spacecraft mass in kilograms as a text string.
+        """
+        return "Mass:         {0:8.1f} kg".format(self.mass())
+        
+    def trueAnomalyDegreesText(self):
+        """
+        Report the true anomaly in degrees as a text string.
+        """
+        return "True Anomaly: {0:8.1f}°".format(self.tanomalyd)
+        
+    def trueAnomalyRadiansText(self):
+        """
+        Report the true anomaly in radians as a text string.
+        """
+        return "True Anomaly: {0:8.4f}".format(self.tanomaly)
+        
+    def altitudeText(self):
+        """
+        Report the altitude in meters as a text string.
+        """
+        return "Altitude:     {0:8.1f} m".format(self.altitude)
+        
+    def radiusText(self):
+        """
+        Report the radius (distance to planet center) in meters as a text string.
+        """
+        return "Radius:       {0:8.1f} m".format(self.r)
+        
+    def scaleText(self):
+        """
+        Report the view scale (pixels/meter) as a text string.
+        """
+        return "View Scale:   {0:8.6f} px/m".format(self.planet._scale)
+    
+    def timeZoomText(self):
+        """
+        Report the time acceleration as a text string.
+        """
+        return "Time Zoom:    {0:8.1f}".format(float(self.timezoom()))
+        
+    def shipTimeText(self):
+        """
+        Report the elapsed time as a text string.
+        """
+        return "Elapsed Time: {0:8.1f} s".format(float(self.shiptime))
+    
+
+
+            
+    def dynamics(self, timer):
+        """
+        Perform one iteration of the simulation using runge-kutta 4th order method.
+        """
+        # set time duration equal to time since last execution
+        tick = 10**self.timezoom()*(timer.time - self.lasttime)
+        self.shiptime = self.shiptime + tick
+        self.lasttime = timer.time
+        # 4th order runge-kutta method (https://sites.temple.edu/math5061/files/2016/12/final_project.pdf)
+        # and http://spiff.rit.edu/richmond/nbody/OrbitRungeKutta4.pdf  (succinct, but with a typo)
+        self.A = k1v = self.ar(self._xy)
+        k1r = self.V
+        k2v = self.ar(self.vadd(self._xy, self.vmul(tick/2, k1r)))
+        k2r = self.vadd(self.V, self.vmul(tick/2, k1v))
+        k3v = self.ar(self.vadd(self._xy, self.vmul(tick/2, k2r)))
+        k3r = self.vadd(self.V, self.vmul(tick/2, k2v))
+        k4v = self.ar(self.vadd(self._xy, self.vmul(tick, k3r)))
+        k4r = self.vadd(self.V, self.vmul(tick, k3v))
+        self.V = [self.V[i] + tick/6*(k1v[i] + 2*k2v[i] + 2*k3v[i] + k4v[i]) for i in (0,1)]
+        self._xy = [self._xy[i] + tick/6*(k1r[i] + 2*k2r[i] + 2*k3r[i] + k4r[i]) for i in (0,1)]
+        if self.altitude < 0:
+            self.V = [0,0]
+            self.A = [0,0]
+            self.altitude = 0
+
+    # generic force as a function of position
+    def fr(self, pos):
+        """
+        Compute the net force vector on the rocket, as a function of the 
+        position vector.
+        """
+        self.rotation = self.heading()
+        t = self.thrust()
+        G = 6.674E-11
+        r = Planet.distance((0,0), pos)
+        uvec = (-pos[0]/r, -pos[1]/r)
+        fg = G*self.mass()*self.planet.mass/r**2
+        F = [x*fg for x in uvec]
+        return [F[0] + t*cos(self.rotation), F[1] + t*sin(self.rotation)]
+
+    # geric acceleration as a function of position
+    def ar(self, pos):
+        """
+        Compute the acceleration vector of the rocket, as a function of the 
+        position vector.
+        """
+        m = self.mass()
+        F = self.fr(pos)
+        return [F[i]/m for i in (0,1)]
+        
+    def vadd(self, v1, v2):
+        """
+        Vector add utility.
+        """
+        return [v1[i]+v2[i] for i in (0,1)]
+    
+    def vmul(self, s, v):
+        """
+        Scalar vector multiplication utility.
+        """
+        return [s*v[i] for i in (0,1)]
+        
+    def vmag(self, v):
+        """
+        Vector magnitude function.
+        """
+        return sqrt(v[0]**2 + v[1]**2)
+    
+    def fgrav(self):
+        """
+        Vector force due to gravity, at current position.
+        """
+        G = 6.674E-11
+        r = self.r
+        uvec = (-self._xy[0]/r, -self._xy[1]/r)
+        F = G*self.mass()*self.planet.mass/r**2
+        return [x*F for x in uvec]
+    
+    def turn(self, event):
+        """
+        Respond to left/right turning key events.
+        """
+        increment = pi/50 * (1 if event.key == "left arrow" else -1)
+        self.localheading += increment
+            
+    def _getposition(self):
+        return self._xy
+    
+    @property
+    def xyposition(self):
+        return self._xy
+        
+    @xyposition.setter
+    def xyposition(self, pos):
+        self._xy = pos
+        #self._touchAsset()
+
+    @property
+    def tanomalyd(self):
+        return degrees(self.tanomaly)
+        
+    @tanomalyd.setter
+    def tanomalyd(self, angle):
+        self.tanomaly = radians(angle)
+
+    @property
+    def altitude(self):
+        alt = Planet.distance(self._xy, (0,0)) - self.planet.radius
+        return alt
+        
+    @altitude.setter
+    def altitude(self, alt):
+        r = alt + self.planet.radius
+        self._xy = (r*cos(self.tanomaly), r*sin(self.tanomaly))
+
+    @property
+    def velocity(self):
+        return self.vmag(self.V)
+    
+    @property
+    def acceleration(self):
+        return self.vmag(self.A)
+        
+    @property
+    def tanomaly(self):
+        #pos = self._pos()
+        return atan2(self._xy[1],self._xy[0])
+        
+    @tanomaly.setter
+    def tanomaly(self, angle):
+        r = self.r
+        self._xy = (r*cos(angle), r*sin(angle))
+        self._touchAsset()
+            
+    @property
+    def r(self):
+        return self.altitude + self.planet.radius
+
+        
+        
+    
+
+
+class Planet(MathApp):
+    
+    def __init__(self, **kwargs):
+        """
+        Initialize the Planet object. 
+
+        Optional keyword parameters are supported:
+        
+        * **viewscale**  pixels per meter in graphics display. Default is 10.
+        * **radius**  radius of the planet in meters. Default is Earth radius.
+        * **planetmass** mass of the planet in kg. Default is Earth mass.
+        * **color** color of the planet. Default is greenish (0x008040).
+        * **viewalt** altitude of initial viewpoint in meters. Default is rocket 
+          altitude.
+        * **viewanom** true anomaly (angle) of initial viewpoint in radians. 
+          Default is the rocket anomaly.
+        * **viewanomd** true anomaly (angle) of initial viewpoing in degrees.
+          Default is the rocket anomaly.
+        
+        """
+        self.scale = kwargs.get('viewscale', 10)  # 10 pixels per meter default
+        self.radius = kwargs.get('radius', 6.371E6) # Earth - meters
+        self.mass = kwargs.get('planetmass', 5.9722E24) # Earth - kg
+        self.color = kwargs.get('color', 0x008040)  # greenish
+        self.kwargs = kwargs # save it for later..
+        super().__init__(self.scale)
+
+    def run(self, rocket=None):
+        """
+        Execute the Planet (and Rocket) simulation.
+
+        Optional parameters:
+        
+        * **rocket** Reference to a Rocket object - sets the initial view
+        """
+        if rocket:
+            viewalt = rocket.altitude
+            viewanom = rocket.tanomaly
+        else:
+            viewalt = 0
+            viewanom = pi/2
+        self.viewaltitude = self.kwargs.get('viewalt', viewalt) # how high to look
+        self.viewanomaly = self.kwargs.get('viewanom', viewanom)  # where to look
+        self.viewanomalyd = self.kwargs.get('viewanomd', degrees(self.viewanomaly))
+        self.planetcircle = Circle(
+            (0,0), 
+            self.radius, 
+            style = LineStyle(1, Color(self.color,1)), 
+            color = Color(self.color,0.5))
+        r = self.radius + self.viewaltitude
+        self.viewPosition = (r*cos(self.viewanomaly), r*sin(self.viewanomaly))
+        super().run()
+
+# test code here
+if __name__ == "__main__":
+    
+    earth = Planet(viewscale=0.00005)
+    earth.run()
+
+    rocket1 = Rocket(earth, altitude=400000, velocity=7670, timezoom=2)
+    rocket2 = Rocket(earth, altitude=440000, velocity=7670, timezoom=2, statuspos=[300,10])
+</code></pre>
+  </div>
+
+  </header>
+
+  <section id="section-items">
+    <h2 class="section-title" id="header-variables">Module variables</h2>
+      <div class="item">
+      <p id="ggrocket.pi" class="name">var <span class="ident">pi</span></p>
+      
+  
+  <div class="source_cont">
+</div>
+
+      </div>
+
+
+    <h2 class="section-title" id="header-classes">Classes</h2>
+      
+      <div class="item">
+      <p id="ggrocket.Planet" class="name">class <span class="ident">Planet</span></p>
+      
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Planet', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Planet" class="source">
+    <pre><code>class Planet(MathApp):
+    
+    def __init__(self, **kwargs):
+        """
+        Initialize the Planet object. 
+
+        Optional keyword parameters are supported:
+        
+        * **viewscale**  pixels per meter in graphics display. Default is 10.
+        * **radius**  radius of the planet in meters. Default is Earth radius.
+        * **planetmass** mass of the planet in kg. Default is Earth mass.
+        * **color** color of the planet. Default is greenish (0x008040).
+        * **viewalt** altitude of initial viewpoint in meters. Default is rocket 
+          altitude.
+        * **viewanom** true anomaly (angle) of initial viewpoint in radians. 
+          Default is the rocket anomaly.
+        * **viewanomd** true anomaly (angle) of initial viewpoing in degrees.
+          Default is the rocket anomaly.
+        
+        """
+        self.scale = kwargs.get('viewscale', 10)  # 10 pixels per meter default
+        self.radius = kwargs.get('radius', 6.371E6) # Earth - meters
+        self.mass = kwargs.get('planetmass', 5.9722E24) # Earth - kg
+        self.color = kwargs.get('color', 0x008040)  # greenish
+        self.kwargs = kwargs # save it for later..
+        super().__init__(self.scale)
+
+    def run(self, rocket=None):
+        """
+        Execute the Planet (and Rocket) simulation.
+
+        Optional parameters:
+        
+        * **rocket** Reference to a Rocket object - sets the initial view
+        """
+        if rocket:
+            viewalt = rocket.altitude
+            viewanom = rocket.tanomaly
+        else:
+            viewalt = 0
+            viewanom = pi/2
+        self.viewaltitude = self.kwargs.get('viewalt', viewalt) # how high to look
+        self.viewanomaly = self.kwargs.get('viewanom', viewanom)  # where to look
+        self.viewanomalyd = self.kwargs.get('viewanomd', degrees(self.viewanomaly))
+        self.planetcircle = Circle(
+            (0,0), 
+            self.radius, 
+            style = LineStyle(1, Color(self.color,1)), 
+            color = Color(self.color,0.5))
+        r = self.radius + self.viewaltitude
+        self.viewPosition = (r*cos(self.viewanomaly), r*sin(self.viewanomaly))
+        super().run()
+</code></pre>
+  </div>
+</div>
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ggrocket.Planet">Planet</a></li>
+          <li>ggmath.MathApp</li>
+          <li>ggame.App</li>
+          <li>builtins.object</li>
+          </ul>
+          <h3>Class variables</h3>
+            <div class="item">
+            <p id="ggrocket.Planet.spritelist" class="name">var <span class="ident">spritelist</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Planet.time" class="name">var <span class="ident">time</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+          <h3>Static methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Planet.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, **kwargs)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Initialize the Planet object. </p>
+<p>Optional keyword parameters are supported:</p>
+<ul>
+<li><strong>viewscale</strong>  pixels per meter in graphics display. Default is 10.</li>
+<li><strong>radius</strong>  radius of the planet in meters. Default is Earth radius.</li>
+<li><strong>planetmass</strong> mass of the planet in kg. Default is Earth mass.</li>
+<li><strong>color</strong> color of the planet. Default is greenish (0x008040).</li>
+<li><strong>viewalt</strong> altitude of initial viewpoint in meters. Default is rocket 
+  altitude.</li>
+<li><strong>viewanom</strong> true anomaly (angle) of initial viewpoint in radians. 
+  Default is the rocket anomaly.</li>
+<li><strong>viewanomd</strong> true anomaly (angle) of initial viewpoing in degrees.
+  Default is the rocket anomaly.</li>
+</ul></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Planet.__init__', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Planet.__init__" class="source">
+    <pre><code>def __init__(self, **kwargs):
+    """
+    Initialize the Planet object. 
+    Optional keyword parameters are supported:
+    
+    * **viewscale**  pixels per meter in graphics display. Default is 10.
+    * **radius**  radius of the planet in meters. Default is Earth radius.
+    * **planetmass** mass of the planet in kg. Default is Earth mass.
+    * **color** color of the planet. Default is greenish (0x008040).
+    * **viewalt** altitude of initial viewpoint in meters. Default is rocket 
+      altitude.
+    * **viewanom** true anomaly (angle) of initial viewpoint in radians. 
+      Default is the rocket anomaly.
+    * **viewanomd** true anomaly (angle) of initial viewpoing in degrees.
+      Default is the rocket anomaly.
+    
+    """
+    self.scale = kwargs.get('viewscale', 10)  # 10 pixels per meter default
+    self.radius = kwargs.get('radius', 6.371E6) # Earth - meters
+    self.mass = kwargs.get('planetmass', 5.9722E24) # Earth - kg
+    self.color = kwargs.get('color', 0x008040)  # greenish
+    self.kwargs = kwargs # save it for later..
+    super().__init__(self.scale)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Planet.handleMouseClick">
+    <p>def <span class="ident">handleMouseClick</span>(</p><p>self, event)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Planet.handleMouseClick', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Planet.handleMouseClick" class="source">
+    <pre><code>def handleMouseClick(self, event):
+    found = False
+    for obj in self._mathSelectableList:
+        if obj.physicalPointTouching((event.x, event.y)):
+            found = True
+            if not obj.selected: 
+                obj.select()
+                self.selectedObj = obj
+    if not found and self.selectedObj:
+        self.selectedObj.unselect()
+        self.selectedObj = None
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Planet.handleMouseDown">
+    <p>def <span class="ident">handleMouseDown</span>(</p><p>self, event)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Planet.handleMouseDown', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Planet.handleMouseDown" class="source">
+    <pre><code>def handleMouseDown(self, event):
+    self.mouseDown = True
+    self.mouseCapturedObject = None
+    self.mouseStrokedObject = None
+    for obj in self._mathSelectableList:
+        if obj.physicalPointTouching((event.x, event.y)):
+            obj.mousedown()
+            self.mouseDownObject = obj
+            break
+    for obj in self._mathMovableList:
+        if obj.physicalPointTouching((event.x, event.y)) and not (obj.strokable and obj.canstroke((event.x,event.y))):
+            self.mouseCapturedObject = obj
+            break
+    if not self.mouseCapturedObject:
+        for obj in self._mathStrokableList:
+            if obj.canstroke((event.x, event.y)):
+                self.mouseStrokedObject = obj
+                break
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Planet.handleMouseMove">
+    <p>def <span class="ident">handleMouseMove</span>(</p><p>self, event)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Planet.handleMouseMove', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Planet.handleMouseMove" class="source">
+    <pre><code>def handleMouseMove(self, event):
+    if not self.mouseX:
+        self.mouseX = event.x
+        self.mouseY = event.y
+    dx = event.x - self.mouseX
+    dy = event.y - self.mouseY
+    self.mouseX = event.x
+    self.mouseY = event.y
+    if self.mouseDown:
+        if self.mouseCapturedObject:
+            self.mouseCapturedObject.translate((dx, dy))
+        elif self.mouseStrokedObject:
+            self.mouseStrokedObject.stroke((self.mouseX,self.mouseY), (dx,dy))
+        else:
+            lmove = self.translatePhysicalToLogical((dx, dy))
+            MathApp._xcenter -= lmove[0]
+            MathApp._ycenter -= lmove[1]
+            self._touchAllVisuals()
+            self._viewNotify("translate")
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Planet.handleMouseUp">
+    <p>def <span class="ident">handleMouseUp</span>(</p><p>self, event)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Planet.handleMouseUp', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Planet.handleMouseUp" class="source">
+    <pre><code>def handleMouseUp(self, event):
+    if self.mouseDownObject:
+        self.mouseDownObject.mouseup()
+        self.mouseDownObject = None
+    self.mouseDown = False
+    self.mouseCapturedObject = None
+    self.mouseStrokedObject = None
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Planet.handleMouseWheel">
+    <p>def <span class="ident">handleMouseWheel</span>(</p><p>self, event)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Planet.handleMouseWheel', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Planet.handleMouseWheel" class="source">
+    <pre><code>def handleMouseWheel(self, event):
+    zoomfactor = event.wheelDelta/100
+    zoomfactor = 1+zoomfactor if zoomfactor > 0 else 1+zoomfactor
+    if zoomfactor > 1.2:
+        zoomfactor = 1.2
+    elif zoomfactor < 0.8:
+        zoomfactor = 0.8
+    MathApp._scale *= zoomfactor
+    self._touchAllVisuals()
+    self._viewNotify("zoom")
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Planet.run">
+    <p>def <span class="ident">run</span>(</p><p>self, rocket=None)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Execute the Planet (and Rocket) simulation.</p>
+<p>Optional parameters:</p>
+<ul>
+<li><strong>rocket</strong> Reference to a Rocket object - sets the initial view</li>
+</ul></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Planet.run', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Planet.run" class="source">
+    <pre><code>def run(self, rocket=None):
+    """
+    Execute the Planet (and Rocket) simulation.
+    Optional parameters:
+    
+    * **rocket** Reference to a Rocket object - sets the initial view
+    """
+    if rocket:
+        viewalt = rocket.altitude
+        viewanom = rocket.tanomaly
+    else:
+        viewalt = 0
+        viewanom = pi/2
+    self.viewaltitude = self.kwargs.get('viewalt', viewalt) # how high to look
+    self.viewanomaly = self.kwargs.get('viewanom', viewanom)  # where to look
+    self.viewanomalyd = self.kwargs.get('viewanomd', degrees(self.viewanomaly))
+    self.planetcircle = Circle(
+        (0,0), 
+        self.radius, 
+        style = LineStyle(1, Color(self.color,1)), 
+        color = Color(self.color,0.5))
+    r = self.radius + self.viewaltitude
+    self.viewPosition = (r*cos(self.viewanomaly), r*sin(self.viewanomaly))
+    super().run()
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Planet.step">
+    <p>def <span class="ident">step</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Planet.step', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Planet.step" class="source">
+    <pre><code>def step(self):
+    MathApp.time = time()
+    for spr in self._mathDynamicList:
+        spr.step()
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+          <h3>Instance variables</h3>
+            <div class="item">
+            <p id="ggrocket.Planet.color" class="name">var <span class="ident">color</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Planet.kwargs" class="name">var <span class="ident">kwargs</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Planet.mass" class="name">var <span class="ident">mass</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Planet.radius" class="name">var <span class="ident">radius</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Planet.scale" class="name">var <span class="ident">scale</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Planet.viewPosition" class="name">var <span class="ident">viewPosition</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Planet.width" class="name">var <span class="ident">width</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+          <h3>Methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Planet.addViewNotification">
+    <p>def <span class="ident">addViewNotification</span>(</p><p>cls, handler)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Planet.addViewNotification', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Planet.addViewNotification" class="source">
+    <pre><code>@classmethod   
+def addViewNotification(cls, handler):
+    cls._viewNotificationList.append(handler)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Planet.distance">
+    <p>def <span class="ident">distance</span>(</p><p>cls, pos1, pos2)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Planet.distance', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Planet.distance" class="source">
+    <pre><code>@classmethod   
+def distance(cls, pos1, pos2):
+    return sqrt((pos2[0]-pos1[0])**2 + (pos2[1]-pos1[1])**2)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Planet.getSpritesbyClass">
+    <p>def <span class="ident">getSpritesbyClass</span>(</p><p>cls, sclass)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Returns a list of all active sprites of a given class.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Planet.getSpritesbyClass', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Planet.getSpritesbyClass" class="source">
+    <pre><code>@classmethod
+def getSpritesbyClass(cls, sclass):
+    """
+    Returns a list of all active sprites of a given class.
+    """
+    return App._spritesdict.get(sclass, [])
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Planet.listenKeyEvent">
+    <p>def <span class="ident">listenKeyEvent</span>(</p><p>cls, eventtype, key, callback)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Register to receive keyboard events. The <code>eventtype</code> parameter is a 
+string that indicates what type of key event to receive (value is one
+of: <code>'keydown'</code>, <code>'keyup'</code> or <code>'keypress'</code>). The <code>key</code> parameter is a 
+string indicating which key (e.g. <code>'space'</code>, <code>'left arrow'</code>, etc.) to 
+receive events for. The <code>callback</code> parameter is a reference to a 
+function or method that will be called with the <code>ggame.KeyEvent</code> object
+when the event occurs.</p>
+<p>See the source for <code>ggame.KeyEvent.keys</code> for a list of key names
+to use with the <code>key</code> paramter.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Planet.listenKeyEvent', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Planet.listenKeyEvent" class="source">
+    <pre><code>@classmethod
+def listenKeyEvent(cls, eventtype, key, callback):
+    """
+    Register to receive keyboard events. The `eventtype` parameter is a 
+    string that indicates what type of key event to receive (value is one
+    of: `'keydown'`, `'keyup'` or `'keypress'`). The `key` parameter is a 
+    string indicating which key (e.g. `'space'`, `'left arrow'`, etc.) to 
+    receive events for. The `callback` parameter is a reference to a 
+    function or method that will be called with the `ggame.KeyEvent` object
+    when the event occurs.
+    See the source for `ggame.KeyEvent.keys` for a list of key names
+    to use with the `key` paramter.
+    """
+    evtlist = App._eventdict.get((eventtype, key), [])
+    if not callback in evtlist:
+        evtlist.append(callback)
+    App._eventdict[(eventtype, key)] = evtlist
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Planet.listenMouseEvent">
+    <p>def <span class="ident">listenMouseEvent</span>(</p><p>cls, eventtype, callback)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Register to receive mouse events. The <code>eventtype</code> parameter is
+a string that indicates what type of mouse event to receive (
+value is one of: <code>'mousemove'</code>, <code>'mousedown'</code>, <code>'mouseup'</code>, <code>'click'</code>, 
+<code>'dblclick'</code> or <code>'mousewheel'</code>). The <code>callback</code> parameter is a 
+reference to a function or method that will be called with the 
+<code>ggame.MouseEvent</code> object when the event occurs.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Planet.listenMouseEvent', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Planet.listenMouseEvent" class="source">
+    <pre><code>@classmethod
+def listenMouseEvent(cls, eventtype, callback):
+    """
+    Register to receive mouse events. The `eventtype` parameter is
+    a string that indicates what type of mouse event to receive (
+    value is one of: `'mousemove'`, `'mousedown'`, `'mouseup'`, `'click'`, 
+    `'dblclick'` or `'mousewheel'`). The `callback` parameter is a 
+    reference to a function or method that will be called with the 
+    `ggame.MouseEvent` object when the event occurs.
+    """
+    evtlist = App._eventdict.get(eventtype, [])
+    if not callback in evtlist:
+        evtlist.append(callback)
+    App._eventdict[eventtype] = evtlist
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Planet.logicalToPhysical">
+    <p>def <span class="ident">logicalToPhysical</span>(</p><p>cls, lp)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Planet.logicalToPhysical', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Planet.logicalToPhysical" class="source">
+    <pre><code>@classmethod
+def logicalToPhysical(cls, lp):
+    xxform = lambda xvalue, xscale, xcenter, physwidth: int((xvalue-xcenter)*xscale + physwidth/2)
+    yxform = lambda yvalue, yscale, ycenter, physheight: int(physheight/2 - (yvalue-ycenter)*yscale)
+    try:
+        return (xxform(lp[0], cls._scale, cls._xcenter, cls._win.width),
+            yxform(lp[1], cls._scale, cls._ycenter, cls._win.height))
+    except AttributeError:
+        return lp
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Planet.physicalToLogical">
+    <p>def <span class="ident">physicalToLogical</span>(</p><p>cls, pp)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Planet.physicalToLogical', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Planet.physicalToLogical" class="source">
+    <pre><code>@classmethod
+def physicalToLogical(cls, pp):
+    xxform = lambda xvalue, xscale, xcenter, physwidth: (xvalue - physwidth/2)/xscale + xcenter
+    yxform = lambda yvalue, yscale, ycenter, physheight: (physheight/2 - yvalue)/yscale + ycenter
+    try:
+        return (xxform(pp[0], cls._scale, cls._xcenter, cls._win.width),
+            yxform(pp[1], cls._scale, cls._ycenter, cls._win.height))
+    except AttributeError:
+        return pp
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Planet.removeViewNotification">
+    <p>def <span class="ident">removeViewNotification</span>(</p><p>cls, handler)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Planet.removeViewNotification', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Planet.removeViewNotification" class="source">
+    <pre><code>@classmethod   
+def removeViewNotification(cls, handler):
+    cls._viewNotificationList.remove(handler)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Planet.translateLogicalToPhysical">
+    <p>def <span class="ident">translateLogicalToPhysical</span>(</p><p>cls, pp)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Planet.translateLogicalToPhysical', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Planet.translateLogicalToPhysical" class="source">
+    <pre><code>@classmethod
+def translateLogicalToPhysical(cls, pp):
+    xxform = lambda xvalue, xscale: xvalue*xscale
+    yxform = lambda yvalue, yscale: -yvalue*yscale
+    try:
+        return (xxform(pp[0], cls._scale), yxform(pp[1], cls._scale))
+    except AttributeError:
+        return pp
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Planet.translatePhysicalToLogical">
+    <p>def <span class="ident">translatePhysicalToLogical</span>(</p><p>cls, pp)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Planet.translatePhysicalToLogical', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Planet.translatePhysicalToLogical" class="source">
+    <pre><code>@classmethod
+def translatePhysicalToLogical(cls, pp):
+    xxform = lambda xvalue, xscale: xvalue/xscale
+    yxform = lambda yvalue, yscale: -yvalue/yscale
+    try:
+        return (xxform(pp[0], cls._scale), yxform(pp[1], cls._scale))
+    except AttributeError:
+        return pp
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Planet.unlistenKeyEvent">
+    <p>def <span class="ident">unlistenKeyEvent</span>(</p><p>cls, eventtype, key, callback)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Use this method to remove a registration to receive a particular
+keyboard event. Arguments must exactly match those used when
+registering for the event.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Planet.unlistenKeyEvent', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Planet.unlistenKeyEvent" class="source">
+    <pre><code>@classmethod
+def unlistenKeyEvent(cls, eventtype, key, callback):
+    """
+    Use this method to remove a registration to receive a particular
+    keyboard event. Arguments must exactly match those used when
+    registering for the event.
+    """
+    App._eventdict[(eventtype,key)].remove(callback)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Planet.unlistenMouseEvent">
+    <p>def <span class="ident">unlistenMouseEvent</span>(</p><p>cls, eventtype, callback)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Use this method to remove a registration to receive a particular
+mouse event. Arguments must exactly match those used when
+registering for the event.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Planet.unlistenMouseEvent', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Planet.unlistenMouseEvent" class="source">
+    <pre><code>@classmethod
+def unlistenMouseEvent(cls, eventtype, callback):
+    """
+    Use this method to remove a registration to receive a particular
+    mouse event. Arguments must exactly match those used when
+    registering for the event.
+    """
+    App._eventdict[eventtype].remove(callback)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+      </div>
+      </div>
+      
+      <div class="item">
+      <p id="ggrocket.Rocket" class="name">class <span class="ident">Rocket</span></p>
+      
+  
+    <div class="desc"><p>Rocket is a class for simulating the motion of a projectile through space, 
+acted upon by arbitrary forces (thrust) and by gravitaitonal 
+attraction to a single planetary object.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket" class="source">
+    <pre><code>class Rocket(ImagePoint):
+    """
+    Rocket is a class for simulating the motion of a projectile through space, 
+    acted upon by arbitrary forces (thrust) and by gravitaitonal 
+    attraction to a single planetary object.
+    """
+
+    def __init__(self, planet, **kwargs):
+        """
+        Initialize the Rocket object. 
+        
+        Example:
+        
+            rocket1 = Rocket(earth, altitude=400000, velocity=7670, timezoom=2)
+       
+        Required parameters:
+        
+        * **planet**:  Reference to a `Planet` object.
+        
+        Optional keyword parameters are supported:
+        
+        * **bitmap**:  url of a suitable bitmap image for the rocket (png recommended)
+          default is `rocket.png`
+        * **bitmapscale**:  scale factor for bitmap. Default is 0.1
+        * **velocity**:  initial rocket speed. default is zero.
+        * **directiond**:  initial rocket direction in degrees. Default is zero.
+        * **direction**:  initial rocket direction in radians. Default is zero.
+        * **tanomalyd**:  initial rocket true anomaly in degrees. Default is 90.
+        * **tanomaly**:  initial rocket true anomaly in radians. Default is pi/2.
+        * **altitude**:  initial rocket altitude in meters. Default is zero.
+        * **showstatus**:  boolean displays flight parameters on screen. Default
+          is True.
+        * **statuspos**:  tuple with x,y coordinates of flight parameters. 
+          Default is upper left.
+        * **statuslist**: list of status names to include in flight parameters. 
+          Default is all, consisting of: "velocity", "acceleration", "course",
+          "altitude", "thrust", "mass", "trueanomaly", "scale", "timezoom",
+          "shiptime"
+        * **leftkey**: a `ggame` key identifier that will serve as the 
+          "rotate left" key while controlling the ship. Default is 'left arrow'.
+        * **rightkey**: a `ggame` key identifier that will serve as the 
+          "rotate right" key while controlling the ship. Default is 'right arrow'.
+        
+        Following parameters may be set as a constant value, or pass in the
+        name of a function that will return the value dynamically or the
+        name of a `ggmath` UI control that will return the value.
+        
+        * **timezoom**  scale factor for time zoom. Factor = 10^timezoom
+        * **heading**  direction to point the rocket in (must be radians)
+        * **mass**  mass of the rocket (must be kg)
+        * **thrust**  thrust of the rocket (must be N)
+
+        Animation related parameters may be ignored if no sprite animation:
+        
+        * **bitmapframe**  ((x1,y1),(x2,y2)) tuple defines a region in the bitmap
+        * **bitmapqty**  number of bitmaps -- used for animation effects
+        * **bitmapdir**  "horizontal" or "vertical" use with animation effects
+        * **bitmapmargin**  pixels between successive animation frames
+        * **tickrate**  frequency of spacecraft dynamics calculations (Hz)
+        
+        """
+        self._xy = (1000000,1000000)
+        self.planet = planet
+        self.bmurl = kwargs.get('bitmap', 'rocket.png') # default rocket png
+        self.bitmapframe = kwargs.get('bitmapframe', None) #
+        self.bitmapqty = kwargs.get('bitmapqty', 1) # Number of images in bitmap
+        self.bitmapdir = kwargs.get('bitmapdir', 'horizontal') # animation orientation
+        self.bitmapmargin = kwargs.get('bitmapmargin', 0) # bitmap spacing
+        self.tickrate = kwargs.get('tickrate', 30) # dynamics calcs per sec
+        # status display
+        statusfuncs = [ self.velocityText,
+                        self.accelerationText,
+                        self.courseDegreesText,
+                        self.altitudeText,
+                        self.thrustText,
+                        self.massText,
+                        self.trueAnomalyDegreesText,
+                        self.scaleText,
+                        self.timeZoomText,
+                        self.shipTimeText]
+        statuslist = [  "velocity",
+                        "acceleration",
+                        "course",
+                        "altitude",
+                        "thrust",
+                        "mass",
+                        "trueanomaly",
+                        "scale",
+                        "timezoom",
+                        "shiptime"]
+        
+        self.showstatus = kwargs.get('showstatus', True) # show stats
+        self.statuspos = kwargs.get('statuspos', [10,10])  # position of stats
+        self.statusselect = kwargs.get('statuslist', statuslist)
+        self.localheading = 0
+        # dynamic parameters
+        self.timezoom = self.Eval(kwargs.get('timezoom', self.gettimezoom)) # 1,2,3 faster, -1, slower
+        self.heading = self.Eval(kwargs.get('heading', self.getheading)) # must be radians
+        self.mass = self.Eval(kwargs.get('mass', self.getmass)) # kg
+        self.thrust = self.Eval(kwargs.get('thrust', self.getthrust)) # N
+        # end dynamic 
+        super().__init__(self.bmurl,
+            self._getposition, 
+            frame = self.bitmapframe, 
+            qty = self.bitmapqty, 
+            direction = self.bitmapdir,
+            margin = self.bitmapmargin)
+        self.scale = kwargs.get('bitmapscale', 0.1) # small
+        initvel = kwargs.get('velocity', 0) # initial velocity
+        initdird = kwargs.get('directiond', 0) # initial direction, degrees
+        initdir = kwargs.get('direction', radians(initdird))
+        tanomaly = kwargs.get('tanomaly', pi/2) # position angle
+        tanomaly = radians(kwargs.get('tanomalyd', degrees(tanomaly))) 
+        altitude = kwargs.get('altitude', 0) #
+        r = altitude + self.planet.radius
+        self._xy = (r*cos(tanomaly), r*sin(tanomaly))
+        # default heading control if none provided by user
+        leftkey = kwargs.get('leftkey', 'left arrow')
+        rightkey = kwargs.get('rightkey', 'right arrow')
+        if self.heading == self.getheading:
+            Planet.listenKeyEvent('keydown', leftkey, self.turn)
+            Planet.listenKeyEvent('keydown', rightkey, self.turn)
+        self.timer = Timer()
+        self.shiptime = 0  # track time on shipboard
+        self.timer.callEvery(1/self.tickrate, self.dynamics)
+        self.lasttime = self.timer.time
+        self.V = [initvel * cos(initdir), initvel * sin(initdir)]
+        self.A = [0,0]
+        # set up status display
+        if self.showstatus:
+            self.addStatusReport(statuslist, statusfuncs, self.statusselect)
+
+    # override or define externally!
+    def getthrust(self):
+        """
+        User override function for dynamically determining thrust force.
+        """
+        return 0
+
+    # override or define externally!
+    def getmass(self):
+        """
+        User override function for dynamically determining rocket mass.
+        """
+        return 1
+
+    # override or define externally!
+    def getheading(self):
+        """
+        User override function for dynamically determining the heading.
+        """
+        return self.localheading
+        
+    # override or define externally!
+    def gettimezoom(self):
+        """
+        User override function for dynamically determining the timezoom.
+        """
+        return 0
+
+    # add a status reporting function to status display
+    def addStatusReport(self, statuslist, statusfuncs, statusselect):
+        """
+        Accept list of all status names, all status text functions, and
+        the list of status names that have been selected for display.
+        """
+        statusdict = {n:f for n, f in zip(statuslist, statusfuncs)}
+        for name in statusselect:
+            if name in statusdict:
+                Label(self.statuspos[:], statusdict[name], size=15, positioning='physical', width=250)
+                self.statuspos[1] += 25
+
+    # functions available for reporting flight parameters to UI
+    def velocityText(self):
+        """
+        Report the velocity in m/s as a text string.
+        """
+        return "Velocity:     {0:8.1f} m/s".format(self.velocity)
+        
+    def accelerationText(self):
+        """
+        Report the acceleration in m/s as a text string.
+        """
+        return "Acceleration: {0:8.1f} m/s²".format(self.acceleration)
+        
+    def courseDegreesText(self):
+        """
+        Report the heading in degrees (zero to the right) as a text string.
+        """
+        return "Course:       {0:8.1f}°".format(degrees(atan2(self.V[1], self.V[0])))
+
+    def thrustText(self):
+        """
+        Report the thrust level in Newtons as a text string.
+        """
+        return "Thrust:       {0:8.1f} N".format(self.thrust())
+        
+    def massText(self):
+        """
+        Report the spacecraft mass in kilograms as a text string.
+        """
+        return "Mass:         {0:8.1f} kg".format(self.mass())
+        
+    def trueAnomalyDegreesText(self):
+        """
+        Report the true anomaly in degrees as a text string.
+        """
+        return "True Anomaly: {0:8.1f}°".format(self.tanomalyd)
+        
+    def trueAnomalyRadiansText(self):
+        """
+        Report the true anomaly in radians as a text string.
+        """
+        return "True Anomaly: {0:8.4f}".format(self.tanomaly)
+        
+    def altitudeText(self):
+        """
+        Report the altitude in meters as a text string.
+        """
+        return "Altitude:     {0:8.1f} m".format(self.altitude)
+        
+    def radiusText(self):
+        """
+        Report the radius (distance to planet center) in meters as a text string.
+        """
+        return "Radius:       {0:8.1f} m".format(self.r)
+        
+    def scaleText(self):
+        """
+        Report the view scale (pixels/meter) as a text string.
+        """
+        return "View Scale:   {0:8.6f} px/m".format(self.planet._scale)
+    
+    def timeZoomText(self):
+        """
+        Report the time acceleration as a text string.
+        """
+        return "Time Zoom:    {0:8.1f}".format(float(self.timezoom()))
+        
+    def shipTimeText(self):
+        """
+        Report the elapsed time as a text string.
+        """
+        return "Elapsed Time: {0:8.1f} s".format(float(self.shiptime))
+    
+
+
+            
+    def dynamics(self, timer):
+        """
+        Perform one iteration of the simulation using runge-kutta 4th order method.
+        """
+        # set time duration equal to time since last execution
+        tick = 10**self.timezoom()*(timer.time - self.lasttime)
+        self.shiptime = self.shiptime + tick
+        self.lasttime = timer.time
+        # 4th order runge-kutta method (https://sites.temple.edu/math5061/files/2016/12/final_project.pdf)
+        # and http://spiff.rit.edu/richmond/nbody/OrbitRungeKutta4.pdf  (succinct, but with a typo)
+        self.A = k1v = self.ar(self._xy)
+        k1r = self.V
+        k2v = self.ar(self.vadd(self._xy, self.vmul(tick/2, k1r)))
+        k2r = self.vadd(self.V, self.vmul(tick/2, k1v))
+        k3v = self.ar(self.vadd(self._xy, self.vmul(tick/2, k2r)))
+        k3r = self.vadd(self.V, self.vmul(tick/2, k2v))
+        k4v = self.ar(self.vadd(self._xy, self.vmul(tick, k3r)))
+        k4r = self.vadd(self.V, self.vmul(tick, k3v))
+        self.V = [self.V[i] + tick/6*(k1v[i] + 2*k2v[i] + 2*k3v[i] + k4v[i]) for i in (0,1)]
+        self._xy = [self._xy[i] + tick/6*(k1r[i] + 2*k2r[i] + 2*k3r[i] + k4r[i]) for i in (0,1)]
+        if self.altitude < 0:
+            self.V = [0,0]
+            self.A = [0,0]
+            self.altitude = 0
+
+    # generic force as a function of position
+    def fr(self, pos):
+        """
+        Compute the net force vector on the rocket, as a function of the 
+        position vector.
+        """
+        self.rotation = self.heading()
+        t = self.thrust()
+        G = 6.674E-11
+        r = Planet.distance((0,0), pos)
+        uvec = (-pos[0]/r, -pos[1]/r)
+        fg = G*self.mass()*self.planet.mass/r**2
+        F = [x*fg for x in uvec]
+        return [F[0] + t*cos(self.rotation), F[1] + t*sin(self.rotation)]
+
+    # geric acceleration as a function of position
+    def ar(self, pos):
+        """
+        Compute the acceleration vector of the rocket, as a function of the 
+        position vector.
+        """
+        m = self.mass()
+        F = self.fr(pos)
+        return [F[i]/m for i in (0,1)]
+        
+    def vadd(self, v1, v2):
+        """
+        Vector add utility.
+        """
+        return [v1[i]+v2[i] for i in (0,1)]
+    
+    def vmul(self, s, v):
+        """
+        Scalar vector multiplication utility.
+        """
+        return [s*v[i] for i in (0,1)]
+        
+    def vmag(self, v):
+        """
+        Vector magnitude function.
+        """
+        return sqrt(v[0]**2 + v[1]**2)
+    
+    def fgrav(self):
+        """
+        Vector force due to gravity, at current position.
+        """
+        G = 6.674E-11
+        r = self.r
+        uvec = (-self._xy[0]/r, -self._xy[1]/r)
+        F = G*self.mass()*self.planet.mass/r**2
+        return [x*F for x in uvec]
+    
+    def turn(self, event):
+        """
+        Respond to left/right turning key events.
+        """
+        increment = pi/50 * (1 if event.key == "left arrow" else -1)
+        self.localheading += increment
+            
+    def _getposition(self):
+        return self._xy
+    
+    @property
+    def xyposition(self):
+        return self._xy
+        
+    @xyposition.setter
+    def xyposition(self, pos):
+        self._xy = pos
+        #self._touchAsset()
+
+    @property
+    def tanomalyd(self):
+        return degrees(self.tanomaly)
+        
+    @tanomalyd.setter
+    def tanomalyd(self, angle):
+        self.tanomaly = radians(angle)
+
+    @property
+    def altitude(self):
+        alt = Planet.distance(self._xy, (0,0)) - self.planet.radius
+        return alt
+        
+    @altitude.setter
+    def altitude(self, alt):
+        r = alt + self.planet.radius
+        self._xy = (r*cos(self.tanomaly), r*sin(self.tanomaly))
+
+    @property
+    def velocity(self):
+        return self.vmag(self.V)
+    
+    @property
+    def acceleration(self):
+        return self.vmag(self.A)
+        
+    @property
+    def tanomaly(self):
+        #pos = self._pos()
+        return atan2(self._xy[1],self._xy[0])
+        
+    @tanomaly.setter
+    def tanomaly(self, angle):
+        r = self.r
+        self._xy = (r*cos(angle), r*sin(angle))
+        self._touchAsset()
+            
+    @property
+    def r(self):
+        return self.altitude + self.planet.radius
+</code></pre>
+  </div>
+</div>
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ggrocket.Rocket">Rocket</a></li>
+          <li>ggmath.ImagePoint</li>
+          <li>ggmath._Point</li>
+          <li>ggmath._MathVisual</li>
+          <li>ggame.Sprite</li>
+          <li>ggmath._MathDynamic</li>
+          <li>builtins.object</li>
+          </ul>
+          <h3>Class variables</h3>
+            <div class="item">
+            <p id="ggrocket.Rocket.defaultcolor" class="name">var <span class="ident">defaultcolor</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.defaultsize" class="name">var <span class="ident">defaultsize</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.defaultstyle" class="name">var <span class="ident">defaultstyle</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.defaultwidth" class="name">var <span class="ident">defaultwidth</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.nonposinputsdef" class="name">var <span class="ident">nonposinputsdef</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.posinputsdef" class="name">var <span class="ident">posinputsdef</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+          <h3>Static methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, planet, **kwargs)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Initialize the Rocket object. </p>
+<p>Example:</p>
+<pre><code>rocket1 = Rocket(earth, altitude=400000, velocity=7670, timezoom=2)
+</code></pre>
+<p>Required parameters:</p>
+<ul>
+<li><strong>planet</strong>:  Reference to a <code>Planet</code> object.</li>
+</ul>
+<p>Optional keyword parameters are supported:</p>
+<ul>
+<li><strong>bitmap</strong>:  url of a suitable bitmap image for the rocket (png recommended)
+  default is <code>rocket.png</code></li>
+<li><strong>bitmapscale</strong>:  scale factor for bitmap. Default is 0.1</li>
+<li><strong>velocity</strong>:  initial rocket speed. default is zero.</li>
+<li><strong>directiond</strong>:  initial rocket direction in degrees. Default is zero.</li>
+<li><strong>direction</strong>:  initial rocket direction in radians. Default is zero.</li>
+<li><strong>tanomalyd</strong>:  initial rocket true anomaly in degrees. Default is 90.</li>
+<li><strong>tanomaly</strong>:  initial rocket true anomaly in radians. Default is pi/2.</li>
+<li><strong>altitude</strong>:  initial rocket altitude in meters. Default is zero.</li>
+<li><strong>showstatus</strong>:  boolean displays flight parameters on screen. Default
+  is True.</li>
+<li><strong>statuspos</strong>:  tuple with x,y coordinates of flight parameters. 
+  Default is upper left.</li>
+<li><strong>statuslist</strong>: list of status names to include in flight parameters. 
+  Default is all, consisting of: "velocity", "acceleration", "course",
+  "altitude", "thrust", "mass", "trueanomaly", "scale", "timezoom",
+  "shiptime"</li>
+<li><strong>leftkey</strong>: a <code>ggame</code> key identifier that will serve as the 
+  "rotate left" key while controlling the ship. Default is 'left arrow'.</li>
+<li><strong>rightkey</strong>: a <code>ggame</code> key identifier that will serve as the 
+  "rotate right" key while controlling the ship. Default is 'right arrow'.</li>
+</ul>
+<p>Following parameters may be set as a constant value, or pass in the
+name of a function that will return the value dynamically or the
+name of a <code>ggmath</code> UI control that will return the value.</p>
+<ul>
+<li><strong>timezoom</strong>  scale factor for time zoom. Factor = 10^timezoom</li>
+<li><strong>heading</strong>  direction to point the rocket in (must be radians)</li>
+<li><strong>mass</strong>  mass of the rocket (must be kg)</li>
+<li><strong>thrust</strong>  thrust of the rocket (must be N)</li>
+</ul>
+<p>Animation related parameters may be ignored if no sprite animation:</p>
+<ul>
+<li><strong>bitmapframe</strong>  ((x1,y1),(x2,y2)) tuple defines a region in the bitmap</li>
+<li><strong>bitmapqty</strong>  number of bitmaps -- used for animation effects</li>
+<li><strong>bitmapdir</strong>  "horizontal" or "vertical" use with animation effects</li>
+<li><strong>bitmapmargin</strong>  pixels between successive animation frames</li>
+<li><strong>tickrate</strong>  frequency of spacecraft dynamics calculations (Hz)</li>
+</ul></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.__init__', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.__init__" class="source">
+    <pre><code>def __init__(self, planet, **kwargs):
+    """
+    Initialize the Rocket object. 
+    
+    Example:
+    
+        rocket1 = Rocket(earth, altitude=400000, velocity=7670, timezoom=2)
+   
+    Required parameters:
+    
+    * **planet**:  Reference to a `Planet` object.
+    
+    Optional keyword parameters are supported:
+    
+    * **bitmap**:  url of a suitable bitmap image for the rocket (png recommended)
+      default is `rocket.png`
+    * **bitmapscale**:  scale factor for bitmap. Default is 0.1
+    * **velocity**:  initial rocket speed. default is zero.
+    * **directiond**:  initial rocket direction in degrees. Default is zero.
+    * **direction**:  initial rocket direction in radians. Default is zero.
+    * **tanomalyd**:  initial rocket true anomaly in degrees. Default is 90.
+    * **tanomaly**:  initial rocket true anomaly in radians. Default is pi/2.
+    * **altitude**:  initial rocket altitude in meters. Default is zero.
+    * **showstatus**:  boolean displays flight parameters on screen. Default
+      is True.
+    * **statuspos**:  tuple with x,y coordinates of flight parameters. 
+      Default is upper left.
+    * **statuslist**: list of status names to include in flight parameters. 
+      Default is all, consisting of: "velocity", "acceleration", "course",
+      "altitude", "thrust", "mass", "trueanomaly", "scale", "timezoom",
+      "shiptime"
+    * **leftkey**: a `ggame` key identifier that will serve as the 
+      "rotate left" key while controlling the ship. Default is 'left arrow'.
+    * **rightkey**: a `ggame` key identifier that will serve as the 
+      "rotate right" key while controlling the ship. Default is 'right arrow'.
+    
+    Following parameters may be set as a constant value, or pass in the
+    name of a function that will return the value dynamically or the
+    name of a `ggmath` UI control that will return the value.
+    
+    * **timezoom**  scale factor for time zoom. Factor = 10^timezoom
+    * **heading**  direction to point the rocket in (must be radians)
+    * **mass**  mass of the rocket (must be kg)
+    * **thrust**  thrust of the rocket (must be N)
+    Animation related parameters may be ignored if no sprite animation:
+    
+    * **bitmapframe**  ((x1,y1),(x2,y2)) tuple defines a region in the bitmap
+    * **bitmapqty**  number of bitmaps -- used for animation effects
+    * **bitmapdir**  "horizontal" or "vertical" use with animation effects
+    * **bitmapmargin**  pixels between successive animation frames
+    * **tickrate**  frequency of spacecraft dynamics calculations (Hz)
+    
+    """
+    self._xy = (1000000,1000000)
+    self.planet = planet
+    self.bmurl = kwargs.get('bitmap', 'rocket.png') # default rocket png
+    self.bitmapframe = kwargs.get('bitmapframe', None) #
+    self.bitmapqty = kwargs.get('bitmapqty', 1) # Number of images in bitmap
+    self.bitmapdir = kwargs.get('bitmapdir', 'horizontal') # animation orientation
+    self.bitmapmargin = kwargs.get('bitmapmargin', 0) # bitmap spacing
+    self.tickrate = kwargs.get('tickrate', 30) # dynamics calcs per sec
+    # status display
+    statusfuncs = [ self.velocityText,
+                    self.accelerationText,
+                    self.courseDegreesText,
+                    self.altitudeText,
+                    self.thrustText,
+                    self.massText,
+                    self.trueAnomalyDegreesText,
+                    self.scaleText,
+                    self.timeZoomText,
+                    self.shipTimeText]
+    statuslist = [  "velocity",
+                    "acceleration",
+                    "course",
+                    "altitude",
+                    "thrust",
+                    "mass",
+                    "trueanomaly",
+                    "scale",
+                    "timezoom",
+                    "shiptime"]
+    
+    self.showstatus = kwargs.get('showstatus', True) # show stats
+    self.statuspos = kwargs.get('statuspos', [10,10])  # position of stats
+    self.statusselect = kwargs.get('statuslist', statuslist)
+    self.localheading = 0
+    # dynamic parameters
+    self.timezoom = self.Eval(kwargs.get('timezoom', self.gettimezoom)) # 1,2,3 faster, -1, slower
+    self.heading = self.Eval(kwargs.get('heading', self.getheading)) # must be radians
+    self.mass = self.Eval(kwargs.get('mass', self.getmass)) # kg
+    self.thrust = self.Eval(kwargs.get('thrust', self.getthrust)) # N
+    # end dynamic 
+    super().__init__(self.bmurl,
+        self._getposition, 
+        frame = self.bitmapframe, 
+        qty = self.bitmapqty, 
+        direction = self.bitmapdir,
+        margin = self.bitmapmargin)
+    self.scale = kwargs.get('bitmapscale', 0.1) # small
+    initvel = kwargs.get('velocity', 0) # initial velocity
+    initdird = kwargs.get('directiond', 0) # initial direction, degrees
+    initdir = kwargs.get('direction', radians(initdird))
+    tanomaly = kwargs.get('tanomaly', pi/2) # position angle
+    tanomaly = radians(kwargs.get('tanomalyd', degrees(tanomaly))) 
+    altitude = kwargs.get('altitude', 0) #
+    r = altitude + self.planet.radius
+    self._xy = (r*cos(tanomaly), r*sin(tanomaly))
+    # default heading control if none provided by user
+    leftkey = kwargs.get('leftkey', 'left arrow')
+    rightkey = kwargs.get('rightkey', 'right arrow')
+    if self.heading == self.getheading:
+        Planet.listenKeyEvent('keydown', leftkey, self.turn)
+        Planet.listenKeyEvent('keydown', rightkey, self.turn)
+    self.timer = Timer()
+    self.shiptime = 0  # track time on shipboard
+    self.timer.callEvery(1/self.tickrate, self.dynamics)
+    self.lasttime = self.timer.time
+    self.V = [initvel * cos(initdir), initvel * sin(initdir)]
+    self.A = [0,0]
+    # set up status display
+    if self.showstatus:
+        self.addStatusReport(statuslist, statusfuncs, self.statusselect)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.Eval">
+    <p>def <span class="ident">Eval</span>(</p><p>self, val)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.Eval', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.Eval" class="source">
+    <pre><code>def Eval(self, val):
+    if callable(val):
+        self._setDynamic() # dynamically defined .. must step
+        return val
+    else:
+        return lambda : val  
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.accelerationText">
+    <p>def <span class="ident">accelerationText</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Report the acceleration in m/s as a text string.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.accelerationText', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.accelerationText" class="source">
+    <pre><code>def accelerationText(self):
+    """
+    Report the acceleration in m/s as a text string.
+    """
+    return "Acceleration: {0:8.1f} m/s²".format(self.acceleration)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.addStatusReport">
+    <p>def <span class="ident">addStatusReport</span>(</p><p>self, statuslist, statusfuncs, statusselect)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Accept list of all status names, all status text functions, and
+the list of status names that have been selected for display.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.addStatusReport', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.addStatusReport" class="source">
+    <pre><code>def addStatusReport(self, statuslist, statusfuncs, statusselect):
+    """
+    Accept list of all status names, all status text functions, and
+    the list of status names that have been selected for display.
+    """
+    statusdict = {n:f for n, f in zip(statuslist, statusfuncs)}
+    for name in statusselect:
+        if name in statusdict:
+            Label(self.statuspos[:], statusdict[name], size=15, positioning='physical', width=250)
+            self.statuspos[1] += 25
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.altitudeText">
+    <p>def <span class="ident">altitudeText</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Report the altitude in meters as a text string.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.altitudeText', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.altitudeText" class="source">
+    <pre><code>def altitudeText(self):
+    """
+    Report the altitude in meters as a text string.
+    """
+    return "Altitude:     {0:8.1f} m".format(self.altitude)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.ar">
+    <p>def <span class="ident">ar</span>(</p><p>self, pos)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Compute the acceleration vector of the rocket, as a function of the 
+position vector.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.ar', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.ar" class="source">
+    <pre><code>def ar(self, pos):
+    """
+    Compute the acceleration vector of the rocket, as a function of the 
+    position vector.
+    """
+    m = self.mass()
+    F = self.fr(pos)
+    return [F[i]/m for i in (0,1)]
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.canstroke">
+    <p>def <span class="ident">canstroke</span>(</p><p>self, ppos)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.canstroke', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.canstroke" class="source">
+    <pre><code>def canstroke(self, ppos):
+    return False
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.circularCollisionModel">
+    <p>def <span class="ident">circularCollisionModel</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Obsolete. No op.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.circularCollisionModel', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.circularCollisionModel" class="source">
+    <pre><code>def circularCollisionModel(self):
+    """
+    Obsolete. No op.
+    """
+    pass
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.collidingPolyWithPoly">
+    <p>def <span class="ident">collidingPolyWithPoly</span>(</p><p>self, obj)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.collidingPolyWithPoly', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.collidingPolyWithPoly" class="source">
+    <pre><code>def collidingPolyWithPoly(self, obj):
+    return True
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.collidingWith">
+    <p>def <span class="ident">collidingWith</span>(</p><p>self, obj)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Return a boolean True if this sprite is currently overlapping the sprite 
+referenced by <code>obj</code>. Returns False if checking for collision with 
+itself. Returns False if extents of object make it impossible for
+collision to occur. Returns True if sprite's <code>edgedef</code> parameter overlaps
+with other sprite's <code>edgedef</code> parameter, taking into consideration both
+sprites' center, rotation and scale settings.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.collidingWith', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.collidingWith" class="source">
+    <pre><code>def collidingWith(self, obj):
+    """
+    Return a boolean True if this sprite is currently overlapping the sprite 
+    referenced by `obj`. Returns False if checking for collision with 
+    itself. Returns False if extents of object make it impossible for
+    collision to occur. Returns True if sprite's `edgedef` parameter overlaps
+    with other sprite's `edgedef` parameter, taking into consideration both
+    sprites' center, rotation and scale settings.
+    """
+    if self is obj:
+        return False
+    else:
+        self._setExtents()
+        obj._setExtents()
+        # Gross check for overlap will usually rule out a collision
+        if (self.xmin > obj.xmax
+            or self.xmax < obj.xmin
+            or self.ymin > obj.ymax
+            or self.ymax < obj.ymin):
+            return False
+        # Otherwise, perform a careful overlap determination
+        elif type(self.asset) is CircleAsset:
+            if type(obj.asset) is CircleAsset:
+                # two circles .. check distance between
+                sx = (self.xmin + self.xmax) / 2
+                sy = (self.ymin + self.ymax) / 2
+                ox = (obj.xmin + obj.xmax) / 2
+                oy = (obj.ymin + obj.ymax) / 2
+                d = math.sqrt((sx-ox)**2 + (sy-oy)**2)
+                return d <= self.width/2 + obj.width/2
+            else:
+                return self.collidingCircleWithPoly(self, obj)
+        else:
+            if type(obj.asset) is CircleAsset:
+                return self.collidingCircleWithPoly(obj, self)
+            else:
+                return self.collidingPolyWithPoly(obj)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.collidingWithSprites">
+    <p>def <span class="ident">collidingWithSprites</span>(</p><p>self, sclass=None)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Return a list of sprite objects identified by the <code>sclass</code> parameter
+that are currently colliding with (that is, with which the <code>ggame.Sprite.collidingWith</code>
+method returns True) this sprite. If <code>sclass</code> is set to <code>None</code> (default), then
+all other sprites are checked for collision, otherwise, only sprites whose
+class matches <code>sclass</code> are checked.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.collidingWithSprites', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.collidingWithSprites" class="source">
+    <pre><code>def collidingWithSprites(self, sclass = None):
+    """
+    Return a list of sprite objects identified by the `sclass` parameter
+    that are currently colliding with (that is, with which the `ggame.Sprite.collidingWith`
+    method returns True) this sprite. If `sclass` is set to `None` (default), then
+    all other sprites are checked for collision, otherwise, only sprites whose
+    class matches `sclass` are checked.
+    """
+    if sclass is None:
+        slist = App.spritelist
+    else:
+        slist = App.getSpritesbyClass(sclass)
+    return list(filter(self.collidingWith, slist))
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.courseDegreesText">
+    <p>def <span class="ident">courseDegreesText</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Report the heading in degrees (zero to the right) as a text string.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.courseDegreesText', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.courseDegreesText" class="source">
+    <pre><code>def courseDegreesText(self):
+    """
+    Report the heading in degrees (zero to the right) as a text string.
+    """
+    return "Course:       {0:8.1f}°".format(degrees(atan2(self.V[1], self.V[0])))
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.destroy">
+    <p>def <span class="ident">destroy</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.destroy', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.destroy" class="source">
+    <pre><code>def destroy(self):
+    MathApp._removeVisual(self)
+    MathApp._removeMovable(self)
+    MathApp._removeStrokable(self)
+    _MathDynamic.destroy(self)
+    Sprite.destroy(self)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.distanceTo">
+    <p>def <span class="ident">distanceTo</span>(</p><p>self, otherpoint)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.distanceTo', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.distanceTo" class="source">
+    <pre><code>def distanceTo(self, otherpoint):
+    try:
+        pos = self.posinputs.pos
+        opos = otherpoint.posinputs.pos
+        return MathApp.distance(pos, opos())
+    except AttributeError:
+        return otherpoint  # presumably a scalar - use this distance
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.dynamics">
+    <p>def <span class="ident">dynamics</span>(</p><p>self, timer)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Perform one iteration of the simulation using runge-kutta 4th order method.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.dynamics', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.dynamics" class="source">
+    <pre><code>def dynamics(self, timer):
+    """
+    Perform one iteration of the simulation using runge-kutta 4th order method.
+    """
+    # set time duration equal to time since last execution
+    tick = 10**self.timezoom()*(timer.time - self.lasttime)
+    self.shiptime = self.shiptime + tick
+    self.lasttime = timer.time
+    # 4th order runge-kutta method (https://sites.temple.edu/math5061/files/2016/12/final_project.pdf)
+    # and http://spiff.rit.edu/richmond/nbody/OrbitRungeKutta4.pdf  (succinct, but with a typo)
+    self.A = k1v = self.ar(self._xy)
+    k1r = self.V
+    k2v = self.ar(self.vadd(self._xy, self.vmul(tick/2, k1r)))
+    k2r = self.vadd(self.V, self.vmul(tick/2, k1v))
+    k3v = self.ar(self.vadd(self._xy, self.vmul(tick/2, k2r)))
+    k3r = self.vadd(self.V, self.vmul(tick/2, k2v))
+    k4v = self.ar(self.vadd(self._xy, self.vmul(tick, k3r)))
+    k4r = self.vadd(self.V, self.vmul(tick, k3v))
+    self.V = [self.V[i] + tick/6*(k1v[i] + 2*k2v[i] + 2*k3v[i] + k4v[i]) for i in (0,1)]
+    self._xy = [self._xy[i] + tick/6*(k1r[i] + 2*k2r[i] + 2*k3r[i] + k4r[i]) for i in (0,1)]
+    if self.altitude < 0:
+        self.V = [0,0]
+        self.A = [0,0]
+        self.altitude = 0
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.fgrav">
+    <p>def <span class="ident">fgrav</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Vector force due to gravity, at current position.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.fgrav', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.fgrav" class="source">
+    <pre><code>def fgrav(self):
+    """
+    Vector force due to gravity, at current position.
+    """
+    G = 6.674E-11
+    r = self.r
+    uvec = (-self._xy[0]/r, -self._xy[1]/r)
+    F = G*self.mass()*self.planet.mass/r**2
+    return [x*F for x in uvec]
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.firstImage">
+    <p>def <span class="ident">firstImage</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Select and display the <em>first</em> image used by this sprite.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.firstImage', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.firstImage" class="source">
+    <pre><code>def firstImage(self):
+    """
+    Select and display the *first* image used by this sprite.
+    """
+    self.GFX.texture = self.asset[0]
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.fr">
+    <p>def <span class="ident">fr</span>(</p><p>self, pos)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Compute the net force vector on the rocket, as a function of the 
+position vector.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.fr', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.fr" class="source">
+    <pre><code>def fr(self, pos):
+    """
+    Compute the net force vector on the rocket, as a function of the 
+    position vector.
+    """
+    self.rotation = self.heading()
+    t = self.thrust()
+    G = 6.674E-11
+    r = Planet.distance((0,0), pos)
+    uvec = (-pos[0]/r, -pos[1]/r)
+    fg = G*self.mass()*self.planet.mass/r**2
+    F = [x*fg for x in uvec]
+    return [F[0] + t*cos(self.rotation), F[1] + t*sin(self.rotation)]
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.getheading">
+    <p>def <span class="ident">getheading</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>User override function for dynamically determining the heading.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.getheading', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.getheading" class="source">
+    <pre><code>def getheading(self):
+    """
+    User override function for dynamically determining the heading.
+    """
+    return self.localheading
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.getmass">
+    <p>def <span class="ident">getmass</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>User override function for dynamically determining rocket mass.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.getmass', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.getmass" class="source">
+    <pre><code>def getmass(self):
+    """
+    User override function for dynamically determining rocket mass.
+    """
+    return 1
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.getthrust">
+    <p>def <span class="ident">getthrust</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>User override function for dynamically determining thrust force.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.getthrust', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.getthrust" class="source">
+    <pre><code>def getthrust(self):
+    """
+    User override function for dynamically determining thrust force.
+    """
+    return 0
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.gettimezoom">
+    <p>def <span class="ident">gettimezoom</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>User override function for dynamically determining the timezoom.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.gettimezoom', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.gettimezoom" class="source">
+    <pre><code>def gettimezoom(self):
+    """
+    User override function for dynamically determining the timezoom.
+    """
+    return 0
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.lastImage">
+    <p>def <span class="ident">lastImage</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Select and display the <em>last</em> image used by this sprite.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.lastImage', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.lastImage" class="source">
+    <pre><code>def lastImage(self):
+    """
+    Select and display the *last* image used by this sprite.
+    """
+    self.GFX.texture = self.asset[-1]
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.massText">
+    <p>def <span class="ident">massText</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Report the spacecraft mass in kilograms as a text string.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.massText', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.massText" class="source">
+    <pre><code>def massText(self):
+    """
+    Report the spacecraft mass in kilograms as a text string.
+    """
+    return "Mass:         {0:8.1f} kg".format(self.mass())
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.mousedown">
+    <p>def <span class="ident">mousedown</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.mousedown', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.mousedown" class="source">
+    <pre><code>def mousedown(self):
+    self.mouseisdown = True
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.mouseup">
+    <p>def <span class="ident">mouseup</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.mouseup', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.mouseup" class="source">
+    <pre><code>def mouseup(self):
+    self.mouseisdown = False
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.nextImage">
+    <p>def <span class="ident">nextImage</span>(</p><p>self, wrap=False)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Select and display the <em>next</em> image used by this sprite.
+If the current image is already the <em>last</em> image, then
+the image is not advanced.</p>
+<p>If the optional <code>wrap</code> parameter is set to <code>True</code>, then calling
+<code>ggame.Sprite.nextImage</code> on the last image will cause the <em>first</em>
+image to be loaded.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.nextImage', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.nextImage" class="source">
+    <pre><code>def nextImage(self, wrap = False):
+    """
+    Select and display the *next* image used by this sprite.
+    If the current image is already the *last* image, then
+    the image is not advanced.
+    If the optional `wrap` parameter is set to `True`, then calling
+    `ggame.Sprite.nextImage` on the last image will cause the *first*
+    image to be loaded.
+    """
+    self._index += 1
+    if self._index >= len(self.asset):
+        if wrap:
+            self._index = 0
+        else:
+            self._index = len(self.asset)-1
+    self.GFX.texture = self.asset[self._index]
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.physicalPointTouching">
+    <p>def <span class="ident">physicalPointTouching</span>(</p><p>self, ppos)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.physicalPointTouching', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.physicalPointTouching" class="source">
+    <pre><code>def physicalPointTouching(self, ppos):
+    self._setExtents()  # ensure xmin, xmax are correct
+    x, y = ppos
+    return x >= self.xmin and x < self.xmax and y >= self.ymin and y <= self.ymax
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.prevImage">
+    <p>def <span class="ident">prevImage</span>(</p><p>self, wrap=False)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Select and display the <em>previous</em> image used by this sprite.
+If the current image is already the <em>first</em> image, then
+the image is not changed.</p>
+<p>If the optional <code>wrap</code> parameter is set to <code>True</code>, then calling
+<code>ggame.Sprite.prevImage</code> on the first image will cause the <em>last</em>
+image to be loaded.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.prevImage', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.prevImage" class="source">
+    <pre><code>def prevImage(self, wrap = False):
+    """
+    Select and display the *previous* image used by this sprite.
+    If the current image is already the *first* image, then
+    the image is not changed.
+    If the optional `wrap` parameter is set to `True`, then calling
+    `ggame.Sprite.prevImage` on the first image will cause the *last*
+    image to be loaded.
+    """
+    self._index -= 1
+    if self._index < 0:
+        if wrap:
+            self._index = len(self.asset)-1
+        else:
+            self._index = 0
+    self.GFX.texture = self.asset[self._index]
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.processEvent">
+    <p>def <span class="ident">processEvent</span>(</p><p>self, event)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.processEvent', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.processEvent" class="source">
+    <pre><code>def processEvent(self, event):
+    pass
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.radiusText">
+    <p>def <span class="ident">radiusText</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Report the radius (distance to planet center) in meters as a text string.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.radiusText', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.radiusText" class="source">
+    <pre><code>def radiusText(self):
+    """
+    Report the radius (distance to planet center) in meters as a text string.
+    """
+    return "Radius:       {0:8.1f} m".format(self.r)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.rectangularCollisionModel">
+    <p>def <span class="ident">rectangularCollisionModel</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Obsolete. No op.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.rectangularCollisionModel', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.rectangularCollisionModel" class="source">
+    <pre><code>def rectangularCollisionModel(self):
+    """
+    Obsolete. No op.
+    """
+    pass
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.scaleText">
+    <p>def <span class="ident">scaleText</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Report the view scale (pixels/meter) as a text string.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.scaleText', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.scaleText" class="source">
+    <pre><code>def scaleText(self):
+    """
+    Report the view scale (pixels/meter) as a text string.
+    """
+    return "View Scale:   {0:8.6f} px/m".format(self.planet._scale)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.select">
+    <p>def <span class="ident">select</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.select', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.select" class="source">
+    <pre><code>def select(self):
+    self.selected = True
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.setImage">
+    <p>def <span class="ident">setImage</span>(</p><p>self, index=0)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Select the image to display by giving its <code>index</code>, where an index
+of zero represents the <em>first</em> image in the asset.</p>
+<p>This is equivalent to setting the <code>ggame.Sprite.index</code> property
+directly.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.setImage', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.setImage" class="source">
+    <pre><code>def setImage(self, index=0):
+    """
+    Select the image to display by giving its `index`, where an index
+    of zero represents the *first* image in the asset.
+    This is equivalent to setting the `ggame.Sprite.index` property
+    directly.
+    """
+    self.index = index
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.shipTimeText">
+    <p>def <span class="ident">shipTimeText</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Report the elapsed time as a text string.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.shipTimeText', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.shipTimeText" class="source">
+    <pre><code>def shipTimeText(self):
+    """
+    Report the elapsed time as a text string.
+    """
+    return "Elapsed Time: {0:8.1f} s".format(float(self.shiptime))
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.step">
+    <p>def <span class="ident">step</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.step', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.step" class="source">
+    <pre><code>def step(self):
+    pass  # FIXME
+    self._touchAsset()
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.stroke">
+    <p>def <span class="ident">stroke</span>(</p><p>self, ppos, pdisp)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.stroke', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.stroke" class="source">
+    <pre><code>def stroke(self, ppos, pdisp):
+    pass
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.thrustText">
+    <p>def <span class="ident">thrustText</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Report the thrust level in Newtons as a text string.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.thrustText', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.thrustText" class="source">
+    <pre><code>def thrustText(self):
+    """
+    Report the thrust level in Newtons as a text string.
+    """
+    return "Thrust:       {0:8.1f} N".format(self.thrust())
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.timeZoomText">
+    <p>def <span class="ident">timeZoomText</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Report the time acceleration as a text string.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.timeZoomText', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.timeZoomText" class="source">
+    <pre><code>def timeZoomText(self):
+    """
+    Report the time acceleration as a text string.
+    """
+    return "Time Zoom:    {0:8.1f}".format(float(self.timezoom()))
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.translate">
+    <p>def <span class="ident">translate</span>(</p><p>self, pdisp)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.translate', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.translate" class="source">
+    <pre><code>def translate(self, pdisp):
+    ldisp = MathApp.translatePhysicalToLogical(pdisp)
+    pos = self.posinputs.pos()
+    self.posinputs = self.posinputs._replace(pos=self.Eval((pos[0] + ldisp[0], pos[1] + ldisp[1])))
+    self._touchAsset()
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.trueAnomalyDegreesText">
+    <p>def <span class="ident">trueAnomalyDegreesText</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Report the true anomaly in degrees as a text string.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.trueAnomalyDegreesText', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.trueAnomalyDegreesText" class="source">
+    <pre><code>def trueAnomalyDegreesText(self):
+    """
+    Report the true anomaly in degrees as a text string.
+    """
+    return "True Anomaly: {0:8.1f}°".format(self.tanomalyd)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.trueAnomalyRadiansText">
+    <p>def <span class="ident">trueAnomalyRadiansText</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Report the true anomaly in radians as a text string.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.trueAnomalyRadiansText', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.trueAnomalyRadiansText" class="source">
+    <pre><code>def trueAnomalyRadiansText(self):
+    """
+    Report the true anomaly in radians as a text string.
+    """
+    return "True Anomaly: {0:8.4f}".format(self.tanomaly)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.turn">
+    <p>def <span class="ident">turn</span>(</p><p>self, event)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Respond to left/right turning key events.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.turn', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.turn" class="source">
+    <pre><code>def turn(self, event):
+    """
+    Respond to left/right turning key events.
+    """
+    increment = pi/50 * (1 if event.key == "left arrow" else -1)
+    self.localheading += increment
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.unselect">
+    <p>def <span class="ident">unselect</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.unselect', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.unselect" class="source">
+    <pre><code>def unselect(self):
+    self.selected = False
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.vadd">
+    <p>def <span class="ident">vadd</span>(</p><p>self, v1, v2)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Vector add utility.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.vadd', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.vadd" class="source">
+    <pre><code>def vadd(self, v1, v2):
+    """
+    Vector add utility.
+    """
+    return [v1[i]+v2[i] for i in (0,1)]
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.velocityText">
+    <p>def <span class="ident">velocityText</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Report the velocity in m/s as a text string.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.velocityText', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.velocityText" class="source">
+    <pre><code>def velocityText(self):
+    """
+    Report the velocity in m/s as a text string.
+    """
+    return "Velocity:     {0:8.1f} m/s".format(self.velocity)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.vmag">
+    <p>def <span class="ident">vmag</span>(</p><p>self, v)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Vector magnitude function.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.vmag', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.vmag" class="source">
+    <pre><code>def vmag(self, v):
+    """
+    Vector magnitude function.
+    """
+    return sqrt(v[0]**2 + v[1]**2)
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.vmul">
+    <p>def <span class="ident">vmul</span>(</p><p>self, s, v)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Scalar vector multiplication utility.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.vmul', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.vmul" class="source">
+    <pre><code>def vmul(self, s, v):
+    """
+    Scalar vector multiplication utility.
+    """
+    return [s*v[i] for i in (0,1)]
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+          <h3>Instance variables</h3>
+            <div class="item">
+            <p id="ggrocket.Rocket.A" class="name">var <span class="ident">A</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.V" class="name">var <span class="ident">V</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.acceleration" class="name">var <span class="ident">acceleration</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.altitude" class="name">var <span class="ident">altitude</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.bitmapdir" class="name">var <span class="ident">bitmapdir</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.bitmapframe" class="name">var <span class="ident">bitmapframe</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.bitmapmargin" class="name">var <span class="ident">bitmapmargin</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.bitmapqty" class="name">var <span class="ident">bitmapqty</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.bmurl" class="name">var <span class="ident">bmurl</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.center" class="name">var <span class="ident">center</span></p>
+            
+
+            
+  
+    <div class="desc"><p>This attribute represents the horizontal and vertical position of the 
+sprite "center" as a tuple of floating point numbers. See the 
+descriptions for <code>ggame.Sprite.fxcenter</code> and <code>ggame.Sprite.fycenter</code> for 
+more details.</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.fxcenter" class="name">var <span class="ident">fxcenter</span></p>
+            
+
+            
+  
+    <div class="desc"><p>This represents the horizontal position of the sprite "center", as a floating
+point number between 0.0 and 1.0. A value of 0.0 means that the x-coordinate
+of the sprite refers to its left hand edge. A value of 1.0 refers to its 
+right hand edge. Any value in between may be specified. Values may be assigned
+to this attribute.</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.fycenter" class="name">var <span class="ident">fycenter</span></p>
+            
+
+            
+  
+    <div class="desc"><p>This represents the vertical position of the sprite "center", as a floating
+point number between 0.0 and 1.0. A value of 0.0 means that the x-coordinate
+of the sprite refers to its top edge. A value of 1.0 refers to its 
+bottom edge. Any value in between may be specified. Values may be assigned
+to this attribute.</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.heading" class="name">var <span class="ident">heading</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.height" class="name">var <span class="ident">height</span></p>
+            
+
+            
+  
+    <div class="desc"><p>This is an integer representing the display height of the sprite.
+Assigning a value to the height will scale the image vertically.</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.index" class="name">var <span class="ident">index</span></p>
+            
+
+            
+  
+    <div class="desc"><p>This is an integer index in to the list of images available for this sprite.</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.lasttime" class="name">var <span class="ident">lasttime</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.localheading" class="name">var <span class="ident">localheading</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.mass" class="name">var <span class="ident">mass</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.movable" class="name">var <span class="ident">movable</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.planet" class="name">var <span class="ident">planet</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.position" class="name">var <span class="ident">position</span></p>
+            
+
+            
+  
+    <div class="desc"><p>This represents the (x,y) coordinates of the sprite on the screen. Assigning
+a value to this attribute will move the sprite to the new coordinates.</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.r" class="name">var <span class="ident">r</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.rotation" class="name">var <span class="ident">rotation</span></p>
+            
+
+            
+  
+    <div class="desc"><p>This attribute may be used to change the rotation of the sprite on the screen.
+Value may be a floating point number. A value of 0.0 means no rotation. A value 
+of 1.0 means  a rotation of 1 radian in a counter-clockwise direction. One radian
+is 180/pi or approximately 57.3 degrees.</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.scale" class="name">var <span class="ident">scale</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.selectable" class="name">var <span class="ident">selectable</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.shiptime" class="name">var <span class="ident">shiptime</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.showstatus" class="name">var <span class="ident">showstatus</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.statuspos" class="name">var <span class="ident">statuspos</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.statusselect" class="name">var <span class="ident">statusselect</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.strokable" class="name">var <span class="ident">strokable</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.tanomaly" class="name">var <span class="ident">tanomaly</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.tanomalyd" class="name">var <span class="ident">tanomalyd</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.thrust" class="name">var <span class="ident">thrust</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.tickrate" class="name">var <span class="ident">tickrate</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.timer" class="name">var <span class="ident">timer</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.timezoom" class="name">var <span class="ident">timezoom</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.velocity" class="name">var <span class="ident">velocity</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.visible" class="name">var <span class="ident">visible</span></p>
+            
+
+            
+  
+    <div class="desc"><p>This boolean attribute may be used to change the visibility of the sprite. Setting
+<code>ggame.Sprite.visible</code> to <code>False</code> will prevent the sprite from rendering on the 
+screen.</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.width" class="name">var <span class="ident">width</span></p>
+            
+
+            
+  
+    <div class="desc"><p>This is an integer representing the display width of the sprite.
+Assigning a value to the width will scale the image horizontally.</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.x" class="name">var <span class="ident">x</span></p>
+            
+
+            
+  
+    <div class="desc"><p>This represents the x-coordinate of the sprite on the screen. Assigning
+a value to this attribute will move the sprite horizontally.</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.xyposition" class="name">var <span class="ident">xyposition</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ggrocket.Rocket.y" class="name">var <span class="ident">y</span></p>
+            
+
+            
+  
+    <div class="desc"><p>This represents the y-coordinate of the sprite on the screen. Assigning
+a value to this attribute will move the sprite vertically.</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+          <h3>Methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ggrocket.Rocket.collidingCircleWithPoly">
+    <p>def <span class="ident">collidingCircleWithPoly</span>(</p><p>cls, circ, poly)</p>
+    </div>
+    
+
+    
+  
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-ggrocket.Rocket.collidingCircleWithPoly', this);">Show source &equiv;</a></p>
+  <div id="source-ggrocket.Rocket.collidingCircleWithPoly" class="source">
+    <pre><code>@classmethod
+def collidingCircleWithPoly(cls, circ, poly):
+    return True
+</code></pre>
+  </div>
+</div>
+
+  </div>
+  
+      </div>
+      </div>
+
+  </section>
+
+    </article>
+  <div class="clear"> </div>
+  <footer id="footer">
+    <p>
+      Documentation generated by
+      <a href="https://github.com/BurntSushi/pdoc">pdoc 0.3.1</a>
+    </p>
+
+    <p>pdoc is in the public domain with the
+      <a href="http://unlicense.org">UNLICENSE</a></p>
+
+    <p>Design by <a href="http://nadh.in">Kailash Nadh</a></p>
+  </footer>
+</div>
+</body>
+</html>
