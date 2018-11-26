@@ -108,7 +108,7 @@ class TestMathMethods(unittest.TestCase):
         
         for i in range(10):
             time.sleep(1/60)
-            ma.step()
+            ma._animate(1)
 
         self.assertEquals(self.callbackcomplete, True)
         
