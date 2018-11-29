@@ -367,7 +367,6 @@ class MathApp(App):
         """
         This will clean up any class level storage.
         """ 
-        print("DEBUG: clearing mathapp class members!")
         App._destroy(*args)  # hit the App class first
         MathApp.time = None
         MathApp._mathVisualList = [] 
