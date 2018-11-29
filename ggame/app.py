@@ -114,7 +114,8 @@ class App(object):
             self.userfunc()
         else:
             self.step()
-        App._win.animate(self._animate)
+        if App._win:
+            App._win.animate(self._animate)
 
     @classmethod
     def _destroy(cls, *args):
