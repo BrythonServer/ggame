@@ -368,6 +368,7 @@ class MathApp(App):
         This will clean up any class level storage.
         """ 
         App._destroy(*args)  # hit the App class first
+        MathAp.time = None
         MathApp._mathVisualList = [] 
         MathApp._mathDynamicList = []
         MathApp._mathMovableList = []

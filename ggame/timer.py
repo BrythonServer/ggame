@@ -1,5 +1,5 @@
+from time import time
 from ggame.mathapp import MathApp, _MathDynamic
-
 
 class Timer(_MathDynamic):
     
@@ -9,12 +9,20 @@ class Timer(_MathDynamic):
         self.callbacks = {}
         self.reset()
         self.step()
-        self._start = self._reset  #first time
         self.next = None
         MathApp._addDynamic(self)  # always dynamically defined
         
     def reset(self):
+        """
+        Set the reference time to the MathApp current time. If the timer is used
+        or initialized before the app, then set the reference time to match the
+        system time instead.
+        
+        :returns: None
+        """
         self._reset = MathApp.time
+        if not self._reset:
+            self._reset = time.time()
         
     def step(self):
         nexttimers = []
