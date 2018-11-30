@@ -7,26 +7,25 @@ class Timer(_MathDynamic):
         super().__init__()
         self.once = []
         self.callbacks = {}
-        self.reset()
-        self.step()
-        self.next = None
+        self.time = 0
+        self._reset = None
         MathApp._addDynamic(self)  # always dynamically defined
         
     def reset(self):
         """
-        Set the reference time to the MathApp current time. If the timer is used
-        or initialized before the app, then set the reference time to match the
-        system time instead.
+        Set the reference time to the MathApp current time. If the timer is reset
+        before the app initializes then do nothing.
         
         :returns: None
         """
-        self._reset = MathApp.time
-        if not self._reset:
-            self._reset = time.time()
-        
+        if self._reset:
+            self._reset = MathApp.time
+
     def step(self):
         nexttimers = []
         calllist = []
+        if not self._reset:
+            self._reset = MathApp.time
         self.time = MathApp.time - self._reset
         while self.once and self.once[0][0] <= MathApp.time:
             tickinfo = self.once.pop(0)
