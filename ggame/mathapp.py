@@ -43,7 +43,7 @@ class MathApp(App):
     _mathSelectableList = []
     _mathStrokableList = []
     _viewNotificationList = []
-    time = time()
+    time = None
     
     def __init__(self, scale=_scale):
         super().__init__()
@@ -368,6 +368,7 @@ class MathApp(App):
         This will clean up any class level storage.
         """ 
         App._destroy(*args)  # hit the App class first
+        MathApp.time = None
         MathApp._mathVisualList = [] 
         MathApp._mathDynamicList = []
         MathApp._mathMovableList = []

@@ -8,6 +8,7 @@ class TestSpriteMethods(unittest.TestCase):
   def __init__(self, arg):
     super().__init__(arg)
     self.image = ImageAsset("bunny.png")
+    self.rocket = ImageAsset("ggimages/rocket.png")
     self.multiimage = ImageAsset("bunny.png", Frame(2,2,10,14), 3, 'horizontal', 2)
     color = 0x001122
     alpha = 0.5
@@ -38,7 +39,6 @@ class TestSpriteMethods(unittest.TestCase):
     s1 = Sprite(self.image, (51,52))
     s2 = Sprite(self.image, (51, 52))
     cl = s2.collidingWithSprites()
-    print(cl)
     self.assertEqual(len(cl), 1)
     self.assertEqual(s2.collidingWith(cl[0]), True)
     s2.x = 125
@@ -74,12 +74,33 @@ class TestSpriteMethods(unittest.TestCase):
     self.assertEqual(len(cl), 1)
     self.assertIs(cl[0], s3)
     cl = s1.collidingWithSprites()
-    print(cl)
     self.assertEqual(len(cl), 2)
     s1.destroy()
     s2.destroy()
     s3.destroy()
 
+  def test_enfoldingcollision(self):
+    
+    def step():
+      s1.x += 1
+      s2.x -= 1
+      c = s1.collidingWith(s2)
+      self.assertTrue(c, msg="big sprite colliding with embedded sprite")
+      c = s2.collidingWith(s1)
+      self.assertTrue(c, msg="small sprite colliding with enfolding sprite")
+      
+    s1 = Sprite(self.rocket, (10,10))
+    s2 = Sprite(self.image, (15,15))
+
+    a = App()
+    a.run(step)
+    
+    for i in range(10):
+      a._animate(1)
+
+
+    s1.destroy()
+    s2.destroy()
 
 if __name__ == '__main__':
     unittest.main()
