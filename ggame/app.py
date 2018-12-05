@@ -5,6 +5,7 @@ try:
 except:
     from sysdeps import *
 
+import sys
 from ggame.asset import *
 from ggame.event import *
 
@@ -75,8 +76,12 @@ class App(object):
     def _routeEvent(self, event, evtlist):
         for callback in reversed(evtlist):
             if not event.consumed:
-                callback(event)
-        
+                try:
+                    callback(event)
+                except:
+                    print("Unexpected error in callback {0} for event {1}:".format(callback, event), 
+                        sys.exc_info()[0])                    
+                    
     def _keyEvent(self, hwevent):
         evtlist = App._eventdict.get(
             (hwevent.type, KeyEvent.keys.get(hwevent.keyCode,0)), [])
@@ -110,10 +115,13 @@ class App(object):
         App._spritesdict[type(obj)].remove(obj)
         
     def _animate(self, dummy):
-        if self.userfunc:
-            self.userfunc()
-        else:
-            self.step()
+        try:
+            if self.userfunc:
+                self.userfunc()
+            else:
+                self.step()
+        except:
+            print("Unexpected error in step:", sys.exc_info()[0])
         if App._win:
             App._win.animate(self._animate)
 
