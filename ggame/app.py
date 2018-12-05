@@ -80,7 +80,8 @@ class App(object):
                     callback(event)
                 except:
                     print("Unexpected error in callback {0} for event {1}:".format(callback, event), 
-                        sys.exc_info()[0])                    
+                        sys.exc_info()[0])  
+                    raise
                     
     def _keyEvent(self, hwevent):
         evtlist = App._eventdict.get(
@@ -122,6 +123,7 @@ class App(object):
                 self.step()
         except:
             print("Unexpected error in step:", sys.exc_info()[0])
+            raise
         if App._win:
             App._win.animate(self._animate)
 
