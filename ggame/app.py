@@ -55,8 +55,8 @@ class App(object):
                 x = args[0]
                 y = args[1]
             App._win = GFX_Window(x, y, type(self)._destroy)
-            self.width = App._win.width
-            self.height = App._win.height
+            App.width = App._win.width
+            App.height = App._win.height
             # Add existing sprites to the window
             if not App._spritesadded and len(App.spritelist) > 0:
                 App._spritesadded = True
