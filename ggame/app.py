@@ -5,7 +5,7 @@ try:
 except:
     from sysdeps import *
 
-import sys
+import sys, traceback
 from ggame.asset import *
 from ggame.event import *
 
@@ -79,8 +79,7 @@ class App(object):
                 try:
                     callback(event)
                 except:
-                    print("Unexpected error in callback {0} for event {1}:".format(callback, event), 
-                        sys.exc_info()[0])  
+                    traceback.print_exc()
                     raise
                     
     def _keyEvent(self, hwevent):
@@ -122,7 +121,7 @@ class App(object):
             else:
                 self.step()
         except:
-            print("Unexpected error in step:", sys.exc_info()[0])
+            traceback.print_exc()
             raise
         if App._win:
             App._win.animate(self._animate)
