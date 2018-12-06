@@ -5,6 +5,7 @@ try:
 except:
     from sysdeps import *
 
+import sys, traceback
 from ggame.asset import *
 from ggame.event import *
 
@@ -55,8 +56,8 @@ class App(object):
                 x = args[0]
                 y = args[1]
             App._win = GFX_Window(x, y, type(self)._destroy)
-            self.width = App._win.width
-            self.height = App._win.height
+            App.width = App._win.width
+            App.height = App._win.height
             # Add existing sprites to the window
             if not App._spritesadded and len(App.spritelist) > 0:
                 App._spritesadded = True
@@ -75,8 +76,12 @@ class App(object):
     def _routeEvent(self, event, evtlist):
         for callback in reversed(evtlist):
             if not event.consumed:
-                callback(event)
-        
+                try:
+                    callback(event)
+                except:
+                    traceback.print_exc()
+                    raise
+                    
     def _keyEvent(self, hwevent):
         evtlist = App._eventdict.get(
             (hwevent.type, KeyEvent.keys.get(hwevent.keyCode,0)), [])
@@ -110,10 +115,14 @@ class App(object):
         App._spritesdict[type(obj)].remove(obj)
         
     def _animate(self, dummy):
-        if self.userfunc:
-            self.userfunc()
-        else:
-            self.step()
+        try:
+            if self.userfunc:
+                self.userfunc()
+            else:
+                self.step()
+        except:
+            traceback.print_exc()
+            raise
         if App._win:
             App._win.animate(self._animate)
 

@@ -43,7 +43,7 @@ class MathApp(App):
     _mathSelectableList = []
     _mathStrokableList = []
     _viewNotificationList = []
-    time = None
+    time = 0
     
     def __init__(self, scale=_scale):
         super().__init__()

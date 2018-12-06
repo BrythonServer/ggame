@@ -89,6 +89,14 @@ ______________
     :inherited-members:
     :exclude-members: GFX
 
+CircleAsset
+___________
+
+.. autoclass:: CircleAsset
+    :members:
+    :inherited-members:
+    :exclude-members: GFX
+
 EllipseAsset
 ____________
 
