@@ -27,16 +27,10 @@ class Circle(_MathVisual):
         * **style** (*LineStyle*) Valid :class:`~ggame.asset.LineStyle` object
         * **color** (*Color*) Valid :class:`~ggame.color.Color` object`
         
-    Example::
-    
-        from ggame.point import Point
-        from ggame.circle import Circle
-        from ggame.mathapp import MathApp
-        
-        p1 = Point((2,1))
-        c = Circle(p1, 1.4)
-    
-        MathApp().run()
+    Example:
+
+    .. literalinclude:: ../examples/mathcircle.py    
+
     """
 
     _posinputsdef = ['pos']
