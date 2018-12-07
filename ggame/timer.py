@@ -20,7 +20,7 @@ class Timer(_MathDynamic):
         self._once = []
         self._callbacks = {}
         self._time = 0
-        self._reset = time()
+        self.reset()
         MathApp._addDynamic(self)  # always dynamically defined
         
     def reset(self):
@@ -30,8 +30,7 @@ class Timer(_MathDynamic):
         
         :returns: None
         """
-        if self._reset:
-            self._reset = time()
+        self._reset = time()
             
     @property
     def time(self):
@@ -48,8 +47,6 @@ class Timer(_MathDynamic):
     def step(self):
         nexttimers = []
         calllist = []
-        if not self._reset:
-            self._reset = MathApp.time
         self._time = MathApp.time - self._reset
         while self._once and self._once[0][0] <= MathApp.time:
             tickinfo = self._once.pop(0)
