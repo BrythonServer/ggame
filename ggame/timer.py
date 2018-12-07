@@ -9,7 +9,9 @@ class Timer(_MathDynamic):
     
     The Timer class accepts no arguments during creation.
     
-
+    Example of use:
+    
+    .. literalinclude:: ../examples/mathtimer1.py
     
     """
     
@@ -22,7 +24,7 @@ class Timer(_MathDynamic):
         Attribute is always updated with the number of seconds since the 
         timer was created.
         """
-        self._reset = 0
+        self._reset = time()
         MathApp._addDynamic(self)  # always dynamically defined
         
     def reset(self):
@@ -33,7 +35,7 @@ class Timer(_MathDynamic):
         :returns: None
         """
         if self._reset:
-            self._reset = MathApp.time
+            self._reset = time()
 
     def step(self):
         nexttimers = []
@@ -67,8 +69,7 @@ class Timer(_MathDynamic):
             be executed periodically
         :returns: None
         """
-        
-        key = (MathApp.time + delay, delay if periodic else 0)
+        key = (time() + delay, delay if periodic else 0)
         self._once.append(key)
         callbacklist = self._callbacks.get(key, [])
         callbacklist.append(callback)

@@ -196,6 +196,10 @@ class ImageAsset(_Asset):
         area of only the **first** image in the collection; all subsequent 
         images in the list are assumed to be the same size, but separated by the
         `margin` value.
+        
+    Example:
+    
+    .. literalinclude:: ../examples/assetimage.py
     """
 
     def __init__(self, url, frame=None, qty=1, direction='horizontal', margin=0):
@@ -256,10 +260,9 @@ class Color(object):
         number in the range of 0.0 to 1.0 where 0.0 represents 
         completely transparent and 1.0 represents completely opaque.
     
-    Example::
-
-        red = Color(0xff0000, 1.0)
-
+    Example:
+    
+    .. literalinclude:: ../examples/assetcolor.py
     """
     _colornames = {
         0xffffff: 'white',
@@ -297,10 +300,10 @@ class LineStyle(object):
     
     :param Color color: the `color` as a valid :class:`Color` instance. 
     
-    Example::
+    Example:
+    
+    .. literalinclude:: ../examples/assetlinestyle.py
 
-        line = LineStyle(3, Color(0x00ff00, 1.0))
-        
     This defines a 3-pixel wide green line.
     """
     
@@ -422,12 +425,10 @@ class PolygonAsset(_ShapeAsset):
     :param LineStyle line=blackline: The color and width of the ellipse border
     :param Color fill=black: The color of the ellipse body
         
-    Example::
+    Example:
     
-        poly = PolygonAsset([(0,0), (50,50), (50,100), (0,0)], 
-            LineStyle(4, black), 
-            Color(0x80FF00, 0.8)))
-
+    .. literalinclude:: ../examples/assetpolygon.py
+    
     """
 
     def __init__(self, path, line=blackline, fill=black):
@@ -491,12 +492,9 @@ class TextAsset(_GraphicsAsset):
     :param str align='left': Alignment style of the block. One of 'left',
         'center', or 'right'. 
 
-    Full example::
+    Full example:
     
-        ta = TextAsset("Sample Text", 
-            style="bold 40pt Arial", 
-            width=250, 
-            fill=Color(0x1122ff, 1.0))
+    .. literalinclude:: ../examples/assettext.py
 
     """
  
