@@ -19,12 +19,8 @@ class Timer(_MathDynamic):
         super().__init__()
         self._once = []
         self._callbacks = {}
-        self.time = 0
-        """
-        Attribute is always updated with the number of seconds since the 
-        timer was created.
-        """
-        self._reset = time()
+        self._time = 0
+        self.reset()
         MathApp._addDynamic(self)  # always dynamically defined
         
     def reset(self):
@@ -34,15 +30,24 @@ class Timer(_MathDynamic):
         
         :returns: None
         """
-        if self._reset:
-            self._reset = time()
+        self._reset = time()
+            
+    @property
+    def time(self):
+        """
+        Attribute is always updated with the number of seconds since the 
+        timer was created.
+        """
+        return self._time
+        
+    @time.setter
+    def time(self, value):
+        pass
 
     def step(self):
         nexttimers = []
         calllist = []
-        if not self._reset:
-            self._reset = MathApp.time
-        self.time = MathApp.time - self._reset
+        self._time = MathApp.time - self._reset
         while self._once and self._once[0][0] <= MathApp.time:
             tickinfo = self._once.pop(0)
             if tickinfo[1]:  # periodic?
@@ -87,7 +92,7 @@ class Timer(_MathDynamic):
         :param function callback: The callback function to call
         :returns: None
         """
-        self.callAfter(time-self.time, callback)
+        self.callAfter(time-self._time, callback)
         
     def callEvery(self, period, callback):
         """
@@ -104,5 +109,5 @@ class Timer(_MathDynamic):
         self.callAfter(period, callback, True)
 
     def __call__(self):
-        return self.time
+        return self._time
 
