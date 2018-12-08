@@ -118,7 +118,7 @@ class Sprite(object):
             self._basevertices = self.edgedef.path[:-1]
         elif assettype is LineAsset:
             self._basevertices = [(0,0), 
-                (self.edgedef.deltaX, self.edgedef.deltaY)]
+                (self.edgedef.delta_x, self.edgedef.delta_y)]
         elif assettype is EllipseAsset:
             w = self.edgedef.halfw * 2
             h = self.edgedef.halfh * 2
@@ -307,9 +307,9 @@ class Sprite(object):
         
     @x.setter
     def x(self, value):
-        deltax = value - self.GFX.position.x
-        self.xmax += deltax
-        self.xmin += deltax
+        delta_x = value - self.GFX.position.x
+        self.xmax += delta_x
+        self.xmin += delta_x
         """Adjust extents directly with low overhead"""
         self.GFX.position.x = value
 
@@ -323,9 +323,9 @@ class Sprite(object):
         
     @y.setter
     def y(self, value):
-        deltay = value - self.GFX.position.y
-        self.ymax += deltay
-        self.ymin += deltay
+        delta_y = value - self.GFX.position.y
+        self.ymax += delta_y
+        self.ymin += delta_y
         """Adjust extents directly with low overhead"""
         self.GFX.position.y = value
 
