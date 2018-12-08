@@ -9,6 +9,7 @@ user-provided handler function. The ggame user code should examine the
 attributes of the Event object to find out more information about the event that
 occurred.
 """
+import traceback
 
 class _Event(object):
 
