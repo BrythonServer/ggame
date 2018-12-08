@@ -304,7 +304,7 @@ class MathApp(App):
         """
         Attribute reports the physical screen width (pixels).
         """
-        return App._win.width
+        return self._win.width
 
     @width.setter
     def width(self, value):
@@ -520,15 +520,15 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
 
     def _updateAsset(self, asset):
         if type(asset) != ImageAsset:
-            visible = self.GFX.visible
+            visible = self.gfx.visible
             if App._win != None:
-                App._win.remove(self.GFX)
-                self.GFX.destroy()
+                App._win.remove(self.gfx)
+                self.gfx.destroy()
             self.asset = asset
-            self.GFX = self.asset.GFX
-            self.GFX.visible = visible        
+            self.gfx = self.asset.gfx
+            self.gfx.visible = visible        
             if App._win != None:
-                App._win.add(self.GFX)
+                App._win.add(self.gfx)
         self.position = self._pposinputs.pos
             
     @property

@@ -27,9 +27,9 @@ class Frame(object):
 
     def __init__(self, x, y, w, h):
 
-        self.GFX = GFX_Rectangle(x, y, w, h)
+        self.gfx = GFX_Rectangle(x, y, w, h)
         """
-        `GFX` is a reference to the underlying object provided by the system.
+        `_gfx` is a reference to the underlying object provided by the system.
         """
         self.x = x
         self.y = y
@@ -41,44 +41,44 @@ class Frame(object):
         """
         X-coordinate of the upper left hand corner of this frame.
         """
-        return self.GFX.x
+        return self.gfx.x
 
     @x.setter
     def x(self, value):
-        self.GFX.x = value
+        self.gfx.x = value
 
     @property
     def y(self):
         """
         Y-coordinate of the upper left hand corner of this frame.
         """
-        return self.GFX.y
+        return self.gfx.y
 
     @y.setter
     def y(self, value):
-        self.GFX.y = value
+        self.gfx.y = value
 
     @property
     def w(self):
         """
         Width of the frame.
         """
-        return self.GFX.width
+        return self.gfx.width
 
     @w.setter
     def w(self, value):
-        self.GFX.width = value
+        self.gfx.width = value
 
     @property
     def h(self):
         """
         Height of the frame.
         """
-        return self.GFX.height
+        return self.gfx.height
 
     @h.setter
     def h(self, value):
-        self.GFX.height = value
+        self.gfx.height = value
 
     @property
     def center(self):
@@ -110,33 +110,33 @@ class _Asset(object):
     """
 
     def __init__(self):
-        self.GFXlist = [None, ]
+        self.gfxlist = [None, ]
         """
         A list of the underlying system objects used to represent this
         asset.
         """
 
     @property
-    def GFX(self):
+    def gfx(self):
         """
-        `GFX` property represents the underlying system object used to represent
+        `gfx` property represents the underlying system object used to represent
         this asset. If this asset is composed of multiple assets, then the
-        **first** asset is referenced by `GFX`.
+        **first** asset is referenced by `gfx`.
         """
-        return self.GFXlist[0]
+        return self.gfxlist[0]
 
-    @GFX.setter
-    def GFX(self, value):
-        self.GFXlist[0] = value
+    @gfx.setter
+    def gfx(self, value):
+        self.gfxlist[0] = value
 
     def __len__(self):
-        return len(self.GFXlist)
+        return len(self.gfxlist)
 
     def __getitem__(self, key):
-        return self.GFXlist[key]
+        return self.gfxlist[key]
 
     def __setitem__(self, key, value):
-        self.GFXlist[key] = value
+        self.gfxlist[key] = value
 
     def __iter__(self):
         class Iter():
@@ -145,7 +145,7 @@ class _Asset(object):
             """
             def __init__(self, image):
                 self.obj = image
-                self.n = len(image.GFXlist)
+                self.n = len(image.gfxlist)
                 self.i = 0
 
             def __iter__(self):
@@ -155,7 +155,7 @@ class _Asset(object):
                 if self.i == self.n:
                     raise StopIteration
                 self.i += 1
-                return self.obj.GFXlist[self.i]
+                return self.obj.gfxlist[self.i]
         return Iter(self)
 
     def destroy(self):
@@ -163,9 +163,9 @@ class _Asset(object):
         Destroy or deallocate any underlying graphics resources used by the
         asset. Call this method on any asset that is no longer being used.
         """
-        if hasattr(self, 'GFX'):
+        if hasattr(self, 'gfx'):
             try:
-                for gfx in self.GFXlist:
+                for gfx in self.gfxlist:
                     try:
                         gfx.destroy(True)
                     except BaseException:
@@ -221,7 +221,7 @@ class ImageAsset(_Asset):
         """
         A string that represents the path or url of the original file.
         """
-        del self.GFXlist[0]
+        del self.gfxlist[0]
         self.width = self.height = 0
         self.append(url, frame, qty, direction, margin)
 
@@ -239,7 +239,7 @@ class ImageAsset(_Asset):
         This method allows you to build up an asset that consists of
         multiple rows or columns of images in a sprite sheet or sheets.
         """
-        GFX = GFX_Texture_fromImage(url, False)
+        gfx = GFX_Texture_fromImage(url, False)
         dx = 0
         dy = 0
         for i in range(qty):
@@ -251,11 +251,11 @@ class ImageAsset(_Asset):
                 elif direction == 'vertical':
                     dy = frame.h + margin
                 f = Frame(frame.x + dx * i, frame.y + dy * i, frame.w, frame.h)
-                GFX = GFX_Texture(GFX, f.GFX)
+                gfx = GFX_Texture(gfx, f.gfx)
             else:
-                self.width = GFX.width
-                self.height = GFX.height
-            self.GFXlist.append(GFX)
+                self.width = gfx.width
+                self.height = gfx.height
+            self.gfxlist.append(gfx)
 
 
 class Color(object):
@@ -385,9 +385,9 @@ class RectangleAsset(_ShapeAsset):
         super().__init__(line, fill)
         self.width = width
         self.height = height
-        self.GFX = GFX_Graphics.drawRect(0, 0, self.width, self.height).clone()
-        """The `GFX` property represents the underlying system object."""
-        self.GFX.visible = False
+        self.gfx = GFX_Graphics.drawRect(0, 0, self.width, self.height).clone()
+        """The `gfx` property represents the underlying system object."""
+        self.gfx.visible = False
 
 
 class CircleAsset(_ShapeAsset):
@@ -403,9 +403,9 @@ class CircleAsset(_ShapeAsset):
     def __init__(self, radius, line=BLACKLINE, fill=BLACK):
         super().__init__(line, fill)
         self.radius = radius
-        self.GFX = GFX_Graphics.drawCircle(0, 0, self.radius).clone()
-        """The `GFX` property represents the underlying system object."""
-        self.GFX.visible = False
+        self.gfx = GFX_Graphics.drawCircle(0, 0, self.radius).clone()
+        """The `gfx` property represents the underlying system object."""
+        self.gfx.visible = False
 
 
 class EllipseAsset(_ShapeAsset):
@@ -426,10 +426,10 @@ class EllipseAsset(_ShapeAsset):
         super().__init__(line, fill)
         self.halfw = halfw
         self.halfh = halfh
-        self.GFX = GFX_Graphics.drawEllipse(
+        self.gfx = GFX_Graphics.drawEllipse(
             0, 0, self.halfw, self.halfh).clone()
-        """The `GFX` property represents the underlying system object."""
-        self.GFX.visible = False
+        """The `gfx` property represents the underlying system object."""
+        self.gfx.visible = False
 
 
 class PolygonAsset(_ShapeAsset):
@@ -460,9 +460,9 @@ class PolygonAsset(_ShapeAsset):
         jpath = []
         for point in self.path:
             jpath.extend(point)
-        self.GFX = GFX_Graphics.drawPolygon(jpath).clone()
-        """The `GFX` property represents the underlying system object."""
-        self.GFX.visible = False
+        self.gfx = GFX_Graphics.drawPolygon(jpath).clone()
+        """The `gfx` property represents the underlying system object."""
+        self.gfx.visible = False
 
 
 class LineAsset(_CurveAsset):
@@ -497,9 +497,9 @@ class LineAsset(_CurveAsset):
         instantiation.
         """
         GFX_Graphics.moveTo(0, 0)
-        self.GFX = GFX_Graphics.lineTo(self. delta_x, self. delta_y).clone()
-        """The `GFX` property represents the underlying system object."""
-        self.GFX.visible = False
+        self.gfx = GFX_Graphics.lineTo(self. delta_x, self. delta_y).clone()
+        """The `gfx` property represents the underlying system object."""
+        self.gfx.visible = False
 
 
 class TextAsset(_GraphicsAsset):
@@ -537,15 +537,15 @@ class TextAsset(_GraphicsAsset):
         width = kwargs.get('width', 100)
         self.fill = kwargs.get('fill', Color(0, 1))
         self.align = kwargs.get('align', 'left')
-        self.GFX = GFX_Text(self.text,
+        self.gfx = GFX_Text(self.text,
                             {'font': self.style,
                              'fill': self.fill.color,
                              'align': self.align,
                              'wordWrap': True,
                              'wordWrapWidth': width,
                             })
-        self.GFX.alpha = self.fill.alpha
-        self.GFX.visible = False
+        self.gfx.alpha = self.fill.alpha
+        self.gfx.visible = False
 
     def _clone(self):
         return type(self)(self.text,
@@ -559,11 +559,11 @@ class TextAsset(_GraphicsAsset):
         """
         Width of the rendered text asset in pixels
         """
-        return self.GFX.width
+        return self.gfx.width
 
     @property
     def height(self):
         """
         Height of the rendered text asset in pixels
         """
-        return self.GFX.height
+        return self.gfx.height
