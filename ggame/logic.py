@@ -37,7 +37,7 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
         self.In = [None]*mininputqty
         self.Enable = True
         namedinputs = kwargs.get('namedinputs', [])
-        self._indict = {name:self.Eval(None) for name in namedinputs}
+        self._indict = {name:self.eval(None) for name in namedinputs}
         self.ingetvalue = False
         self.lastget = False
         self.resetval = False
@@ -51,9 +51,9 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
     @In.setter
     def In(self, val):
         try:
-            self._input = [self.Eval(v) for v in list(val)]
+            self._input = [self.eval(v) for v in list(val)]
         except TypeError:
-            self._input = [self.Eval(val)]
+            self._input = [self.eval(val)]
             
     # Enable attribute controls the "tri-state" of output
     @property
@@ -62,7 +62,7 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
     
     @Enable.setter
     def Enable(self, val):
-        self._enable = self.Eval(val)
+        self._enable = self.eval(val)
         
     @abstractmethod
     @_recursiontrap     # MUST use with any implementation that may recurse!
@@ -99,7 +99,7 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
         return self._inputState(self._indict[inputname])
 
     def SetInput(self, inputname, reference):
-        self._indict[inputname] = self.Eval(reference)
+        self._indict[inputname] = self.eval(reference)
     
 
 

@@ -42,7 +42,7 @@ class LineSegment(_MathVisual):
     
     def __init__(self, *args, **kwargs):
         super().__init__(LineAsset(0,0, self._defaultstyle), *args, **kwargs)
-        self._touchAsset()
+        self.touchAsset()
         
     def _buildAsset(self):
         start = self._pposinputs.pos

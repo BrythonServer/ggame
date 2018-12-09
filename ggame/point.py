@@ -16,7 +16,7 @@ class _Point(_MathVisual, metaclass=ABCMeta):
 
     def __init__(self, asset, *args, **kwargs):
         super().__init__(asset, *args, **kwargs)
-        self._touchAsset()
+        self.touchAsset()
         self.center = (0.5, 0.5)
 
     def __call__(self):
@@ -26,7 +26,7 @@ class _Point(_MathVisual, metaclass=ABCMeta):
         """
         Perform periodic processing.
         """
-        self._touchAsset()
+        self.touchAsset()
 
     def physicalPointTouching(self, ppos):
         """
@@ -49,7 +49,7 @@ class _Point(_MathVisual, metaclass=ABCMeta):
         ldisp = MathApp.translatePhysicalToLogical(pdisp)
         pos = self._posinputs.pos()
         self._posinputs = self._posinputs._replace(pos=self.Eval((pos[0] + ldisp[0], pos[1] + ldisp[1])))
-        self._touchAsset()
+        self.touchAsset()
         
     def distanceTo(self, otherpoint):
         """

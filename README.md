@@ -123,5 +123,5 @@ $ autopep8 -i --aggressive --aggressive ggame/app.py
 Python sources should also be tested with `pylint`. For example:
 
 ```
-$ pylint3 ggame/app.py
+$ pylint3 -r n ggame/app.py
 ```

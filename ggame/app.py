@@ -54,31 +54,31 @@ class App(object):
     _eventdict = {}
     _spritesdict = {}
     _spritesadded = False
-    _win = None
+    win = None
 
     def __init__(self, *args):
-        if App._win is None and (len(args) == 0 or len(args) == 2):
+        if App.win is None and (len(args) == 0 or len(args) == 2):
             x = y = 0
             if len(args) == 2:
                 x = args[0]
                 y = args[1]
-            App._win = GFX_Window(x, y, type(self).destroy)
-            App.width = App._win.width
-            App.height = App._win.height
+            App.win = GFX_Window(x, y, type(self).destroy)
+            App.width = App.win.width
+            App.height = App.win.height
             # Add existing sprites to the window
             if not App._spritesadded and len(App.spritelist) > 0:
                 App._spritesadded = True
                 for sprite in App.spritelist:
-                    App._win.add(sprite.gfx)
-            App._win.bind(KeyEvent.keydown, self._keyEvent)
-            App._win.bind(KeyEvent.keyup, self._keyEvent)
-            App._win.bind(KeyEvent.keypress, self._keyEvent)
-            App._win.bind(MouseEvent.mousewheel, self._mouseEvent)
-            App._win.bind(MouseEvent.mousemove, self._mouseEvent)
-            App._win.bind(MouseEvent.mousedown, self._mouseEvent)
-            App._win.bind(MouseEvent.mouseup, self._mouseEvent)
-            App._win.bind(MouseEvent.click, self._mouseEvent)
-            App._win.bind(MouseEvent.dblclick, self._mouseEvent)
+                    App.win.add(sprite.gfx)
+            App.win.bind(KeyEvent.keydown, self._keyEvent)
+            App.win.bind(KeyEvent.keyup, self._keyEvent)
+            App.win.bind(KeyEvent.keypress, self._keyEvent)
+            App.win.bind(MouseEvent.mousewheel, self._mouseEvent)
+            App.win.bind(MouseEvent.mousemove, self._mouseEvent)
+            App.win.bind(MouseEvent.mousedown, self._mouseEvent)
+            App.win.bind(MouseEvent.mouseup, self._mouseEvent)
+            App.win.bind(MouseEvent.click, self._mouseEvent)
+            App.win.bind(MouseEvent.dblclick, self._mouseEvent)
         self.userfunc = None
 
     @classmethod
@@ -109,8 +109,8 @@ class App(object):
 
     @classmethod
     def _add(cls, obj):
-        if App._win is not None:
-            App._win.add(obj.gfx)
+        if App.win is not None:
+            App.win.add(obj.gfx)
         App.spritelist.append(obj)
         # find out if sprite type is in dictionary without triggering pylint
         if not App._spritesdict.get(type(obj), False):
@@ -119,8 +119,8 @@ class App(object):
 
     @classmethod
     def _remove(cls, obj):
-        if App._win is not None:
-            App._win.remove(obj.gfx)
+        if App.win is not None:
+            App.win.remove(obj.gfx)
         App.spritelist.remove(obj)
         App._spritesdict[type(obj)].remove(obj)
 
@@ -133,8 +133,8 @@ class App(object):
         except BaseException:
             traceback.print_exc()
             raise
-        if App._win:
-            App._win.animate(self._animate)
+        if App.win:
+            App.win.animate(self._animate)
 
     @classmethod
     def destroy(cls):
@@ -143,18 +143,18 @@ class App(object):
         sprites and place the `App` class in a state in which a new
         application could be instantiated.
         """
-        if App._win:
-            App._win.unbind(KeyEvent.keydown)
-            App._win.unbind(KeyEvent.keyup)
-            App._win.unbind(KeyEvent.keypress)
-            App._win.unbind(MouseEvent.mousewheel)
-            App._win.unbind(MouseEvent.mousemove)
-            App._win.unbind(MouseEvent.mousedown)
-            App._win.unbind(MouseEvent.mouseup)
-            App._win.unbind(MouseEvent.click)
-            App._win.unbind(MouseEvent.dblclick)
-            App._win.destroy()
-        App._win = None
+        if App.win:
+            App.win.unbind(KeyEvent.keydown)
+            App.win.unbind(KeyEvent.keyup)
+            App.win.unbind(KeyEvent.keypress)
+            App.win.unbind(MouseEvent.mousewheel)
+            App.win.unbind(MouseEvent.mousemove)
+            App.win.unbind(MouseEvent.mousedown)
+            App.win.unbind(MouseEvent.mouseup)
+            App.win.unbind(MouseEvent.click)
+            App.win.unbind(MouseEvent.dblclick)
+            App.win.destroy()
+        App.win = None
         for s in list(App.spritelist):
             s.destroy()
         App.spritelist = []
@@ -289,4 +289,4 @@ class App(object):
         :returns: Nothing
         """
         self.userfunc = userfunc
-        App._win.animate(self._animate)
+        App.win.animate(self._animate)

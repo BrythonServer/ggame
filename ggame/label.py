@@ -55,7 +55,7 @@ class Label(_MathVisual):
         * **text** text contents of label
         """
         super().__init__(TextAsset(""), *args, **kwargs)
-        self._touchAsset()
+        self.touchAsset()
 
     def _buildAsset(self):
         return TextAsset(self._nposinputs.text(), 

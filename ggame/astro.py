@@ -105,10 +105,10 @@ class Rocket(ImagePoint):
         self.statusselect = kwargs.get('statuslist', statuslist)
         self.localheading = 0
         # dynamic parameters
-        self.timezoom = self.Eval(kwargs.get('timezoom', self.gettimezoom)) # 1,2,3 faster, -1, slower
-        self.heading = self.Eval(kwargs.get('heading', self.getheading)) # must be radians
-        self.mass = self.Eval(kwargs.get('mass', self.getmass)) # kg
-        self.thrust = self.Eval(kwargs.get('thrust', self.getthrust)) # N
+        self.timezoom = self.eval(kwargs.get('timezoom', self.gettimezoom)) # 1,2,3 faster, -1, slower
+        self.heading = self.eval(kwargs.get('heading', self.getheading)) # must be radians
+        self.mass = self.eval(kwargs.get('mass', self.getmass)) # kg
+        self.thrust = self.eval(kwargs.get('thrust', self.getthrust)) # N
         # end dynamic 
         super().__init__(self.bmurl,
             self._getposition, 

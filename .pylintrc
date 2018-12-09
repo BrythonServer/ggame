@@ -243,10 +243,10 @@ include-naming-hint=yes
 property-classes=abc.abstractproperty
 
 # Regular expression matching correct function names
-function-rgx=[a-z_][a-zA-Z0-9_]{2,30}$
+function-rgx=[a-z_][a-zA-Z0-9_]*$
 
 # Naming hint for function names
-function-name-hint=[a-z_][a-zA-Z0-9_]{2,30}$
+function-name-hint=[a-z_][a-zA-Z0-9_]*$
 
 # Regular expression matching correct variable names
 variable-rgx=[a-z_][a-z0-9_]*$
@@ -267,10 +267,10 @@ attr-rgx=[a-z_][a-z0-9_]*$
 attr-name-hint=[a-z_][a-z0-9_]*$
 
 # Regular expression matching correct argument names
-argument-rgx=[a-z_][a-z0-9_]{2,30}$
+argument-rgx=[a-z_][a-z0-9_]*$
 
 # Naming hint for argument names
-argument-name-hint=[a-z_][a-z0-9_]{2,30}$
+argument-name-hint=[a-z_][a-z0-9_]*$
 
 # Regular expression matching correct class attribute names
 class-attribute-rgx=([A-Za-z_][A-Za-z0-9_]{2,30}|(__.*__))$
@@ -342,7 +342,7 @@ max-statements=50
 max-parents=7
 
 # Maximum number of attributes for a class (see R0902).
-max-attributes=7
+max-attributes=30
 
 # Minimum number of public methods for a class (see R0903).
 min-public-methods=0

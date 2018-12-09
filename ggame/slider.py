@@ -75,7 +75,7 @@ class Slider(_MathVisual):
         self._thumb = Sprite(RectangleAsset(self._thumbwidth, 
             self._stdinputs.size()-2, LineStyle(1, self._stdinputs.color()), self._stdinputs.color()), 
             self._thumbXY())
-        self._touchAsset()
+        self.touchAsset()
         if self._leftctrl:
             MathApp.listenKeyEvent("keydown", self._leftctrl, self.moveLeft)
         if self._rightctrl:
