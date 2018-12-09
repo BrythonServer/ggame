@@ -458,5 +458,5 @@ class Planet(MathApp):
             style = LineStyle(1, Color(self.color,1)), 
             color = Color(self.color,0.5))
         r = self.radius + self.viewaltitude
-        self.viewPosition = (r*cos(self.viewanomaly), r*sin(self.viewanomaly))
+        self.view_position = (r*cos(self.viewanomaly), r*sin(self.viewanomaly))
         super().run()
