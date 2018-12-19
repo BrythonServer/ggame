@@ -261,7 +261,7 @@ class App(object):
 
         :returns: A (potentially empty) list of sprite references.
         """
-        return App._spritesdict.get(sclass, [])
+        return App._spritesdict.get(sclass, [])[:]
 
     def step(self):
         """
