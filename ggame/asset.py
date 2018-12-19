@@ -458,8 +458,11 @@ class PolygonAsset(_ShapeAsset):
         super().__init__(line, fill)
         self.path = path
         jpath = []
-        for point in self.path:
+        for point in path:
             jpath.extend(point)
+        # close the path if necessary
+        if path[0] != path[-1]:
+            jpath.extend(path[0])
         self.gfx = GFX_Graphics.drawPolygon(jpath).clone()
         """The `gfx` property represents the underlying system object."""
         self.gfx.visible = False
