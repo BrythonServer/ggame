@@ -9,6 +9,7 @@ user-provided handler function. The ggame user code should examine the
 attributes of the Event object to find out more information about the event that
 occurred.
 """
+import traceback
 
 class _Event(object):
 
@@ -21,6 +22,18 @@ class _Event(object):
         Set the `consumed` member of the event to prevent the event
         from being received by any more handler methods.
         """
+
+    def route(self, evtlist):
+        """
+        Execute all callbacks configured for this event.
+        """
+        for callback in reversed(evtlist):
+            if not self.consumed:
+                try:
+                    callback(self)
+                except BaseException:
+                    traceback.print_exc()
+                    raise
         
 class MouseEvent(_Event):
     """
@@ -36,7 +49,7 @@ class MouseEvent(_Event):
     dblclick = "dblclick"
     mousewheel = "wheel"
 
-    def __init__(self, appclass, hwevent):
+    def __init__(self, app, hwevent):
         """
         The event is initialized by the system, with a `hwevent` input parameter.
         """
@@ -47,9 +60,9 @@ class MouseEvent(_Event):
             self.wheelDelta = hwevent.deltaY
         else:
             self.wheelDelta = 0
-        rect = appclass._win._renderer.view.getBoundingClientRect()
-        xscale = appclass._win.width/rect.width
-        yscale = appclass._win.height/rect.height
+        rect = app.win._renderer.view.getBoundingClientRect()
+        xscale = app.win.width/rect.width
+        yscale = app.win.height/rect.height
         self.x = (hwevent.clientX - rect.left) * xscale
         """The window x-coordinate of the mouse pointer when the event occurred."""
         self.y = (hwevent.clientY - rect.top) * yscale

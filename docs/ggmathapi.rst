@@ -13,9 +13,8 @@ MathApp
 
 .. autoclass:: MathApp
 
-    .. autoattribute:: viewPosition
+    .. autoattribute:: view_position
     .. autoattribute:: scale
-    .. autoattribute:: width
 
     .. automethod:: getSpritesbyClass
     .. automethod:: listenKeyEvent

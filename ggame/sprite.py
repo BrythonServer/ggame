@@ -71,10 +71,10 @@ class Sprite(object):
         if type(asset) == ImageAsset:
             self.asset = asset
             try:
-                #self.GFX = GFX_Sprite()
-                self.GFX = GFX_Sprite(asset.GFX) # GFX is PIXI Sprite
+                #self.gfx = GFX_Sprite()
+                self.gfx = GFX_Sprite(asset.gfx) # gfx is PIXI Sprite
             except:
-                self.GFX = None
+                self.gfx = None
         elif type(asset) in [RectangleAsset, 
             CircleAsset, 
             EllipseAsset, 
@@ -82,13 +82,11 @@ class Sprite(object):
             LineAsset,
             ]:
             self.asset = asset
-            self.GFX = GFX_Sprite(asset.GFX.generateTexture())
-            #self.GFX = asset.GFX.clone() # GFX is PIXI Graphics (from Sprite)
-            #self.GFX.visible = True
+            self.gfx = GFX_Sprite(asset.gfx.generateTexture())
         elif type(asset) in [TextAsset]:
             self.asset = asset._clone()
-            self.GFX = self.asset.GFX # GFX is PIXI Text (from Sprite)
-            self.GFX.visible = True
+            self.gfx = self.asset.gfx # gfx is PIXI Text (from Sprite)
+            self.gfx.visible = True
         if not edgedef:
             self.edgedef = asset
         else:
@@ -114,11 +112,18 @@ class Sprite(object):
                 (0,self.edgedef.height), 
                 (self.edgedef.width,self.edgedef.height),
                 (self.edgedef.width,0)]
-        elif assettype is PolygonAsset:
-            self._basevertices = self.edgedef.path[:-1]
-        elif assettype is LineAsset:
-            self._basevertices = [(0,0), 
-                (self.edgedef.deltaX, self.edgedef.deltaY)]
+        elif assettype in [PolygonAsset, LineAsset]:
+            if assettype is PolygonAsset:
+                self._basevertices = self.edgedef.path[:-1]
+            elif assettype is LineAsset:
+                self._basevertices = [(0,0), 
+                    (self.edgedef.delta_x, self.edgedef.delta_y)]
+            xpoints, ypoints = zip(*self._basevertices)
+            xmin = min(xpoints)
+            ymin = min(ypoints)
+            xpoints = [x - xmin for x in xpoints]
+            ypoints = [y - ymin for y in ypoints]
+            self._basevertices = zip(xpoints, ypoints)
         elif assettype is EllipseAsset:
             w = self.edgedef.halfw * 2
             h = self.edgedef.halfh * 2
@@ -143,7 +148,6 @@ class Sprite(object):
         s = math.sin(self.rotation)
         self._absolutevertices = [(self.x + x*c + y*s, self.y + -x*s + y*c) 
                                     for x,y in crsc]
-
 
     def _setExtents(self):
         """
@@ -176,7 +180,7 @@ class Sprite(object):
         does something useful if the asset is an :class:`~ggame.asset.ImageAsset`
         defined with multiple images.
         """
-        self.GFX.texture = self.asset[0]
+        self.gfx.texture = self.asset[0]
     
     def lastImage(self):
         """
@@ -184,7 +188,7 @@ class Sprite(object):
         does something useful if the asset is an :class:`~ggame.asset.ImageAsset`
         defined with multiple images.
         """
-        self.GFX.texture = self.asset[-1]
+        self.gfx.texture = self.asset[-1]
     
     def nextImage(self, wrap = False):
         """
@@ -205,7 +209,7 @@ class Sprite(object):
                 self._index = 0
             else:
                 self._index = len(self.asset)-1
-        self.GFX.texture = self.asset[self._index]
+        self.gfx.texture = self.asset[self._index]
     
     def prevImage(self, wrap = False):
         """
@@ -226,7 +230,7 @@ class Sprite(object):
                 self._index = len(self.asset)-1
             else:
                 self._index = 0
-        self.GFX.texture = self.asset[self._index]
+        self.gfx.texture = self.asset[self._index]
     
     def setImage(self, index=0):
         """
@@ -266,10 +270,10 @@ class Sprite(object):
     def index(self, value):
         self._index = value
         try:
-            self.GFX.texture = self.asset[self._index]
+            self.gfx.texture = self.asset[self._index]
         except:
             self._index = 0
-            self.GFX.texture = self.asset[self._index]
+            self.gfx.texture = self.asset[self._index]
 
     @property
     def width(self):
@@ -277,11 +281,11 @@ class Sprite(object):
         This is an integer representing the display width of the sprite.
         Assigning a value to the width will scale the image horizontally.
         """
-        return self.GFX.width
+        return self.gfx.width
         
     @width.setter
     def width(self, value):
-        self.GFX.width = value
+        self.gfx.width = value
         self._extentsdirty = True
     
     @property
@@ -290,11 +294,11 @@ class Sprite(object):
         This is an integer representing the display height of the sprite.
         Assigning a value to the height will scale the image vertically.
         """
-        return self.GFX.height
+        return self.gfx.height
     
     @height.setter
     def height(self, value):
-        self.GFX.height = value
+        self.gfx.height = value
         self._extentsdirty = True
         
     @property
@@ -303,15 +307,15 @@ class Sprite(object):
         This represents the x-coordinate of the sprite on the screen. Assigning
         a value to this attribute will move the sprite horizontally.
         """
-        return self.GFX.position.x
+        return self.gfx.position.x
         
     @x.setter
     def x(self, value):
-        deltax = value - self.GFX.position.x
-        self.xmax += deltax
-        self.xmin += deltax
+        delta_x = value - self.gfx.position.x
+        self.xmax += delta_x
+        self.xmin += delta_x
         """Adjust extents directly with low overhead"""
-        self.GFX.position.x = value
+        self.gfx.position.x = value
 
     @property
     def y(self):
@@ -319,15 +323,15 @@ class Sprite(object):
         This represents the y-coordinate of the sprite on the screen. Assigning
         a value to this attribute will move the sprite vertically.
         """
-        return self.GFX.position.y
+        return self.gfx.position.y
         
     @y.setter
     def y(self, value):
-        deltay = value - self.GFX.position.y
-        self.ymax += deltay
-        self.ymin += deltay
+        delta_y = value - self.gfx.position.y
+        self.ymax += delta_y
+        self.ymin += delta_y
         """Adjust extents directly with low overhead"""
-        self.GFX.position.y = value
+        self.gfx.position.y = value
 
     @property
     def position(self):
@@ -335,7 +339,7 @@ class Sprite(object):
         This represents the (x,y) coordinates of the sprite on the screen. Assigning
         a value to this attribute will move the sprite to the new coordinates.
         """
-        return (self.GFX.position.x, self.GFX.position.y)
+        return (self.gfx.position.x, self.gfx.position.y)
         
     @position.setter
     def position(self, value):
@@ -351,14 +355,14 @@ class Sprite(object):
         to this attribute. 
         """
         try:
-            return self.GFX.anchor.x
+            return self.gfx.anchor.x
         except:
             return 0.0
         
     @fxcenter.setter
     def fxcenter(self, value):
         try:
-            self.GFX.anchor.x = value
+            self.gfx.anchor.x = value
             self._extentsdirty = True
         except:
             pass
@@ -373,14 +377,14 @@ class Sprite(object):
         to this attribute. 
         """
         try:
-            return self.GFX.anchor.y
+            return self.gfx.anchor.y
         except:
             return 0.0
         
     @fycenter.setter
     def fycenter(self, value):
         try:
-            self.GFX.anchor.y = value
+            self.gfx.anchor.y = value
             self._extentsdirty = True
         except:
             pass
@@ -394,15 +398,15 @@ class Sprite(object):
         more details.
         """
         try:
-            return (self.GFX.anchor.x, self.GFX.anchor.y)
+            return (self.gfx.anchor.x, self.gfx.anchor.y)
         except:
             return (0.0, 0.0)
         
     @center.setter
     def center(self, value):
         try:
-            self.GFX.anchor.x = value[0]
-            self.GFX.anchor.y = value[1]
+            self.gfx.anchor.x = value[0]
+            self.gfx.anchor.y = value[1]
             self._extentsdirty = True
         except:
             pass
@@ -414,11 +418,11 @@ class Sprite(object):
         `~ggame.Sprite.visible` to `False` will prevent the sprite from rendering on the 
         screen.
         """
-        return self.GFX.visible
+        return self.gfx.visible
     
     @visible.setter
     def visible(self, value):
-        self.GFX.visible = value
+        self.gfx.visible = value
 
     @property
     def scale(self):
@@ -428,14 +432,14 @@ class Sprite(object):
         image will keep its original size. A value of 2.0 would double it, etc.
         """
         try:
-            return self.GFX.scale.x
+            return self.gfx.scale.x
         except AttributeError:
             return 1.0
         
     @scale.setter
     def scale(self, value):
-        self.GFX.scale.x = value
-        self.GFX.scale.y = value
+        self.gfx.scale.x = value
+        self.gfx.scale.y = value
         self._extentsdirty = True
 
     @property
@@ -447,13 +451,13 @@ class Sprite(object):
         is 180/pi or approximately 57.3 degrees.
         """
         try:
-            return -self.GFX.rotation
+            return -self.gfx.rotation
         except AttributeError:
             return 0.0
         
     @rotation.setter
     def rotation(self, value):
-        self.GFX.rotation = -value
+        self.gfx.rotation = -value
         if value:
             self._extentsdirty = True
 
@@ -535,4 +539,4 @@ class Sprite(object):
         set the :data:`visible` attribute to `False`.
         """
         App._remove(self)
-        self.GFX.destroy()
+        self.gfx.destroy()

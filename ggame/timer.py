@@ -21,7 +21,7 @@ class Timer(_MathDynamic):
         self._callbacks = {}
         self._time = 0
         self.reset()
-        MathApp._addDynamic(self)  # always dynamically defined
+        MathApp.addDynamic(self)  # always dynamically defined
         
     def reset(self):
         """
@@ -30,7 +30,7 @@ class Timer(_MathDynamic):
         
         :returns: None
         """
-        self._reset = time()
+        self._reset = MathApp.time
             
     @property
     def time(self):
@@ -74,7 +74,7 @@ class Timer(_MathDynamic):
             be executed periodically
         :returns: None
         """
-        key = (time() + delay, delay if periodic else 0)
+        key = (self._time + delay, delay if periodic else 0)
         self._once.append(key)
         callbacklist = self._callbacks.get(key, [])
         callbacklist.append(callback)

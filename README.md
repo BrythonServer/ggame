@@ -111,3 +111,17 @@ app.run()
 Before using ggame with your Python source repository on Github, you may add the ggame source
 tree to your repository. If you are executing your code in http://runpython.com, then the current 
 ggame repository is already added to your import search path and no installation is required.
+
+## Contributing to ggame
+
+Python sources in ggame should be passed through `autopep8`. For example:
+
+```
+$ autopep8 -i --aggressive --aggressive ggame/app.py
+```
+
+Python sources should also be tested with `pylint`. For example:
+
+```
+$ pylint3 -r n ggame/app.py
+```

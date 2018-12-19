@@ -15,7 +15,7 @@ class TestAstroMethods(unittest.TestCase):
             time.sleep(1/60)
             earth.step()
 
-        Planet._destroy()
+        Planet.destroy()
 
 
 if __name__ == '__main__':

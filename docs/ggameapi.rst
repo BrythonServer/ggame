@@ -68,10 +68,10 @@ _________
 Predefined Colors and Lines
 ___________________________
 
-.. autodata:: black
-.. autodata:: white
-.. autodata:: blackline
-.. autodata:: whiteline
+.. autodata:: BLACK
+.. autodata:: WHITE
+.. autodata:: BLACKLINE
+.. autodata:: WHITELINE
 
 ImageAsset
 __________

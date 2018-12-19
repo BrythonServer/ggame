@@ -10,7 +10,7 @@ if module_exists('browser') and module_exists('javascript'):
 
     from browser import window, document, load
     from javascript import JSObject, JSConstructor
-    load("https://cdnjs.cloudflare.com/ajax/libs/pixi.js/3.0.5/pixi.min.js")
+    load("https://cdnjs.cloudflare.com/ajax/libs/pixi.js/3.0.11/pixi.min.js")
     load("https://cdnjs.cloudflare.com/ajax/libs/buzz/1.1.10/buzz.min.js")
     major = window.__BRYTHON__.implementation[0]
     minor = window.__BRYTHON__.implementation[1]
