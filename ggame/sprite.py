@@ -112,11 +112,18 @@ class Sprite(object):
                 (0,self.edgedef.height), 
                 (self.edgedef.width,self.edgedef.height),
                 (self.edgedef.width,0)]
-        elif assettype is PolygonAsset:
-            self._basevertices = self.edgedef.path[:-1]
-        elif assettype is LineAsset:
-            self._basevertices = [(0,0), 
-                (self.edgedef.delta_x, self.edgedef.delta_y)]
+        elif assettype in [PolygonAsset, LineAsset]:
+            if assettype is PolygonAsset:
+                self._basevertices = self.edgedef.path[:-1]
+            elif assettype is LineAsset:
+                self._basevertices = [(0,0), 
+                    (self.edgedef.delta_x, self.edgedef.delta_y)]
+            xpoints, ypoints = zip(*self._basevertices)
+            xmin = min(xpoints)
+            ymin = min(ypoints)
+            xpoints = [x - xmin for x in xpoints]
+            ypoints = [y - ymin for y in ypoints]
+            self._basevertices = zip(xpoints, ypoints)
         elif assettype is EllipseAsset:
             w = self.edgedef.halfw * 2
             h = self.edgedef.halfh * 2
