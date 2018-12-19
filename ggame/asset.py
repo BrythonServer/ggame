@@ -456,13 +456,13 @@ class PolygonAsset(_ShapeAsset):
 
     def __init__(self, path, line=BLACKLINE, fill=BLACK):
         super().__init__(line, fill)
-        self.path = path
+        self.path = path[:]
         jpath = []
-        for point in path:
-            jpath.extend(point)
         # close the path if necessary
-        if path[0] != path[-1]:
-            jpath.extend(path[0])
+        if self.path[0] != self.path[-1]:
+            self.path.append(self.path[0])
+        for point in self.path:
+            jpath.extend(point)
         self.gfx = GFX_Graphics.drawPolygon(jpath).clone()
         """The `gfx` property represents the underlying system object."""
         self.gfx.visible = False
