@@ -782,7 +782,7 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
     def touchAsset(self, force=False):
         """
         Check to see if an asset needs to be updated it and if so (or forced)
-        call the :function:`_updateAsset` method.
+        call the :func:`_updateAsset` method.
         """
         inputs = self._getInputs()
         changed = self._inputsChanged(inputs)
