@@ -1,2 +1,3 @@
 from ggame import Color
-red = Color(0xff0000, 1.0)
+
+red = Color(0xFF0000, 1.0)
