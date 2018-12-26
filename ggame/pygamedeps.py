@@ -467,8 +467,8 @@ if module_exists('pygame'):
       self.stop = False
       #self._w = window.open("", "")
       #self._stage = JSConstructor(GFX.Container)()
-      #self._renderer = GFX.autoDetectRenderer(width, height, {'transparent':True})
-      #self._w.document.body.appendChild(self._renderer.view)
+      #self.renderer = GFX.autoDetectRenderer(width, height, {'transparent':True})
+      #self._w.document.body.appendChild(self.renderer.view)
       #self._w.onunload = onclose
   
     def bind(self, evtspec, callback):
@@ -503,7 +503,7 @@ if module_exists('pygame'):
         while not self.stop:
           self.clock.tick_busy_loop(30)
           stepcallback(0)
-      #self._renderer.render(self._stage)
+      #self.renderer.render(self._stage)
       #self._w.requestAnimationFrame(stepcallback)
       
     def destroy(self):

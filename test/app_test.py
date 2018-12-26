@@ -50,7 +50,7 @@ class TestAppMethods(unittest.TestCase):
 
   def wheelhandler(self, event):
     self.assertEqual(type(event), MouseEvent)
-    self.assertEqual(event.wheelDelta, 99)
+    self.assertEqual(event.wheeldelta, 99)
     self.mouseevtx += 1
 
 if __name__ == '__main__':

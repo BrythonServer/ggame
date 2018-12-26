@@ -249,7 +249,7 @@ class MathApp(App):
                 self._viewNotify("translate")
 
     def _handleMouseWheel(self, event):
-        zoomfactor = event.wheelDelta / 100
+        zoomfactor = event.wheeldelta / 100
         zoomfactor = 1 + zoomfactor if zoomfactor > 0 else 1 + zoomfactor
         if zoomfactor > 1.2:
             zoomfactor = 1.2

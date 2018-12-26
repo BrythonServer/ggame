@@ -57,8 +57,8 @@ if module_exists('browser') and module_exists('javascript'):
             self._stage = GFX_NewStage()
             self.width = width if width != 0 else int(w)
             self.height = height if height != 0 else int(h)
-            self._renderer = GFX.autoDetectRenderer(self.width, self.height, options)
-            attachpoint.appendChild(self._renderer.view)
+            self.renderer = GFX.autoDetectRenderer(self.width, self.height, options)
+            attachpoint.appendChild(self.renderer.view)
             self._w.onunload = onclose
       
         def bind(self, evtspec, callback):
@@ -75,7 +75,7 @@ if module_exists('browser') and module_exists('javascript'):
             self._stage.removeChild(obj)
           
         def animate(self, stepcallback):
-            self._renderer.render(self._stage)
+            self.renderer.render(self._stage)
             self._w.requestAnimationFrame(stepcallback)
           
         def destroy(self):
