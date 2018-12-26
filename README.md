@@ -114,10 +114,10 @@ ggame repository is already added to your import search path and no installation
 
 ## Contributing to ggame
 
-Python sources in ggame should be passed through `autopep8`. For example:
+Python sources in ggame should be passed through `black`. For example:
 
 ```
-$ autopep8 -i --aggressive --aggressive ggame/app.py
+$ black ggame/app.py
 ```
 
 Python sources should also be tested with `pylint`. For example:

@@ -93,8 +93,9 @@ class App(object):
 
     def _keyEvent(self, hwevent):
         evtlist = App._eventdict.get(
-            (hwevent.type, KeyEvent.keys.get(hwevent.keyCode, 0)), [])
-        evtlist.extend(App._eventdict.get((hwevent.type, '*'), []))
+            (hwevent.type, KeyEvent.keys.get(hwevent.keyCode, 0)), []
+        )
+        evtlist.extend(App._eventdict.get((hwevent.type, "*"), []))
         if len(evtlist) > 0:
             evt = KeyEvent(hwevent)
             self._routeEvent(evt, evtlist)
