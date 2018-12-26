@@ -1,5 +1,3 @@
-# asset.py
-
 """
 ggame assets and related objects (:class:`Color` and :class:`LineStyle`) are
 classes that encapsulate and represent displayable images. A single asset
