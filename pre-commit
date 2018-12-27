@@ -1,0 +1,18 @@
+# git pre-commit tests
+# Install this with:
+#
+# ln -s pre-commit .git/hooks/pre-commit
+
+# only test the prospective commit
+# from: https://codeinthehole.com/tips/tips-for-using-a-git-pre-commit-hook/
+STASH_NAME="pre-commit-$(date +%s)"
+git stash save -q --keep-index $STASH_NAME
+
+black examples ggame test
+python3 -m nose
+
+# Restore..
+STASHES=$(git stash list)
+if [[ $STASHES == "$STASH_NAME" ]]; then
+  git stash pop -q
+fi
