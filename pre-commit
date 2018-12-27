@@ -10,6 +10,7 @@ git stash save -q --keep-index $STASH_NAME
 
 black examples ggame test
 python3 -m nose
+cd docs & make html
 
 # Restore..
 STASHES=$(git stash list)

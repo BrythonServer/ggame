@@ -1,3 +1,7 @@
+"""
+MathApp input class for accepting user numeric input with a "slider" control.
+"""
+
 from ggame.mathapp import MathApp, _MathVisual
 from ggame.asset import RectangleAsset, LineStyle, Color
 from ggame.sprite import Sprite
@@ -5,20 +9,20 @@ from ggame.sprite import Sprite
 
 class Slider(_MathVisual):
     """
-    Create a 'slider' style numeric input control on the screen. This is a 
-    subclass of :class:`~ggame.sprite.Sprite` and 
-    :class:`~ggame.mathapp._MathVisual` but most of the inherited 
-    members are of little use and are not shown in the documentation. 
+    Create a 'slider' style numeric input control on the screen. This is a
+    subclass of :class:`~ggame.sprite.Sprite` and
+    :class:`~ggame.mathapp._MathVisual` but most of the inherited
+    members are of little use and are not shown in the documentation.
 
 
-    :param \*args:
+    :param \\*args:
         See below
-    :param \**kwargs:
+    :param \\**kwargs:
         See below
 
     :Required Arguments:
         * **pos**  (*tuple(float,float)*) Screen position of the slider, which may
-            be a literal tuple of floats, or a reference to any object or 
+            be a literal tuple of floats, or a reference to any object or
             function that returns or evaluates to a tuple of floats.
         * **minval** (*float*) The minimum value of the slider
         * **maxval** (*float*) The maximum value of the slider
@@ -27,35 +31,22 @@ class Slider(_MathVisual):
 
     :Optional Keyword Arguments:
         * **steps** (*int*) Number of steps between minval and maxval (default 50)
-        * **leftkey** (*str*) Name of a keyboard key that will make the 
-            slider control step down (move left) (default None). See 
+        * **leftkey** (*str*) Name of a keyboard key that will make the
+            slider control step down (move left) (default None). See
             :class:`~ggame.event.KeyEvent` for a list of names.
         * **rightkey** (*str*) Name of a keyboard key that will make the slider
-            control step up (move right) (default None) 
+            control step up (move right) (default None)
         * **centerkey** (*str*) Name of a keyboard key that will make the slider
             move to its center position (default None)
         * **positioning** (*str*) One of 'logical' or 'physical'
         * **size** (*int*) Width of the slider (in pixels)
         * **color** (*Color*) Valid :class:`~ggame.asset.Color` object
         * **style** (*LineStyle*) Valid :class:`~ggame.asset.LineStyle` object
-        
-    Example::
-    
-    
-        from ggame.slider import Slider
-        from ggame.mathapp import MathApp
-    
-        s = Slider(
-            (100, 150),     # screen position
-            0,              # minimum value
-            250,            # maximum value
-            125,            # initial value
-            positioning='physical', # use physical coordinates for position
-            steps=10)       # 10 steps between 125 and 250
-            
-        MathApp().run()
 
-        
+    Example:
+
+    .. literalinclude:: ../examples/sliderslider.py
+
     """
 
     _posinputsdef = ["pos"]
@@ -63,10 +54,10 @@ class Slider(_MathVisual):
 
     def __init__(self, *args, **kwargs):
         super().__init__(RectangleAsset(1, 1), *args, **kwargs)
-        self._val = self._nposinputs.initial()
+        self._val = self._nposinputs.initial()  # pylint: disable=no-member
         self._steps = kwargs.get("steps", 50)
         self._step = (
-            self._nposinputs.maxval() - self._nposinputs.minval()
+            self._nposinputs.maxval() - self._nposinputs.minval()   # pylint: disable=no-member
         ) / self._steps
         self._leftctrl = kwargs.get("leftkey", None)
         self._rightctrl = kwargs.get("rightkey", None)
@@ -86,15 +77,15 @@ class Slider(_MathVisual):
         )
         self.touchAsset()
         if self._leftctrl:
-            MathApp.listenKeyEvent("keydown", self._leftctrl, self.moveLeft)
+            MathApp.listenKeyEvent("keydown", self._leftctrl, self._moveLeft)
         if self._rightctrl:
-            MathApp.listenKeyEvent("keydown", self._rightctrl, self.moveRight)
+            MathApp.listenKeyEvent("keydown", self._rightctrl, self._moveRight)
         if self._centerctrl:
-            MathApp.listenKeyEvent("keydown", self._centerctrl, self.moveCenter)
+            MathApp.listenKeyEvent("keydown", self._centerctrl, self._moveCenter)
 
     def _thumbXY(self):
-        minval = self._nposinputs.minval()
-        maxval = self._nposinputs.maxval()
+        minval = self._nposinputs.minval()  # pylint: disable=no-member
+        maxval = self._nposinputs.maxval()  # pylint: disable=no-member
         return (
             self._spposinputs.pos[0]
             + (self._val - minval)
@@ -108,6 +99,9 @@ class Slider(_MathVisual):
 
     @property
     def value(self):
+        """
+        Report value of the slider. Attribute is get-able and set-able.
+        """
         return self._val
 
     @value.setter
@@ -130,8 +124,8 @@ class Slider(_MathVisual):
         pass
 
     def _setval(self, val):
-        minval = self._nposinputs.minval()
-        maxval = self._nposinputs.maxval()
+        minval = self._nposinputs.minval()  # pylint: disable=no-member
+        maxval = self._nposinputs.maxval()  # pylint: disable=no-member
         if val <= minval:
             self._val = minval
         elif val >= maxval:
@@ -144,6 +138,13 @@ class Slider(_MathVisual):
         self._setThumb()
 
     def increment(self, step):
+        """
+        Increment the slider value.
+
+        :param float step: The amount by which the slider control should be adjusted.
+        :returns: None
+        """
+
         self._setval(self._val + step)
 
     def select(self):
@@ -167,25 +168,43 @@ class Slider(_MathVisual):
 
     def _mouseClick(self, event):
         if self.physicalPointTouching((event.x, event.y)):
-            if event.x > self.thumb.x + self._thumbwidth:
+            if event.x > self._thumb.x + self._thumbwidth:
                 self._moveRight(event)
-            elif event.x < self.thumb.x:
+            elif event.x < self._thumb.x:
                 self._moveLeft(event)
 
-    def _moveLeft(self, event):
+    def _moveLeft(self, dummy):
         self.increment(-self._step)
 
-    def _moveRight(self, event):
+    def _moveRight(self, dummy):
         self.increment(self._step)
 
-    def _moveCenter(self, event):
+    def _moveCenter(self, dummy):
         self._val = (self._snposinputs.minval + self._snposinputs.maxval) / 2
         self._setThumb()
 
     def canstroke(self, ppos):
+        """
+        Function returns true if the given physical position corresponds with a part
+        of the slider that can be dragged (i.e. the thumb).
+
+        :param (float,float) ppos: Physical screen coordinates.
+        :return: True if the position represents a draggable part of the control.
+        :rtype: boolean
+
+        """
         return self.physicalPointTouchingThumb(ppos)
 
     def stroke(self, ppos, pdisp):
+        """
+        Function performs the action of stroking or click-dragging on the slider
+        control (i.e. dragging the thumb).
+
+        :param (float, float) ppos: Physical screen coordinates.
+        :param (float, float) pdisp: Physical displacement vector.
+        :return: None
+
+        """
         _ppos = self._spposinputs.pos
         minval = self._snposinputs.minval
         maxval = self._snposinputs.maxval
@@ -204,6 +223,14 @@ class Slider(_MathVisual):
         )
 
     def physicalPointTouchingThumb(self, ppos):
+        """
+        Determine if a physical screen location is touching the slider "thumb".
+
+        :param (float, float) ppos: Physical screen coordinates.
+        :returns: True if touching, False otherwise.
+        :rtype: boolean
+        """
+
         thumbpos = self._thumbXY()
         return (
             ppos[0] >= thumbpos[0]

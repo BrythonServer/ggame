@@ -101,6 +101,7 @@ Label
 .. automodule:: ggame.label
 
 .. autoclass:: Label
+    :members:
 
 **********
 Indicators
@@ -112,11 +113,13 @@ ImageIndicator
 ==============
 
 .. autoclass:: ImageIndicator
+    :members:
 
 LEDIndicator
 ============
 
 .. autoclass:: LEDIndicator
+    :members:
 
 **************
 Input Controls
@@ -128,18 +131,21 @@ Slider
 .. automodule:: ggame.slider
 
 .. autoclass:: Slider
-
-.. automodule:: ggame.input
+    :members:
 
 InputNumeric
 ============
 
+.. automodule:: ggame.input
+
 .. autoclass:: InputNumeric
+    :members:
 
 InputButton
 ===========
 
 .. autoclass:: InputButton
+    :members:
 
 .. automodule:: ggame.inputpoint
 
@@ -147,21 +153,25 @@ InputImageButton
 ================
 
 .. autoclass:: InputImageButton
+    :members:
 
 InputImageToggle
 ================
 
 .. autoclass:: InputImageToggle
+    :members:
 
 MetalToggle
 ===========
 
 .. autoclass:: MetalToggle
+    :members:
 
 GlassButton
 ===========
 
 .. autoclass:: GlassButton
+    :members:
 
 ************
 Time Utility
