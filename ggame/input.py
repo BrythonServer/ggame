@@ -154,7 +154,7 @@ class InputButton(Label):
 
     def _buildAsset(self):
         return TextAsset(
-            self._nposinputs.text(), # pylint: disable=no-member
+            self._nposinputs.text(),  # pylint: disable=no-member
             style="bold {0}px Courier".format(self._stdinputs.size()),
             width=self._stdinputs.width(),
             fill=self._stdinputs.color(),

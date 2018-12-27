@@ -57,7 +57,8 @@ class Slider(_MathVisual):
         self._val = self._nposinputs.initial()  # pylint: disable=no-member
         self._steps = kwargs.get("steps", 50)
         self._step = (
-            self._nposinputs.maxval() - self._nposinputs.minval()   # pylint: disable=no-member
+            self._nposinputs.maxval()
+            - self._nposinputs.minval()  # pylint: disable=no-member
         ) / self._steps
         self._leftctrl = kwargs.get("leftkey", None)
         self._rightctrl = kwargs.get("rightkey", None)
