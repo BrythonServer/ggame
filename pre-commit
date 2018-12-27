@@ -1,7 +1,7 @@
 # git pre-commit tests
-# Install this with:
+# Install this with (Cloud 9):
 #
-# ln -s pre-commit .git/hooks/pre-commit
+# ln -s ~/workspace/pre-commit ~/workspace/.git/hooks/
 
 # only test the prospective commit
 # from: https://codeinthehole.com/tips/tips-for-using-a-git-pre-commit-hook/
