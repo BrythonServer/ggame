@@ -60,32 +60,33 @@ class Sprite(object):
     circular collision border. 
 
     """
- 
+
     _rectCollision = "rect"
     _circCollision = "circ"
-    
-    def __init__(self, asset, pos=(0,0), edgedef=None):
+
+    def __init__(self, asset, pos=(0, 0), edgedef=None):
         """
         """
         self._index = 0
         if type(asset) == ImageAsset:
             self.asset = asset
             try:
-                #self.gfx = GFX_Sprite()
-                self.gfx = GFX_Sprite(asset.gfx) # gfx is PIXI Sprite
+                # self.gfx = GFX_Sprite()
+                self.gfx = GFX_Sprite(asset.gfx)  # gfx is PIXI Sprite
             except:
                 self.gfx = None
-        elif type(asset) in [RectangleAsset, 
-            CircleAsset, 
-            EllipseAsset, 
+        elif type(asset) in [
+            RectangleAsset,
+            CircleAsset,
+            EllipseAsset,
             PolygonAsset,
             LineAsset,
-            ]:
+        ]:
             self.asset = asset
             self.gfx = GFX_Sprite(asset.gfx.generateTexture())
         elif type(asset) in [TextAsset]:
             self.asset = asset._clone()
-            self.gfx = self.asset.gfx # gfx is PIXI Text (from Sprite)
+            self.gfx = self.asset.gfx  # gfx is PIXI Text (from Sprite)
             self.gfx.visible = True
         if not edgedef:
             self.edgedef = asset
@@ -100,7 +101,7 @@ class Sprite(object):
         self._setExtents()
         """Initialize the extents (xmax, xmin, etc.) for collision detection"""
         App._add(self)
-        
+
     def _createBaseVertices(self):
         """
         Create sprite-relative list of vertex coordinates for boundary
@@ -108,16 +109,20 @@ class Sprite(object):
         self._basevertices = []
         assettype = type(self.edgedef)
         if assettype in [RectangleAsset, ImageAsset, TextAsset]:
-            self._basevertices = [(0,0), 
-                (0,self.edgedef.height), 
-                (self.edgedef.width,self.edgedef.height),
-                (self.edgedef.width,0)]
+            self._basevertices = [
+                (0, 0),
+                (0, self.edgedef.height),
+                (self.edgedef.width, self.edgedef.height),
+                (self.edgedef.width, 0),
+            ]
         elif assettype in [PolygonAsset, LineAsset]:
             if assettype is PolygonAsset:
                 self._basevertices = self.edgedef.path[:-1]
             elif assettype is LineAsset:
-                self._basevertices = [(0,0), 
-                    (self.edgedef.delta_x, self.edgedef.delta_y)]
+                self._basevertices = [
+                    (0, 0),
+                    (self.edgedef.delta_x, self.edgedef.delta_y),
+                ]
             xpoints, ypoints = zip(*self._basevertices)
             xmin = min(xpoints)
             ymin = min(ypoints)
@@ -127,7 +132,7 @@ class Sprite(object):
         elif assettype is EllipseAsset:
             w = self.edgedef.halfw * 2
             h = self.edgedef.halfh * 2
-            self._basevertices = [(0,0), (0,h), (w,h), (w,0)]
+            self._basevertices = [(0, 0), (0, h), (w, h), (w, 0)]
 
     def _xformVertices(self):
         """
@@ -139,15 +144,16 @@ class Sprite(object):
         if self.scale != 1.0:
             sc = self.scale
             # center-relative, scaled coordinates
-            crsc = [((xp-x)*sc,(yp-y)*sc) for xp,yp in self._basevertices]
+            crsc = [((xp - x) * sc, (yp - y) * sc) for xp, yp in self._basevertices]
         else:
-            crsc = [(xp-x,yp-y) for xp,yp in self._basevertices]
-            
+            crsc = [(xp - x, yp - y) for xp, yp in self._basevertices]
+
         # absolute, rotated coordinates
         c = math.cos(self.rotation)
         s = math.sin(self.rotation)
-        self._absolutevertices = [(self.x + x*c + y*s, self.y + -x*s + y*c) 
-                                    for x,y in crsc]
+        self._absolutevertices = [
+            (self.x + x * c + y * s, self.y + -x * s + y * c) for x, y in crsc
+        ]
 
     def _setExtents(self):
         """
@@ -155,13 +161,19 @@ class Sprite(object):
         """
         if self._extentsdirty:
             if type(self.asset) is CircleAsset:
-                th = math.atan2(
-                    self.fycenter - 0.5, 0.5 - self.fxcenter) + self.rotation
+                th = (
+                    math.atan2(self.fycenter - 0.5, 0.5 - self.fxcenter) + self.rotation
+                )
                 D = self.width
-                L = math.sqrt(math.pow(self.fxcenter - 0.5, 2) + 
-                    math.pow(self.fycenter - 0.5, 2)) * D
-                self.xmin = self.x + int(L*math.cos(th)) - D//2
-                self.ymin = self.y - int(L*math.sin(th)) - D//2
+                L = (
+                    math.sqrt(
+                        math.pow(self.fxcenter - 0.5, 2)
+                        + math.pow(self.fycenter - 0.5, 2)
+                    )
+                    * D
+                )
+                self.xmin = self.x + int(L * math.cos(th)) - D // 2
+                self.ymin = self.y - int(L * math.sin(th)) - D // 2
                 self.xmax = self.xmin + D
                 self.ymax = self.ymin + D
             else:
@@ -181,7 +193,7 @@ class Sprite(object):
         defined with multiple images.
         """
         self.gfx.texture = self.asset[0]
-    
+
     def lastImage(self):
         """
         Select and display the *last* image used by this sprite. This only 
@@ -189,8 +201,8 @@ class Sprite(object):
         defined with multiple images.
         """
         self.gfx.texture = self.asset[-1]
-    
-    def nextImage(self, wrap = False):
+
+    def nextImage(self, wrap=False):
         """
         Select and display the *next* image used by this sprite.
         If the current image is already the *last* image, then
@@ -208,10 +220,10 @@ class Sprite(object):
             if wrap:
                 self._index = 0
             else:
-                self._index = len(self.asset)-1
+                self._index = len(self.asset) - 1
         self.gfx.texture = self.asset[self._index]
-    
-    def prevImage(self, wrap = False):
+
+    def prevImage(self, wrap=False):
         """
         Select and display the *previous* image used by this sprite.
         If the current image is already the *first* image, then
@@ -227,11 +239,11 @@ class Sprite(object):
         self._index -= 1
         if self._index < 0:
             if wrap:
-                self._index = len(self.asset)-1
+                self._index = len(self.asset) - 1
             else:
                 self._index = 0
         self.gfx.texture = self.asset[self._index]
-    
+
     def setImage(self, index=0):
         """
         Select the image to display by giving its `index`.
@@ -252,20 +264,18 @@ class Sprite(object):
         Obsolete. No op.
         """
         pass
-    
+
     def circularCollisionModel(self):
         """
         Obsolete. No op.
         """
         pass
-    
-    
 
     @property
     def index(self):
         """This is an integer index into the list of images available for this sprite."""
         return self._index
-        
+
     @index.setter
     def index(self, value):
         self._index = value
@@ -282,12 +292,12 @@ class Sprite(object):
         Assigning a value to the width will scale the image horizontally.
         """
         return self.gfx.width
-        
+
     @width.setter
     def width(self, value):
         self.gfx.width = value
         self._extentsdirty = True
-    
+
     @property
     def height(self):
         """
@@ -295,12 +305,12 @@ class Sprite(object):
         Assigning a value to the height will scale the image vertically.
         """
         return self.gfx.height
-    
+
     @height.setter
     def height(self, value):
         self.gfx.height = value
         self._extentsdirty = True
-        
+
     @property
     def x(self):
         """
@@ -308,7 +318,7 @@ class Sprite(object):
         a value to this attribute will move the sprite horizontally.
         """
         return self.gfx.position.x
-        
+
     @x.setter
     def x(self, value):
         delta_x = value - self.gfx.position.x
@@ -324,7 +334,7 @@ class Sprite(object):
         a value to this attribute will move the sprite vertically.
         """
         return self.gfx.position.y
-        
+
     @y.setter
     def y(self, value):
         delta_y = value - self.gfx.position.y
@@ -340,7 +350,7 @@ class Sprite(object):
         a value to this attribute will move the sprite to the new coordinates.
         """
         return (self.gfx.position.x, self.gfx.position.y)
-        
+
     @position.setter
     def position(self, value):
         self.x, self.y = value
@@ -358,7 +368,7 @@ class Sprite(object):
             return self.gfx.anchor.x
         except:
             return 0.0
-        
+
     @fxcenter.setter
     def fxcenter(self, value):
         try:
@@ -366,7 +376,7 @@ class Sprite(object):
             self._extentsdirty = True
         except:
             pass
-        
+
     @property
     def fycenter(self):
         """
@@ -380,7 +390,7 @@ class Sprite(object):
             return self.gfx.anchor.y
         except:
             return 0.0
-        
+
     @fycenter.setter
     def fycenter(self, value):
         try:
@@ -388,7 +398,7 @@ class Sprite(object):
             self._extentsdirty = True
         except:
             pass
-    
+
     @property
     def center(self):
         """
@@ -401,7 +411,7 @@ class Sprite(object):
             return (self.gfx.anchor.x, self.gfx.anchor.y)
         except:
             return (0.0, 0.0)
-        
+
     @center.setter
     def center(self, value):
         try:
@@ -410,7 +420,7 @@ class Sprite(object):
             self._extentsdirty = True
         except:
             pass
-    
+
     @property
     def visible(self):
         """
@@ -419,7 +429,7 @@ class Sprite(object):
         screen.
         """
         return self.gfx.visible
-    
+
     @visible.setter
     def visible(self, value):
         self.gfx.visible = value
@@ -435,7 +445,7 @@ class Sprite(object):
             return self.gfx.scale.x
         except AttributeError:
             return 1.0
-        
+
     @scale.setter
     def scale(self, value):
         self.gfx.scale.x = value
@@ -454,7 +464,7 @@ class Sprite(object):
             return -self.gfx.rotation
         except AttributeError:
             return 0.0
-        
+
     @rotation.setter
     def rotation(self, value):
         self.gfx.rotation = -value
@@ -464,7 +474,7 @@ class Sprite(object):
     @classmethod
     def collidingCircleWithPoly(cls, circ, poly):
         return True
-    
+
     def collidingPolyWithPoly(self, obj):
         return True
 
@@ -485,10 +495,12 @@ class Sprite(object):
             self._setExtents()
             obj._setExtents()
             # Gross check for overlap will usually rule out a collision
-            if (self.xmin > obj.xmax
+            if (
+                self.xmin > obj.xmax
                 or self.xmax < obj.xmin
                 or self.ymin > obj.ymax
-                or self.ymax < obj.ymin):
+                or self.ymax < obj.ymin
+            ):
                 return False
             # Otherwise, perform a careful overlap determination
             elif type(self.asset) is CircleAsset:
@@ -498,8 +510,8 @@ class Sprite(object):
                     sy = (self.ymin + self.ymax) / 2
                     ox = (obj.xmin + obj.xmax) / 2
                     oy = (obj.ymin + obj.ymax) / 2
-                    d = math.sqrt((sx-ox)**2 + (sy-oy)**2)
-                    return d <= self.width/2 + obj.width/2
+                    d = math.sqrt((sx - ox) ** 2 + (sy - oy) ** 2)
+                    return d <= self.width / 2 + obj.width / 2
                 else:
                     return self.collidingCircleWithPoly(self, obj)
             else:
@@ -507,10 +519,8 @@ class Sprite(object):
                     return self.collidingCircleWithPoly(obj, self)
                 else:
                     return self.collidingPolyWithPoly(obj)
-                
-                
 
-    def collidingWithSprites(self, sclass = None):
+    def collidingWithSprites(self, sclass=None):
         """
         Determine if this sprite is colliding with any other sprites
         of a certain class.

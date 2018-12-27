@@ -39,7 +39,9 @@ class _Point(_MathVisual, metaclass=ABCMeta):
         :rtype: boolean
         :returns: True if touching, False otherwise.
         """
-        return MathApp.distance(ppos, self._pposinputs.pos) < self._sstdinputs.size # pylint: disable=no-member
+        return (
+            MathApp.distance(ppos, self._pposinputs.pos) < self._sstdinputs.size
+        )  # pylint: disable=no-member
 
     def translate(self, pdisp):
         """
@@ -72,6 +74,7 @@ class _Point(_MathVisual, metaclass=ABCMeta):
     @abstractmethod
     def _buildAsset(self):
         pass
+
 
 class Point(_Point):
     """

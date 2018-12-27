@@ -1,6 +1,7 @@
 from time import time
 from ggame.mathapp import MathApp, _MathDynamic
 
+
 class Timer(_MathDynamic):
     """
     The Timer class instantiates an object whose basic function is to report
@@ -14,7 +15,7 @@ class Timer(_MathDynamic):
     .. literalinclude:: ../examples/mathtimer1.py
     
     """
-    
+
     def __init__(self):
         super().__init__()
         self._once = []
@@ -22,7 +23,7 @@ class Timer(_MathDynamic):
         self._time = 0
         self.reset()
         MathApp.addDynamic(self)  # always dynamically defined
-        
+
     def reset(self):
         """
         Set the reference time to the MathApp current time. If the timer is reset
@@ -31,7 +32,7 @@ class Timer(_MathDynamic):
         :returns: None
         """
         self._reset = MathApp.time
-            
+
     @property
     def time(self):
         """
@@ -39,7 +40,7 @@ class Timer(_MathDynamic):
         timer was created.
         """
         return self._time
-        
+
     @time.setter
     def time(self, value):
         pass
@@ -51,10 +52,14 @@ class Timer(_MathDynamic):
         while self._once and self._once[0][0] <= MathApp.time:
             tickinfo = self._once.pop(0)
             if tickinfo[1]:  # periodic?
-                nexttimers.append((tickinfo[1], self._callbacks[tickinfo][0]))  # delay, callback
-            calllist.append(self._callbacks[tickinfo].pop(0)) # remove callback and queue it
-            if not self._callbacks[tickinfo]: # if the callback list is empty
-                del self._callbacks[tickinfo] # remove the dictionary entry altogether
+                nexttimers.append(
+                    (tickinfo[1], self._callbacks[tickinfo][0])
+                )  # delay, callback
+            calllist.append(
+                self._callbacks[tickinfo].pop(0)
+            )  # remove callback and queue it
+            if not self._callbacks[tickinfo]:  # if the callback list is empty
+                del self._callbacks[tickinfo]  # remove the dictionary entry altogether
         for tickadd in nexttimers:
             self.callAfter(tickadd[0], tickadd[1], True)  # keep it going
         for call in calllist:
@@ -80,7 +85,7 @@ class Timer(_MathDynamic):
         callbacklist.append(callback)
         self._callbacks[key] = callbacklist
         self._once.sort()
-        
+
     def callAt(self, time, callback):
         """
         Set a callback to occur at a specific time (seconds since
@@ -92,8 +97,8 @@ class Timer(_MathDynamic):
         :param function callback: The callback function to call
         :returns: None
         """
-        self.callAfter(time-self._time, callback)
-        
+        self.callAfter(time - self._time, callback)
+
     def callEvery(self, period, callback):
         """
         Set a callback to occur periodically. The callback 
@@ -110,4 +115,3 @@ class Timer(_MathDynamic):
 
     def __call__(self):
         return self._time
-

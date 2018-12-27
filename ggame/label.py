@@ -53,14 +53,14 @@ class Label(_MathVisual):
 
     def _buildAsset(self):
         return TextAsset(
-            self._nposinputs.text(), # pylint: disable=no-member
+            self._nposinputs.text(),  # pylint: disable=no-member
             style="{0}px Courier".format(self._stdinputs.size()),
             width=self._stdinputs.width(),
             fill=self._stdinputs.color(),
         )
 
     def __call__(self):
-        return self._nposinputs.text() # pylint: disable=no-member
+        return self._nposinputs.text()  # pylint: disable=no-member
 
     def physicalPointTouching(self, ppos):
         _ppos = self._spposinputs.pos
