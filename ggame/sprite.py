@@ -1,8 +1,5 @@
-try:
-    from ggame.sysdeps import *
-except:
-    from sysdeps import *
 import math
+from ggame.sysdeps import *
 from ggame.asset import *
 from ggame.app import *
 
@@ -16,48 +13,48 @@ class Sprite(object):
     When subclassing the Sprite class, you may customize the initialization
     code to use a specific asset. A 'step' or 'poll' method may be added
     for handling per-frame actions (e.g. checking for collisions). Step or poll
-    functions are not automatically called by the :class:`~ggame.app.App` class, 
+    functions are not automatically called by the :class:`~ggame.app.App` class,
     but you may subclass the :class:`~ggame.app.App` class in order to do this.
 
     Furthermore, you may wish to define event callback methods in your customized
     sprite class. With customized creation, event handling, and periodic processing
-    you can achieve fully autonomous behavior for your sprite objects. 
+    you can achieve fully autonomous behavior for your sprite objects.
 
     :param asset asset: An existing graphical asset
-    
-    :param tuple(int,int) pos:  The sprite position may be provided, which 
-        specifies the starting (x,y) coordinates of the sprite on the screen. 
-        By default, the position of a sprite defines the location of its upper-left 
+
+    :param tuple(int,int) pos:  The sprite position may be provided, which
+        specifies the starting (x,y) coordinates of the sprite on the screen.
+        By default, the position of a sprite defines the location of its upper-left
         hand corner. This behavior can be modified by customizing its
         :data:`center`.
-    
+
     :param asset edgedef: An edge definition asset may be provided, which
         specifies an asset that will be used to define the boundaries of
-        the sprite for the purpose of collision detection. If no `edgedef` 
+        the sprite for the purpose of collision detection. If no `edgedef`
         asset is given, the required asset is used, which will be a rectangular
         asset in the case of an image texture. This option is typically used
         to define a visible image outline for a texture-based sprite that has
         a transparent texture image background.
-    
+
     :returns: Nothing. If the position is on screen the sprite will be displayed
         in the browser.
-    
+
     Example::
-    
+
         from ggame.sprite import Sprite
         from ggame.asset import ImageAsset, CircleAsset
         from ggame.app import App
-        
+
         player = Sprite(
-            ImageAsset("player.png", 
-            (100,100), 
+            ImageAsset("player.png",
+            (100,100),
             CircleAsset(50))
 
         App().run()
 
     This creates a sprite using the 'player.png' image, positioned with its
-    upper-left corner at coordinates (100,100) and with a 50 pixel radius 
-    circular collision border. 
+    upper-left corner at coordinates (100,100) and with a 50 pixel radius
+    circular collision border.
 
     """
 
@@ -188,7 +185,7 @@ class Sprite(object):
 
     def firstImage(self):
         """
-        Select and display the *first* image used by this sprite. This only 
+        Select and display the *first* image used by this sprite. This only
         does something useful if the asset is an :class:`~ggame.asset.ImageAsset`
         defined with multiple images.
         """
@@ -196,7 +193,7 @@ class Sprite(object):
 
     def lastImage(self):
         """
-        Select and display the *last* image used by this sprite. This only 
+        Select and display the *last* image used by this sprite. This only
         does something useful if the asset is an :class:`~ggame.asset.ImageAsset`
         defined with multiple images.
         """
@@ -207,12 +204,12 @@ class Sprite(object):
         Select and display the *next* image used by this sprite.
         If the current image is already the *last* image, then
         the image is not advanced.
-        
-        :param boolean wrap: If `True`, then calling 
+
+        :param boolean wrap: If `True`, then calling
             :meth:`nextImage` on the last image will cause the *first*
             image to be loaded.
-        
-        This only does something useful if the asset is an 
+
+        This only does something useful if the asset is an
         :class:`~ggame.asset.ImageAsset` defined with multiple images.
         """
         self._index += 1
@@ -229,11 +226,11 @@ class Sprite(object):
         If the current image is already the *first* image, then
         the image is not changed.
 
-        :param boolean wrap: If `True`, then calling 
+        :param boolean wrap: If `True`, then calling
             :meth:`prevImage` on the first image will cause the *last*
             image to be loaded.
-        
-        This only does something useful if the asset is an 
+
+        This only does something useful if the asset is an
         :class:`~ggame.asset.ImageAsset` defined with multiple images.
         """
         self._index -= 1
@@ -247,14 +244,14 @@ class Sprite(object):
     def setImage(self, index=0):
         """
         Select the image to display by giving its `index`.
-        
+
         :param int index: An index to specify the image to display.
             A value of zero represents the *first* image in the asset.
 
         This is equivalent to setting the :data:`index` property
         directly.
-        
-        This only does something useful if the asset is an 
+
+        This only does something useful if the asset is an
         :class:`~ggame.asset.ImageAsset` defined with multiple images.
         """
         self.index = index
@@ -360,9 +357,9 @@ class Sprite(object):
         """
         This represents the horizontal position of the sprite "center", as a floating
         point number between 0.0 and 1.0. A value of 0.0 means that the x-coordinate
-        of the sprite refers to its left hand edge. A value of 1.0 refers to its 
+        of the sprite refers to its left hand edge. A value of 1.0 refers to its
         right hand edge. Any value in between may be specified. Values may be assigned
-        to this attribute. 
+        to this attribute.
         """
         try:
             return self.gfx.anchor.x
@@ -382,9 +379,9 @@ class Sprite(object):
         """
         This represents the vertical position of the sprite "center", as a floating
         point number between 0.0 and 1.0. A value of 0.0 means that the x-coordinate
-        of the sprite refers to its top edge. A value of 1.0 refers to its 
+        of the sprite refers to its top edge. A value of 1.0 refers to its
         bottom edge. Any value in between may be specified. Values may be assigned
-        to this attribute. 
+        to this attribute.
         """
         try:
             return self.gfx.anchor.y
@@ -402,9 +399,9 @@ class Sprite(object):
     @property
     def center(self):
         """
-        This attribute represents the horizontal and vertical position of the 
-        sprite "center" as a tuple of floating point numbers. See the 
-        descriptions for :data:`fxcenter` and :data:`fycenter` for 
+        This attribute represents the horizontal and vertical position of the
+        sprite "center" as a tuple of floating point numbers. See the
+        descriptions for :data:`fxcenter` and :data:`fycenter` for
         more details.
         """
         try:
@@ -425,7 +422,7 @@ class Sprite(object):
     def visible(self):
         """
         This boolean attribute may be used to change the visibility of the sprite. Setting
-        `~ggame.Sprite.visible` to `False` will prevent the sprite from rendering on the 
+        `~ggame.Sprite.visible` to `False` will prevent the sprite from rendering on the
         screen.
         """
         return self.gfx.visible
@@ -437,7 +434,7 @@ class Sprite(object):
     @property
     def scale(self):
         """
-        This attribute may be used to change the size of the sprite ('scale' it) on the 
+        This attribute may be used to change the size of the sprite ('scale' it) on the
         screen. Value may be a floating point number. A value of 1.0 means that the sprite
         image will keep its original size. A value of 2.0 would double it, etc.
         """
@@ -456,7 +453,7 @@ class Sprite(object):
     def rotation(self):
         """
         This attribute may be used to change the rotation of the sprite on the screen.
-        Value may be a floating point number. A value of 0.0 means no rotation. A value 
+        Value may be a floating point number. A value of 0.0 means no rotation. A value
         of 1.0 means  a rotation of 1 radian in a counter-clockwise direction. One radian
         is 180/pi or approximately 57.3 degrees.
         """
@@ -482,11 +479,11 @@ class Sprite(object):
         """
         Determine if this sprite is currently overlapping another
         sprite object.
-        
+
         :param Sprite obj: A reference to another Sprite object.
-        
+
         :rtype: boolean
-        
+
         :returns: `True` if this the sprites are overlapping, `False` otherwise.
         """
         if self is obj:
@@ -524,14 +521,14 @@ class Sprite(object):
         """
         Determine if this sprite is colliding with any other sprites
         of a certain class.
-        
+
         :param class sclass: A class identifier that is either :class:`Sprite`
             or a subclass of it that identifies the class of sprites to check
             for collisions. If `None` then all objects that are subclassed from
             the :class:`Sprite` class are checked.
-            
+
         :rtype: list
-        
+
         :returns: A (potentially empty) list of sprite objects of the given
             class that are overlapping with this sprite.
         """
@@ -543,9 +540,9 @@ class Sprite(object):
 
     def destroy(self):
         """
-        Prevent the sprite from being displayed or checked in collision 
+        Prevent the sprite from being displayed or checked in collision
         detection. Once this is called, the sprite can no longer be displayed
-        or used. If you only want to prevent a sprite from being displayed, 
+        or used. If you only want to prevent a sprite from being displayed,
         set the :data:`visible` attribute to `False`.
         """
         App._remove(self)

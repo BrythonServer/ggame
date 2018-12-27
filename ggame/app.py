@@ -1,4 +1,3 @@
-# app.py
 """
 The ggame :class:`App` class encapsulates functionality required for
 initiating a graphics window in the browser, executing code using Javascript

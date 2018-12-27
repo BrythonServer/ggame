@@ -401,6 +401,18 @@ if module_exists("PIL"):
         def load(self):
             pass
 
+        def loop(self):
+            pass
+
+        def stop(self):
+            pass
+
+        def getVolume(self):
+            pass
+
+        def setVolume(self, vol):
+            pass
+
         def play(self):
             print("Playing sound object {}".format(self.url))
 
