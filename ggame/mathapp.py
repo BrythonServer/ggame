@@ -33,9 +33,10 @@ class MathApp(App):
 
     :returns: MathApp instance
     """
+
     _DEFAULTSCALE = 200
-    scale = _DEFAULTSCALE   # pixels per unit
-    _xcenter = 0    # center of screen in units
+    scale = _DEFAULTSCALE  # pixels per unit
+    _xcenter = 0  # center of screen in units
     _ycenter = 0
     _mathVisualList = []
     _mathDynamicList = []
@@ -49,7 +50,7 @@ class MathApp(App):
         MathApp.time = 0
         self._starttime = time()
         super().__init__()
-        MathApp.scale = scale   # pixels per unit
+        MathApp.scale = scale  # pixels per unit
         # register event callbacks
         self.listenMouseEvent("click", self._handleMouseClick)
         self.listenMouseEvent("mousedown", self._handleMouseDown)
@@ -101,8 +102,10 @@ class MathApp(App):
             return int(physheight / 2 - (yvalue - ycenter) * yscale)
 
         try:
-            return (xxform(lp[0], cls.scale, cls._xcenter, cls.win.width),
-                    yxform(lp[1], cls.scale, cls._ycenter, cls.win.height))
+            return (
+                xxform(lp[0], cls.scale, cls._xcenter, cls.win.width),
+                yxform(lp[1], cls.scale, cls._ycenter, cls.win.height),
+            )
         except AttributeError:
             return lp
 
@@ -128,8 +131,10 @@ class MathApp(App):
             return (physheight / 2 - yvalue) / yscale + ycenter
 
         try:
-            return (xxform(pp[0], cls.scale, cls._xcenter, cls.win.width),
-                    yxform(pp[1], cls.scale, cls._ycenter, cls.win.height))
+            return (
+                xxform(pp[0], cls.scale, cls._xcenter, cls.win.width),
+                yxform(pp[1], cls.scale, cls._ycenter, cls.win.height),
+            )
         except AttributeError:
             return pp
 
@@ -209,8 +214,9 @@ class MathApp(App):
                 self._mouse_down_object = obj
                 break
         for obj in self._mathMovableList:
-            if (obj.physicalPointTouching((event.x, event.y)) and not
-                    (obj.strokable and obj.canstroke((event.x, event.y)))):
+            if obj.physicalPointTouching((event.x, event.y)) and not (
+                obj.strokable and obj.canstroke((event.x, event.y))
+            ):
                 self._mouse_captured_object = obj
                 break
         if not self._mouse_captured_object:
@@ -240,7 +246,8 @@ class MathApp(App):
                 self._mouse_captured_object.translate((dx, dy))
             elif self._mouse_stroked_object:
                 self._mouse_stroked_object.stroke(
-                    (self._mouse_x, self._mouse_y), (dx, dy))
+                    (self._mouse_x, self._mouse_y), (dx, dy)
+                )
             else:
                 lmove = self.translatePhysicalToLogical((dx, dy))
                 MathApp._xcenter -= lmove[0]
@@ -300,9 +307,8 @@ class MathApp(App):
             handler(
                 viewchange=viewchange,
                 scale=self.scale,
-                center=(
-                    self._xcenter,
-                    self._ycenter))
+                center=(self._xcenter, self._ycenter),
+            )
 
     @classmethod
     def distance(cls, pos1, pos2):
@@ -314,7 +320,7 @@ class MathApp(App):
         :rtype: float
         :returns: The distance between the two points (using Pythagoras)
         """
-        return sqrt((pos2[0] - pos1[0])**2 + (pos2[1] - pos1[1])**2)
+        return sqrt((pos2[0] - pos1[0]) ** 2 + (pos2[1] - pos1[1]) ** 2)
 
     @classmethod
     def addVisual(cls, obj):
@@ -442,7 +448,6 @@ class MathApp(App):
 
 
 class _MathDynamic(metaclass=ABCMeta):
-
     def __init__(self):
         self._dynamic = False  # not switched on, by default!
 
@@ -512,7 +517,7 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
 
     def __init__(self, asset, *args, **kwargs):
         MathApp.addVisual(self)
-        #Sprite.__init__(self, asset, args[0])
+        # Sprite.__init__(self, asset, args[0])
         _MathDynamic.__init__(self)
         self._movable = False
         self._selectable = False
@@ -525,36 +530,38 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         """
         True if object is tracking UI mouse button as down.
         """
-        self._positioning = kwargs.get('positioning', 'logical')
+        self._positioning = kwargs.get("positioning", "logical")
         # positional inputs
-        self._pi = namedtuple('PI', self._posinputsdef)
+        self._pi = namedtuple("PI", self._posinputsdef)
         # nonpositional inputs
-        self._npi = namedtuple('NPI', self._nonposinputsdef)
+        self._npi = namedtuple("NPI", self._nonposinputsdef)
         # standard inputs (not positional)
-        standardargs = ['size', 'width', 'color', 'style']
-        self._si = namedtuple('SI', standardargs)
+        standardargs = ["size", "width", "color", "style"]
+        self._si = namedtuple("SI", standardargs)
         # correct number of args?
         if len(args) != len(self._posinputsdef) + len(self._nonposinputsdef):
             raise TypeError("Incorrect number of parameters provided")
         self._args = args
         # generated named tuple of functions from positional inputs
-        self._posinputs = self._pi(*[self.eval(p)
-                                     for p in args][:len(self._posinputsdef)])
+        self._posinputs = self._pi(
+            *[self.eval(p) for p in args][: len(self._posinputsdef)]
+        )
         self._getPhysicalInputs()
         # first positional argument must be a sprite position!
         Sprite.__init__(self, asset, self._pposinputs[0])
         # generated named tuple of functions from nonpositional inputs
         if len(self._nonposinputsdef) > 0:
             self._nposinputs = self._npi(
-                *[self.eval(p) for p in args]
-                [(-1 * len(self._nonposinputsdef)):])
+                *[self.eval(p) for p in args][(-1 * len(self._nonposinputsdef)) :]
+            )
         else:
             self._nposinputs = []
         self._stdinputs = self._si(
-            self.eval(kwargs.get('size', self._defaultsize)),
-            self.eval(kwargs.get('width', self._defaultwidth)),
-            self.eval(kwargs.get('color', self._defaultcolor)),
-            self.eval(kwargs.get('style', self._defaultstyle)))
+            self.eval(kwargs.get("size", self._defaultsize)),
+            self.eval(kwargs.get("width", self._defaultwidth)),
+            self.eval(kwargs.get("color", self._defaultcolor)),
+            self.eval(kwargs.get("style", self._defaultstyle)),
+        )
         self._sposinputs = self._pi(*[0] * len(self._posinputs))
         self._spposinputs = self._pi(*self._pposinputs)
         self._snposinputs = self._npi(*[0] * len(self._nposinputs))
@@ -564,24 +571,28 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         self.touchAsset()
 
     def _saveInputs(self, inputs):
-        (self._sposinputs,
-         self._spposinputs,
-         self._snposinputs,
-         self._sstdinputs) = inputs
+        (
+            self._sposinputs,
+            self._spposinputs,
+            self._snposinputs,
+            self._sstdinputs,
+        ) = inputs
 
     def _getInputs(self):
         self._getPhysicalInputs()
-        return (self._pi(*[p() for p in self._posinputs]),
-                self._pi(*self._pposinputs),
-                self._npi(*[p() for p in self._nposinputs]),
-                self._si(*[p() for p in self._stdinputs]))
+        return (
+            self._pi(*[p() for p in self._posinputs]),
+            self._pi(*self._pposinputs),
+            self._npi(*[p() for p in self._nposinputs]),
+            self._si(*[p() for p in self._stdinputs]),
+        )
 
     def _getPhysicalInputs(self):
         """
         Translate all positional inputs to physical
         """
         pplist = []
-        if self._positioning == 'logical':
+        if self._positioning == "logical":
             for p in self._posinputs:
                 pval = p()
                 try:
@@ -596,9 +607,10 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
 
     def _inputsChanged(self, saved):
         return (
-            self._spposinputs != saved[1] or
-            self._snposinputs != saved[2] or
-            self._sstdinputs != saved[3])
+            self._spposinputs != saved[1]
+            or self._snposinputs != saved[2]
+            or self._sstdinputs != saved[3]
+        )
 
     def destroy(self):
         MathApp.removeVisual(self)
@@ -618,8 +630,8 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
             self.gfx.visible = visible
             if MathApp.win is not None:
                 MathApp.win.add(self.gfx)
-        if hasattr(self._pposinputs, 'pos'):
-            self.position = getattr(self._pposinputs, 'pos')
+        if hasattr(self._pposinputs, "pos"):
+            self.position = getattr(self._pposinputs, "pos")
 
     @property
     def positioning(self):

@@ -24,12 +24,12 @@ class TestLogicMethods(unittest.TestCase):
     
         d2 = LEDIndicator((1.5,0.45), IC2)
         
-        IC2.In = b1, b2
-        IC2.In = IC2.In + [b3, b4]
+        IC2.inp = b1, b2
+        IC2.inp = IC2.inp + [b3, b4]
         
         button = GlassButton(None, (0,0))
         LED = LEDIndicator((0,-1), IC1)
-        IC1.In = button 
+        IC1.inp = button 
     
     
         t1 = MetalToggle(1, (1,-1))
@@ -55,14 +55,14 @@ class TestLogicMethods(unittest.TestCase):
     
         b1 = GlassButton(None, (0,0))
         b2 = GlassButton(None, (0,-0.5))
-        Inv1.In = b1
-        Inv2.In = b2
+        Inv1.inp = b1
+        Inv2.inp = b2
         
-        IC1.SetInput('R', Inv1)
-        IC1.SetInput('S', Inv2)
+        IC1.setinput('R', Inv1)
+        IC1.setinput('S', Inv2)
     
         d1 = LEDIndicator((0.5,0), IC1)
-        d2 = LEDIndicator((0.5,-0.5), IC1.Q_)
+        d2 = LEDIndicator((0.5,-0.5), IC1.q_)
         
         ma = MathApp()
         ma.run()
@@ -74,31 +74,7 @@ class TestLogicMethods(unittest.TestCase):
         for o in [IC1, Inv1, Inv2, b1, b2, d1, d2]:
             o.destroy()
         
-    """  Failing test on unlimited recursion 
-    def test_JKGate(self):
-        IC1 = BoolJKFF()
-        t1 = MetalToggle(0, (0,0.5))
-        b1 = GlassButton(None, (0,0))
-        t2 = MetalToggle(0, (0,-0.5))
-    
-        IC1.SetInput('J', t1)
-        IC1.SetInput('K', t2)
-        IC1.SetInput('CLK', b1)
-    
-        d1 = LEDIndicator((0.5,0.5), IC1)
-        d2 = LEDIndicator((0.5,-0.5), IC1.Q_)
 
-        ma = MathApp()
-        ma.run()
-        
-        for i in range(10):
-            time.sleep(1/60)
-            ma.step()
-
-        for o in [IC1, t1, b1, t2, d1, d2]:
-            o.destroy()
-    """
-        
 
 if __name__ == '__main__':
     unittest.main()
