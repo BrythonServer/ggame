@@ -14,7 +14,8 @@ from ggame.asset import (
 )
 from ggame.app import App
 
-class Sprite(object):  # pylint: disable=too-many-public-methods,useless-object-inheritance
+# pylint: disable=useless-object-inheritance
+class Sprite(object):  # pylint: disable=too-many-public-methods
     """
     The Sprite class combines the idea of a visual/graphical asset, a
     position on the screen, and *behavior*. Although the Sprite can be
