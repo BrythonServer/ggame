@@ -167,7 +167,9 @@ class Circle(_MathVisual):
             iterations = iterations + 1
             if iterations > 20:
                 break
-            if endside is not None and startside is not None: # and endside != startside
+            if (
+                endside is not None and startside is not None
+            ):  # and endside != startside
                 plist.append(nextvertex[endside][cw])
                 endside = nextsides[endside][cw]
 

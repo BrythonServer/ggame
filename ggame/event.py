@@ -10,7 +10,7 @@ occurred.
 import traceback
 
 
-class _Event():
+class _Event:
     def __init__(self, hwevent):
         self.hwevent = hwevent
         self.type = hwevent.type

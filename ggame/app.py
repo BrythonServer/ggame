@@ -13,7 +13,7 @@ from ggame.sysdeps import GFX_Window
 from ggame.event import MouseEvent, KeyEvent
 
 
-class App():
+class App:
     """
     The :class:`App` class is a (typically subclassed) class that encapsulates
     handling of the display system, and processing user events. The :class:`App`

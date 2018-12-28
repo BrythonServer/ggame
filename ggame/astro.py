@@ -50,13 +50,11 @@ class Planet(MathApp):
         )
         super().__init__(scale)
 
-
     def run(self, userfunc=None):
         """
         Execute the Planet (and Rocket) simulation without setting the initial view.
         """
         self.runWithRocket()
-
 
     def runWithRocket(self, rocket=None):
         """
