@@ -14,7 +14,7 @@ from ggame.sysdeps import (
 )
 
 
-class Frame:
+class Frame(object):  # pylint: disable=useless-object-inheritance
     """
     Frame is a utility class for expressing the idea of a rectangular region.
 
@@ -103,7 +103,7 @@ class Frame:
         self.y += value[1] - c[1]
 
 
-class _Asset:
+class _Asset(object):  # pylint: disable=useless-object-inheritance
     """
     Base class for all game asset objects.
 

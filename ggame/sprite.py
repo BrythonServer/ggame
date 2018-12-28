@@ -14,8 +14,7 @@ from ggame.asset import (
 )
 from ggame.app import App
 
-
-class Sprite:  # pylint: disable=too-many-public-methods
+class Sprite(object):  # pylint: disable=too-many-public-methods,useless-object-inheritance
     """
     The Sprite class combines the idea of a visual/graphical asset, a
     position on the screen, and *behavior*. Although the Sprite can be
@@ -69,12 +68,7 @@ class Sprite:  # pylint: disable=too-many-public-methods
 
     """
 
-    _rectCollision = "rect"
-    _circCollision = "circ"
-
     def __init__(self, asset, pos=(0, 0), edgedef=None):
-        """
-        """
         self._index = 0
         if isinstance(asset, ImageAsset):
             self.asset = asset

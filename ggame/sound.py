@@ -22,7 +22,7 @@ class SoundAsset:
         """
 
 
-class Sound:
+class Sound(object):  # pylint: disable=useless-object-inheritance
     """
     The Sound class represents a sound, with methods for controlling
     when and how the sound is played in the application.
