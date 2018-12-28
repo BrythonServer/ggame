@@ -137,15 +137,15 @@ class App(object):
         App._spritesdict[type(obj)].remove(obj)
 
     def _animate(self, dummy):
-        try:
-            if self.userfunc:
-                self.userfunc()
-            else:
-                self.step()
-        except BaseException:
-            traceback.print_exc()
-            raise
         if App.win:
+            try:
+                if self.userfunc:
+                    self.userfunc()
+                else:
+                    self.step()
+            except BaseException:
+                traceback.print_exc()
+                raise
             App.win.animate(self._animate)
 
     @classmethod
