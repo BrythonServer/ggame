@@ -7,13 +7,13 @@
 
 # only test the prospective commit
 # from: https://codeinthehole.com/tips/tips-for-using-a-git-pre-commit-hook/
-STASH_NAME="pre-commit-$(date +%s)"
-git stash save -q --keep-index $STASH_NAME
+#STASH_NAME="pre-commit-$(date +%s)"
+#git stash save -q --keep-index $STASH_NAME
 
 ./run_tests.sh
 
-RESULT=$?
-STASHES=$(git stash list)
-if [[ $STASHES == "$STASH_NAME" ]]; then
-  git stash pop -q
-fi
+#RESULT=$?
+#STASHES=$(git stash list)
+#if [[ $STASHES == "$STASH_NAME" ]]; then
+#  git stash pop -q
+#fi

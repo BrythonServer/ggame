@@ -11,6 +11,7 @@ class Bunny(Sprite):
 
     :param (float,float) position: The screen coordinates of the new rabbit.
     """
+
     asset = ImageAsset("bunny.png")
 
     def __init__(self, position):

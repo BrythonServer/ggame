@@ -15,7 +15,7 @@ from ggame.asset import (
 from ggame.app import App
 
 
-class Sprite(object):  #pylint: disable=too-many-public-methods
+class Sprite(object):  # pylint: disable=too-many-public-methods
     """
     The Sprite class combines the idea of a visual/graphical asset, a
     position on the screen, and *behavior*. Although the Sprite can be
@@ -80,16 +80,12 @@ class Sprite(object):  #pylint: disable=too-many-public-methods
             self.asset = asset
             try:
                 self.gfx = GFX_Sprite(asset.gfx)  # gfx is PIXI Sprite
-            except:  #pylint: disable=bare-except
+            except:  # pylint: disable=bare-except
                 self.gfx = None
                 raise
-        elif isinstance(asset, (
-            RectangleAsset,
-            CircleAsset,
-            EllipseAsset,
-            PolygonAsset,
-            LineAsset,
-        )):
+        elif isinstance(
+            asset, (RectangleAsset, CircleAsset, EllipseAsset, PolygonAsset, LineAsset)
+        ):
             self.asset = asset
             self.gfx = GFX_Sprite(asset.gfx.generateTexture())
         elif isinstance(asset, TextAsset):
@@ -291,7 +287,7 @@ class Sprite(object):  #pylint: disable=too-many-public-methods
         self._index = value
         try:
             self.gfx.texture = self.asset[self._index]
-        except:  #pylint: disable=bare-except
+        except:  # pylint: disable=bare-except
             self._index = 0
             self.gfx.texture = self.asset[self._index]
 
@@ -334,7 +330,7 @@ class Sprite(object):  #pylint: disable=too-many-public-methods
         delta_x = value - self.gfx.position.x
         self.xmax += delta_x
         self.xmin += delta_x
-        #Adjust extents directly with low overhead
+        # Adjust extents directly with low overhead
         self.gfx.position.x = value
 
     @property
@@ -350,7 +346,7 @@ class Sprite(object):  #pylint: disable=too-many-public-methods
         delta_y = value - self.gfx.position.y
         self.ymax += delta_y
         self.ymin += delta_y
-        #Adjust extents directly with low overhead
+        # Adjust extents directly with low overhead
         self.gfx.position.y = value
 
     @property
@@ -376,7 +372,7 @@ class Sprite(object):  #pylint: disable=too-many-public-methods
         """
         try:
             return self.gfx.anchor.x
-        except:  #pylint: disable=bare-except
+        except:  # pylint: disable=bare-except
             return 0.0
 
     @fxcenter.setter
@@ -384,7 +380,7 @@ class Sprite(object):  #pylint: disable=too-many-public-methods
         try:
             self.gfx.anchor.x = value
             self._extentsdirty = True
-        except:  #pylint: disable=bare-except
+        except:  # pylint: disable=bare-except
             pass
 
     @property
@@ -398,7 +394,7 @@ class Sprite(object):  #pylint: disable=too-many-public-methods
         """
         try:
             return self.gfx.anchor.y
-        except:  #pylint: disable=bare-except
+        except:  # pylint: disable=bare-except
             return 0.0
 
     @fycenter.setter
@@ -406,7 +402,7 @@ class Sprite(object):  #pylint: disable=too-many-public-methods
         try:
             self.gfx.anchor.y = value
             self._extentsdirty = True
-        except:  #pylint: disable=bare-except
+        except:  # pylint: disable=bare-except
             pass
 
     @property
@@ -419,7 +415,7 @@ class Sprite(object):  #pylint: disable=too-many-public-methods
         """
         try:
             return (self.gfx.anchor.x, self.gfx.anchor.y)
-        except:  #pylint: disable=bare-except
+        except:  # pylint: disable=bare-except
             return (0.0, 0.0)
 
     @center.setter
@@ -428,7 +424,7 @@ class Sprite(object):  #pylint: disable=too-many-public-methods
             self.gfx.anchor.x = value[0]
             self.gfx.anchor.y = value[1]
             self._extentsdirty = True
-        except:  #pylint: disable=bare-except
+        except:  # pylint: disable=bare-except
             pass
 
     @property
@@ -482,7 +478,7 @@ class Sprite(object):  #pylint: disable=too-many-public-methods
             self._extentsdirty = True
 
     @classmethod
-    def collidingCircleWithPoly(cls, circ, poly): #pylint: disable=unused-argument
+    def collidingCircleWithPoly(cls, circ, poly):  # pylint: disable=unused-argument
         """
         Determine if a CircleAsset sprite overlaps with a PolygonAsset sprite. This
         method is called after determining that the two objects are overlapping in their
@@ -495,7 +491,9 @@ class Sprite(object):  #pylint: disable=too-many-public-methods
         """
         return True  # no implementation yet
 
-    def collidingPolyWithPoly(self, obj):  #pylint: disable=unused-argument, no-self-use
+    def collidingPolyWithPoly(
+        self, obj
+    ):  # pylint: disable=unused-argument, no-self-use
         """
         Determine if a pair of PolygonAsset-based sprites are overlapping. This
         method is called after determining that the two objects are overlapping in their

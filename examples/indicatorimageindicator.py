@@ -20,7 +20,7 @@ BUTTON.scale = 0.5
 LIGHT = ImageIndicator(
     "ggimages/red-led-off-on.png",
     (100, 100),
-    BUTTON,     # button object supplies the indicator state.
+    BUTTON,  # button object supplies the indicator state.
     positioning="physical",
     frame=Frame(0, 0, 600, 600),
     qty=2,

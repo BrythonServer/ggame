@@ -2,7 +2,6 @@ import sys
 
 sys.path.append("..")
 
-import examples.mathtimer1
 import examples.bunnyhop
 import examples.onebunny
 
@@ -14,7 +13,7 @@ import examples.assetpolygon
 import examples.assettext
 
 # Circle Examples
-import examples.mathcircle
+import examples.circlecircle
 
 # Astro Examples
 import examples.astroplanet
@@ -36,7 +35,7 @@ import examples.inputpointinputimagebutton
 import examples.labellabel
 
 # Timer Examples
-import examples.mathtimer1
+import examples.timertimer
 
 # Point Examples
 import examples.pointpoint
