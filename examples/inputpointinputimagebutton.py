@@ -6,7 +6,7 @@ from ggame.mathapp import MathApp
 from ggame.asset import Frame
 
 
-def pressbutton(dummy):
+def pressbutton(_button):
     """
     Callback function executed when button is pressed.
     """

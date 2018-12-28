@@ -14,7 +14,7 @@ from ggame.sysdeps import (
 )
 
 
-class Frame(object):
+class Frame():
     """
     Frame is a utility class for expressing the idea of a rectangular region.
 
@@ -103,7 +103,7 @@ class Frame(object):
         self.y += value[1] - c[1]
 
 
-class _Asset(object):
+class _Asset():
     """
     Base class for all game asset objects.
 
@@ -256,7 +256,7 @@ class ImageAsset(_Asset):
             self.gfxlist.append(gfx)
 
 
-class Color(object):
+class Color():
     """
     The Color class is used to represent colors and/or colors with
     transparency.
@@ -304,7 +304,7 @@ Default white color
 """
 
 
-class LineStyle(object):
+class LineStyle():
     """
     The LineStyle class is used to represent line style when
     drawing geometrical objects such as rectangles, ellipses, etc.

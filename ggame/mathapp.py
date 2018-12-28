@@ -225,7 +225,7 @@ class MathApp(App):
                     self._mouse_stroked_object = obj
                     break
 
-    def _handleMouseUp(self, dummy):
+    def _handleMouseUp(self, _event):
         if self._mouse_down_object:
             self._mouse_down_object.mouseup()
             self._mouse_down_object = None
@@ -433,11 +433,11 @@ class MathApp(App):
             cls._mathStrokableList.remove(obj)
 
     @classmethod
-    def destroy(cls, *args):
+    def destroy(cls):
         """
         This will clean up any class level storage.
         """
-        App.destroy(*args)  # hit the App class first
+        App.destroy()  # hit the App class first
         MathApp.time = 0
         MathApp._mathVisualList = []
         MathApp._mathDynamicList = []
@@ -461,7 +461,6 @@ class _MathDynamic(metaclass=ABCMeta):
         """
         Override in your child class to perform periodic processing.
         """
-        pass
 
     def eval(self, val):
         """
@@ -477,8 +476,7 @@ class _MathDynamic(metaclass=ABCMeta):
         if callable(val):
             self._setDynamic()  # dynamically defined .. must step
             return val
-        else:
-            return lambda: val
+        return lambda: val
 
     def _setDynamic(self):
         MathApp.addDynamic(self)
@@ -550,7 +548,7 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
         # first positional argument must be a sprite position!
         Sprite.__init__(self, asset, self._pposinputs[0])
         # generated named tuple of functions from nonpositional inputs
-        if len(self._nonposinputsdef) > 0:
+        if self._nonposinputsdef:
             self._nposinputs = self._npi(
                 *[self.eval(p) for p in args][(-1 * len(self._nonposinputsdef)) :]
             )
@@ -736,7 +734,6 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
 
         This method is intended to be overridden.
         """
-        pass
 
     @abstractmethod
     def physicalPointTouching(self, ppos):
@@ -749,7 +746,6 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
 
         This method **must** be overridden.
         """
-        pass
 
     @abstractmethod
     def translate(self, pdisp):
@@ -762,7 +758,6 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
 
         This method **must** be overridden.
         """
-        pass
 
     def stroke(self, ppos, pdisp):
         """
@@ -776,7 +771,6 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
 
         This method is intended to be overridden.
         """
-        pass
 
     def canStroke(self, ppos):
         """
@@ -789,7 +783,6 @@ class _MathVisual(Sprite, _MathDynamic, metaclass=ABCMeta):
 
         This method is intended to be overridden.
         """
-        pass
 
     def touchAsset(self, force=False):
         """

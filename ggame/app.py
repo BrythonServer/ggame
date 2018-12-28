@@ -13,7 +13,7 @@ from ggame.sysdeps import GFX_Window
 from ggame.event import MouseEvent, KeyEvent
 
 
-class App(object):
+class App():
     """
     The :class:`App` class is a (typically subclassed) class that encapsulates
     handling of the display system, and processing user events. The :class:`App`
@@ -56,7 +56,7 @@ class App(object):
     win = None
 
     def __init__(self, *args):
-        if App.win is None and (len(args) == 0 or len(args) == 2):
+        if App.win is None and (not args or len(args) == 2):
             x = y = 0
             if len(args) == 2:
                 x = args[0]
@@ -65,7 +65,7 @@ class App(object):
             App.width = App.win.width
             App.height = App.win.height
             # Add existing sprites to the window
-            if not App._spritesadded and len(App.spritelist) > 0:
+            if not App._spritesadded and App.spritelist:
                 App._spritesadded = True
                 for sprite in App.spritelist:
                     App.win.add(sprite.gfx)
@@ -95,14 +95,14 @@ class App(object):
             (hwevent.type, KeyEvent.keys.get(hwevent.keyCode, 0)), []
         )
         evtlist.extend(App._eventdict.get((hwevent.type, "*"), []))
-        if len(evtlist) > 0:
+        if evtlist:
             evt = KeyEvent(hwevent)
             self._routeEvent(evt, evtlist)
         return False
 
     def _mouseEvent(self, hwevent):
         evtlist = App._eventdict.get(hwevent.type, [])
-        if len(evtlist) > 0:
+        if evtlist:
             evt = MouseEvent(type(self), hwevent)
             self._routeEvent(evt, evtlist)
         return False
@@ -136,7 +136,7 @@ class App(object):
         App.spritelist.remove(obj)
         App._spritesdict[type(obj)].remove(obj)
 
-    def _animate(self, dummy):
+    def _animate(self, _dummy):
         if App.win:
             try:
                 if self.userfunc:
@@ -288,7 +288,6 @@ class App(object):
         :returns: Nothing
 
         """
-        pass
 
     def run(self, userfunc=None):
         """

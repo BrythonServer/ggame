@@ -15,7 +15,7 @@ from ggame.asset import (
 from ggame.app import App
 
 
-class Sprite(object):  # pylint: disable=too-many-public-methods
+class Sprite():  # pylint: disable=too-many-public-methods
     """
     The Sprite class combines the idea of a visual/graphical asset, a
     position on the screen, and *behavior*. Although the Sprite can be
@@ -267,13 +267,11 @@ class Sprite(object):  # pylint: disable=too-many-public-methods
         """
         Obsolete. No op.
         """
-        pass
 
     def circularCollisionModel(self):
         """
         Obsolete. No op.
         """
-        pass
 
     @property
     def index(self):
@@ -519,34 +517,30 @@ class Sprite(object):  # pylint: disable=too-many-public-methods
         """
         if self is obj:
             return False
-        else:
-            self.setExtents()
-            obj.setExtents()
-            # Gross check for overlap will usually rule out a collision
-            if (
-                self.xmin > obj.xmax
-                or self.xmax < obj.xmin
-                or self.ymin > obj.ymax
-                or self.ymax < obj.ymin
-            ):
-                return False
-            # Otherwise, perform a careful overlap determination
-            elif isinstance(self.asset, CircleAsset):
-                if isinstance(obj.asset, CircleAsset):
-                    # two circles .. check distance between
-                    sx = (self.xmin + self.xmax) / 2
-                    sy = (self.ymin + self.ymax) / 2
-                    ox = (obj.xmin + obj.xmax) / 2
-                    oy = (obj.ymin + obj.ymax) / 2
-                    d = math.sqrt((sx - ox) ** 2 + (sy - oy) ** 2)
-                    return d <= self.width / 2 + obj.width / 2
-                else:
-                    return self.collidingCircleWithPoly(self, obj)
-            else:
-                if isinstance(obj.asset, CircleAsset):
-                    return self.collidingCircleWithPoly(obj, self)
-                else:
-                    return self.collidingPolyWithPoly(obj)
+        self.setExtents()
+        obj.setExtents()
+        # Gross check for overlap will usually rule out a collision
+        if (
+            self.xmin > obj.xmax
+            or self.xmax < obj.xmin
+            or self.ymin > obj.ymax
+            or self.ymax < obj.ymin
+        ):
+            return False
+        # Otherwise, perform a careful overlap determination
+        if isinstance(self.asset, CircleAsset):
+            if isinstance(obj.asset, CircleAsset):
+                # two circles .. check distance between
+                sx = (self.xmin + self.xmax) / 2
+                sy = (self.ymin + self.ymax) / 2
+                ox = (obj.xmin + obj.xmax) / 2
+                oy = (obj.ymin + obj.ymax) / 2
+                d = math.sqrt((sx - ox) ** 2 + (sy - oy) ** 2)
+                return d <= self.width / 2 + obj.width / 2
+            return self.collidingCircleWithPoly(self, obj)
+        if isinstance(obj.asset, CircleAsset):
+            return self.collidingCircleWithPoly(obj, self)
+        return self.collidingPolyWithPoly(obj)
 
     def collidingWithSprites(self, sclass=None):
         """

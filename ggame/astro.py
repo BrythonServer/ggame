@@ -50,13 +50,22 @@ class Planet(MathApp):
         )
         super().__init__(scale)
 
-    def run(self, rocket=None):
+
+    def run(self, userfunc=None):
+        """
+        Execute the Planet (and Rocket) simulation without setting the initial view.
+        """
+        self.runWithRocket()
+
+
+    def runWithRocket(self, rocket=None):
         """
         Execute the Planet (and Rocket) simulation.
 
-        Optional parameters:
+        :Optional parameters:
 
-        * **rocket** Reference to a Rocket object - sets the initial view
+        :param Rocket rocket: Reference to a Rocket object - sets the initial view
+        :returns: None
         """
         if rocket:
             self.viewaltitude = rocket.altitude
@@ -218,7 +227,7 @@ class Rocket(ImagePoint):
         # default heading control if none provided by user
         leftkey = kwargs.get("leftkey", "left arrow")
         rightkey = kwargs.get("rightkey", "right arrow")
-        if self.heading == self._getheading:
+        if self.heading == self._getheading:  # pylint: disable=comparison-with-callable
             Planet.listenKeyEvent("keydown", leftkey, self._turn)
             Planet.listenKeyEvent("keydown", rightkey, self._turn)
         self._timer = Timer()
@@ -256,7 +265,7 @@ class Rocket(ImagePoint):
 
     def _turn(self, event):
         """
-        Respond to left/right turning key events.
+         Respond to left/right turning key events.
         """
         increment = pi / 50 * (1 if event.key == "left arrow" else -1)
         self.localheading += increment

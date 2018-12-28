@@ -5,7 +5,7 @@ from ggame.input import InputButton
 from ggame.mathapp import MathApp
 
 
-def pressbutton(dummy):
+def pressbutton(_button):
     """
     Callback function executed when button is pressed.
     """

@@ -66,4 +66,3 @@ class LineSegment(_MathVisual):
         """
         This method is not implemented.
         """
-        pass

@@ -17,9 +17,8 @@ def _recursiontrap(handler):
             self.lastget = handler(self)
             self.ingetvalue = False
             return self.lastget
-        else:
-            self.ingetvalue = False
-            return self.lastget
+        self.ingetvalue = False
+        return self.lastget
 
     return trapmagic
 
@@ -97,16 +96,14 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
             raise ValueError("Conflicting inputs found")
         if ones > 0:
             return True
-        elif zeros > 0:
+        if zeros > 0:
             return False
-        else:
-            return None
+        return None
 
     def __call__(self):
         if self.enable:
             return self._getvalue()
-        else:
-            return None
+        return None
 
     def getinput(self, inputname):
         """
@@ -164,8 +161,7 @@ class BoolNOT(_BoolOneInput):
         inval = self._inputState(self.inp[0])
         if inval is None:
             return True  # equivalent to an "open" input
-        else:
-            return not inval
+        return not inval
 
 
 class BoolAND(_BoolMultiInput):

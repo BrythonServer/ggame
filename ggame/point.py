@@ -163,4 +163,4 @@ class ImagePoint(_Point):
         """
         self.setExtents()  # ensure xmin, xmax are correct
         x, y = ppos
-        return x >= self.xmin and x < self.xmax and y >= self.ymin and y <= self.ymax
+        return self.xmax >= x >= self.xmin and self.ymax >= y >= self.ymin

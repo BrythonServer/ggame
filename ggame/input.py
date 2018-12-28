@@ -165,6 +165,3 @@ class InputButton(Label):
         if self._callback:
             self._callback(self)
         self.unselect()
-
-    def unselect(self):
-        super().unselect()

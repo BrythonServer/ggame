@@ -69,10 +69,10 @@ class Circle(_MathVisual):
         try:
             if ymin > MathApp.height or ymax < 0 or xmax < 0 or xmin > MathApp.width:
                 return CircleAsset(pradius, style, fill)
-            elif pradius > 2 * MathApp.width:
+            if pradius > 2 * MathApp.width:
                 # here begins unpleasant hack to overcome crappy circles
                 poly = self._buildPolygon(pcenter, pradius)
-                if len(poly):
+                if poly:
                     passet = PolygonAsset(poly, style, fill)
                     return passet
         except AttributeError:
@@ -113,7 +113,7 @@ class Circle(_MathVisual):
                     ilist[0][0] + xrange * (i + 1) / (numpoints + 1),
                     ilist[0][1] + yrange * (i + 1) / (numpoints + 1),
                 )
-                if len(icepts):
+                if icepts:
                     ilist.insert(inx + 1, icepts[0])
                     inx = inx + 1
             self._addBoundaryVertices(ilist)
@@ -167,7 +167,7 @@ class Circle(_MathVisual):
             iterations = iterations + 1
             if iterations > 20:
                 break
-            if endside != None and startside != None:  #  and endside != startside
+            if endside is not None and startside is not None: # and endside != startside
                 plist.append(nextvertex[endside][cw])
                 endside = nextsides[endside][cw]
 
@@ -203,7 +203,7 @@ class Circle(_MathVisual):
         ]
         getcoords = (
             lambda x, y, c: [(x, y)]
-            if x >= 0 and x <= MathApp.width and y >= 0 and y <= MathApp.height
+            if 0 <= x <= MathApp.width and 0 <= y <= MathApp.height
             else []
         )
         res = getcoords(x[0], y[0], c)
@@ -239,7 +239,7 @@ class Circle(_MathVisual):
         style = self._stdinputs.style()
         inner = pradius - style.width / 2
         outer = pradius + style.width / 2
-        return r <= outer and r >= inner
+        return inner <= r <= outer
 
     def translate(self, pdisp):
         pass

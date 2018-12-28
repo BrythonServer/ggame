@@ -174,13 +174,13 @@ class Slider(_MathVisual):
             elif event.x < self._thumb.x:
                 self._moveLeft(event)
 
-    def _moveLeft(self, dummy):
+    def _moveLeft(self, _event):
         self.increment(-self._step)
 
-    def _moveRight(self, dummy):
+    def _moveRight(self, _event):
         self.increment(self._step)
 
-    def _moveCenter(self, dummy):
+    def _moveCenter(self, _event):
         self._val = (self._snposinputs.minval + self._snposinputs.maxval) / 2
         self._setThumb()
 

@@ -52,9 +52,6 @@ class InputImageButton(ImagePoint):
             self._callback(self)
         self.unselect()
 
-    def unselect(self):
-        super().unselect()
-
     def __call__(self):
         # code for controlling the button image state only works if the
         # button state is being monitored!

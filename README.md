@@ -3,19 +3,19 @@
 # ggame
 The simple cross-platform sprite and game platform for Brython Server (Pygame, Tkinter to follow?).
 
-Ggame stands for a couple of things: "good game" (of course!) and also "git game" or "github game" 
+Ggame stands for a couple of things: "good game" (of course!) and also "git game" or "github game"
 because it is designed to operate with [Brython Server](http://runpython.org) in concert with
 Github as a backend file store.
 
 Ggame is **not** intended to be a full-featured gaming API, with every bell and whistle. Ggame is
 designed primarily as a tool for teaching computer programming, recognizing that the ability
 to create engaging and interactive games is a powerful motivator for many progamming students.
-Accordingly, any functional or performance enhancements that *can* be reasonably implemented 
-by the user are left as an exercise. 
+Accordingly, any functional or performance enhancements that *can* be reasonably implemented
+by the user are left as an exercise.
 
-Please visit the 
-[detailed documentation page for ggame](https://ggame.readthedocs.io/en/latest/introduction.html). 
-This is generated automatically from the ggame sources. 
+Please visit the
+[detailed documentation page for ggame](https://ggame.readthedocs.io/en/latest/introduction.html).
+This is generated automatically from the ggame sources.
 
 ## Functionality Goals
 
@@ -26,12 +26,12 @@ from ggame import App, ImageAsset, Sprite
 # Create a displayed object at 100,100 using an image asset
 Sprite(ImageAsset("bunny.png"), (100,100))
 # Create the app, with a default stage
-app = App()  
+app = App()
 # Run the app
 app.run()
 ```
 
-## Another Example 
+## Another Example
 
 The following example illustrates the more common use case in which the basic ggame
 classes, Sprite and App, are subclassed as Bunny and DemoApp and given event handlers
@@ -43,9 +43,9 @@ from ggame import App, ImageAsset, Sprite, MouseEvent
 from random import random, randint
 
 class Bunny(Sprite):
-    
+
     asset = ImageAsset("bunny.png")
-    
+
     def __init__(self, position):
         super().__init__(Bunny.asset, position)
         # register mouse events
@@ -54,7 +54,7 @@ class Bunny(Sprite):
         App.listenMouseEvent(MouseEvent.mousemove, self.mousemove)
         self.dragging = False
 
-    
+
     def step(self):
         """
         Every now and then a bunny hops...
@@ -62,36 +62,36 @@ class Bunny(Sprite):
         if random() < 0.01:
             self.x += randint(-20,20)
             self.y += randint(-20,20)
-        
-        
+
+
     def mousedown(self, event):
         # capture any mouse down within 50 pixels
-        self.deltax = event.x - (self.x + self.width//2) 
+        self.deltax = event.x - (self.x + self.width//2)
         self.deltay = event.y - (self.y + self.height//2)
         if abs(self.deltax) < 50 and abs(self.deltay) < 50:
             self.dragging = True
             # only drag one bunny at a time - consume the event
             event.consumed = True
-            
+
     def mousemove(self, event):
         if self.dragging:
             self.x = event.x - self.deltax - self.width//2
             self.y = event.y - self.deltay - self.height//2
             event.consumed = True
-            
+
     def mouseup(self, event):
         if self.dragging:
             self.dragging = False
             event.consumed = True
-            
-        
+
+
 class DemoApp(App):
-    
+
     def __init__(self):
         super().__init__()
         for i in range(10):
             Bunny((randint(50,self.width),randint(50,self.height)))
-        
+
     def step(self):
         """
         Override step to perform action on each frame update
@@ -101,7 +101,7 @@ class DemoApp(App):
 
 
 # Create the app
-app = DemoApp()  
+app = DemoApp()
 # Run the app
 app.run()
 ```
@@ -109,7 +109,7 @@ app.run()
 ## Installing ggame
 
 Before using ggame with your Python source repository on Github, you may add the ggame source
-tree to your repository. If you are executing your code in http://runpython.com, then the current 
+tree to your repository. If you are executing your code in http://runpython.com, then the current
 ggame repository is already added to your import search path and no installation is required.
 
 ## Contributing to ggame
@@ -123,5 +123,5 @@ $ black ggame/app.py
 Python sources should also be tested with `pylint`. For example:
 
 ```
-$ pylint3 -r n ggame/app.py
+$ python3 -m pylint -r n ggame/app.py
 ```

@@ -75,7 +75,7 @@ class ImageIndicator(_MathVisual):
     def physicalPointTouching(self, ppos):
         self.setExtents()  # ensure xmin, xmax are correct
         x, y = ppos
-        return x >= self.xmin and x < self.xmax and y >= self.ymin and y <= self.ymax
+        return self.xmin <= x <= self.xmax and self.ymin <= y <= self.ymax
 
     def translate(self, pdisp):
         pass
