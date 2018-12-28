@@ -1,5 +1,8 @@
+"""
+Example of using TextAsset class.
+"""
 from ggame import TextAsset, Color
-ta = TextAsset("Sample Text", 
-    style="bold 40pt Arial", 
-    width=250, 
-    fill=Color(0x1122ff, 1.0))
+
+TA = TextAsset(
+    "Sample Text", style="bold 40pt Arial", width=250, fill=Color(0x1122FF, 1.0)
+)

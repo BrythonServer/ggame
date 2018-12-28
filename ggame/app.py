@@ -1,4 +1,3 @@
-# app.py
 """
 The ggame :class:`App` class encapsulates functionality required for
 initiating a graphics window in the browser, executing code using Javascript
@@ -14,7 +13,7 @@ from ggame.sysdeps import GFX_Window
 from ggame.event import MouseEvent, KeyEvent
 
 
-class App(object):
+class App:
     """
     The :class:`App` class is a (typically subclassed) class that encapsulates
     handling of the display system, and processing user events. The :class:`App`
@@ -57,7 +56,7 @@ class App(object):
     win = None
 
     def __init__(self, *args):
-        if App.win is None and (len(args) == 0 or len(args) == 2):
+        if App.win is None and (not args or len(args) == 2):
             x = y = 0
             if len(args) == 2:
                 x = args[0]
@@ -66,7 +65,7 @@ class App(object):
             App.width = App.win.width
             App.height = App.win.height
             # Add existing sprites to the window
-            if not App._spritesadded and len(App.spritelist) > 0:
+            if not App._spritesadded and App.spritelist:
                 App._spritesadded = True
                 for sprite in App.spritelist:
                     App.win.add(sprite.gfx)
@@ -93,22 +92,29 @@ class App(object):
 
     def _keyEvent(self, hwevent):
         evtlist = App._eventdict.get(
-            (hwevent.type, KeyEvent.keys.get(hwevent.keyCode, 0)), [])
-        evtlist.extend(App._eventdict.get((hwevent.type, '*'), []))
-        if len(evtlist) > 0:
+            (hwevent.type, KeyEvent.keys.get(hwevent.keyCode, 0)), []
+        )
+        evtlist.extend(App._eventdict.get((hwevent.type, "*"), []))
+        if evtlist:
             evt = KeyEvent(hwevent)
             self._routeEvent(evt, evtlist)
         return False
 
     def _mouseEvent(self, hwevent):
         evtlist = App._eventdict.get(hwevent.type, [])
-        if len(evtlist) > 0:
+        if evtlist:
             evt = MouseEvent(type(self), hwevent)
             self._routeEvent(evt, evtlist)
         return False
 
     @classmethod
-    def _add(cls, obj):
+    def add(cls, obj):
+        """
+        Add a sprite object to the global lists.
+
+        :param Sprite obj: The sprite reference to add.
+        :returns: None
+        """
         if App.win is not None:
             App.win.add(obj.gfx)
         App.spritelist.append(obj)
@@ -118,22 +124,28 @@ class App(object):
         App._spritesdict[type(obj)].append(obj)
 
     @classmethod
-    def _remove(cls, obj):
+    def remove(cls, obj):
+        """
+        Remove a sprite object from the global lists.
+
+        :param Sprite obj: The sprite reference to remove.
+        :returns: None
+        """
         if App.win is not None:
             App.win.remove(obj.gfx)
         App.spritelist.remove(obj)
         App._spritesdict[type(obj)].remove(obj)
 
-    def _animate(self, dummy):
-        try:
-            if self.userfunc:
-                self.userfunc()
-            else:
-                self.step()
-        except BaseException:
-            traceback.print_exc()
-            raise
+    def _animate(self, _dummy):
         if App.win:
+            try:
+                if self.userfunc:
+                    self.userfunc()
+                else:
+                    self.step()
+            except BaseException:
+                traceback.print_exc()
+                raise
             App.win.animate(self._animate)
 
     @classmethod
@@ -276,7 +288,6 @@ class App(object):
         :returns: Nothing
 
         """
-        pass
 
     def run(self, userfunc=None):
         """

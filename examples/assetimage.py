@@ -1,2 +1,6 @@
+"""
+Example of using ImageAsset class.
+"""
 from ggame import ImageAsset
-img = ImageAsset("bunny.png")
+
+IMG = ImageAsset("bunny.png")

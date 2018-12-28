@@ -1,5 +1,3 @@
-# asset.py
-
 """
 ggame assets and related objects (:class:`Color` and :class:`LineStyle`) are
 classes that encapsulate and represent displayable images. A single asset
@@ -7,11 +5,16 @@ may be used in multiple sprites. Animated assets may be created from any
 image that includes multiple images within it (i.e. a sprite sheet).
 """
 
-from ggame.sysdeps import GFX_Rectangle, GFX_Texture, GFX_Graphics, \
-    GFX_Texture_fromImage, GFX_Text
+from ggame.sysdeps import (
+    GFX_Rectangle,
+    GFX_Texture,
+    GFX_Graphics,
+    GFX_Texture_fromImage,
+    GFX_Text,
+)
 
 
-class Frame(object):
+class Frame(object):  # pylint: disable=useless-object-inheritance
     """
     Frame is a utility class for expressing the idea of a rectangular region.
 
@@ -100,7 +103,7 @@ class Frame(object):
         self.y += value[1] - c[1]
 
 
-class _Asset(object):
+class _Asset(object):  # pylint: disable=useless-object-inheritance
     """
     Base class for all game asset objects.
 
@@ -110,7 +113,7 @@ class _Asset(object):
     """
 
     def __init__(self):
-        self.gfxlist = [None, ]
+        self.gfxlist = [None]
         """
         A list of the underlying system objects used to represent this
         asset.
@@ -139,10 +142,11 @@ class _Asset(object):
         self.gfxlist[key] = value
 
     def __iter__(self):
-        class Iter():
+        class Iter:
             """
             Iterator for accessing discrete images within an asset.
             """
+
             def __init__(self, image):
                 self.obj = image
                 self.n = len(image.gfxlist)
@@ -156,6 +160,7 @@ class _Asset(object):
                     raise StopIteration
                 self.i += 1
                 return self.obj.gfxlist[self.i]
+
         return Iter(self)
 
     def destroy(self):
@@ -163,7 +168,7 @@ class _Asset(object):
         Destroy or deallocate any underlying graphics resources used by the
         asset. Call this method on any asset that is no longer being used.
         """
-        if hasattr(self, 'gfx'):
+        if hasattr(self, "gfx"):
             try:
                 for gfx in self.gfxlist:
                     try:
@@ -209,13 +214,7 @@ class ImageAsset(_Asset):
     .. literalinclude:: ../examples/assetimage.py
     """
 
-    def __init__(
-            self,
-            url,
-            frame=None,
-            qty=1,
-            direction='horizontal',
-            margin=0):
+    def __init__(self, url, frame=None, qty=1, direction="horizontal", margin=0):
         super().__init__()
         self.url = url
         """
@@ -225,8 +224,7 @@ class ImageAsset(_Asset):
         self.width = self.height = 0
         self.append(url, frame, qty, direction, margin)
 
-
-    def append(self, url, frame=None, qty=1, direction='horizontal', margin=0):
+    def append(self, url, frame=None, qty=1, direction="horizontal", margin=0):
         """
         Append a texture asset from a new image file (or url). This method
         allows you to build a collection of images into an asset (such as you
@@ -246,9 +244,9 @@ class ImageAsset(_Asset):
             if frame is not None:
                 self.width = frame.w
                 self.height = frame.h
-                if direction == 'horizontal':
+                if direction == "horizontal":
                     dx = frame.w + margin
-                elif direction == 'vertical':
+                elif direction == "vertical":
                     dy = frame.h + margin
                 f = Frame(frame.x + dx * i, frame.y + dy * i, frame.w, frame.h)
                 gfx = GFX_Texture(gfx, f.gfx)
@@ -258,7 +256,7 @@ class ImageAsset(_Asset):
             self.gfxlist.append(gfx)
 
 
-class Color(object):
+class Color:
     """
     The Color class is used to represent colors and/or colors with
     transparency.
@@ -275,10 +273,8 @@ class Color(object):
 
     .. literalinclude:: ../examples/assetcolor.py
     """
-    _colornames = {
-        0xffffff: 'WHITE',
-        0x000000: 'BLACK'
-    }
+
+    _colornames = {0xFFFFFF: "WHITE", 0x000000: "BLACK"}
 
     def __init__(self, color, alpha):
         self.color = color
@@ -289,9 +285,10 @@ class Color(object):
 
     def __eq__(self, other):
         return (
-            isinstance(self, type(other)) and
-            self.color == other.color and
-            self.alpha == other.alpha)
+            isinstance(self, type(other))
+            and self.color == other.color
+            and self.alpha == other.alpha
+        )
 
     def __repr__(self):
         return self.name
@@ -301,13 +298,13 @@ BLACK = Color(0x000000, 1.0)
 """
 Default black color
 """
-WHITE = Color(0xffffff, 1.0)
+WHITE = Color(0xFFFFFF, 1.0)
 """
 Default white color
 """
 
 
-class LineStyle(object):
+class LineStyle:
     """
     The LineStyle class is used to represent line style when
     drawing geometrical objects such as rectangles, ellipses, etc.
@@ -331,9 +328,10 @@ class LineStyle(object):
 
     def __eq__(self, other):
         return (
-            isinstance(self, type(other)) and
-            self.width == other.width and
-            self.color == other.color)
+            isinstance(self, type(other))
+            and self.width == other.width
+            and self.color == other.color
+        )
 
     def __repr__(self):
         return "LineStyle({}, {})".format(self.width, self.color)
@@ -350,21 +348,18 @@ Default thin white line
 
 
 class _GraphicsAsset(_Asset):
-
     def __init__(self):
         super().__init__()
         GFX_Graphics.clear()
 
 
 class _CurveAsset(_GraphicsAsset):
-
     def __init__(self, line):
         super().__init__()
         GFX_Graphics.lineStyle(line.width, line.color.color, line.color.alpha)
 
 
 class _ShapeAsset(_CurveAsset):
-
     def __init__(self, line, fill):
         super().__init__(line)
         GFX_Graphics.beginFill(fill.color, fill.alpha)
@@ -426,8 +421,7 @@ class EllipseAsset(_ShapeAsset):
         super().__init__(line, fill)
         self.halfw = halfw
         self.halfh = halfh
-        self.gfx = GFX_Graphics.drawEllipse(
-            0, 0, self.halfw, self.halfh).clone()
+        self.gfx = GFX_Graphics.drawEllipse(0, 0, self.halfw, self.halfh).clone()
         """The `gfx` property represents the underlying system object."""
         self.gfx.visible = False
 
@@ -489,18 +483,18 @@ class LineAsset(_CurveAsset):
 
     def __init__(self, x, y, line=BLACKLINE):
         super().__init__(line)
-        self. delta_x = x
+        self.delta_x = x
         """
         This attribute represents the `x` parameter supplied during
         instantiation.
         """
-        self. delta_y = y
+        self.delta_y = y
         """
         This attribute represents the `y` parameter supplied during
         instantiation.
         """
         GFX_Graphics.moveTo(0, 0)
-        self.gfx = GFX_Graphics.lineTo(self. delta_x, self. delta_y).clone()
+        self.gfx = GFX_Graphics.lineTo(self.delta_x, self.delta_y).clone()
         """The `gfx` property represents the underlying system object."""
         self.gfx.visible = False
 
@@ -536,26 +530,38 @@ class TextAsset(_GraphicsAsset):
         """
         super().__init__()
         self.text = text
-        self.style = kwargs.get('style', '20px Arial')
-        width = kwargs.get('width', 100)
-        self.fill = kwargs.get('fill', Color(0, 1))
-        self.align = kwargs.get('align', 'left')
-        self.gfx = GFX_Text(self.text,
-                            {'font': self.style,
-                             'fill': self.fill.color,
-                             'align': self.align,
-                             'wordWrap': True,
-                             'wordWrapWidth': width,
-                            })
+        self.style = kwargs.get("style", "20px Arial")
+        width = kwargs.get("width", 100)
+        self.fill = kwargs.get("fill", Color(0, 1))
+        self.align = kwargs.get("align", "left")
+        self.gfx = GFX_Text(
+            self.text,
+            {
+                "font": self.style,
+                "fill": self.fill.color,
+                "align": self.align,
+                "wordWrap": True,
+                "wordWrapWidth": width,
+            },
+        )
         self.gfx.alpha = self.fill.alpha
         self.gfx.visible = False
 
-    def _clone(self):
-        return type(self)(self.text,
-                          style=self.style,
-                          width=self.width,
-                          fill=self.fill,
-                          align=self.align)
+    def clone(self):
+        """
+        Create a duplicate asset with the current style settings.
+
+        :returns: A text asset that is identical to the original, but with current
+            styles.
+        :rtype: TextAsset
+        """
+        return type(self)(
+            self.text,
+            style=self.style,
+            width=self.width,
+            fill=self.fill,
+            align=self.align,
+        )
 
     @property
     def width(self):

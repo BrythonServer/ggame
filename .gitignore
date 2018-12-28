@@ -58,3 +58,6 @@ target/
 
 # OSX
 .DS_Store
+
+# Python Distribution
+Python-*.*.*/

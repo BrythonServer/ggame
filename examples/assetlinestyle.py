@@ -1,2 +1,6 @@
+"""
+Example of using LineStyle class.
+"""
 from ggame import LineStyle, Color
-line = LineStyle(3, Color(0x00ff00, 1.0))
+
+LINE = LineStyle(3, Color(0x00FF00, 1.0))
