@@ -1,4 +1,7 @@
+"""
+Example of using Planet class.
+"""
 from ggame.astro import Planet
 
-earth = Planet(viewscale=0.00005)
-earth.run()
+EARTH = Planet(viewscale=0.00005)
+EARTH.run()

@@ -1,8 +1,12 @@
+"""
+Example of using the Label class.
+"""
+
 from ggame.asset import Color
 from ggame.label import Label
 from ggame.mathapp import MathApp
 
-Label(
+L = Label(
     (20, 80),  # physical location on screen
     "Initial Speed (m/s)",  # text to display
     size=15,  # text size (pixels)

@@ -1,3 +1,6 @@
+"""
+Example of using Color class.
+"""
 from ggame import Color
 
-red = Color(0xFF0000, 1.0)
+RED = Color(0xFF0000, 1.0)

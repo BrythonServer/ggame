@@ -1,9 +1,12 @@
+"""
+Example of using MathApp LEDIndicator class.
+"""
 from ggame.mathapp import MathApp
 from ggame.indicator import LEDIndicator
 from ggame.inputpoint import MetalToggle
 
-toggle = MetalToggle(0, (-1, 0))
+TOGGLE = MetalToggle(0, (-1, 0))
 
-switch = LEDIndicator((-1, 0.5), toggle)
+SWITCH = LEDIndicator((-1, 0.5), TOGGLE)
 
 MathApp().run()

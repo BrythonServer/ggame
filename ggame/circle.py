@@ -34,7 +34,7 @@ class Circle(_MathVisual):
 
     Example:
 
-    .. literalinclude:: ../examples/mathcircle.py
+    .. literalinclude:: ../examples/circlecircle.py
 
     """
 

@@ -1,7 +1,11 @@
+"""
+Example of using Slider class.
+"""
+
 from ggame.slider import Slider
 from ggame.mathapp import MathApp
 
-s = Slider(
+S = Slider(
     (100, 150),  # screen position
     0,  # minimum value
     250,  # maximum value

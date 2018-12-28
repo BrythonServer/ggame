@@ -108,7 +108,13 @@ class App(object):
         return False
 
     @classmethod
-    def _add(cls, obj):
+    def add(cls, obj):
+        """
+        Add a sprite object to the global lists.
+
+        :param Sprite obj: The sprite reference to add.
+        :returns: None
+        """
         if App.win is not None:
             App.win.add(obj.gfx)
         App.spritelist.append(obj)
@@ -118,7 +124,13 @@ class App(object):
         App._spritesdict[type(obj)].append(obj)
 
     @classmethod
-    def _remove(cls, obj):
+    def remove(cls, obj):
+        """
+        Remove a sprite object from the global lists.
+
+        :param Sprite obj: The sprite reference to remove.
+        :returns: None
+        """
         if App.win is not None:
             App.win.remove(obj.gfx)
         App.spritelist.remove(obj)

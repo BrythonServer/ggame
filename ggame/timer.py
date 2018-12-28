@@ -1,19 +1,22 @@
-from time import time
+"""
+MathApp class for creating periodic and timed callbacks.
+"""
+
 from ggame.mathapp import MathApp, _MathDynamic
 
 
 class Timer(_MathDynamic):
     """
     The Timer class instantiates an object whose basic function is to report
-    the number of seconds since its creation by calling the object as a 
+    the number of seconds since its creation by calling the object as a
     function with an empty argument list.
-    
+
     The Timer class accepts no arguments during creation.
-    
+
     Example of use:
-    
-    .. literalinclude:: ../examples/mathtimer1.py
-    
+
+    .. literalinclude:: ../examples/timertimer.py
+
     """
 
     def __init__(self):
@@ -28,7 +31,7 @@ class Timer(_MathDynamic):
         """
         Set the reference time to the MathApp current time. If the timer is reset
         before the app initializes then do nothing.
-        
+
         :returns: None
         """
         self._reset = MathApp.time
@@ -36,7 +39,7 @@ class Timer(_MathDynamic):
     @property
     def time(self):
         """
-        Attribute is always updated with the number of seconds since the 
+        Attribute is always updated with the number of seconds since the
         timer was created.
         """
         return self._time
@@ -67,10 +70,10 @@ class Timer(_MathDynamic):
 
     def callAfter(self, delay, callback, periodic=False):
         """
-        Set a callback to occur either once or periodically. The callback 
+        Set a callback to occur either once or periodically. The callback
         function should accept a single parameter which will be a reference
         to the timer object that called it.
-        
+
         :param float delay: The number of seconds to wait before executing
             the callback function
         :param function callback: The callback function to call on timer
@@ -86,25 +89,25 @@ class Timer(_MathDynamic):
         self._callbacks[key] = callbacklist
         self._once.sort()
 
-    def callAt(self, time, callback):
+    def callAt(self, calltime, callback):
         """
         Set a callback to occur at a specific time (seconds since
-        the Timer object was created or since its 
+        the Timer object was created or since its
         :func:`~ggame.timer.Timer.reset` method was called.
-        
-        :param float time: The time to wait since timer creation or reset 
+
+        :param float time: The time to wait since timer creation or reset
             before calling the callback function.
         :param function callback: The callback function to call
         :returns: None
         """
-        self.callAfter(time - self._time, callback)
+        self.callAfter(calltime - self._time, callback)
 
     def callEvery(self, period, callback):
         """
-        Set a callback to occur periodically. The callback 
+        Set a callback to occur periodically. The callback
         function should accept a single parameter which will be a reference
         to the timer object that called it.
-        
+
         :param float period: The number of seconds to wait before each
             execution of the callback function
         :param function callback: The callback function to call on timer

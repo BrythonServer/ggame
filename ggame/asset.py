@@ -547,7 +547,14 @@ class TextAsset(_GraphicsAsset):
         self.gfx.alpha = self.fill.alpha
         self.gfx.visible = False
 
-    def _clone(self):
+    def clone(self):
+        """
+        Create a duplicate asset with the current style settings.
+
+        :returns: A text asset that is identical to the original, but with current
+            styles.
+        :rtype: TextAsset
+        """
         return type(self)(
             self.text,
             style=self.style,

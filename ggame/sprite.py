@@ -1,10 +1,21 @@
+"""
+Sprite class for encapsulating all visible objects in ggame applications.
+"""
 import math
-from ggame.sysdeps import *
-from ggame.asset import *
-from ggame.app import *
+from ggame.sysdeps import GFX_Sprite
+from ggame.asset import (
+    RectangleAsset,
+    CircleAsset,
+    ImageAsset,
+    PolygonAsset,
+    EllipseAsset,
+    TextAsset,
+    LineAsset,
+)
+from ggame.app import App
 
 
-class Sprite(object):
+class Sprite(object):  #pylint: disable=too-many-public-methods
     """
     The Sprite class combines the idea of a visual/graphical asset, a
     position on the screen, and *behavior*. Although the Sprite can be
@@ -46,7 +57,7 @@ class Sprite(object):
         from ggame.app import App
 
         player = Sprite(
-            ImageAsset("player.png",
+            ImageAsset("bunny.png",
             (100,100),
             CircleAsset(50))
 
@@ -65,24 +76,24 @@ class Sprite(object):
         """
         """
         self._index = 0
-        if type(asset) == ImageAsset:
+        if isinstance(asset, ImageAsset):
             self.asset = asset
             try:
-                # self.gfx = GFX_Sprite()
                 self.gfx = GFX_Sprite(asset.gfx)  # gfx is PIXI Sprite
-            except:
+            except:  #pylint: disable=bare-except
                 self.gfx = None
-        elif type(asset) in [
+                raise
+        elif isinstance(asset, (
             RectangleAsset,
             CircleAsset,
             EllipseAsset,
             PolygonAsset,
             LineAsset,
-        ]:
+        )):
             self.asset = asset
             self.gfx = GFX_Sprite(asset.gfx.generateTexture())
-        elif type(asset) in [TextAsset]:
-            self.asset = asset._clone()
+        elif isinstance(asset, TextAsset):
+            self.asset = asset.clone()
             self.gfx = self.asset.gfx  # gfx is PIXI Text (from Sprite)
             self.gfx.visible = True
         if not edgedef:
@@ -95,9 +106,9 @@ class Sprite(object):
         self._extentsdirty = True
         """Boolean indicates if extents must be calculated before collision test"""
         self._createBaseVertices()
-        self._setExtents()
-        """Initialize the extents (xmax, xmin, etc.) for collision detection"""
-        App._add(self)
+        self._absolutevertices = None
+        self.setExtents()
+        App.add(self)
 
     def _createBaseVertices(self):
         """
@@ -125,7 +136,7 @@ class Sprite(object):
             ymin = min(ypoints)
             xpoints = [x - xmin for x in xpoints]
             ypoints = [y - ymin for y in ypoints]
-            self._basevertices = zip(xpoints, ypoints)
+            self._basevertices = list(zip(xpoints, ypoints))
         elif assettype is EllipseAsset:
             w = self.edgedef.halfw * 2
             h = self.edgedef.halfh * 2
@@ -152,27 +163,27 @@ class Sprite(object):
             (self.x + x * c + y * s, self.y + -x * s + y * c) for x, y in crsc
         ]
 
-    def _setExtents(self):
+    def setExtents(self):
         """
         update min/max x and y based on position, center, width, height
         """
         if self._extentsdirty:
-            if type(self.asset) is CircleAsset:
+            if isinstance(self.edgedef, CircleAsset):
                 th = (
                     math.atan2(self.fycenter - 0.5, 0.5 - self.fxcenter) + self.rotation
                 )
-                D = self.width
-                L = (
+                d = self.width
+                l = (
                     math.sqrt(
                         math.pow(self.fxcenter - 0.5, 2)
                         + math.pow(self.fycenter - 0.5, 2)
                     )
-                    * D
+                    * d
                 )
-                self.xmin = self.x + int(L * math.cos(th)) - D // 2
-                self.ymin = self.y - int(L * math.sin(th)) - D // 2
-                self.xmax = self.xmin + D
-                self.ymax = self.ymin + D
+                self.xmin = self.x + int(l * math.cos(th)) - d // 2
+                self.ymin = self.y - int(l * math.sin(th)) - d // 2
+                self.xmax = self.xmin + d
+                self.ymax = self.ymin + d
             else:
                 # Build vertex list
                 self._xformVertices()
@@ -270,7 +281,9 @@ class Sprite(object):
 
     @property
     def index(self):
-        """This is an integer index into the list of images available for this sprite."""
+        """
+        This is an integer index into the list of images available for this sprite.
+        """
         return self._index
 
     @index.setter
@@ -278,7 +291,7 @@ class Sprite(object):
         self._index = value
         try:
             self.gfx.texture = self.asset[self._index]
-        except:
+        except:  #pylint: disable=bare-except
             self._index = 0
             self.gfx.texture = self.asset[self._index]
 
@@ -321,7 +334,7 @@ class Sprite(object):
         delta_x = value - self.gfx.position.x
         self.xmax += delta_x
         self.xmin += delta_x
-        """Adjust extents directly with low overhead"""
+        #Adjust extents directly with low overhead
         self.gfx.position.x = value
 
     @property
@@ -337,7 +350,7 @@ class Sprite(object):
         delta_y = value - self.gfx.position.y
         self.ymax += delta_y
         self.ymin += delta_y
-        """Adjust extents directly with low overhead"""
+        #Adjust extents directly with low overhead
         self.gfx.position.y = value
 
     @property
@@ -363,7 +376,7 @@ class Sprite(object):
         """
         try:
             return self.gfx.anchor.x
-        except:
+        except:  #pylint: disable=bare-except
             return 0.0
 
     @fxcenter.setter
@@ -371,7 +384,7 @@ class Sprite(object):
         try:
             self.gfx.anchor.x = value
             self._extentsdirty = True
-        except:
+        except:  #pylint: disable=bare-except
             pass
 
     @property
@@ -385,7 +398,7 @@ class Sprite(object):
         """
         try:
             return self.gfx.anchor.y
-        except:
+        except:  #pylint: disable=bare-except
             return 0.0
 
     @fycenter.setter
@@ -393,7 +406,7 @@ class Sprite(object):
         try:
             self.gfx.anchor.y = value
             self._extentsdirty = True
-        except:
+        except:  #pylint: disable=bare-except
             pass
 
     @property
@@ -406,7 +419,7 @@ class Sprite(object):
         """
         try:
             return (self.gfx.anchor.x, self.gfx.anchor.y)
-        except:
+        except:  #pylint: disable=bare-except
             return (0.0, 0.0)
 
     @center.setter
@@ -415,15 +428,15 @@ class Sprite(object):
             self.gfx.anchor.x = value[0]
             self.gfx.anchor.y = value[1]
             self._extentsdirty = True
-        except:
+        except:  #pylint: disable=bare-except
             pass
 
     @property
     def visible(self):
         """
-        This boolean attribute may be used to change the visibility of the sprite. Setting
-        `~ggame.Sprite.visible` to `False` will prevent the sprite from rendering on the
-        screen.
+        This boolean attribute may be used to change the visibility of the sprite.
+        Setting `~ggame.Sprite.visible` to `False` will prevent the sprite from
+        rendering on the screen.
         """
         return self.gfx.visible
 
@@ -435,8 +448,8 @@ class Sprite(object):
     def scale(self):
         """
         This attribute may be used to change the size of the sprite ('scale' it) on the
-        screen. Value may be a floating point number. A value of 1.0 means that the sprite
-        image will keep its original size. A value of 2.0 would double it, etc.
+        screen. Value may be a floating point number. A value of 1.0 means that the
+        sprite image will keep its original size. A value of 2.0 would double it, etc.
         """
         try:
             return self.gfx.scale.x
@@ -454,8 +467,8 @@ class Sprite(object):
         """
         This attribute may be used to change the rotation of the sprite on the screen.
         Value may be a floating point number. A value of 0.0 means no rotation. A value
-        of 1.0 means  a rotation of 1 radian in a counter-clockwise direction. One radian
-        is 180/pi or approximately 57.3 degrees.
+        of 1.0 means  a rotation of 1 radian in a counter-clockwise direction. One
+        radian is 180/pi or approximately 57.3 degrees.
         """
         try:
             return -self.gfx.rotation
@@ -469,11 +482,31 @@ class Sprite(object):
             self._extentsdirty = True
 
     @classmethod
-    def collidingCircleWithPoly(cls, circ, poly):
-        return True
+    def collidingCircleWithPoly(cls, circ, poly): #pylint: disable=unused-argument
+        """
+        Determine if a CircleAsset sprite overlaps with a PolygonAsset sprite. This
+        method is called after determining that the two objects are overlapping in their
+        overall extents.
 
-    def collidingPolyWithPoly(self, obj):
-        return True
+        :param Sprite circ: A CircleAsset-based sprite.
+        :param Sprite poly: A PolygonAsset-based sprite.
+        :returns: True if the sprites are overlapping, False otherwise.
+        :rtype: boolean
+        """
+        return True  # no implementation yet
+
+    def collidingPolyWithPoly(self, obj):  #pylint: disable=unused-argument, no-self-use
+        """
+        Determine if a pair of PolygonAsset-based sprites are overlapping. This
+        method is called after determining that the two objects are overlapping in their
+        overall extents. This should onlyb e called if `self` is a PolygonAsset-based
+        sprite.
+
+        :param Sprite obj: A PolygonAsset-based sprite.
+        :returns: True if slef overlaps with obj, False otherwise.
+        :rtype: boolean
+        """
+        return True  # no implementation yet
 
     def collidingWith(self, obj):
         """
@@ -489,8 +522,8 @@ class Sprite(object):
         if self is obj:
             return False
         else:
-            self._setExtents()
-            obj._setExtents()
+            self.setExtents()
+            obj.setExtents()
             # Gross check for overlap will usually rule out a collision
             if (
                 self.xmin > obj.xmax
@@ -500,8 +533,8 @@ class Sprite(object):
             ):
                 return False
             # Otherwise, perform a careful overlap determination
-            elif type(self.asset) is CircleAsset:
-                if type(obj.asset) is CircleAsset:
+            elif isinstance(self.asset, CircleAsset):
+                if isinstance(obj.asset, CircleAsset):
                     # two circles .. check distance between
                     sx = (self.xmin + self.xmax) / 2
                     sy = (self.ymin + self.ymax) / 2
@@ -512,7 +545,7 @@ class Sprite(object):
                 else:
                     return self.collidingCircleWithPoly(self, obj)
             else:
-                if type(obj.asset) is CircleAsset:
+                if isinstance(obj.asset, CircleAsset):
                     return self.collidingCircleWithPoly(obj, self)
                 else:
                     return self.collidingPolyWithPoly(obj)
@@ -545,5 +578,5 @@ class Sprite(object):
         or used. If you only want to prevent a sprite from being displayed,
         set the :data:`visible` attribute to `False`.
         """
-        App._remove(self)
+        App.remove(self)
         self.gfx.destroy()

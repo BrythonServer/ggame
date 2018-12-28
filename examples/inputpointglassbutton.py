@@ -1,12 +1,17 @@
+"""
+Example of using GlassButton class.
+"""
 from ggame.inputpoint import GlassButton
 from ggame.mathapp import MathApp
-from ggame.asset import Frame
 
 
-def pressbutton(btn):
+def pressbutton(dummy):
+    """
+    Callback function executed when button is pressed.
+    """
     print("Button Pressed!")
 
 
-button = GlassButton(pressbutton, (0, 0))
+BUTTON = GlassButton(pressbutton, (0, 0))
 
 MathApp().run()

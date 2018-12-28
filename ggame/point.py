@@ -40,8 +40,9 @@ class _Point(_MathVisual, metaclass=ABCMeta):
         :returns: True if touching, False otherwise.
         """
         return (
-            MathApp.distance(ppos, self._pposinputs.pos) < self._sstdinputs.size
-        )  # pylint: disable=no-member
+            MathApp.distance(ppos, self._pposinputs.pos)  # pylint: disable=no-member
+            < self._sstdinputs.size
+        )
 
     def translate(self, pdisp):
         """
@@ -160,6 +161,6 @@ class ImagePoint(_Point):
         :rtype: boolean
         :returns: True if touching, False otherwise.
         """
-        self._setExtents()  # ensure xmin, xmax are correct
+        self.setExtents()  # ensure xmin, xmax are correct
         x, y = ppos
         return x >= self.xmin and x < self.xmax and y >= self.ymin and y <= self.ymax

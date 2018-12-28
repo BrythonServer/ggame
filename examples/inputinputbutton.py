@@ -1,9 +1,14 @@
-from ggame.asset import Color
+"""
+Example of using MathApp InputButton class.
+"""
 from ggame.input import InputButton
 from ggame.mathapp import MathApp
 
 
-def pressbutton(buttonobj):
+def pressbutton(dummy):
+    """
+    Callback function executed when button is pressed.
+    """
     print("InputButton pressed!")
 
 

@@ -4,6 +4,7 @@ Tools for loading and playing sound resources in ggame applications.
 
 from ggame.sysdeps import SND_Sound
 
+
 class SoundAsset(object):
     """
     Class representing a single sound asset (sound file, such as .mp3 or .wav).

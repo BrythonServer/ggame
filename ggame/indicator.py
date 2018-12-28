@@ -73,7 +73,7 @@ class ImageIndicator(_MathVisual):
         return self.asset
 
     def physicalPointTouching(self, ppos):
-        self._setExtents()  # ensure xmin, xmax are correct
+        self.setExtents()  # ensure xmin, xmax are correct
         x, y = ppos
         return x >= self.xmin and x < self.xmax and y >= self.ymin and y <= self.ymax
 
@@ -97,7 +97,7 @@ class LEDIndicator(ImageIndicator):
         See below
 
     :Optional Keyword Arguments:
-    
+
         * **positioning** (*str*) One of 'logical' (default) or 'physical'
 
     Example:

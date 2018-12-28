@@ -1,6 +1,9 @@
+"""
+Example of using Rocket class.
+"""
 from ggame.astro import Planet, Rocket
 
-earth = Planet(viewscale=0.00005)
-earth.run()
+EARTH = Planet(viewscale=0.00005)
+EARTH.run()
 
-rocket1 = Rocket(earth, altitude=400000, velocity=7670, timezoom=2)
+ROCKET = Rocket(EARTH, altitude=400000, velocity=7670, timezoom=2)
