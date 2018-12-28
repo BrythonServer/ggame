@@ -4,7 +4,7 @@ python:
 install:
 - pip install -r requirements-headless.txt
 script:
-- run_tests.sh
+- ./run_tests.sh
 env:
   global:
   - GH_REF: github.com/BrythonServer/ggame.git
