@@ -50,18 +50,9 @@ class Sprite(object):  # pylint: disable=too-many-public-methods
     :returns: Nothing. If the position is on screen the sprite will be displayed
         in the browser.
 
-    Example::
+    Example of use:
 
-        from ggame.sprite import Sprite
-        from ggame.asset import ImageAsset, CircleAsset
-        from ggame.app import App
-
-        player = Sprite(
-            ImageAsset("bunny.png",
-            (100,100),
-            CircleAsset(50))
-
-        App().run()
+    .. literalinclude:: ../examples/spritesprite.py
 
     This creates a sprite using the 'player.png' image, positioned with its
     upper-left corner at coordinates (100,100) and with a 50 pixel radius
