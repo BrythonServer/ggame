@@ -457,8 +457,8 @@ class Sprite(object):  # pylint: disable=too-many-public-methods
 
     @rotation.setter
     def rotation(self, value):
-        self.gfx.rotation = -value
-        if value:
+        if self.gfx.rotation != -value:
+            self.gfx.rotation = -value
             self._extentsdirty = True
 
     @classmethod
