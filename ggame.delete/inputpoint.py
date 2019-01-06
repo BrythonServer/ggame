@@ -133,11 +133,7 @@ class MetalToggle(InputImageToggle):
     def __init__(self, initindex, *args, **kwargs):
         kwargs.setdefault("frame", Frame(0, 0, 110, 150))
         super().__init__(
-            self.getImagePath("toggle-up-down.png"),
-            [True, False],
-            initindex,
-            *args,
-            **kwargs
+            "ggimages/toggle-up-down.png", [True, False], initindex, *args, **kwargs
         )
         self.scale = 0.4
 
@@ -163,7 +159,5 @@ class GlassButton(InputImageButton):
     def __init__(self, callback, *args, **kwargs):
         kwargs.setdefault("frame", Frame(0, 0, 100, 100))
         kwargs.setdefault("qty", 2)
-        super().__init__(
-            self.getImagePath("button-round.png"), callback, *args, **kwargs
-        )
+        super().__init__("ggimages/button-round.png", callback, *args, **kwargs)
         self.scale = 0.3

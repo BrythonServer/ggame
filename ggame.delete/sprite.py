@@ -1,7 +1,6 @@
 """
 Sprite class for encapsulating all visible objects in ggame applications.
 """
-import os
 import math
 from ggame.sysdeps import GFX_Sprite
 from ggame.asset import (
@@ -549,24 +548,6 @@ class Sprite(object):  # pylint: disable=too-many-public-methods
         else:
             slist = App.getSpritesbyClass(sclass)
         return list(filter(self.collidingWith, slist))
-
-    @staticmethod
-    def getImagePath(imagename):
-        """
-        Determine a path to the ggame-provided image that will work for both online
-        (runpython.org) and locally installed ggame libraries. Do not use this with
-        user-provided images.
-
-        :param str imagename: The name of an image file found inside the
-            ggame/images folder.
-        """
-        # differences in online vs. local operation
-        try:
-            thispath = os.path.dirname(__file__)
-            imagepath = os.path.join(thispath, "images")
-        except NameError:
-            imagepath = "ggame/images"
-        return os.path.join(imagepath, imagename)
 
     def destroy(self):
         """

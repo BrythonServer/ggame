@@ -38,7 +38,7 @@ class TestMathMethods(unittest.TestCase):
 
     def test_controls(self):
         self.imgbutton = InputImageButton(
-            "ggimages/button-round.png",
+            "ggame/images/button-round.png",
             self.pressbutton,
             (0, 0),
             frame=Frame(0, 0, 100, 100),
@@ -97,7 +97,7 @@ class TestMathMethods(unittest.TestCase):
 
     def test_fancycontrols(self):
         self.imgbutton = InputImageButton(
-            "ggimages/button-round.png",
+            "ggame/images/button-round.png",
             self.pressbutton,
             (0, 0),
             frame=Frame(0, 0, 100, 100),
@@ -105,7 +105,7 @@ class TestMathMethods(unittest.TestCase):
         )
         self.imgbutton.scale = 0.5
         self.ii = ImageIndicator(
-            "ggimages/red-led-off-on.png",
+            "ggame/images/red-led-off-on.png",
             (300, 500),
             self.imgbutton,
             positioning="physical",

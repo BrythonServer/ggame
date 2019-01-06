@@ -1,4 +1,5 @@
 import sys
+from ggame.app import App
 
 sys.path.append("..")
 
@@ -45,3 +46,11 @@ import examples.sliderslider
 
 # Sprite Examples
 import examples.spritesprite
+
+
+# Cleanup
+for s in App.spritelist[:]:
+    try:
+        s.destroy()
+    except ValueError:
+        pass

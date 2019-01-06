@@ -8,7 +8,7 @@ class TestSpriteMethods(unittest.TestCase):
     def __init__(self, arg):
         super().__init__(arg)
         self.image = ImageAsset("bunny.png")
-        self.rocket = ImageAsset("ggimages/rocket.png")
+        self.rocket = ImageAsset("ggame/images/rocket.png")
         self.multiimage = ImageAsset(
             "bunny.png", Frame(2, 2, 10, 14), 3, "horizontal", 2
         )
