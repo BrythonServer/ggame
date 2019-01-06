@@ -1,7 +1,7 @@
 """
 MathApp indicator classes for displaying two-state or boolean values.
 """
-
+import os
 from ggame.mathapp import _MathVisual
 from ggame.asset import Frame, ImageAsset
 
@@ -109,5 +109,11 @@ class LEDIndicator(ImageIndicator):
     def __init__(self, *args, **kwargs):
         kwargs.setdefault("frame", Frame(0, 0, 600, 600))
         kwargs.setdefault("qty", 2)
-        super().__init__(self.getImagePath("red-led-off-on.png"), *args, **kwargs)
+        # differences in online vs. local operation
+        try:
+            thispath = os.path.dirname(__file__)
+            imagepath = os.path.join(thispath, "../ggimages")
+        except NameError:
+            imagepath = "ggimages"
+        super().__init__(os.path.join(imagepath, "red-led-off-on.png"), *args, **kwargs)
         self.scale = 0.05

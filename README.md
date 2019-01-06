@@ -1,7 +1,7 @@
 ![automatic build status with Travis](https://travis-ci.org/BrythonServer/ggame.svg?branch=master)
 
 # ggame
-The simple cross-platform sprite and game platform for Brython Server (Pygame, Tkinter to follow?).
+The simple sprite and game platform for Brython Server (Pygame, Tkinter to follow?).
 
 Ggame stands for a couple of things: "good game" (of course!) and also "git game" or "github game"
 because it is designed to operate with [Brython Server](http://runpython.org) in concert with

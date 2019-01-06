@@ -109,5 +109,5 @@ class LEDIndicator(ImageIndicator):
     def __init__(self, *args, **kwargs):
         kwargs.setdefault("frame", Frame(0, 0, 600, 600))
         kwargs.setdefault("qty", 2)
-        super().__init__(self.getImagePath("red-led-off-on.png"), *args, **kwargs)
+        super().__init__("ggimages/red-led-off-on.png", *args, **kwargs)
         self.scale = 0.05

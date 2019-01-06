@@ -86,7 +86,7 @@ class Rocket(ImagePoint):
     Optional keyword parameters are supported:
 
     :param str bitmap:  Url of a suitable bitmap image for the rocket (png
-        recommended), default is `ggame/images/rocket.png`
+        recommended), default is `ggimages/rocket.png`
     :param float bitmapscale:  Scale factor for bitmap. Default is 0.1
     :param float velocity:  Initial rocket speed. Default is zero.
     :param float directiond:  Initial rocket direction in degrees. Default is zero.
@@ -137,7 +137,7 @@ class Rocket(ImagePoint):
         self._xy = (1000000, 1000000)
         self.planet = planet
         """Reference to an app object of :class:`Planet` class"""
-        self._bmurl = kwargs.get("bitmap", self.getImagePath("rocket.png"))
+        self._bmurl = kwargs.get("bitmap", "ggimages/rocket.png")
         """URL of a bitmap image to use for the rocket"""
         self._bitmapframe = kwargs.get("bitmapframe", None)
         """:class:`ggame.asset.Frame` that specifies location of displayed
