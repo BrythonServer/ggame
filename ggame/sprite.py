@@ -155,7 +155,7 @@ class Sprite(object):  # pylint: disable=too-many-public-methods
                 th = (
                     math.atan2(self.fycenter - 0.5, 0.5 - self.fxcenter) + self.rotation
                 )
-                d = self.edgedef.radius * 2
+                d = self.edgedef.radius * 2 * self.scale
                 l = (
                     math.sqrt(
                         math.pow(self.fxcenter - 0.5, 2)

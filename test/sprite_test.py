@@ -117,6 +117,37 @@ class TestSpriteMethods(unittest.TestCase):
         s1.destroy()
         s2.destroy()
 
+    def test_scaledcirclecollision(self):
+        s1 = Sprite(self.circ, (100,80))
+        s2 = Sprite(self.rect, (161,100))
+        c = s1.collidingWith(s2)
+        self.assertFalse(c, msg="circle not colliding with rect")
+        s1.x = 101
+        c = s1.collidingWith(s2)
+        self.assertTrue(c, msg="circle colliding with rect")
+        s1.x = 170
+        c = s1.collidingWith(s2)
+        self.assertTrue(c, msg="circle colliding with rect on right side")
+        s1.x = 172
+        c = s1.collidingWith(s2)
+        self.assertFalse(c, msg="circle not colliding with rect on right side")
+        # Now scale at 2x
+        s1.scale = 2
+        s1.x = 40
+        c = s1.collidingWith(s2)
+        self.assertFalse(c, msg="2x scaled circle not colliding with rect")
+        s1.x = 41
+        c = s1.collidingWith(s2)
+        self.assertTrue(c, msg="2x scaled circle colliding with rect")
+        s1.x = 170
+        c = s1.collidingWith(s2)
+        self.assertTrue(c, msg="2x scaled circle colliding with rect on right side")
+        s1.x = 172
+        c = s1.collidingWith(s2)
+        self.assertFalse(c, msg="2x scaled circle not colliding with rect on right side")
+
+        s1.destroy()
+        s2.destroy()
 
 if __name__ == "__main__":
     unittest.main()
