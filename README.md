@@ -121,18 +121,18 @@ Set up the development environment with Python 3.7+. For example, with
 
 Create a virtual environment with venv and activate it:
 ```
-python3.7 -m venv venv
-source venv/bin/activate
+$ python3.7 -m venv venv
+$ source venv/bin/activate
 ```
 
 Install the requirements:
 ```
-pip install -r requirements-headless.txt
+$ pip install -r requirements-headless.txt
 ```
 
 Test your environment by running the tests:
 ```
-scripts/run_tests.sh
+$ scripts/run_tests.sh
 ```
 
 ### Code Quality
