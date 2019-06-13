@@ -131,11 +131,8 @@ class App:
         :param Sprite obj: The sprite reference to remove.
         :returns: None
         """
-        if App.win is not None:
-            try:
-                App.win.remove(obj.gfx)
-            except ValueError:
-                pass
+        if App.win is not None and obj.gfx in App.win:
+            App.win.remove(obj.gfx)
         try:
             App.spritelist.remove(obj)
         except ValueError:
