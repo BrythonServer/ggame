@@ -132,9 +132,18 @@ class App:
         :returns: None
         """
         if App.win is not None:
-            App.win.remove(obj.gfx)
-        App.spritelist.remove(obj)
-        App._spritesdict[type(obj)].remove(obj)
+            try:
+                App.win.remove(obj.gfx)
+            except ValueError:
+                pass
+        try:
+            App.spritelist.remove(obj)
+        except ValueError:
+            pass
+        try:
+            App._spritesdict[type(obj)].remove(obj)
+        except ValueError:
+            pass
 
     def _animate(self, _dummy):
         if App.win:
