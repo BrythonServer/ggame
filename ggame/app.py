@@ -135,15 +135,21 @@ class App:
         """
         try:
             App.spritelist.remove(obj)
+            print("#1")
             # remove from underlying layer only if existed in ours
             if App.win is not None:
+                print("#2")
                 App.win.remove(obj.gfx)
+                print("#3")
         except ValueError:
-            pass
+            print("#4")
+            raise
         try:
             App._spritesdict[type(obj)].remove(obj)
+            print("#5")
         except ValueError:
-            pass
+            print("#6")
+            raise
 
     def _animate(self, _dummy):
         if App.win:
