@@ -173,8 +173,8 @@ class App:
             App.win.unbind(MouseEvent.click)
             App.win.unbind(MouseEvent.dblclick)
             App.win.destroy()
-        for s in list(App.spritelist):
-            s.destroy()
+        #for s in list(App.spritelist):
+        #    s.destroy()
         App.win = None
         App.spritelist = []
         App._spritesdict = {}
