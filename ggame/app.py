@@ -69,15 +69,15 @@ class App:
                 App._spritesadded = True
                 for sprite in App.spritelist:
                     App.win.add(sprite.gfx)
-            App.win.bind(KeyEvent.keydown, self._keyEvent)
-            App.win.bind(KeyEvent.keyup, self._keyEvent)
-            App.win.bind(KeyEvent.keypress, self._keyEvent)
-            App.win.bind(MouseEvent.mousewheel, self._mouseEvent)
-            App.win.bind(MouseEvent.mousemove, self._mouseEvent)
-            App.win.bind(MouseEvent.mousedown, self._mouseEvent)
-            App.win.bind(MouseEvent.mouseup, self._mouseEvent)
-            App.win.bind(MouseEvent.click, self._mouseEvent)
-            App.win.bind(MouseEvent.dblclick, self._mouseEvent)
+            #App.win.bind(KeyEvent.keydown, self._keyEvent)
+            #App.win.bind(KeyEvent.keyup, self._keyEvent)
+            #App.win.bind(KeyEvent.keypress, self._keyEvent)
+            #App.win.bind(MouseEvent.mousewheel, self._mouseEvent)
+            #App.win.bind(MouseEvent.mousemove, self._mouseEvent)
+            #App.win.bind(MouseEvent.mousedown, self._mouseEvent)
+            #App.win.bind(MouseEvent.mouseup, self._mouseEvent)
+            #App.win.bind(MouseEvent.click, self._mouseEvent)
+            #App.win.bind(MouseEvent.dblclick, self._mouseEvent)
         self.userfunc = None
 
     @classmethod
@@ -164,15 +164,15 @@ class App:
         print("App.destroy")
         if App.win:
             print("unbinding")
-            App.win.unbind(KeyEvent.keydown, self._keyEvent)
-            App.win.unbind(KeyEvent.keyup, self._keyEvent)
-            App.win.unbind(KeyEvent.keypress, self._keyEvent)
-            App.win.unbind(MouseEvent.mousewheel, self._mouseEvent)
-            App.win.unbind(MouseEvent.mousemove, self._mouseEvent)
-            App.win.unbind(MouseEvent.mousedown, self._mouseEvent)
-            App.win.unbind(MouseEvent.mouseup, self._mouseEvent)
-            App.win.unbind(MouseEvent.click, self._mouseEvent)
-            App.win.unbind(MouseEvent.dblclick, self._mouseEvent)
+            #App.win.unbind(KeyEvent.keydown, self._keyEvent)
+            #App.win.unbind(KeyEvent.keyup, self._keyEvent)
+            #App.win.unbind(KeyEvent.keypress, self._keyEvent)
+            #App.win.unbind(MouseEvent.mousewheel, self._mouseEvent)
+            #App.win.unbind(MouseEvent.mousemove, self._mouseEvent)
+            #App.win.unbind(MouseEvent.mousedown, self._mouseEvent)
+            #App.win.unbind(MouseEvent.mouseup, self._mouseEvent)
+            #App.win.unbind(MouseEvent.click, self._mouseEvent)
+            #App.win.unbind(MouseEvent.dblclick, self._mouseEvent)
             App.win.destroy()
         App.win = None
         for s in list(App.spritelist):
