@@ -67,8 +67,8 @@ if module_exists("browser") and module_exists("javascript"):
             self._w.document.body.unbind(evtspec)  # in case already bound
             self._w.document.body.bind(evtspec, callback)
 
-        def unbind(self, evtspec):
-            self._w.document.body.unbind(evtspec)
+        def unbind(self, evtspec, callback):
+            self._w.document.body.unbind(evtspec, callback)
 
         def add(self, obj):
             self._stage.addChild(obj)
