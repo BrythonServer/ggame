@@ -134,8 +134,8 @@ class App:
         try:
             App.spritelist.remove(obj)
             # remove from underlying layer only if existed in ours
-            if App.win is not None:
-              App.win.remove(obj.gfx)
+            #if App.win is not None:
+            #  App.win.remove(obj.gfx)
         except ValueError:
             pass
         try:
