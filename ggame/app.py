@@ -162,25 +162,24 @@ class App:
         sprites and place the `App` class in a state in which a new
         application could be instantiated.
         """
-        return
         if App.win:
-            App.win.unbind(KeyEvent.keydown, self._keyEvent)
-            App.win.unbind(KeyEvent.keyup, self._keyEvent)
-            App.win.unbind(KeyEvent.keypress, self._keyEvent)
-            App.win.unbind(MouseEvent.mousewheel, self._mouseEvent)
-            App.win.unbind(MouseEvent.mousemove, self._mouseEvent)
-            App.win.unbind(MouseEvent.mousedown, self._mouseEvent)
-            App.win.unbind(MouseEvent.mouseup, self._mouseEvent)
-            App.win.unbind(MouseEvent.click, self._mouseEvent)
-            App.win.unbind(MouseEvent.dblclick, self._mouseEvent)
-            #App.win.destroy()
-        #for s in list(App.spritelist):
-        #    s.destroy()
-        #App.win = None
-        #App.spritelist = []
-        #App._spritesdict = {}
-        #App._eventdict = {}
-        #App._spritesadded = False
+            App.win.unbind(KeyEvent.keydown)
+            App.win.unbind(KeyEvent.keyup)
+            App.win.unbind(KeyEvent.keypress)
+            App.win.unbind(MouseEvent.mousewheel)
+            App.win.unbind(MouseEvent.mousemove)
+            App.win.unbind(MouseEvent.mousedown)
+            App.win.unbind(MouseEvent.mouseup)
+            App.win.unbind(MouseEvent.click)
+            App.win.unbind(MouseEvent.dblclick)
+            App.win.destroy()
+        for s in list(App.spritelist):
+            s.destroy()
+        App.win = None
+        App.spritelist = []
+        App._spritesdict = {}
+        App._eventdict = {}
+        App._spritesadded = False
 
     @classmethod
     def listenKeyEvent(cls, eventtype, key, callback):
