@@ -74,7 +74,7 @@ if module_exists("browser") and module_exists("javascript"):
             self._stage.addChild(obj)
 
         def contains(self, obj):
-            return self._stage.children.includes(obj)
+            return obj in self._stage.children
             
         def remove(self, obj):
             self._stage.removeChild(obj)
