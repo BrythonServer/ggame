@@ -64,11 +64,17 @@ if module_exists("browser") and module_exists("javascript"):
             self._w.ggame_quit = onclose
 
         def bind(self, evtspec, callback):
-            self._w.document.body.unbind(evtspec)  # in case already bound
+            try:
+                self._w.document.body.unbind(evtspec, callback)  # in case already bound
+            except TypeError:
+                pass
             self._w.document.body.bind(evtspec, callback)
 
         def unbind(self, evtspec, callback):
-            self._w.document.body.unbind(evtspec, callback)
+            try:
+                self._w.document.body.unbind(evtspec, callback)
+            except TypeError:
+                pass
 
         def add(self, obj):
             self._stage.addChild(obj)
