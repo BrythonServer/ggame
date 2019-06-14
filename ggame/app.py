@@ -161,7 +161,7 @@ class App:
         sprites and place the `App` class in a state in which a new
         application could be instantiated.
         """
-        print("App.win")
+        print("App.destroy")
         if App.win:
             print("unbinding")
             App.win.unbind(KeyEvent.keydown)

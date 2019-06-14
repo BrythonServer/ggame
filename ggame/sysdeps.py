@@ -61,7 +61,7 @@ if module_exists("browser") and module_exists("javascript"):
             self.height = height if height != 0 else int(h)
             self.renderer = GFX.autoDetectRenderer(self.width, self.height, options)
             attachpoint.appendChild(self.renderer.view)
-            self._w.onunload = onclose
+            self._w.ggame_quit = onclose
 
         def bind(self, evtspec, callback):
             self._w.document.body.unbind(evtspec)  # in case already bound
