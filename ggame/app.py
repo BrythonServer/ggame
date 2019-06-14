@@ -69,15 +69,15 @@ class App:
                 App._spritesadded = True
                 for sprite in App.spritelist:
                     App.win.add(sprite.gfx)
-            App.win.bind(KeyEvent.keydown, self._keyEvent)
-            App.win.bind(KeyEvent.keyup, self._keyEvent)
-            App.win.bind(KeyEvent.keypress, self._keyEvent)
-            App.win.bind(MouseEvent.mousewheel, self._mouseEvent)
-            App.win.bind(MouseEvent.mousemove, self._mouseEvent)
-            App.win.bind(MouseEvent.mousedown, self._mouseEvent)
-            App.win.bind(MouseEvent.mouseup, self._mouseEvent)
-            App.win.bind(MouseEvent.click, self._mouseEvent)
-            App.win.bind(MouseEvent.dblclick, self._mouseEvent)
+            App.win.bind(KeyEvent.keydown, type(self)._keyEvent)
+            App.win.bind(KeyEvent.keyup, type(self)._keyEvent)
+            App.win.bind(KeyEvent.keypress, type(self)._keyEvent)
+            App.win.bind(MouseEvent.mousewheel, type(self)._mouseEvent)
+            App.win.bind(MouseEvent.mousemove, type(self)._mouseEvent)
+            App.win.bind(MouseEvent.mousedown, type(self)._mouseEvent)
+            App.win.bind(MouseEvent.mouseup, type(self)._mouseEvent)
+            App.win.bind(MouseEvent.click, type(self)._mouseEvent)
+            App.win.bind(MouseEvent.dblclick, type(self)._mouseEvent)
         self.userfunc = None
 
     @classmethod
