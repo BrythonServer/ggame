@@ -69,15 +69,15 @@ class App:
                 App._spritesadded = True
                 for sprite in App.spritelist:
                     App.win.add(sprite.gfx)
-            #App.win.bind(KeyEvent.keydown, self._keyEvent)
-            #App.win.bind(KeyEvent.keyup, self._keyEvent)
-            #App.win.bind(KeyEvent.keypress, self._keyEvent)
-            #App.win.bind(MouseEvent.mousewheel, self._mouseEvent)
-            #App.win.bind(MouseEvent.mousemove, self._mouseEvent)
-            #App.win.bind(MouseEvent.mousedown, self._mouseEvent)
-            #App.win.bind(MouseEvent.mouseup, self._mouseEvent)
-            #App.win.bind(MouseEvent.click, self._mouseEvent)
-            #App.win.bind(MouseEvent.dblclick, self._mouseEvent)
+            App.win.bind(KeyEvent.keydown, self._keyEvent)
+            App.win.bind(KeyEvent.keyup, self._keyEvent)
+            App.win.bind(KeyEvent.keypress, self._keyEvent)
+            App.win.bind(MouseEvent.mousewheel, self._mouseEvent)
+            App.win.bind(MouseEvent.mousemove, self._mouseEvent)
+            App.win.bind(MouseEvent.mousedown, self._mouseEvent)
+            App.win.bind(MouseEvent.mouseup, self._mouseEvent)
+            App.win.bind(MouseEvent.click, self._mouseEvent)
+            App.win.bind(MouseEvent.dblclick, self._mouseEvent)
         self.userfunc = None
 
     @classmethod
@@ -131,7 +131,7 @@ class App:
         :param Sprite obj: The sprite reference to remove.
         :returns: None
         """
-        if App.win is not None and obj.gfx in App.win:
+        if App.win is not None and App.win.contains(obj.gfx):
             App.win.remove(obj.gfx)
         try:
             App.spritelist.remove(obj)
@@ -161,26 +161,24 @@ class App:
         sprites and place the `App` class in a state in which a new
         application could be instantiated.
         """
-        print("App.destroy")
         if App.win:
-            print("unbinding")
-            #App.win.unbind(KeyEvent.keydown, self._keyEvent)
-            #App.win.unbind(KeyEvent.keyup, self._keyEvent)
-            #App.win.unbind(KeyEvent.keypress, self._keyEvent)
-            #App.win.unbind(MouseEvent.mousewheel, self._mouseEvent)
-            #App.win.unbind(MouseEvent.mousemove, self._mouseEvent)
-            #App.win.unbind(MouseEvent.mousedown, self._mouseEvent)
-            #App.win.unbind(MouseEvent.mouseup, self._mouseEvent)
-            #App.win.unbind(MouseEvent.click, self._mouseEvent)
-            #App.win.unbind(MouseEvent.dblclick, self._mouseEvent)
-            #App.win.destroy()
-        #App.win = None
+            App.win.unbind(KeyEvent.keydown, self._keyEvent)
+            App.win.unbind(KeyEvent.keyup, self._keyEvent)
+            App.win.unbind(KeyEvent.keypress, self._keyEvent)
+            App.win.unbind(MouseEvent.mousewheel, self._mouseEvent)
+            App.win.unbind(MouseEvent.mousemove, self._mouseEvent)
+            App.win.unbind(MouseEvent.mousedown, self._mouseEvent)
+            App.win.unbind(MouseEvent.mouseup, self._mouseEvent)
+            App.win.unbind(MouseEvent.click, self._mouseEvent)
+            App.win.unbind(MouseEvent.dblclick, self._mouseEvent)
+            App.win.destroy()
+        App.win = None
         for s in list(App.spritelist):
             s.destroy()
-        #App.spritelist = []
-        #App._spritesdict = {}
-        #App._eventdict = {}
-        #App._spritesadded = False
+        App.spritelist = []
+        App._spritesdict = {}
+        App._eventdict = {}
+        App._spritesadded = False
 
     @classmethod
     def listenKeyEvent(cls, eventtype, key, callback):
