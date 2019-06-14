@@ -175,10 +175,10 @@ class App:
             App.win.unbind(MouseEvent.click, cls._mouseEvent)
             App.win.unbind(MouseEvent.dblclick, cls._mouseEvent)
             App.win.destroy()
+        App.win = None
         for s in list(App.spritelist):
             s.destroy()
         print("in app.destroy")
-        App.win = None
         App.spritelist = []
         App._spritesdict = {}
         App._eventdict = {}
