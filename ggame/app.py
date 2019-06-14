@@ -182,6 +182,7 @@ class App:
         App._spritesdict = {}
         App._eventdict = {}
         App._spritesadded = False
+        print("in app.destroy")
 
     @classmethod
     def listenKeyEvent(cls, eventtype, key, callback):
