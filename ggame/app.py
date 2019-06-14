@@ -173,7 +173,7 @@ class App:
             #App.win.unbind(MouseEvent.mouseup, self._mouseEvent)
             #App.win.unbind(MouseEvent.click, self._mouseEvent)
             #App.win.unbind(MouseEvent.dblclick, self._mouseEvent)
-            App.win.destroy()
+            #App.win.destroy()
         App.win = None
         for s in list(App.spritelist):
             s.destroy()
