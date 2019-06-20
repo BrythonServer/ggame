@@ -218,7 +218,9 @@ class Circle(_MathVisual):
         An ordered pair (x,y) or :class:`~ggame.point.Point` that represents
         the (logical) circle center. This attribute is only get-able.
         """
+        # pylint: disable=no-member
         return self._posinputs.pos()
+        # pylint: enable=no-member
 
     @property
     def radius(self):

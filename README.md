@@ -114,6 +114,29 @@ ggame repository is already added to your import search path and no installation
 
 ## Contributing to ggame
 
+### Environment
+
+Set up the development environment with Python 3.7+. For example, with 
+[this procedure](https://tecadmin.net/install-python-3-7-on-ubuntu-linuxmint/).
+
+Create a virtual environment with venv and activate it:
+```
+$ python3.7 -m venv venv
+$ source venv/bin/activate
+```
+
+Install the requirements:
+```
+$ pip install -r requirements-headless.txt
+```
+
+Test your environment by running the tests:
+```
+$ scripts/run_tests.sh
+```
+
+### Code Quality
+
 Python sources in ggame should be passed through `black`. For example:
 
 ```
@@ -124,4 +147,10 @@ Python sources should also be tested with `pylint`. For example:
 
 ```
 $ python3 -m pylint -r n ggame/app.py
+```
+
+You can perform all of these checks in concert with a full Sphinx build
+by executing the script:
+```
+$ scripts/run_tests.sh
 ```

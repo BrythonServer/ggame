@@ -69,15 +69,15 @@ class App:
                 App._spritesadded = True
                 for sprite in App.spritelist:
                     App.win.add(sprite.gfx)
-            App.win.bind(KeyEvent.keydown, self._keyEvent)
-            App.win.bind(KeyEvent.keyup, self._keyEvent)
-            App.win.bind(KeyEvent.keypress, self._keyEvent)
-            App.win.bind(MouseEvent.mousewheel, self._mouseEvent)
-            App.win.bind(MouseEvent.mousemove, self._mouseEvent)
-            App.win.bind(MouseEvent.mousedown, self._mouseEvent)
-            App.win.bind(MouseEvent.mouseup, self._mouseEvent)
-            App.win.bind(MouseEvent.click, self._mouseEvent)
-            App.win.bind(MouseEvent.dblclick, self._mouseEvent)
+            App.win.bind(KeyEvent.keydown, type(self)._keyEvent)
+            App.win.bind(KeyEvent.keyup, type(self)._keyEvent)
+            App.win.bind(KeyEvent.keypress, type(self)._keyEvent)
+            App.win.bind(MouseEvent.mousewheel, type(self)._mouseEvent)
+            App.win.bind(MouseEvent.mousemove, type(self)._mouseEvent)
+            App.win.bind(MouseEvent.mousedown, type(self)._mouseEvent)
+            App.win.bind(MouseEvent.mouseup, type(self)._mouseEvent)
+            App.win.bind(MouseEvent.click, type(self)._mouseEvent)
+            App.win.bind(MouseEvent.dblclick, type(self)._mouseEvent)
         self.userfunc = None
 
     @classmethod
@@ -90,21 +90,23 @@ class App:
                     traceback.print_exc()
                     raise
 
-    def _keyEvent(self, hwevent):
+    @classmethod
+    def _keyEvent(cls, hwevent):
         evtlist = App._eventdict.get(
             (hwevent.type, KeyEvent.keys.get(hwevent.keyCode, 0)), []
         )
         evtlist.extend(App._eventdict.get((hwevent.type, "*"), []))
         if evtlist:
             evt = KeyEvent(hwevent)
-            self._routeEvent(evt, evtlist)
+            cls._routeEvent(evt, evtlist)
         return False
 
-    def _mouseEvent(self, hwevent):
+    @classmethod
+    def _mouseEvent(cls, hwevent):
         evtlist = App._eventdict.get(hwevent.type, [])
         if evtlist:
-            evt = MouseEvent(type(self), hwevent)
-            self._routeEvent(evt, evtlist)
+            evt = MouseEvent(cls, hwevent)
+            cls._routeEvent(evt, evtlist)
         return False
 
     @classmethod
@@ -131,9 +133,10 @@ class App:
         :param Sprite obj: The sprite reference to remove.
         :returns: None
         """
+        App.spritelist.remove(obj)
+        # remove from underlying layer only if existed in ours
         if App.win is not None:
             App.win.remove(obj.gfx)
-        App.spritelist.remove(obj)
         App._spritesdict[type(obj)].remove(obj)
 
     def _animate(self, _dummy):
@@ -165,10 +168,10 @@ class App:
             App.win.unbind(MouseEvent.mouseup)
             App.win.unbind(MouseEvent.click)
             App.win.unbind(MouseEvent.dblclick)
-            App.win.destroy()
-        App.win = None
         for s in list(App.spritelist):
             s.destroy()
+        App.win.destroy()
+        App.win = None
         App.spritelist = []
         App._spritesdict = {}
         App._eventdict = {}
