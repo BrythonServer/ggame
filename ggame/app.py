@@ -143,6 +143,8 @@ class App:
                 print("#3")
         except ValueError:
             print("#4")
+        except :
+            print("#4.1")
             raise
         try:
             App._spritesdict[type(obj)].remove(obj)
