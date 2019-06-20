@@ -578,6 +578,7 @@ class Sprite(object):  # pylint: disable=too-many-public-methods
         App.remove(self)
         try:
             self.gfx.destroy()
+            print("sprite.destroy gfx succeed")
         except :
             print("sprite.destroy gfx fail")
             raise
