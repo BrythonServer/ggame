@@ -186,8 +186,6 @@ class App:
             App.win.unbind(MouseEvent.mouseup, cls._mouseEvent)
             App.win.unbind(MouseEvent.click, cls._mouseEvent)
             App.win.unbind(MouseEvent.dblclick, cls._mouseEvent)
-            #App.win.destroy()
-        #App.win = None
         for s in list(App.spritelist):
             s.destroy()
         App.win.destroy()
@@ -196,7 +194,6 @@ class App:
         App._spritesdict = {}
         App._eventdict = {}
         App._spritesadded = False
-        print("in app.destroy")
 
     @classmethod
     def listenKeyEvent(cls, eventtype, key, callback):

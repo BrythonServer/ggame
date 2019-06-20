@@ -67,6 +67,7 @@ if module_exists("browser") and module_exists("javascript"):
             try:
                 self._w.document.body.unbind(evtspec, callback)  # in case already bound
             except TypeError:
+                print("binding error")
                 pass
             self._w.document.body.bind(evtspec, callback)
 
@@ -74,6 +75,7 @@ if module_exists("browser") and module_exists("javascript"):
             try:
                 self._w.document.body.unbind(evtspec, callback)
             except TypeError:
+                print("unbinding error")
                 pass
 
         def add(self, obj):
