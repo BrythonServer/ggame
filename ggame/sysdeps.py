@@ -67,7 +67,7 @@ if module_exists("browser") and module_exists("javascript"):
             try:
                 self._w.document.body.unbind(evtspec, callback)  # in case already bound
             except TypeError:
-                print("binding error")
+                print("no initial bind")
                 pass
             self._w.document.body.bind(evtspec, callback)
 
