@@ -82,7 +82,8 @@ if module_exists("browser") and module_exists("javascript"):
 
         def destroy(self):
             SND.all().stop()
-            self._stage.destroy()
+            self.renderer.destroy()
+            #self._stage.destroy()
 
 
 elif module_exists("pygame"):
