@@ -576,4 +576,8 @@ class Sprite(object):  # pylint: disable=too-many-public-methods
         set the :data:`visible` attribute to `False`.
         """
         App.remove(self)
-        self.gfx.destroy()
+        try:
+            self.gfx.destroy()
+        except :
+            print("sprite.destroy gfx fail")
+            raise
