@@ -140,8 +140,8 @@ class App:
         App._spritesdict[type(obj)].remove(obj)
 
     def _animate(self, _dummy):
-        print("animate")
         if App.win:
+            print("animate")
             try:
                 if self.userfunc:
                     self.userfunc()
