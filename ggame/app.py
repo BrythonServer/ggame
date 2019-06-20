@@ -190,12 +190,13 @@ class App:
         #App.win = None
         for s in list(App.spritelist):
             s.destroy()
-        print("in app.destroy")
         App.win.destroy()
+        App.win = None
         App.spritelist = []
         App._spritesdict = {}
         App._eventdict = {}
         App._spritesadded = False
+        print("in app.destroy")
 
     @classmethod
     def listenKeyEvent(cls, eventtype, key, callback):
