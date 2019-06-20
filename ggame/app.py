@@ -151,6 +151,8 @@ class App:
             print("#5")
         except ValueError:
             print("#6")
+        except :
+            print("#6.1")
             raise
 
     def _animate(self, _dummy):
