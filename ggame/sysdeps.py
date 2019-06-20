@@ -67,7 +67,7 @@ if module_exists("browser") and module_exists("javascript"):
             self._w.document.body.unbind(evtspec) 
             self._w.document.body.bind(evtspec, callback)
 
-        def unbind(self)
+        def unbind(self, evtspec):
             self._w.document.body.unbind(evtspec)
 
         def add(self, obj):
