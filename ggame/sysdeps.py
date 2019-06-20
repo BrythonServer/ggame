@@ -64,7 +64,7 @@ if module_exists("browser") and module_exists("javascript"):
             self._w.ggame_quit = onclose
 
         def bind(self, evtspec, callback):
-            self._w.document.body.unbind(evtspec) 
+            self._w.document.body.unbind(evtspec)
             self._w.document.body.bind(evtspec, callback)
 
         def unbind(self, evtspec):
