@@ -177,15 +177,15 @@ class App:
         application could be instantiated.
         """
         if App.win:
-            App.win.unbind(KeyEvent.keydown, cls._keyEvent)
-            App.win.unbind(KeyEvent.keyup, cls._keyEvent)
-            App.win.unbind(KeyEvent.keypress, cls._keyEvent)
-            App.win.unbind(MouseEvent.mousewheel, cls._mouseEvent)
-            App.win.unbind(MouseEvent.mousemove, cls._mouseEvent)
-            App.win.unbind(MouseEvent.mousedown, cls._mouseEvent)
-            App.win.unbind(MouseEvent.mouseup, cls._mouseEvent)
-            App.win.unbind(MouseEvent.click, cls._mouseEvent)
-            App.win.unbind(MouseEvent.dblclick, cls._mouseEvent)
+            App.win.unbind(KeyEvent.keydown)
+            App.win.unbind(KeyEvent.keyup)
+            App.win.unbind(KeyEvent.keypress)
+            App.win.unbind(MouseEvent.mousewheel)
+            App.win.unbind(MouseEvent.mousemove)
+            App.win.unbind(MouseEvent.mousedown)
+            App.win.unbind(MouseEvent.mouseup)
+            App.win.unbind(MouseEvent.click)
+            App.win.unbind(MouseEvent.dblclick)
         for s in list(App.spritelist):
             s.destroy()
         App.win.destroy()
