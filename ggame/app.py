@@ -133,29 +133,11 @@ class App:
         :param Sprite obj: The sprite reference to remove.
         :returns: None
         """
-        try:
-            App.spritelist.remove(obj)
-            print("#1")
-            # remove from underlying layer only if existed in ours
-            if App.win is not None:
-                print("#2")
-                App.win.remove(obj.gfx)
-                print("#3")
-        except ValueError:
-            print("#4")
-            raise
-        except :
-            print("#4.1")
-            raise
-        try:
-            App._spritesdict[type(obj)].remove(obj)
-            print("#5")
-        except ValueError:
-            print("#6")
-            raise
-        except :
-            print("#6.1")
-            raise
+        App.spritelist.remove(obj)
+        # remove from underlying layer only if existed in ours
+        if App.win is not None:
+            App.win.remove(obj.gfx)
+        App._spritesdict[type(obj)].remove(obj)
 
     def _animate(self, _dummy):
         if App.win:
