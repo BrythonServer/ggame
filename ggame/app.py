@@ -140,6 +140,7 @@ class App:
         App._spritesdict[type(obj)].remove(obj)
 
     def _animate(self, _dummy):
+        print("animate")
         if App.win:
             try:
                 if self.userfunc:
@@ -158,6 +159,7 @@ class App:
         sprites and place the `App` class in a state in which a new
         application could be instantiated.
         """
+        print("destroying")
         if App.win:
             App.win.unbind(KeyEvent.keydown)
             App.win.unbind(KeyEvent.keyup)
