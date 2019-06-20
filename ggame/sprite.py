@@ -575,10 +575,9 @@ class Sprite(object):  # pylint: disable=too-many-public-methods
         or used. If you only want to prevent a sprite from being displayed,
         set the :data:`visible` attribute to `False`.
         """
-        App.remove(self)
         try:
+            App.remove(self)
             self.gfx.destroy()
             print("sprite.destroy gfx succeed")
-        except :
-            print("sprite.destroy gfx fail")
-            raise
+        except ValueError:
+            print("sprite.destroy gfx AVOIDED")

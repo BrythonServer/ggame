@@ -143,6 +143,7 @@ class App:
                 print("#3")
         except ValueError:
             print("#4")
+            raise
         except :
             print("#4.1")
             raise
@@ -151,6 +152,7 @@ class App:
             print("#5")
         except ValueError:
             print("#6")
+            raise
         except :
             print("#6.1")
             raise
