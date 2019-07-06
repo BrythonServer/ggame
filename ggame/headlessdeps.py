@@ -1,3 +1,6 @@
+import os
+
+
 def module_exists(module_name):
     try:
         __import__(module_name)
@@ -116,7 +119,14 @@ if module_exists("PIL"):
                 self.width = 0
                 self.height = 0
             else:
-                self.img = Image.open(img)
+                try:
+                    self.img = Image.open(img)
+                except (OSError, IOError) as e:
+                    thispath = os.path.abspath(__file__)
+                    thispath = os.path.dirname(thispath)
+                    ggameimg = os.path.join(thispath, img)
+                    self.img = Image.open(ggameimg)
+
                 self.basewidth = self.img.width
                 self.baseheight = self.img.height
                 self.width = self.basewidth

@@ -14,11 +14,7 @@ def pressbutton(_button):
 
 
 BUTTON = InputImageButton(
-    "ggame/images/button-round.png",
-    pressbutton,
-    (0, 0),
-    frame=Frame(0, 0, 100, 100),
-    qty=2,
+    "images/button-round.png", pressbutton, (0, 0), frame=Frame(0, 0, 100, 100), qty=2
 )
 BUTTON.scale = 0.5
 

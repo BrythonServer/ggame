@@ -565,7 +565,7 @@ class Sprite(object):  # pylint: disable=too-many-public-methods
             thispath = os.path.dirname(__file__)
             imagepath = os.path.join(thispath, "images")
         except NameError:
-            imagepath = "ggame/images"
+            imagepath = "images"
         return os.path.join(imagepath, imagename)
 
     def destroy(self):

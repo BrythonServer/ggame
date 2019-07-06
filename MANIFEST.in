@@ -1,1 +1,3 @@
 prune examples/
+include ggame/images/*.png
+include ggame/*.png
