@@ -8,7 +8,7 @@ from ggame.inputpoint import InputImageButton
 from ggame.asset import Frame
 
 BUTTON = InputImageButton(
-    "ggame/images/button-round.png",
+    "images/button-round.png",
     None,
     (40, 105),
     positioning="physical",
@@ -18,7 +18,7 @@ BUTTON = InputImageButton(
 BUTTON.scale = 0.5
 
 LIGHT = ImageIndicator(
-    "ggame/images/red-led-off-on.png",
+    "images/red-led-off-on.png",
     (100, 100),
     BUTTON,  # button object supplies the indicator state.
     positioning="physical",

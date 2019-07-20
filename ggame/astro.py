@@ -86,7 +86,7 @@ class Rocket(ImagePoint):
     Optional keyword parameters are supported:
 
     :param str bitmap:  Url of a suitable bitmap image for the rocket (png
-        recommended), default is `ggame/images/rocket.png`
+        recommended), default is `images/rocket.png`
     :param float bitmapscale:  Scale factor for bitmap. Default is 0.1
     :param float velocity:  Initial rocket speed. Default is zero.
     :param float directiond:  Initial rocket direction in degrees. Default is zero.
