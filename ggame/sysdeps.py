@@ -7,35 +7,22 @@ def module_exists(module_name):
         return True
 
 
-if module_exists("browser") and module_exists("javascript"):
+if module_exists("browser"):
 
     from browser import window, document, load
-    from javascript import JSObject, JSConstructor
 
     major = window.__BRYTHON__.implementation[0]
     minor = window.__BRYTHON__.implementation[1]
-    if major == 3 and minor >= 3 or major > 3:
-        GFX = window.PIXI
-        GFX_Rectangle = GFX.Rectangle.new
-        GFX_Texture = GFX.Texture.new
-        GFX_Texture_fromImage = GFX.Texture.fromImage.new
-        GFX_Sprite = GFX.Sprite.new
-        GFX_Graphics = GFX.Graphics.new()
-        GFX_Text = GFX.Text.new
-        GFX_NewStage = GFX.Container.new
-        SND = window.buzz
-        SND_Sound = SND.sound.new
-    else:
-        GFX = JSObject(window.PIXI)
-        GFX_Rectangle = JSConstructor(GFX.Rectangle)
-        GFX_Texture = JSConstructor(GFX.Texture)
-        GFX_Texture_fromImage = JSConstructor(GFX.Texture.fromImage)
-        GFX_Sprite = JSConstructor(GFX.Sprite)
-        GFX_Graphics = JSConstructor(GFX.Graphics)()
-        GFX_Text = JSConstructor(GFX.Text)
-        GFX_NewStage = JSConstructor(GFX.Container)
-        SND = JSObject(window.buzz)
-        SND_Sound = JSConstructor(SND.sound)
+    GFX = window.PIXI
+    GFX_Rectangle = GFX.Rectangle.new
+    GFX_Texture = GFX.Texture.new
+    GFX_Texture_fromImage = GFX.Texture.fromImage.new
+    GFX_Sprite = GFX.Sprite.new
+    GFX_Graphics = GFX.Graphics.new()
+    GFX_Text = GFX.Text.new
+    GFX_NewStage = GFX.Container.new
+    SND = window.buzz
+    SND_Sound = SND.sound.new
     GFX_DetectRenderer = GFX.autoDetectRenderer
 
     class GFX_Window(object):
