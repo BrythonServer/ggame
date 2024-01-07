@@ -19,7 +19,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/BrythonServer/ggame",
     packages=setuptools.find_packages(exclude=["examples*"]),
-    install_requires=("Python==3.11"),
+    install_requires=("python>=3.11"),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
