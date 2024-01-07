@@ -21,13 +21,13 @@ sys.path.insert(0, os.path.abspath(".."))
 # -- Project information -----------------------------------------------------
 
 project = u"ggame"
-copyright = u"2018, Eric Dennison"
+copyright = u"2024, Eric Dennison"
 author = u"Eric Dennison"
 
 # The short X.Y version
 version = u""
 # The full version, including alpha/beta/rc tags
-release = u"0.1.0"
+release = u"1.1.0"
 
 
 # -- General configuration ---------------------------------------------------
@@ -63,7 +63,7 @@ master_doc = "index"
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = "en"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.

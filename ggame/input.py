@@ -51,7 +51,7 @@ class InputNumeric(Label):
 
     def _updateText(self, editing=False):
         if editing:
-            self._text = self.eval("{0}".format(self._val))
+            self._text = self.eval(f"{self._val}")
         else:
             self._text = self.eval(self._fmt.format(self._val))
 
@@ -155,7 +155,7 @@ class InputButton(Label):
     def _buildAsset(self):
         return TextAsset(
             self._nposinputs.text(),  # pylint: disable=no-member
-            style="bold {0}px Courier".format(self._stdinputs.size()),
+            style=f"bold {self._stdinputs.size()}px Courier",
             width=self._stdinputs.width(),
             fill=self._stdinputs.color(),
         )

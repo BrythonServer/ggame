@@ -1,3 +1,6 @@
+# pylint: skip-file
+
+
 def module_exists(module_name):
     try:
         __import__(module_name)
@@ -9,7 +12,6 @@ def module_exists(module_name):
 
 # PYTHON 3 and PYGAME DEPENDENCIES
 if module_exists("pygame"):
-
     import pygame
 
     class _body(object):
@@ -375,7 +377,6 @@ if module_exists("pygame"):
     SND_Sound = _SND_Sound
 
     class HwEvent(object):
-
         evtmap = {
             2: "keydown",
             3: "keyup",

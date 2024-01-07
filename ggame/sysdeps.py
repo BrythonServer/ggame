@@ -1,3 +1,6 @@
+# pylint: skip-file
+
+
 def module_exists(module_name):
     try:
         __import__(module_name)
@@ -8,7 +11,6 @@ def module_exists(module_name):
 
 
 if module_exists("browser"):
-
     from browser import window, document, load
 
     major = window.__BRYTHON__.implementation[0]
@@ -69,9 +71,7 @@ if module_exists("browser"):
             SND.all().stop()
             self.renderer.destroy()
 
-
 elif module_exists("pygame"):
-
     try:
         from ggame.pygamedeps import *
     except ImportError:
