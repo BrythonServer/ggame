@@ -52,4 +52,5 @@ sphinxcontrib-websupport==1.2.6
 tomlkit==0.12.3
 twine==4.0.2
 urllib3==2.1.0
+wheel
 zipp==3.17.0
