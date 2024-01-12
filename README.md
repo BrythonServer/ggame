@@ -1,4 +1,4 @@
-![automatic build status with Travis](https://travis-ci.org/BrythonServer/ggame.svg?branch=master)
+![build passing](https://github.com/BrythonServer/ggame/actions/workflows/build-and-test.yml/badge.svg?event=push)
 
 # ggame
 The simple sprite and game platform for Brython Server (Pygame, Tkinter to follow?).
@@ -116,18 +116,17 @@ ggame repository is already added to your import search path and no installation
 
 ### Environment
 
-Set up the development environment with Python 3.7+. For example, with 
-[this procedure](https://tecadmin.net/install-python-3-7-on-ubuntu-linuxmint/).
+Set up the development environment with Python 3.11.
 
 Create a virtual environment with venv and activate it:
 ```
-$ python3.7 -m venv venv
-$ source venv/bin/activate
+$ python3.11 -m venv env
+$ source env/bin/activate
 ```
 
 Install the requirements:
 ```
-$ pip install -r requirements-headless.txt
+$ python3.11 -m pip install -r requirements-headless.txt
 ```
 
 Test your environment by running the tests:
@@ -146,7 +145,7 @@ $ black ggame/app.py
 Python sources should also be tested with `pylint`. For example:
 
 ```
-$ python3 -m pylint -r n ggame/app.py
+$ python3.11 -m pylint -r n ggame/app.py
 ```
 
 You can perform all of these checks in concert with a full Sphinx build

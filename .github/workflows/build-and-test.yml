@@ -1,0 +1,17 @@
+name: build and test
+on: [push]
+jobs:
+  test-build-and-linters:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          architecture: 'x64'
+      - run: python3.11 -m pip install -r requirements-headless.txt
+      - run: scripts/buildrelease.sh
+      - run: scripts/run_tests.sh

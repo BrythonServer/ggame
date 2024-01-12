@@ -1,3 +1,6 @@
+# pylint: skip-file
+
+
 import os
 
 
@@ -11,7 +14,6 @@ def module_exists(module_name):
 
 
 if module_exists("PIL"):
-
     from PIL import Image
 
     class _body(object):

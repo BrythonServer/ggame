@@ -263,7 +263,8 @@ class Rocket(ImagePoint):
 
     def _turn(self, event):
         """
-         Respond to left/right turning key events.
+
+        Respond to left/right turning key events.
         """
         increment = pi / 50 * (1 if event.key == "left arrow" else -1)
         self.localheading += increment
@@ -285,75 +286,73 @@ class Rocket(ImagePoint):
         """
         Report the velocity in m/s as a text string.
         """
-        return "Velocity:     {0:8.1f} m/s".format(self.velocity)
+        return f"Velocity:     {self.velocity:8.1f} m/s"
 
     def _accelerationText(self):
         """
         Report the acceleration in m/s as a text string.
         """
-        return "Acceleration: {0:8.1f} m/s²".format(self.acceleration)
+        return f"Acceleration: {self.acceleration:8.1f} m/s²"
 
     def _courseDegreesText(self):
         """
         Report the heading in degrees (zero to the right) as a text string.
         """
-        return "Course:       {0:8.1f}°".format(
-            degrees(atan2(self._v_vect[1], self._v_vect[0]))
-        )
+        return f"Course:       {degrees(atan2(self._v_vect[1], self._v_vect[0])):8.1f}°"
 
     def _thrustText(self):
         """
         Report the thrust level in Newtons as a text string.
         """
-        return "Thrust:       {0:8.1f} N".format(self.thrust())
+        return f"Thrust:       {self.thrust():8.1f} N"
 
     def _massText(self):
         """
         Report the spacecraft mass in kilograms as a text string.
         """
-        return "Mass:         {0:8.1f} kg".format(self.mass())
+        return f"Mass:         {self.mass():8.1f} kg"
 
     def _trueAnomalyDegreesText(self):
         """
         Report the true anomaly in degrees as a text string.
         """
-        return "True Anomaly: {0:8.1f}°".format(self.tanomalyd)
+        return f"True Anomaly: {self.tanomalyd:8.1f}°"
 
     def _trueAnomalyRadiansText(self):
         """
         Report the true anomaly in radians as a text string.
         """
-        return "True Anomaly: {0:8.4f}".format(self.tanomaly)
+        return f"True Anomaly: {self.tanomaly:8.4f}"
 
     def _altitudeText(self):
         """
         Report the altitude in meters as a text string.
         """
-        return "Altitude:     {0:8.1f} m".format(self.altitude)
+        return f"Altitude:     {self.altitude:8.1f} m"
 
     def _radiusText(self):
         """
         Report the radius (distance to planet center) in meters as a text string.
         """
-        return "Radius:       {0:8.1f} m".format(self.r)
+        return f"Radius:       {self.r:8.1f} m"
 
     def _scaleText(self):
         """
         Report the view scale (pixels/meter) as a text string.
         """
-        return "View Scale:   {0:8.6f} px/m".format(self.planet.scale)
+        return f"View Scale:   {self.planet.scale:8.6f} px/m"
 
     def _timeZoomText(self):
         """
         Report the time acceleration as a text string.
         """
-        return "Time Zoom:    {0:8.1f}".format(float(self.timezoom()))
+        return f"Time Zoom:    {float(self.timezoom()):8.1f}"
 
     def _shipTimeText(self):
         """
         Report the elapsed time as a text string.
         """
-        return "Elapsed Time: {0:8.1f} s".format(float(self.shiptime))
+        return f"Elapsed Time: {float(self.shiptime):8.1f} s"
 
     def _dynamics(self, timer):
         """
@@ -399,7 +398,7 @@ class Rocket(ImagePoint):
         g = 6.674e-11
         r = Planet.distance((0, 0), pos)
         uvec = (-pos[0] / r, -pos[1] / r)
-        fg = g * self.mass() * self.planet.mass / r ** 2
+        fg = g * self.mass() * self.planet.mass / r**2
         vf = [x * fg for x in uvec]
         return [vf[0] + t * cos(self.rotation), vf[1] + t * sin(self.rotation)]
 
@@ -429,7 +428,7 @@ class Rocket(ImagePoint):
 
         :returns: None
         """
-        statusdict = {n: f for n, f in zip(statuslist, statusfuncs)}
+        statusdict = dict(zip(statuslist, statusfuncs))
         for name in statusselect:
             if name in statusdict:
                 self._labels.append(

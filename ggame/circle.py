@@ -182,6 +182,12 @@ class Circle(_MathVisual):
         c (center) and x and y values are physical, screen relative.
         function returns coordinates in screen relative format
         """
+
+        def getcoords(x, y):
+            if 0 <= x <= MathApp.width and 0 <= y <= MathApp.height:
+                return [(x, y)]
+            return []
+
         x1n = x1 - c[0]
         x2n = x2 - c[0]
         y1n = y1 - c[1]
@@ -203,13 +209,8 @@ class Circle(_MathVisual):
             (-d * dx + abs(dy) * sdisc) / dr2 + c[1],
             (-d * dx - abs(dy) * sdisc) / dr2 + c[1],
         ]
-        getcoords = (
-            lambda x, y, c: [(x, y)]
-            if 0 <= x <= MathApp.width and 0 <= y <= MathApp.height
-            else []
-        )
-        res = getcoords(x[0], y[0], c)
-        res.extend(getcoords(x[1], y[1], c))
+        res = getcoords(x[0], y[0])
+        res.extend(getcoords(x[1], y[1]))
         return res
 
     @property

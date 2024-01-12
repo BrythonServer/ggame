@@ -54,7 +54,7 @@ class Label(_MathVisual):
     def _buildAsset(self):
         return TextAsset(
             self._nposinputs.text(),  # pylint: disable=no-member
-            style="{0}px Courier".format(self._stdinputs.size()),
+            style=f"{self._stdinputs.size()}px Courier",
             width=self._stdinputs.width(),
             fill=self._stdinputs.color(),
         )

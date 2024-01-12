@@ -15,6 +15,7 @@ from ggame.asset import (
 )
 from ggame.app import App
 
+
 # pylint: disable=useless-object-inheritance
 class Sprite(object):  # pylint: disable=too-many-public-methods
     """
@@ -476,9 +477,7 @@ class Sprite(object):  # pylint: disable=too-many-public-methods
         """
         return True  # no implementation yet
 
-    def collidingPolyWithPoly(
-        self, obj
-    ):  # pylint: disable=unused-argument, no-self-use
+    def collidingPolyWithPoly(self, obj):
         """
         Determine if a pair of PolygonAsset-based sprites are overlapping. This
         method is called after determining that the two objects are overlapping in their

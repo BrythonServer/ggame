@@ -86,7 +86,7 @@ class _BoolDevice(_MathDynamic, metaclass=ABCMeta):
         interprets a value that could be single input or a list of inputs!
         """
         try:
-            inputs = [].extend(value)
+            inputs = [] + value
         except TypeError:
             inputs = [value]
         scalars = [v() for v in inputs]

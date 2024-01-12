@@ -29,7 +29,6 @@ class Frame(object):  # pylint: disable=useless-object-inheritance
     """
 
     def __init__(self, x, y, w, h):
-
         self.gfx = GFX_Rectangle(x, y, w, h)
         """
         `_gfx` is a reference to the underlying object provided by the system.
@@ -279,7 +278,7 @@ class Color:
     def __init__(self, color, alpha):
         self.color = color
         self.alpha = alpha
-        self.name = "Color(0x{0:06X}, {1})".format(int(self.color), self.alpha)
+        self.name = f"Color(0x{int(self.color):06X}, {self.alpha})"
         if alpha == 1.0:
             self.name = self._colornames.get(self.color, self.name)
 
@@ -321,8 +320,7 @@ class LineStyle:
     """
 
     def __init__(self, width, color):
-        """
-        """
+        """ """
         self.width = width
         self.color = color
 
@@ -334,7 +332,7 @@ class LineStyle:
         )
 
     def __repr__(self):
-        return "LineStyle({}, {})".format(self.width, self.color)
+        return f"LineStyle({self.width}, {self.color})"
 
 
 BLACKLINE = LineStyle(1, BLACK)
@@ -526,8 +524,7 @@ class TextAsset(_GraphicsAsset):
     """
 
     def __init__(self, text, **kwargs):
-        """
-        """
+        """ """
         super().__init__()
         self.text = text
         self.style = kwargs.get("style", "20px Arial")
