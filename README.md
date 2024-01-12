@@ -1,4 +1,4 @@
-![automatic build status with Travis](https://travis-ci.org/BrythonServer/ggame.svg?branch=master)
+![build passing](https://github.com/BrythonServer/ggame/actions/workflows/build-and-test.yml/badge.svg?event=push)
 
 # ggame
 The simple sprite and game platform for Brython Server (Pygame, Tkinter to follow?).
