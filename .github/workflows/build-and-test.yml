@@ -12,5 +12,6 @@ jobs:
         with:
           python-version: '3.11'
           architecture: 'x64'
+      - run: python3.11 -m pip install -r requirements-headless.txt
       - run: scripts/buildrelease.sh
       - run: scripts/run_tests.sh
