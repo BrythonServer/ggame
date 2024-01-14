@@ -27,7 +27,7 @@ author = u"Eric Dennison"
 # The short X.Y version
 version = u""
 # The full version, including alpha/beta/rc tags
-release = u"1.1.0"
+release = u"1.1.3"
 
 
 # -- General configuration ---------------------------------------------------
@@ -90,7 +90,7 @@ html_theme = "alabaster"
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ["_static"]
+# html_static_path = ["_static"]
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
