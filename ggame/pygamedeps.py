@@ -472,7 +472,7 @@ if module_exists("pygame"):
 
             self.width = self._w.get_width()
             self.height = self._w.get_height()
-            
+
             # self._w = window.open("", "")
             # self._stage = JSConstructor(GFX.Container)()
             # self.renderer = GFX.autoDetectRenderer(width, height, {'transparent':True})
