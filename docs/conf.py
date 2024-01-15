@@ -27,7 +27,7 @@ author = u"Eric Dennison"
 # The short X.Y version
 version = u""
 # The full version, including alpha/beta/rc tags
-release = u"1.1.2"
+release = u"1.1.3"
 
 
 # -- General configuration ---------------------------------------------------
