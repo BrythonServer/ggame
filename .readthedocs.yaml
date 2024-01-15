@@ -33,5 +33,5 @@ formats:
 # See https://docs.readthedocs.io/en/stable/guides/reproducible-builds.html
 python:
   install:
-     - requirements: requirements-headless.txt
-     - method: pip
+    - requirements: requirements-headless.txt
+    - method: pip
