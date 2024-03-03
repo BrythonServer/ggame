@@ -7,6 +7,8 @@ Ggame stands for a couple of things: "good game" (of course!) and also "git game
 because it is designed to operate with [Brython Server](http://runpython.org) in concert with
 Github as a backend file store.
 
+##Oyun akışını izlemek için [Brython Server](http://runpython.org) bu siteyi kullanabilirsiniz. Yeni grafiklerle düzenlediğimiz oyunu izleyebilmek için sitede var olan komutları silerek, Another Example kısmındaki komutları yapıştırıp, 'run' butonuna tıklamak olacaktır.
+
 Ggame is **not** intended to be a full-featured gaming API, with every bell and whistle. Ggame is
 designed primarily as a tool for teaching computer programming, recognizing that the ability
 to create engaging and interactive games is a powerful motivator for many progamming students.
@@ -37,6 +39,9 @@ The following example illustrates the more common use case in which the basic gg
 classes, Sprite and App, are subclassed as Bunny and DemoApp and given event handlers
 and step (i.e. poll) functions.
 
+## Turkish Language
+Aşağıdaki örnek, temel ggame'in daha yaygın kullanım durumunu göstermektedir.
+Sprite ve uygulama sınıfları Bunny ve DemoApp olarak alt sınıflara ayrılır ve akışın işlevlerini belirtir.
 
 ```python
 from ggame import App, ImageAsset, Sprite, MouseEvent
